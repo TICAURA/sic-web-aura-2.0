@@ -1,0 +1,202 @@
+<div class="container-fluid" ng-controller="clienteCotizadorController">
+<div id="page-heading">
+    <ol class="breadcrumb">
+        <li><a href="#/">Menu principal</a></li>
+        <li class="active">Prospectos</li>
+    </ol>
+</div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <panel panel-class="panel-info" heading="Prospecto"> 
+                <panel-controls>
+                    <panel-control-collapse></panel-control-collapse> 
+                    <a class="btn-orange btn pull-right"	ng-click="limpiarSession();" style="margin-top: 3px" ng-show="mostrarBtnAgregarProspecto">REGISTRAR NUEVO PROSPECTO</a> 
+                </panel-controls>
+
+                <form id="buscarClienteForm" name="buscarClienteForm">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <label class="control-label">RFC/Nombre/Raz&oacute;n Social: </label> 
+                            <!--<input type="text" class="form-control" placeholder="RFC">-->
+                            <input
+                                placeholder="NOMBRE/RAZ&Oacute;N SOCIAL" name="buscarNombreComercial"
+                                ng-model="gridClientes.rfc" maxlength="50" 
+								onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"
+                                onblur="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"
+                                class="form-control" type="text"/> 
+
+                        </div> 
+
+                        <div class="col-xs-1">
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <button class="btn-primary btn btn-lg" ng-click="buscar();" type="submit">
+                                <span class="fa fa-search"></span> BUSCAR
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </panel>
+            <panel panel-class="panel-info" heading="Prospectos guardados">
+                <panel-controls> 
+                    <panel-control-collapse></panel-control-collapse>
+                </panel-controls>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="padding-right:150px">Nombre/Raz&oacute;n Social</th>
+                                <th align="center">RFC</th>
+                                <th align="center">Total de pre cotizaciones</th>
+                                <th align="center">Total de cotizaciones detalladas</th>
+                                <th align="center">Fecha de &uacute;ltima cotizaci&oacute;n</th>
+                                <th align="center">Tipo persona</th>
+                                <th align="center">Estatus de prospecto</th>
+                                <th align="center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="cliente in gridClientes">
+                            <td ng-show="cliente.idClienteTemp == null" style="color: red;" colspan="7" align="center">NO SE ENCONTRARON RESULTADOS CON EL CRITERIO PROPORCIONADO</td>
+                                <td align="left" ng-show="cliente.razonSocial == undefined">{{cliente.nombre}} {{cliente.apellidoPaterno}}  {{cliente.apellidoMaterno}} </td>
+                                <td align="left" ng-show="cliente.razonSocial != undefined">{{cliente.razonSocial}} </td>
+                                <td align="left">{{cliente.rfc}}</td>
+                                <td align="center"> {{cliente.numeroPreCotizaciones}}</td>
+                                <td align="center"> {{cliente.numeroCotizacionesDetalladas}} </td>
+                                <td align="center"> {{cliente.fechaUltimaCotizacion | date:'dd/MM/yyyy'}}</td>
+                                <td align="left">{{cliente.idTipoPersona.descripcion}}</td>
+                                <td align="left">{{cliente.estatusCliente[0].idEstatus.descripcionEstatus}}</td>
+                                <td ng-show="cliente.idClienteTemp != null">
+                                <div class="col-md-12">
+									<!--PRECOTIZACION -->
+                                	<div class="col-md-2"  ng-if="!mostrarBtnPreCotizacion && cliente.estatusCliente[0].idEstatus.idEstatus != 7 && cliente.estatusCliente[0].idEstatus.idEstatus != 9
+                                && cliente.estatusCliente[0].idEstatus.idEstatus != 10 && cliente.estatusCliente[0].idEstatus.idEstatus != 16 && cliente.estatusCliente[0].idEstatus.idEstatus != 13">
+                                		<a tooltip-append-to-body="true" tooltip-placement="top" data-tooltip="Nueva Pre Cotizaci&oacute;n">
+                                			<span ng-click="nuevaPreCotizacion(cliente.idClienteTemp)" class="glyphicon glyphicon-usd" ></span>
+                                		</a>
+                                	</div>
+                                	<!--COTIZACION -->
+                                	<div class="col-md-2" ng-if=" !mostrarBtnCotizacion && cliente.estatusCliente[0].idEstatus.idEstatus != 9 && cliente.estatusCliente[0].idEstatus.idEstatus != 7
+                                && cliente.estatusCliente[0].idEstatus.idEstatus != 10 && cliente.estatusCliente[0].idEstatus.idEstatus != 16 && cliente.estatusCliente[0].idEstatus.idEstatus != 13">
+                                		<a tooltip-append-to-body="true"  tooltip-placement="top" data-tooltip="Nueva Cotizaci&oacute;n">
+                                        	<span ng-click="nuevaCotizacion(cliente.idClienteTemp)" class="fa fa-building"></span>
+                                        </a>
+                                	</div>
+                                	<!--VER PROSPECTO -->
+                                	<div class="col-md-2" ng-if="cliente.estatusCliente[0].idEstatus.idEstatus != 9 && cliente.estatusCliente[0].idEstatus.idEstatus != 7
+                                && cliente.estatusCliente[0].idEstatus.idEstatus != 10 && cliente.estatusCliente[0].idEstatus.idEstatus != 16 && cliente.estatusCliente[0].idEstatus.idEstatus != 13">
+                                		<a tooltip-append-to-body="true" tooltip-placement="bottom" data-tooltip="Ver detalles de prospecto">
+                                			<span ng-click="verCotizaciones(cliente.idClienteTemp)" class="glyphicon glyphicon-search" ></span>
+                                        </a>
+                                	</div>
+                                	<!--EDITAR PROSPECTOS -->
+                                	<div class="col-md-2" ng-if="cliente.estatusCliente[0].idEstatus.idEstatus != 9 && cliente.estatusCliente[0].idEstatus.idEstatus != 7
+                                && cliente.estatusCliente[0].idEstatus.idEstatus != 10 && cliente.estatusCliente[0].idEstatus.idEstatus != 16 && cliente.estatusCliente[0].idEstatus.idEstatus != 13">
+                                		<a tooltip-append-to-body="true" tooltip-placement="bottom" data-tooltip="Editar datos de prospecto" ng-if="mostrarBtnEditarProspecto">
+                                			<span ng-click="editarProspectos(cliente.idClienteTemp)" class="glyphicon glyphicon-pencil" ></span>
+                                        </a>
+                                    </div>
+                                    
+                                    <!--DECLINAR PROSPECTO -->
+                                    <div class="col-md-2" ng-if="!mostrarBtnCotizacion && cliente.estatusCliente[0].idEstatus.idEstatus != 9 && cliente.estatusCliente[0].idEstatus.idEstatus != 7
+                                        && cliente.estatusCliente[0].idEstatus.idEstatus != 10 && cliente.estatusCliente[0].idEstatus.idEstatus != 16 && cliente.estatusCliente[0].idEstatus.idEstatus != 13">
+                                        <a tooltip-append-to-body="true" tooltip-placement="bottom" data-tooltip="Declinar prospecto" ng-if="mostrarBtnDeclinarProspecto">
+                                			<span ng-click="motivoDeclinaCliente(cliente.idClienteTemp)" class="fa fa-minus-circle" ></span>
+                                        </a>
+                                	</div>
+                                	<!--AUTORIZAR PROSPECTO -->
+                                	<div class="col-md-2" ng-if="mostrarBtnAutorizarProspecto && cliente.estatusCliente[0].idEstatus.idEstatus == 6" >
+                                        <a tooltip-append-to-body="true" tooltip-placement="bottom" data-tooltip="Autorizar prospecto" ng-if="mostrarBtnAutorizarProspecto">
+                                			<span ng-click="autorizarProspecto(cliente.idClienteTemp)" class="glyphicon glyphicon-ok" ></span>
+                                        </a>
+                                	</div>	
+                                	
+                                	<!--RECHAZAR PROSPECTO -->
+                                	<div class="col-md-2" ng-if="!mostrarBtnCotizacion && cliente.estatusCliente[0].idEstatus.idEstatus == 6">
+                                        <a tooltip-append-to-body="true" tooltip-placement="bottom" data-tooltip="Rechazar prospecto" ng-if="mostrarBtnRechazarProspecto">
+                                			<span ng-click="motivoRechazoCliente(cliente.idClienteTemp)" class="glyphicon glyphicon-remove" ></span>
+                                        </a>
+                                	</div> 
+                                	<!--ELIMINAR PROSPECTO -->            	
+                                	 <div class="col-md-2" ng-if="cliente.numeroPreCotizaciones==0  && cliente.numeroCotizacionesDetalladas==0">
+                                        <a tooltip-append-to-body="true" tooltip-placement="bottom" data-tooltip="Eliminar prospecto" ng-if="mostrarBtnEliminarProspecto">
+                                			<span ng-click="eliminarProspecto(cliente)" class="fa fa-trash-o" ></span>
+                                        </a>
+                                     </div>
+                                </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </panel>
+        </div>
+    </div>
+    
+    	<!-- Inicio: Modal para Movito de rechazo -->
+	<div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" 
+		id="rechazadaProspecto" aria-labelledby="myModalLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Rechazo de prospecto</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<label class="control-label">Motivo:<span class="ng-scope">*</span></label>
+							<div class="form-group">
+								<textarea type="text" class="form-control" maxlength="1000" ng-model="motivoRechazoProspecto" ng-required="true" required="required" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"> </textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>
+					<button type="button" class="btn-green btn" ng-click="rechazarProspecto(idClienteTemporal);"
+						ng-disabled="!motivoRechazoProspecto"
+						id="idRechazarProspecto" data-dismiss="modal">ACEPTAR</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Inicio: Modal para declinar prospecto -->
+	<div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" 
+		id="declinadaProspecto" aria-labelledby="myModalLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Declinar prospecto</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<label class="control-label">Motivo:<span class="ng-scope">*</span></label>
+							<div class="form-group">
+								<textarea type="text" class="form-control" maxlength="1000" ng-model="motivoDeclinadoProspecto" ng-required="true" required="required" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"> </textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>
+					<button type="button" class="btn-green btn" ng-click="declinarProspecto(idClienteTemporal);"
+						ng-disabled="!motivoDeclinadoProspecto"
+						id="idDeclinarProspecto" data-dismiss="modal">ACEPTAR</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    
+    
+</div>
+

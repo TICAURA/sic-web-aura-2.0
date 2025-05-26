@@ -1,0 +1,516 @@
+<style>
+/* Definimos el ancho y alto total */
+#botonComplementoNominaFactura {
+	position: relative;
+	left: 10px;
+	top: 12px;
+	color: black;
+}
+
+/* Definimos el ancho y alto total */
+#botonesConceptpFact {
+	position: relative;
+	left: 10px;
+	top: 30px;
+}
+
+</style>
+
+<div ng-controller="multifacturaController">
+	|<br>
+	<div class="container-fluid">
+		<div id="page-heading"  ng-show="(usuarioDTO.rol.idRol===44)">
+			<ol class="breadcrumb">
+				<li><a href="#/">INICIO </a></li>
+				<li class="active">Facturar</li>
+			
+			</ol>
+		</div>
+		
+		<div id="page-heading"  ng-show="(usuarioDTO.rol.idRol===9)">
+			<ol class="breadcrumb">
+				<li><a href="#/">INICIO </a></li>
+				<li class="active">Vincular Facturas</li>
+			
+			</ol>
+		</div>
+		
+			<div class="row">
+			<div class="col-md-12">
+		
+				<panel panel-class="panel-sky"  > <panel-controls>
+					
+			
+				
+					
+					<panel-control-collapse></panel-control-collapse> </panel-controls>
+				 	<div class="row">
+							<div class="col-xs-3" ng-show="!isDiferenteNominista">
+									<label class="control-label">Centro de costos*: </label>
+													<select
+											ng-disabled="deshabilitarCelula" class="form-control"
+											name="celula" id="idcentroCostos"
+											ng-model="facturaDTO.celula"
+											ng-options="celula.nombre for celula in catCelula | orderBy:'celula.nombre' track by celula.idCelula"
+										  ng-change="cargaInicialClientes()"
+											placeholder="Estatus N&oacute;mina"
+											ng-required="!isDiferenteNominista">
+											<option value="" class="">-- SELECCIONA UNA
+												OPCI&Oacute;N --</option>
+										</select> 
+								</div>
+					
+				
+				
+						
+				</div>
+				<br>
+			<div class="row"  ng-show="isVisibleClientes">
+			  <div class="col-md-12">
+					<!-- Inicio tabla clientes -->
+				<panel panel-class="panel-sky" heading="Clientes"> <panel-controls>
+				<panel-control-collapse></panel-control-collapse> </panel-controls>
+					<div class="table-responsive">
+					<table ng-table="tableParams" class="table table-striped"
+						show-filter="true">
+						<tbody>
+							<tr ng-repeat="nominaCliente in $data">
+								<td align="left" data-title="'Nombre operativo'"
+									filter="{clienteNombreComercial: 'text'}"
+									sortable="'clienteNombreComercial'">{{nominaCliente.clienteNombreComercial
+									| uppercase}}</td>
+								<td align="left" data-title="'Nombre o Raz&oacute;n Social'"
+									filter="{clienteRazonSocialONombre: 'text'}"
+									sortable="'clienteRazonSocialONombre'">
+									{{nominaCliente.clienteRazonSocialONombre}}</td>
+								<td align="left" data-title="'RFC'"
+									filter="{clienteRFC: 'text'}" sortable="'clienteRFC'">{{nominaCliente.clienteRFC}}</td>
+								<!-- facturas -->
+								<td align="right" data-title="'Acciones'">
+								<div ng-show="(usuarioDTO.rol.idRol===44)">
+									<button
+										data-toggle="modal"
+										ng-click="crearFactura(nominaCliente)"
+										tooltip="Generar Facturas" class="btn btn-success">
+											<span class="fa fa-plus"></span>
+									</button>
+									<button data-toggle="modal"
+										ng-click="facturasGeneradas(nominaCliente)"
+										tooltip="Visor de Facturas " class="btn btn-success">
+										<span class="fa fa-bars"></span>
+									</button>
+									</div>
+								<!--  	<button data-toggle="modal"
+										ng-click="detalleClienteNomina(nominaCliente)"
+										tooltip="Facturaci&oacute;n  N&oacute;minas " class="btn btn-info">
+										<span class="fa fa-edit"></span>
+									</button>
+									-->
+									<div ng-show="(usuarioDTO.rol.idRol===9)">
+									<button data-toggle="modal" 
+										ng-click="vincularFacturasNomina(nominaCliente)"
+										tooltip="Vincular Facturas y N&oacute;minas " class="btn-orange btn">
+										<span class="fa fa-envelope-o"></span>
+									</button>
+									
+									</div>
+							
+							</td>
+							
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+				</panel>
+				</div>
+				</div>
+	
+									
+							<br>
+						<!-- SECCION TIPOS NOMINAS -->
+						<div ng-show="catNominasCliente">
+							<panel panel-class="panel-sky" heading="Tipos de N&oacute;minas"> <panel-controls>
+					<panel-control-collapse></panel-control-collapse> </panel-controls>
+									 <div class="row">		
+							<div class="col-sm-6">
+											<div class="form-group">
+												<label class="control-label">Tipos N&oacute;minas*:</label> 
+												<select class="form-control" 
+														name="giro_" 
+														id="giro"
+														ng-change="listaNominasPorFacturar(nominaDto.nominaClienteDto)" 
+														ng-model="nominaDto.nominaClienteDto"
+														ng-options="nomina.descripcionCompuesta for nomina in catNominaCliente | orderBy:'nomina.nombreNomina' track by nomina.idNominaCliente"
+														ng-required="true"
+														placeholder="Celula">
+													<option value="" class="">-- SELECCIONA UNA OPCI&Oacute;N --</option>
+												</select>
+												<div ng-messages="creacionNomForm.giro_.$error" ng-show="creacionNomForm.giro_.$dirty && creacionNomForm.giro_.$invalid">
+													<small class="form-text-error" ng-message="required">Este campo es obligatorio</small>
+												</div>
+											</div>
+										</div>
+										</div> 
+										</panel>
+										</div>
+		
+		
+						
+					<!-- SECCION FACTURAS A VINCULAR -->
+				<div ng-show="gridFacturaDisponible.length >=1 && isVincularFacturasNominas===true">
+					<panel panel-class="panel-sky" heading="Facturas a Vincular"> <panel-controls>
+					<panel-control-collapse></panel-control-collapse> </panel-controls>
+
+					<br>
+					<div class="row">
+					<div class="col-md-4">
+							<span><strong>CLIENTE:</strong></span>
+							{{clienteSeleccionado.nombreComercial!=
+							null?clienteSeleccionado.nombreComercial+'/':''}}
+							{{clienteSeleccionado.nombreCompleto}}{{clienteSeleccionado.razonSocial}}
+						</div>
+						</div>
+						
+
+					<div class="table-responsive"
+						ng-show="gridFacturaDisponible.length == 0">
+						<h4 align="center" >
+							<br />
+							<strong style="color: red"> NO CUENTA CON FACTURAS PARA VINCULAR</strong>
+						</h4>
+					
+					</div>
+					<div class="table-responsive"
+						ng-show="gridFacturaDisponible.length > 0">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>SERIE / FOLIO</th>
+									<th>IMPORTE</th>
+									<th>82%</th>
+									<th>MONTO PENDIENTE DE VINCULAR</th>
+									<th>TOTAL DE NOMINAS</th>
+									<th>VER FACTURA</th>
+									<th>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="factura in gridFacturaDisponible">
+									<td>{{factura.serieS}}</td>
+									<td>{{factura.totales.total | currency}}</td>
+									<td >{{factura.totales.ochentaYdos | currency}}</td>
+									<td  align="center">{{factura.totales.saldoDisponible | currency }}</td>
+										<td align="right" >
+										<button data-toggle="modal"
+											ng-click="modalNominas(factura)"
+											tooltip="Ver N&oacute;minas" class="btn  btn-green">
+											<span class="fa fa-users"></span><strong>{{factura.totalNominas}}</strong>
+										</button>
+									</td>
+									
+									<td align="right">
+										<button data-toggle="modal"
+										ng-click="descargarDocumentoByIdCMS(factura.idCmsPdfFactura)"
+										tooltip="descargar Factura " class="btn btn-info">
+										<span class="fa fa-edit"></span>
+									</button>
+									</td>
+									<td align="right">
+									  <button data-toggle="modal"
+											ng-click="vincularFacturas(factura)"
+											tooltip="seleccionar Factura" class="btn btn-success">
+											<span class="fa fa-envelope-o"></span>
+										</button>
+										</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					</panel>
+				</div>
+				
+							<!-- SECCION FACTURAS A VINCULAR -->
+				<div ng-show="gridFacturaGeneradas.length >=1">
+					<panel panel-class="panel-sky" heading="Facturas Generadas"> <panel-controls>
+					<panel-control-collapse></panel-control-collapse> </panel-controls>
+
+					<br>
+					<div class="row">
+					<div class="col-md-4">
+							<span><strong>CLIENTE:</strong></span>
+							{{clienteSeleccionado.nombreComercial!=
+							null?clienteSeleccionado.nombreComercial+'/':''}}
+							{{clienteSeleccionado.nombreCompleto}}{{clienteSeleccionado.razonSocial}}
+						</div>
+						</div>
+						
+
+					<div class="table-responsive"
+						ng-show="gridFacturaGeneradas.length == 0">
+						<h4 align="center" >
+							<br />
+							<strong style="color: red"> NO CUENTA CON FACTURAS GENERADAS</strong>
+						</h4>
+					
+					</div>
+					<div class="table-responsive"
+						ng-show="gridFacturaGeneradas.length > 0">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th># FACTURA</th>
+									<th>MONTO FACTURA</th>
+									<th>FECHA FACTURA</th>				
+									<th>MONTO DEPOSITO</th>
+									<th>FECHA DEPOSITO</th>
+									<th>VER FACTURA </th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="factura in gridFacturaGeneradas">
+									<td>{{factura.serieS}}</td>
+									<td>{{factura.totales.total  | currency}}</td>
+									<td>{{factura.fechaHoraEmision}}</td>
+									<td> </td>
+									<td> </td>
+								<!--  	<td align="right" >
+										<button data-toggle="modal"
+											ng-click="modalNominas(factura)"
+											tooltip="Ver N&oacute;minas" class="btn  btn-green">
+											<span class="fa fa-users"></span><strong>{{factura.totalNominas}}</strong>
+										</button>
+									</td>	-->				
+									<td align="right">
+										<button data-toggle="modal"
+										ng-click="descargarDocumentoByIdCMS(factura.idCmsPdfFactura)"
+										tooltip="descargar Factura pdf" class="btn btn-info">
+										<span class="fa fa-edit"></span>
+									</button>
+									<button data-toggle="modal"
+										ng-click="descargarDocumentoByIdCMS(factura.idCmsXmlFactura)"
+										tooltip="descargar Factura xml " class="btn btn-info">
+										<span class="fa fa-edit"></span>
+									</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					</panel>
+				</div>
+				
+					
+				<!-- SECCION PARA NOMINAS A FACTURAR -->
+				<div ng-show="gridNominasProceso.length >=1">
+					<panel panel-class="panel-sky" heading={{titulo}}> <panel-controls>
+					<panel-control-collapse></panel-control-collapse> </panel-controls>
+
+					<div class="row">
+					<div class="col-md-4" ng-show="isVincularFacturasNominas===true">
+							<span><strong>FACTURA SELECCIONADA:</strong></span>
+							{{facturaSeleccionada.serieS}}
+						</div>
+						<div class="col-md-4">
+							<span><strong>CLIENTE:</strong></span>
+							{{clienteSeleccionado.nombreComercial!=
+							null?clienteSeleccionado.nombreComercial+'/':''}}
+							{{clienteSeleccionado.nombreCompleto}}{{clienteSeleccionado.razonSocial}}
+						</div>
+
+						<div class="col-md4">
+							<span><strong>RFC CLIENTE:</strong></span>
+							{{clienteSeleccionado.rfc}}
+						</div>
+					</div>
+
+					<br>
+
+					<div class="table-responsive"
+						ng-show="gridNominasProceso.length == 0">
+						<h4 align="center" ng-show="isVisibleComplementaria === false">
+							<br />
+							<strong style="color: red"> NO CUENTA CON N&Oacute;MINAS
+								A FACTURAR</strong>
+						</h4>
+					
+					</div>
+					<div class="table-responsive"
+						ng-show="gridNominasProceso.length > 0">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Clave n&oacute;mina</th>
+								
+									<th>Periodicidad</th>
+									<th>Total Colaboradores</th>
+									<th>Monto</th>
+									<th>Periodo actual</th>
+									<th>Estatus</th>
+									<th>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="proceso in gridNominasProceso">
+									<td>{{proceso.claveNomina}}</td>
+				
+									<td>{{proceso.nominaClienteDto.nombreNomina}}</td>
+									<td align="right">
+										<button data-toggle="modal"
+											ng-click="modalColaboradores(proceso)"
+											tooltip="Ver colaboradores" class="btn  btn-green">
+											<span class="fa fa-users"></span><strong>{{proceso.nominaClienteDto.totalColaboradores}}</strong>
+										</button>
+									</td>
+									<td align="right" ><strong>{{proceso.nominaClienteDto.montoTotalColaboradores
+											| currency}}</strong></td>
+
+									<td align="center">{{proceso.fechaInicioNominaFormato}} -
+										{{proceso.fechaFinNominaFormato}}</td>
+
+									<td align="center">
+										<button data-toggle="modal"
+											ng-click="getHistoricoByIdPppNomina(proceso)"
+											tooltip="Ver bit&aacute;cora n&oacute;mina"
+											class="btn btn-midnightblue">
+											<span class="fa fa-binoculars"></span>
+											{{proceso.catEstatusNomina.descripcion}}
+										</button>
+									</td>
+									   <td ng-show="isVisibleSeleccionNomina" style="text-align: center"><input type="checkbox" ng-model="proceso.aFacturar" 
+		                                 class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}"
+		                                ng-change="guardarNominaAFacturar(proceso)" /></td>
+
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					</panel>
+				</div>
+				
+					<div class="row" ng-show="habilitaTotalNominas">
+							<div class="col-xs-4 ">
+								<label class="control-label ">Total Nominas: </label> 
+									<span class="form-control" disabled>{{total.totalNomina }}</span>				
+							</div>
+	
+							<div class="col-xs-4 ">
+								<label class="control-label ">Monto Total: </label> 
+								<span class="form-control" disabled>{{total.montoTotal | currency}}</span>
+							</div>
+							
+							
+							<div class="col-xs-4" ng-show="botonGenFactura">
+							</br>
+								<button class="btn-green btn ng-scope" ng-click="generarNominasFactura()">
+									<span class="fa fa-save"></span> Guardar
+								</button>
+								</div>
+							<div class="col-xs-4" ng-show="botonVincularFacturaNominas">
+								<button class="btn-green btn ng-scope" ng-click="vincularNominasFactura()">
+									<span class="fa fa-save"></span> Vincular Factura con Nominas
+								</button>
+							</div>
+							</div>
+				<br />
+				
+				
+					<div ng-show="isVisibleSeccionFactura">
+				
+					<div ng-include="'views/ppp/nominaGeneraMultifacturaFactura.html'"></div>
+					
+				</div>
+				
+				</panel>
+			
+			</div>
+	</div>
+	
+		<div class="modal fade" id="modalNominas" role="dialog"  data-backdrop="static" >
+			<div class="modal-dialog" style="width: 40%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">N&oacute;minas Vinculadas</h4><br>
+						
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="table-responsive">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>N&oacute;mina</th>
+												<th>Monto</th>
+												<th>Estatus</th>
+			
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="data in dataExcel.contentRows">
+												<td>{{data.claveNomina}}</td>
+												<td>{{data.montoTotalPpp}}</td>
+												<td>{{data.catEstatusNomina.descripcion}}</td>
+												
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								
+								<div class="modal-footer">
+										<button type="button" class="btn btn-danger"
+											data-dismiss="modal">Cerrar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>	
+		
+		<div class="modal fade" id="modalColaboradores" role="dialog"  data-backdrop="static" >
+			<div class="modal-dialog" style="width: 40%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Colaboradores de n&oacute;mina</h4><br>
+						<h4 class="modal-title">Clave n&oacute;mina: {{claveNomina}}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="table-responsive">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>Nombre</th>
+												<th>RFC</th>
+												<th>Monto</th>
+												<th>Cuenta</th>
+			
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="data in dataExcel.contentRows">
+												<td>{{data.nombre}}</td>
+												<td>{{data.rfc}}</td>
+												<td align="right">{{data.montoPPP | currency}}</td>
+												<td align="right">{{data.numeroCuenta}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								
+								<div class="modal-footer">
+										<button type="button" class="btn btn-danger"
+											data-dismiss="modal">Cerrar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>		
+		
+</div>

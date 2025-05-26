@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<configuration>
+	
+  
+ 
+
+ <!--   <property name="LOG.DIR" value="C:/docs-sic/LOGS/SIC" />   -->
+<!--    <property name="LOG.DIR" value="/home/saxt/docs-sic/LOGS/SIC" />   -->
+   <property name="LOG.DIR" value="/home/saxt/docs-sic/LOGS/SIC" /> 
+   <property name="LOG.BACKUP" value="${LOG.DIR}/log.backup" />
+
+   <property name="LOG.FILE.SIZE" value="25MB" />
+   <property name="BACKUP.COUNT" value="20" />
+
+   <property name="ENCODER.PATTERN" value="[%.-1level] [%d] [%c{0}] [%m]%n" />
+
+   <appender name="application.log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <append>true</append>
+      <file>${LOG.DIR}/application.log</file>
+      <encoder>
+         <pattern>${ENCODER.PATTERN}</pattern>
+      </encoder>
+      <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+         <maxIndex>${BACKUP.COUNT}</maxIndex>
+         <FileNamePattern>${LOG.BACKUP}/application.log.%i.gz</FileNamePattern>
+      </rollingPolicy>
+      <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+         <maxFileSize>${LOG.FILE.SIZE}</maxFileSize>
+      </triggeringPolicy>
+   </appender>
+
+<!--  <appender name="spring.log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <append>true</append>
+      <file>${LOG.DIR}/spring.log</file>
+      <encoder>
+         <pattern>${ENCODER.PATTERN}</pattern>
+      </encoder>
+      <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+         <maxIndex>${BACKUP.COUNT}</maxIndex>
+         <FileNamePattern>${LOG.BACKUP}/spring.log.%i.gz</FileNamePattern>
+      </rollingPolicy>
+      <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+         <maxFileSize>${LOG.FILE.SIZE}</maxFileSize>
+      </triggeringPolicy>
+   </appender>
+
+   <appender name="security.log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <append>true</append>
+      <file>${LOG.DIR}/security.log</file>
+      <encoder>
+         <pattern>${ENCODER.PATTERN}</pattern>
+      </encoder>
+      <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+         <maxIndex>${BACKUP.COUNT}</maxIndex>
+         <FileNamePattern>${LOG.BACKUP}/security.log.%i.gz</FileNamePattern>
+      </rollingPolicy>
+      <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+         <maxFileSize>${LOG.FILE.SIZE}</maxFileSize>
+      </triggeringPolicy>
+   </appender>
+
+   <appender name="web.log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <append>true</append>
+      <file>${LOG.DIR}/web.log</file>
+      <encoder>
+         <pattern>${ENCODER.PATTERN}</pattern>
+      </encoder>
+      <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+         <maxIndex>${BACKUP.COUNT}</maxIndex>
+         <FileNamePattern>${LOG.BACKUP}/web.log.%i.gz</FileNamePattern>
+      </rollingPolicy>
+      <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+         <maxFileSize>${LOG.FILE.SIZE}</maxFileSize>
+      </triggeringPolicy>
+   </appender> -->
+   
+   
+    <appender name="stp.log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <append>true</append>
+      <file>${LOG.DIR}/stp.log</file>
+      <encoder>
+         <pattern>${ENCODER.PATTERN}</pattern>
+      </encoder>
+      <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+         <maxIndex>${BACKUP.COUNT}</maxIndex>
+         <FileNamePattern>${LOG.BACKUP}/stp.log.%i.gz</FileNamePattern>
+      </rollingPolicy>
+      <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+         <maxFileSize>${LOG.FILE.SIZE}</maxFileSize>
+      </triggeringPolicy>
+   </appender>
+
+
+   <logger name="mx.com.consolida.controller.stp" level="info">
+      <appender-ref ref="stp.log" />
+   </logger>
+
+   <logger name="mx.com.consolida" level="error">
+      <appender-ref ref="application.log" />
+   </logger>
+   
+   <logger name="org.springframework" level="info">
+      <appender-ref ref="spring.log" />
+   </logger>
+
+   <logger name="org.springframework.security" level="info">
+      <appender-ref ref="security.log" />
+   </logger>
+
+   <logger name="org.springframework.web" level="info">
+      <appender-ref ref="web.log" />
+   </logger>
+  
+
+</configuration>

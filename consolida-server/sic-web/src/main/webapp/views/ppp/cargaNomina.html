@@ -1,0 +1,2974 @@
+<style>
+
+/* Definimos el ancho y alto total */
+#botonComplementoNominaFactura {
+	position: relative;
+	left: 10px;
+	top: 12px;
+}
+
+/* Definimos el ancho y alto total */
+#botonesConceptpFact {
+	position: relative;
+	left: 10px;
+	top: 30px;
+}
+
+</style>
+
+<div ng-controller="nominaController">
+<br>
+	<div class="container-fluid">
+		<div id="page-heading">
+			<ol class="breadcrumb">
+				<li><a href="#/">PPP</a></li>
+				<li class="active">Carga N&oacute;mina</li>
+			</ol>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<panel panel-class="panel-sky" heading="Clientes"> <panel-controls>
+				<panel-control-collapse></panel-control-collapse> </panel-controls>
+				<div class="table-responsive">
+
+					<table ng-table="tableParams"  class="table table-striped" show-filter="true">
+						<tbody>
+				          <tr ng-repeat="nominaCliente in $data">
+								<td align="left" data-title="'Nombre operativo'"  filter="{clienteNombreComercial: 'text'}" sortable="'clienteNombreComercial'" >{{nominaCliente.clienteNombreComercial | uppercase}} </td>
+								<td align="left" data-title="'Nombre o Raz&oacute;n Social'"  filter="{clienteRazonSocialONombre: 'text'}" sortable="'clienteRazonSocialONombre'"> {{nominaCliente.clienteRazonSocialONombre}}</td>
+								<td align="left" data-title="'RFC'"  filter="{clienteRFC: 'text'}" sortable="'clienteRFC'">{{nominaCliente.clienteRFC}}</td>
+								<!--<td align="right">{{nominaCliente.totalNominas}}</td>>-->
+								<td align="right" data-title="'N&oacute;minas en proceso (PPP)'">{{nominaCliente.totalNominasEnProcesoNominista}}</td>
+								<td align="right" data-title="'Acciones'"><button data-toggle="modal"
+										ng-click="modalDetalleNomina(nominaCliente)" tooltip="Detalle n&oacute;minas"
+										class="btn btn-success"><span class="fa fa-bars"></span></button>
+								<button data-toggle="modal"
+										ng-click="listaNominaEnProceso(nominaCliente)" tooltip="N&oacute;minas en Proceso"
+										class="btn btn-info"><span class="fa fa-edit"></span></button>
+								<button data-toggle="modal"
+										ng-click="modalCrearNomina(nominaCliente)"
+										class="btn  btn-midnightblue" tooltip="Crear n&oacute;mina">
+										<span class="fa fa-plus"></span>
+
+									</button>
+									<button data-toggle="modal"
+										ng-click="listaNominaAcomplementar(nominaCliente)"
+										class="btn  btn-midnightblue" tooltip="Lista de N&oacute;minas a Complementar">
+										<span class="fa fa-edit"></span>
+
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				</panel>
+<!--
+				<div ng-show="gridNominasProceso.length >=1">
+					<panel panel-class="panel-sky" heading="N&oacute;minas en proceso">
+					<panel-controls> <panel-control-collapse></panel-control-collapse>
+					</panel-controls>
+
+					<div class="row">
+						<div class="col-md-4">
+							<span><strong>CLIENTE:</strong></span>	{{clienteSeleccionado.nombreComercial!= null?clienteSeleccionado.nombreComercial+'/':''}}  {{clienteSeleccionado.nombreCompleto}}{{clienteSeleccionado.razonSocial}}
+						</div>
+
+						<div class="col-md4">
+							<span><strong>RFC CLIENTE:</strong></span> {{clienteSeleccionado.rfc}}
+						</div>
+					</div>
+
+					<br>
+
+					<div class="table-responsive" ng-show="gridNominasProceso.length == 0">
+						<h4 align="center">
+							<br/><strong style="color:red"> NO CUENTA CON N&Oacute;MINAS EN PROCESO</strong>
+						</h4>
+					</div>
+					<div class="table-responsive" ng-show="gridNominasProceso.length > 0">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Clave n&oacute;mina</th>
+									<th>Tipo de n&oacute;mina</th>
+									<th>Periodicidad</th>
+									<th>Total Colaboradores</th>
+									<th>Monto PPP</th>
+									<th>Periodo actual</th>
+									<th>Estatus</th>
+									<th>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="proceso in gridNominasProceso">
+									<td>{{proceso.claveNomina}}</td>
+									<td>{{proceso.nominaClienteDto.catProductoNomina.descripcion}}</td>
+									<td>{{proceso.periodicidadNomina.descripcion}}</td>
+									<td align="right">
+										<button data-toggle="modal" ng-click="modalColaboradores(proceso)" tooltip="Ver colaboradores" class="btn  btn-green" >
+											<span class="fa fa-users"></span><strong>{{proceso.nominaClienteDto.totalColaboradores}}</strong>
+										</button>
+									</td>
+									<td align="right"><strong>{{proceso.nominaClienteDto.montoTotalColaboradores | currency}}</strong></td>
+									<td align="center">{{proceso.fechaInicioNominaFormato}} - {{proceso.fechaFinNominaFormato}}</td>
+
+									<td align="center">
+										<button data-toggle="modal" ng-click="getHistoricoByIdPppNomina(proceso)" tooltip="Ver bit&aacute;cora n&oacute;mina"
+											class="btn btn-midnightblue">
+											<span class="fa fa-binoculars"></span> {{proceso.catEstatusNomina.descripcion}}
+										</button>
+									</td>
+									<!--  comentado
+									<td>
+										<button
+										data-toggle="modal" href="#modalEstatus"
+										class="btn  btn-orange"><span class="fa fa-history"></span>  N&oacute;mina cargada</button>
+									</td>
+									-->
+<!--
+									<td align="center">
+										<button data-toggle="modal"
+										ng-click="getDatosNominaByIdNomina(proceso)" tooltip="Editar N&oacute;mina"
+										class="btn  btn-midnightblue" ><span class="fa fa-edit"></span></button>
+										<button data-toggle="modal" ng-show="proceso.catEstatusNomina.idCatGeneral == 11"
+										ng-click="getDatosNominaByIdNomina(proceso)" tooltip="Timbrar colaboradores"
+										class="btn  btn-green" ><span class="fa fa-envelope-o"></span>  Timbrar colaboradores</button>
+										<button data-toggle="modal" ng-show="proceso.catEstatusNomina.idCatGeneral !== 13
+																			&& proceso.catEstatusNomina.idCatGeneral !== 23"
+										ng-click="modalCancelarNomina(proceso)" tooltip="Cancelar N&oacute;mina"
+										class="btn btn-danger" ><span class="fa fa-ban"></span></button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					</panel>
+				</div>
+				 -->
+				<!-- SECCION PARA NOMINAS COMPLEMENTARIAS -->
+					<div ng-show="gridNominasProceso.length >=1">
+					<panel panel-class="panel-sky" heading={{titulo}}>
+					<panel-controls> <panel-control-collapse></panel-control-collapse>
+					</panel-controls>
+
+					<div class="row">
+						<div class="col-md-4">
+							<span><strong>CLIENTE:</strong></span>	{{clienteSeleccionado.nombreComercial!= null?clienteSeleccionado.nombreComercial+'/':''}}  {{clienteSeleccionado.nombreCompleto}}{{clienteSeleccionado.razonSocial}}
+						</div>
+
+						<div class="col-md4">
+							<span><strong>RFC CLIENTE:</strong></span> {{clienteSeleccionado.rfc}}
+						</div>
+					</div>
+
+					<br>
+
+					<div class="table-responsive" ng-show="gridNominasProceso.length == 0">
+						<h4 align="center" ng-show="isVisibleComplementaria === false">
+							<br/><strong style="color:red"> NO CUENTA CON N&Oacute;MINAS EN PROCESO</strong>
+						</h4>
+							<h4 align="center" ng-show="isVisibleComplementaria === true">
+							<br/><strong style="color:red"> NO CUENTA CON N&Oacute;MINAS A COMPLEMENTAR</strong>
+						</h4>
+					</div>
+					<div class="table-responsive" ng-show="gridNominasProceso.length > 0">
+						<table class="table table-striped">
+							<thead >
+								<tr ng-show="isVisibleComplementaria === false">
+									<th  >Clave n&oacute;mina</th>
+									<th>Tipo de n&oacute;mina</th>
+									<th>Periodicidad</th>
+									<th >Total Colaboradores</th>
+									<th>Monto PPP</th>
+									<th>Periodo actual</th>
+									<th>Estatus</th>
+									<th>Acciones</th>
+								</tr>
+									<tr ng-show="isVisibleComplementaria === true">
+									<th  >Clave n&oacute;mina</th>
+									<th>Tipo de n&oacute;mina</th>
+									<th>Periodicidad</th>
+									<th>Monto Disponible a Complementar</th>
+									<th>Periodo actual</th>
+									<th>Estatus</th>
+									<th>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="proceso in gridNominasProceso" ng-show="proceso.catEstatusNomina.idCatGeneral !== 23" >
+									<td>{{proceso.claveNomina}}</td>
+									<td>{{proceso.nominaClienteDto.catProductoNomina.descripcion}}</td>
+									<td>{{proceso.periodicidadNomina.descripcion}}</td>
+									<td align="right" ng-show="proceso.catEstatusNomina.idCatGeneral !== 23">
+										<button data-toggle="modal" ng-click="modalColaboradores(proceso)" tooltip="Ver colaboradores" class="btn  btn-green" >
+											<span class="fa fa-users"></span><strong>{{proceso.nominaClienteDto.totalColaboradores}}</strong>
+										</button>
+									</td>
+									<td align="right" ng-show="proceso.catEstatusNomina.idCatGeneral !== 23"><strong>{{proceso.nominaClienteDto.montoTotalColaboradores | currency}}</strong></td>
+
+									<td align="center">{{proceso.fechaInicioNominaFormato}} - {{proceso.fechaFinNominaFormato}}</td>
+
+									<td align="center">
+										<button data-toggle="modal" ng-click="getHistoricoByIdPppNomina(proceso)" tooltip="Ver bit&aacute;cora n&oacute;mina"
+											class="btn btn-midnightblue">
+											<span class="fa fa-binoculars"></span> {{proceso.catEstatusNomina.descripcion}}
+										</button>
+									</td>
+
+									<td align="center">
+										<button data-toggle="modal"
+										ng-click="getDatosNominaByIdNomina(proceso)" ng-show="proceso.catEstatusNomina.idCatGeneral !== 23" tooltip="Editar N&oacute;mina"
+										class="btn  btn-midnightblue" ><span class="fa fa-edit"></span></button>
+										<button data-toggle="modal" ng-show="proceso.catEstatusNomina.idCatGeneral == 11"
+										ng-click="getDatosNominaByIdNomina(proceso)" tooltip="Timbrar colaboradores"
+										class="btn  btn-green" ><span class="fa fa-envelope-o"></span>  Timbrar colaboradores</button>
+										<button data-toggle="modal" ng-show="proceso.catEstatusNomina.idCatGeneral !== 13
+																			&& proceso.catEstatusNomina.idCatGeneral !== 23"
+										ng-click="modalCancelarNomina(proceso)" tooltip="Cancelar N&oacute;mina"
+										class="btn btn-danger" ><span class="fa fa-ban"></span></button>
+
+									</td>
+								</tr>
+								<tr ng-repeat="proceso in gridNominasProceso" ng-show=" proceso.catEstatusNomina.idCatGeneral === 23 && proceso.nominaClienteDto.montoNoDispersado >1 ">
+									<td>{{proceso.claveNomina}}</td>
+									<td>{{proceso.nominaClienteDto.catProductoNomina.descripcion}}</td>
+									<td>{{proceso.periodicidadNomina.descripcion}}</td>
+
+								  <td align="right" ng-show="proceso.catEstatusNomina.idCatGeneral === 23 "><strong>{{proceso.nominaClienteDto.montoNoDispersado | currency}}</strong></td>
+
+									<td align="center">{{proceso.fechaInicioNominaFormato}} - {{proceso.fechaFinNominaFormato}}</td>
+
+									<td align="center">
+										<button data-toggle="modal" ng-click="getHistoricoByIdPppNomina(proceso)" tooltip="Ver bit&aacute;cora n&oacute;mina"
+											class="btn btn-midnightblue">
+											<span class="fa fa-binoculars"></span> {{proceso.catEstatusNomina.descripcion}}
+										</button>
+									</td>
+
+									<td align="center">
+										<button data-toggle="modal" ng-show="proceso.catEstatusNomina.idCatGeneral == 23"
+										ng-click="getDatosInicioNominaComplementaria(proceso)" tooltip="Complementar N&oacute;mina"
+										class="btn  btn-midnightblue" ><span class="fa fa-edit"></span></button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					</panel>
+				</div>
+
+
+				<panel panel-class="panel-sky"   ng-show="isVisibleSeccionesNomina  && gridNominasProceso.length >=1 "
+					heading="Detalle N&oacute;mina - {{nominaDto.claveNomina}} " > <panel-controls>
+				 </panel-controls>
+
+
+				<div ng-show="isVisibleSeccionesNomina && gridNominasProceso.length >=1">
+					<panel panel-class="panel-sky"
+						heading="Datos Generales N&oacute;mina - {{nominaDto.claveNomina}} ">
+					<panel-controls><span class="btn btn-info-alt">
+										<strong>Paso 1 <span class="glyphicon glyphicon-ok" style="color:green"></span>
+										</strong>
+									</span> <panel-control-collapse></panel-control-collapse></panel-controls>
+
+					<form id="generalNominaForm" name="generalNominaForm" novalidate>
+
+						<div class="row">
+							<div class="col-xs-3">
+								<label class="control-label">Clave de n&oacute;mina</label> <input
+									type="text" name="claveNomina" class="form-control"
+									placeholder="Clave de n&oacute;mina" ng-model="nominaDto.claveNomina"
+									ng-required="true" disabled/> <span class="messages"
+									ng-show="buscarClienteForm.$submitted || buscarClienteForm.claveNomina.$touched">
+									<span ng-show="buscarClienteForm.claveNomina.$error.required">El
+										campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-xs-3">
+								<label class="control-label">Fecha inicio de
+									n&oacute;mina</label> <input type="date" name="fechaInicioNomina"
+									class="form-control"
+									placeholder="Fecha inicio de n&oacute;mina"
+									ng-model="nominaDto.fechaInicioNomina" ng-required="true"
+									ng-disabled="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 3
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 4
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 5
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 14
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 15
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 21
+												|| (factura.idCmsXmlFactura >= 1 && factura.idCmsPdfFactura >=1) ? true : false"/>
+								<span
+									class="messages"
+									ng-show="buscarClienteForm.$submitted || buscarClienteForm.fechaInicioNomina.$touched">
+									<span
+									ng-show="buscarClienteForm.fechaInicioNomina.$error.required">El
+										campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-xs-3">
+								<label class="control-label">Fecha fin de n&oacute;mina</label>
+								<input type="date" name="fechaFinNomina" class="form-control"
+									placeholder="Fecha inicio de n&oacute;mina"
+									ng-model="nominaDto.fechaFinNomina" ng-required="true"
+									ng-disabled="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 3
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 4
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 5
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 14
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 15
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 25
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 21
+												|| (factura.idCmsXmlFactura >= 1 && factura.idCmsPdfFactura >=1) ? true : false"/>
+								<span
+									class="messages"
+									ng-show="buscarClienteForm.$submitted || buscarClienteForm.fechaFinNomina.$touched">
+									<span
+									ng-show="buscarClienteForm.fechaFinNomina.$error.required">El
+										campo es obligatorio.</span>
+								</span>
+							</div>
+						</div>
+
+						<div class="row" ng-show="(nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 3
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 4
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 5
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 14
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 15
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 21
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 25
+												|| (factura.idCmsXmlFactura >= 1 && factura.idCmsPdfFactura >=1)  ? false : true)
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 23">
+							<br />
+							<div class="col-xs-12" align="right "
+							ng-show= "isComplementariaNomina=== false ">
+								<button type="submit" class="btn-green btn" name="editarNomina"
+									ng-click="crearNomina();">
+									<span class="fa fa-save"></span> Guardar
+								</button>
+							</div>
+							<div class="col-xs-12" align="right "
+							ng-show= "isComplementariaNomina=== true ">
+								<button type="submit" class="btn-green btn" name="editarNomina"
+									ng-click="guardaDatosNominaComplementaria(nominaDto);">
+									<span class="fa fa-save"></span> Guardar
+								</button>
+							</div>
+						</div>
+
+					</form>
+
+
+					</panel>
+				</div>
+				<div ng-show="isVisibleSeccionesNomina  && gridNominasProceso.length >=1">
+
+				<panel panel-class="panel-sky"
+					heading="Colaboradores N&oacute;mina - {{nominaDto.claveNomina}} ">
+					<panel-controls> <span class="btn btn-info-alt" ><strong>Paso 2
+						<span class="glyphicon glyphicon-ok" style="color:green" ng-show="dataExcel.contentRows[0] != undefined"></span>
+						<span class="glyphicon glyphicon-remove" style="color:red" ng-show="dataExcel.contentRows[0] === undefined"></span>
+					</strong></span>  <panel-control-collapse></panel-control-collapse>
+					</panel-controls>
+
+				<form id="colaboradoresForm" name="colaboradoresForm" novalidate>
+
+					<div class="row" ng-show="(nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 3
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 4
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 5
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 14
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 15
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 21
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 25
+												|| (factura.idCmsXmlFactura >= 1 && factura.idCmsPdfFactura >=1)  ? false : true)
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 23">
+						<div class="col-md-6">
+							<button class="btn btn-orange" style="padding-left: 10px"
+								ng-click="mostrarDialogo();">Subir archivo excel de colaboradores</button>
+						</div>
+						<div class="col-md-6" align="right">
+							<a class="btn btn-orange" style="padding-left: 10px"
+								ng-click="mostrarDialogoAgregarColaborador();">Agregar colaborador</a>
+						</div>
+					</div>
+					<br/>
+						<div class="alert alert-danger" ng-show="notaGuardarColaboradores">
+  							<!-- <button type="button" class="close" data-dismiss="alert">&times;</button> -->
+  								<strong>&iexcl;Aviso!..</strong> Es muy importante que presione el bot&oacute;n 'Guardar colaboradores', para conservar los cambios realizados.
+							</div>
+							<br/>
+					<div class="table-responsive tablaconscroll">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Indice colaborador</th>
+									<th>Nombre</th>
+									<th>Apellido paterno</th>
+									<th>Apellido materno</th>
+									<th>RFC</th>
+									<th>Monto PPP</th>
+									<th>Clabe interbancaria &oacute; n&uacute;mero de tarjeta</th>
+									<th>CURP</th>
+									<th>N&uacute;mero seguro social</th>
+									<th>Instituci&oacute;n contraparte</th>
+									<th>Correo electr&oacute;nico</th>
+									<th>Estatus</th>
+									<th>Bit&aacute;cora de estatus</th>
+									<th>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="data in dataExcel.contentRows">
+									<td>{{$index}}</td>
+									<td>{{data.nombre}}</td>
+									<td>{{data.apellidoPaterno}}</td>
+									<td>{{data.apellidoMaterno}}</td>
+									<td>{{data.rfc}}</td>
+									<td align="right">{{data.montoPPP | currency}}</td>
+									<td align="right" ng-if="data.clabe != null || data.clabe != undefined">{{data.clabe}}</td>
+									<td align="right" ng-if="data.numeroCuenta != null || data.numeroCuenta != undefined">{{data.numeroCuenta}}</td>
+									<td align="right">{{data.curp}}</td>
+									<td align="right">{{data.nss}}</td>
+									<td align="right">{{data.institucionContraparte}}</td>
+									<td align="right">{{data.correoElectronico}}</td>
+									<td align="center" ng-if="data.estatus === 1 && data.idEstatus != 8 && data.idEstatus != 9 && data.idEstatus != 3
+									&& data.idEstatus != 12 && data.idEstatus != 13 && data.idEstatus != 14">
+										<span class="fa fa-check" style="color:green;" tooltip="{{data.descError}}"></span>
+									</td>
+									<td align="center" ng-if="data.estatus === 0 && data.idEstatus != 8 && data.idEstatus != 9 && data.idEstatus != 3
+									&& data.idEstatus != 12 && data.idEstatus != 13 && data.idEstatus != 14">
+										<span class="fa fa-exclamation-triangle" style="color:#EB5352;" tooltip="{{data.descError}}"></span>
+									</td>
+									<td align="center" ng-if="data.idEstatus === 8"><span
+											class="fa fa-hourglass" style="color: green;"
+											tooltip="En espera de respuesta STP"></span></td>
+
+										<td align="center" ng-if="data.idEstatus === 9"><span
+											class="fa fa-exclamation-triangle" style="color: #EB5352;"
+											tooltip="{{data.descripcionErrorStp}}"></span></td>
+
+										<td align="center" ng-if="data.idEstatus === 3"><span
+											class="fa fa-check" style="color: green;"
+											tooltip="TIMBRADO EXITOSO"></span></td>
+
+										<td align="center" ng-if="data.idEstatus === 12"><span
+											class="fa fa-money" style="color: green;"
+											tooltip="LIQUIDADA STP"></span></td>
+
+										<td align="center" ng-if="data.idEstatus === 13"><span
+											class="fa fa-exclamation-triangle" style="color: #EB5352;"
+											tooltip="CANCELADA STP"></span></td>
+										<td align="center" ng-if="data.idEstatus === 14"><span
+											class="fa fa-exclamation-triangle" style="color: #EB5352;"
+											tooltip="DEVUELTA STP"></span></td>
+									<td align="center">
+										<button data-toggle="modal" ng-show="data.idEstatus != 9"
+										ng-click="mostrarDialogoColaboradorEstatus(data);"
+											class="btn btn-midnightblue">
+											<span class="fa fa-binoculars"></span> {{data.descEstatus}}
+										</button>
+										<button data-toggle="modal" ng-show="data.idEstatus === 9"
+												ng-click="mostrarDialogoColaboradorEstatus(data);"
+												class="btn btn-danger">
+												<span class="fa fa-binoculars"></span> {{data.descEstatus}}
+											</button>
+									</td>
+
+									 <td align="center" ng-show="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 13
+									                             || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 23
+									                             || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 25">
+									 <button class="btn btn-danger"
+									 			tooltip="Eliminar colaborador"
+									 			ng-click="eliminarColaborador(data);"
+									 			ng-show="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 3
+														|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 4
+														|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 5
+														|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+														|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 14
+														|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 15
+														|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+														|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7
+														|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 25
+														|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+														|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+														|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 21
+														|| (factura.idCmsXmlFactura >= 1 && factura.idCmsPdfFactura >=1)  ? false : true">
+
+										<span class="fa fa-times"></span>
+									</button>
+									<button class="btn btn-green" tooltip="Editar colaborador" ng-click="editarColaborador(data, $index);"
+									ng-show="((data.idPppColaborador != null || data.idPppColaborador != undefined) && (nominaDto.catEstatusNomina.idCatGeneral !== 7 && nominaDto.catEstatusNomina.idCatGeneral !== 25 ))">
+									<span class="fa fa-pencil"></span></button>
+									<button class="btn btn-warning" tooltip="Bloquear colaborador" ng-click="bloquearColaborador(data);"
+									ng-show="(data.idPppColaborador != null || data.idPppColaborador != undefined) && data.idEstatus != 5 ">
+									<span class="fa fa-ban"></span></button>
+									<button class="btn btn-info" tooltip="Desbloquear colaborador" ng-click="desbloquearColaborador(data);"
+									ng-show="(data.idPppColaborador != null || data.idPppColaborador != undefined) && data.idEstatus === 5 ">
+									<span class="fa fa-circle-thin"></span></button></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="table-responsive">
+							<table class="table" ng-if="dataExcel.contentRows[0] != undefined">
+							<thead></thead>
+								<tr >
+									<th>Total Colaboradores : {{dataExcel.contentRows[0].totalColaboradores}}</th>
+									<th>Total Monto PPP: {{dataExcel.contentRows[0].totalMontoPPP  | currency}}</th>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="row" ng-show="(nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 3
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 4
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 5
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 14
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 15
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 25
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 21
+												|| (factura.idCmsXmlFactura >= 1 && factura.idCmsPdfFactura >=1)  ? false : true)
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 23">
+						<br />
+						<div class="col-xs-12" align="right" ng-show="mostrarBotonGuardarColaboradores">
+										<!-- <button data-toggle="modal"
+												ng-click="generaRegistroSTP(dataExcel.contentRows);"
+												class="btn btn-midnightblue">
+												<span class="fa fa-binoculars"></span> Genera Registro STP
+											</button> -->
+							<button class="btn-green btn" ng-click="guardarColaboradores(dataExcel.contentRows)">
+								<span class="fa fa-save"></span> Guardar colaboradores
+							</button>
+
+						</div>
+					</div>
+				</form>
+				<div class="modal fade" id="cargarDocumento" role="dialog" data-backdrop="static" data-keyboard="false">
+					<div class="modal-dialog" style="width: 50%;">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">Carga de colaboradores</h4>
+							</div>
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-md-12">
+										<form>
+											<div class="col-md-12">
+												<div class="col-md-6">
+													<input id="inputFile" type="file"
+														accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+														onchange="angular.element(this).scope().fileChanged(this)"
+														class="btn btn-orange filestyle"
+														onClick="this.form.reset()">
+												</div>
+
+												<!-- <div class="row" style="padding-top: 25px;"> -->
+												<div class="col-md-6">
+													<a href="./LayoutNominaPPP.xlsx"
+														class="btn btn-midnightblue pull-right"
+														download="LayoutNominaPPP.xlsx" tooltip="Descargar layout">
+														<span class="glyphicon glyphicon-download-alt" />
+														Descargar Layout
+													</a>
+												</div>
+											</div>
+											<!-- </div> -->
+										</form>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button id="idCerrarModalColab" type="button"
+									class="btn btn-brown" ng-click="cerrar()">Cancelar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				</panel>
+				</div>
+
+				<div ng-show="isVisibleSeccionesNomina  && gridNominasProceso.length >=1">
+					<panel panel-class="panel-sky" heading="Datos adicionales (N&oacute;mina - {{nominaDto.claveNomina}}) ">
+
+					<panel-controls> <span class="btn btn-info-alt" ><strong>Paso 3 </strong>
+						<span class="glyphicon glyphicon-ok" style="color:green" ng-show="nominaComplementoDto.idNominaComplemento >= 1" ></span>
+						<span class="glyphicon glyphicon-remove" style="color:red"  ng-show="nominaComplementoDto.idNominaComplemento === undefined
+																							|| nominaComplementoDto.idNominaComplemento === ''
+																							||  nominaComplementoDto.idNominaComplemento === null "></span>
+
+						</span><panel-control-collapse></panel-control-collapse>
+					</panel-controls>
+
+					<form id="complementoNominaForm" name="complementoNominaForm"
+						novalidate>
+						<div class="row">
+							<div class="col-xs-3">
+								<label class="control-label">Fecha dispersi&oacute;n: </label>
+								<input placeholder="RFC" name="fechaDispersion_"
+									ng-model="nominaComplementoDto.fechaDispersion"
+									class="form-control" type="date" required="required"
+									ng-disabled="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 3
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 4
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 5
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 14
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 15
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 21
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 25
+												|| (factura.idCmsXmlFactura >= 1 && factura.idCmsPdfFactura >=1)  ? true : false">
+								<span
+									class="messages"
+									ng-show="complementoNominaForm.$submitted || complementoNominaForm.fechaDispersion_.$touched">
+									<span
+									ng-show="complementoNominaForm.fechaDispersion_.$error.required">El
+										campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-xs-3">
+								<label class="control-label">Fecha facturaci&oacute;n: </label>
+								<input placeholder="RFC" name="fechaFacturacion_"
+									ng-model="nominaComplementoDto.fechaFacturacion"
+									class="form-control" type="date" required="required"
+									ng-disabled="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 3
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 4
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 5
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 14
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 15
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 21
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 23
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 24
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 25
+												|| (factura.idCmsXmlFactura >= 1 && factura.idCmsPdfFactura >=1)  ? true : false">
+								<span
+									class="messages"
+									ng-show="complementoNominaForm.$submitted || complementoNominaForm.fechaFacturacion_.$touched">
+									<span
+									ng-show="complementoNominaForm.fechaFacturacion_.$error.required">El
+										campo es obligatorio.</span>
+								</span>
+							</div>
+
+
+							<!--
+							<div class="col-xs-3">
+								<label class="control-label">Fecha timbrado: </label>
+								<input
+									placeholder="RFC" name="fechaTimbrado_"
+									ng-model="nominaComplementoDto.fechaTimbrado"
+									class="form-control" type="date" required="required"
+									ng-disabled="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 3
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 4
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 5
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 14
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 15
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 21
+												|| (factura.idCmsXmlFactura >= 1 && factura.idCmsPdfFactura >=1)  ? true : false">
+								<span
+									class="messages"
+									ng-show="complementoNominaForm$submitted || complementoNominaForm.fechaTimbrado_.$touched">
+									<span
+									ng-show="complementoNominaForm.fechaTimbrado_.$error.required">El
+										campo es obligatorio.</span>
+								</span>
+							</div>
+							-->
+						</div>
+						<br />
+
+
+
+
+  	  				<div class="row" ng-show= "nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 24 || (nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 23 && isComplementariaNomina===true)">
+                          <div class="col-xs-3">
+								<label class="control-label">Monto N&oacute;mina Complementar&iacute;a</label>
+								<span class="form-control" type="text" disabled>{{totalNominaPPPColaboradores | currency}}</span>
+							</div>
+					       <div class="col-xs-3">
+								<label class="control-label">Saldo disponible de N&oacute;mina</label>
+								<span class="form-control" type="text" disabled>{{totalAcomplementar  | currency}}</span>
+							</div>
+									<div class="col-xs-3">
+								<label class="control-label">Monto total PPP </label>
+								<span class="form-control" type="text" disabled>{{subtotalPPP | currency}}</span>
+							</div>
+					</div>
+					  <div class="row" ng-show= "(nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 23 && nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 24 ) &&  isComplementariaNomina===false">
+							<div class="col-xs-3">
+								<label class="control-label">Monto total PPP </label>
+								<span class="form-control" type="text" disabled>{{totalNominaPPPColaboradores | currency}}</span>
+							</div>
+
+							<div class="col-xs-3">
+								<label class="control-label">Total de colaboradores PPP </label>
+								<span class="form-control" type="text" disabled>{{totalPPPColaboradores}}</span>
+							</div>
+						</div>
+
+						<br/>
+						<div class="row" ng-show= "nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 23 && isComplementariaNomina===false">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Requiere
+									financiamiento</label>
+								<div class="col-sm-6">
+									<input type="checkbox"
+										ng-change="verificarCheckboxFinanciamiento()"
+										ng-model="nominaComplementoDto.requiereFianciamiento"
+										class="js-switch"
+										ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}"
+										ng-disabled="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 3
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 4
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 5
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 14
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 15
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 21
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 24
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 25
+												|| (factura.idCmsXmlFactura >= 1 && factura.idCmsPdfFactura >=1)  ? true : false"/>
+								</div>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-xs-3"
+								ng-show="nominaComplementoDto.requiereFianciamiento">
+								<label class="control-label">Monto financiamiento*: </label>
+								<input
+									placeholder="Monto a financiar" name="montoFinanciamiento"
+									ng-model="nominaComplementoDto.montoFinanciamiento"
+									class="form-control" type="text" ng-required="nominaComplementoDto.requiereFianciamiento"
+									maxlength="11"
+									type="number"
+									ng-disabled="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 3
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 4
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 5
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 14
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 15
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 21
+												|| (factura.idCmsXmlFactura >= 1 && factura.idCmsPdfFactura >=1)  ? true : false">
+								<span class="messages"ng-show="complementoNominaForm.$submitted || complementoNominaForm.montoFinanciamiento.$touched">
+										<span ng-show="complementoNominaForm.montoFinanciamiento.$error.required">
+											El campo es obligatorio.
+										</span>
+										<span ng-show="complementoNominaForm.montoFinanciamiento.$touched && nominaComplementoDto.montoFinanciamiento > totalNominaPPPColaboradores">
+											El monto es mayor al monto total ppp
+										</span>
+								</span>
+							</div>
+							<div class=" col-xs-9 form-group" ng-show="nominaComplementoDto.requiereFianciamiento">
+								<label class="col-sm-12 control-label">Motivo financiamiento*:</label>
+								<div class="col-sm-12">
+									<textarea class="form-control"
+										ng-model="nominaComplementoDto.observaciones" minlength="5"
+										onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"
+										maxlength="250" ng-required="nominaComplementoDto.requiereFianciamiento"
+										name="motivoFinanciamiento"
+										ng-disabled="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 3
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 4
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 5
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 14
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 15
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+												|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 21
+												|| (factura.idCmsXmlFactura >= 1 && factura.idCmsPdfFactura >=1)  ? true : false"></textarea>
+									<span class="messages"ng-show="complementoNominaForm.$submitted || complementoNominaForm.motivoFinanciamiento.$touched">
+										<span ng-show="complementoNominaForm.motivoFinanciamiento.$error.required">
+										El campo es obligatorio.</span>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row" ng-show="isVisibleSeccionDescargaDocumentoSustento">
+							<div class="col-md-9" ng-show="nominaComplementoDto.requiereFianciamiento">
+                 				<label class="control-label">Documento sustento (financiamiento): </label> <BR>
+		                 		<button data-toggle="modal" tooltip="Descargar documento" class="btn-info btn" ng-click="descargarDocumentoByIdCMS(nominaComplementoDto.idCMS)" >
+		                 			<span class="fa fa-file-o"></span> {{nombreArchivo}}
+		                 		</button>
+		                 		<br><br>
+		                 		<button data-toggle="modal"  class="btn btn-orange" ng-click="actualizarDocComplemento()" ng-show="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 3
+																															|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 4
+																															|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 5
+																															|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+																															|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 14
+																															|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 15
+																															|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+																															|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7
+																															|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+																															|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+																															|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 21
+																															|| (factura.idCmsXmlFactura >= 1 && factura.idCmsPdfFactura >=1)  ? false : true">
+		                 			Actualizar archivo
+		                 		</button>
+	                 		</div>
+						</div>
+						<div class="row" ng-show="isVisibleSeccionCargaDocumentoSustento">
+							<div class="col-md-9" ng-show="nominaComplementoDto.requiereFianciamiento">
+                 				<label class="control-label">Documento sustento (financiamiento)*: </label>
+		                 		<input class="btn btn-info-alt form-control"  name="filePorSubir"
+									id="file_documento_complemento" type="file"
+									onchange="angular.element(this).scope().fileChangedDoc(this)"
+									class="filestyle"
+									data-buttonText="nominaComplementoDto.nombreArchivoCarga"
+									ng-required="nominaComplementoDto.requiereFianciamiento"/>
+									<span class="messages" ng-show="complementoNominaForm.filePorSubir.$touched">
+										El campo es requerido
+									</span>
+								<br>
+								<button data-toggle="modal" class="btn btn-danger" ng-click="cancelarDocComplemento()" ng-show="nominaComplementoDto.idCMS > 0">
+	                 				Cancelar actulizaci&oacute;n de archivo
+	                 			</button>
+	                 		</div>
+						</div>
+						<div class="row" ng-show="!nominaComplementoDto.requiereFianciamiento">
+							<br />
+							<div class="col-xs-12" align="right ">
+								<button type="submit" class="btn-green btn"
+									name="guardarNominaComplemento"
+									ng-click="guardarNominaComplemento(complementoNominaForm);"
+									ng-show="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 3
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 4
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 5
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 14
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 15
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 21
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 25
+											|| (factura.idCmsXmlFactura >= 1 && factura.idCmsPdfFactura >=1)  ? false : true">
+									<span class="fa fa-save"></span> Guardar
+								</button>
+							</div>
+						</div>
+						<div class="row" ng-show="nominaComplementoDto.requiereFianciamiento">
+							<br />
+							<div class="col-xs-12" align="right ">
+								<button type="submit" class="btn-green btn"
+									name="guardarNominaComplemento"
+									ng-click="guardarNominaComplemento(complementoNominaForm);"
+									ng-show="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 3
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 4
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 5
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 14
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 15
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 21
+											|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 25
+											|| (factura.idCmsXmlFactura >= 1 && factura.idCmsPdfFactura >=1)  ? false : true">
+									<span class="fa fa-save"></span> Solicitar Autorizaci&oacute;n Financiamiento
+								</button>
+							</div>
+						</div>
+
+
+					</form>
+					</panel>
+				</div>
+
+<!----------------------------------------------------------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------------------------------------------------------->
+<!-- PASO 4: SE VISUALIZAN LOS ARCHIVOS  A SUBIR PORQUE EN NOMINA CRM (CLIENTE) NO ESTA SELECCIONADO GENERAR FACTURA FACTURA -->
+<!----------------------------------------------------------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------------------------------------------------------->
+			<div ng-show="habilitaPaso4Documentos && nominaDto.idNominaPPPPadre ===0">
+				<panel panel-class="panel-sky"
+					heading="Facturaci&oacute;n N&oacute;mina - {{nominaDto.claveNomina}}">
+				<panel-controls>
+					<span class="btn btn-info-alt" ><strong>Paso 4 </strong>
+
+							<span class="glyphicon glyphicon-ok" style="color:green" ng-show="nominaComplementoDto.idNominaComplemento >= 1 && nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+																																			|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+																																			|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+																																			|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+																																			|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 20"></span>
+
+							<span class="glyphicon glyphicon-remove" style="color:red" ng-show="nominaComplementoDto.idNominaComplemento >= 1 && nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 17
+																																			  && nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 11
+																																			  && nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 18
+																																			  && nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 19
+																																			  && nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 20"></span>
+						</span>
+					<panel-control-collapse></panel-control-collapse>
+				</panel-controls>
+
+					<form id="complementoNominaFacturaForm" name="complementoNominaFacturaForm" novalidate>
+						<div class="row">
+							<div class="col-xs-3 ">
+								<label class="control-label ">Sub total*: </label>
+								<input placeholder="Sub total" name="subtotal" class="form-control"
+										ng-model="totalesFlujoAlterno.totales.subtotal" type="number" required="required"
+										ng-disabled="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+													  || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+													  || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+													  || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+													  || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 20  ? true : false">
+
+									<span class="messages"ng-show="complementoNominaFacturaForm.$submitted || complementoNominaFacturaForm.subtotal.$touched">
+										<span ng-show="complementoNominaFacturaForm.subtotal.$error.required">
+										El campo es obligatorio.</span>
+									</span>
+							</div>
+							<div class="col-xs-3 ">
+								<label class="control-label ">IVA trasladado 16%*: </label>
+								<input placeholder="IVA trasladado 16%" name="sumaImpuestos" class="form-control"  type="number"
+									   ng-model="totalesFlujoAlterno.totales.sumaImpuestos" required="required"
+									   ng-disabled="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+													  || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+													  || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+													  || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+													  || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 20  ? true : false">
+
+									<span class="messages"ng-show="complementoNominaFacturaForm.$submitted || complementoNominaFacturaForm.sumaImpuestos.$touched">
+										<span ng-show="complementoNominaFacturaForm.sumaImpuestos.$error.required">
+										El campo es obligatorio.</span>
+									</span>
+							</div>
+
+							<div class="col-xs-3 ">
+								<label class="control-label ">Total*: </label>
+								<input placeholder="Total" name="total" class="form-control" type="number"
+									   ng-model="totalesFlujoAlterno.totales.total"  required="required"
+									   ng-disabled="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+													  || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+													  || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+													  || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+													  || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 20  ? true : false">
+
+									<span class="messages"ng-show="complementoNominaFacturaForm.$submitted || complementoNominaFacturaForm.total.$touched">
+										<span ng-show="complementoNominaFacturaForm.total.$error.required">
+										El campo es obligatorio.</span>
+									</span>
+							</div>
+							<br>
+							<!--
+							<div class="col-xs-3 " id="botonNominaFacturaFlujoAlterno" ng-show=" nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 3
+																								&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 4
+																								&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 11
+																								&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 15
+																								&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 14
+																								&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 17
+																								&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 7
+																								&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 18
+																								&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 19">
+							-->
+							<div class="col-xs-3 " id="botonNominaFacturaFlujoAlterno" ng-show=" factura.totales !=null ? false : true">
+								<button class="btn-green btn" ng-click="guardarNominaFacturaFlujoAlterno(complementoNominaFacturaForm)">
+									<span class="fa fa-save"></span> Guardar
+								</button>
+							</div>
+						</div>
+						<br>
+						<div class="row" ng-show="factura.idPPPNominaFactura >= 1">
+							<div class="col-xs-3">
+								<label class="control-label ">Monto del comprobante de pago*: </label>
+								<input placeholder="Monto comprobante de pago" name="montoComprobantePagoPaso4"
+								ng-model="totalesFlujoAlterno.montoComprobantePagoPaso4"
+								minlength="1" maxlength="10"  class="form-control"
+								type="number" tooltip= "Es el monto total que contiene el comprobante de pago a registrar. Este monto no puede ser menor al monto total de la factura."
+								ng-disabled="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+													  || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11
+													  || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+													  || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+													  || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 20  ? true : false">
+							</div>
+							<div id="botonesConceptpFact" class="col-xs-6" ng-show="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 17
+																						  && nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 11
+																						  && nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 18
+																						  && nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 19
+																						  && nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 20">
+								<button type="submit" ng-click="guardarNominaFacturaFlujoAlterno(complementoNominaFacturaForm)"
+									class="btn-green btn" name="guardarRegistro">Guardar</button>
+							</div>
+						</div>
+
+
+					</form>
+					<br>
+
+					<div class="row" ng-show="factura.idPPPNominaFactura >= 1">
+	<!--
+						<div class="row" ng-show="factura.idPPPNominaFactura >= 1">
+							<div class="col-xs-3">
+								<label class="control-label ">Monto del comprobante de pago*: </label>
+								<input placeholder="Monto comprobante de pago" name="montoComprobantePagoPaso4"
+								ng-model="montoComprobantePagoPaso4"
+								minlength="1" maxlength="10"  class="form-control" type="number" tooltip= "Es el monto total que contiene el comprobante de pago a registrar">
+							</div>
+							<div id="botonesConceptpFact" class="col-xs-6">
+								<button type="submit" ng-click = "guardarMontoComprobantePagoPaso4(montoComprobantePagoPaso4)"
+									class="btn-green btn" name="guardarRegistro"
+									ng-click="">Guardar monto</button>
+							</div>
+						</div>
+-->
+						<h5><strong>DOCUMENTOS</strong></h5>
+						<div class="table-responsive ">
+							<table class="table ">
+								<thead>
+									<tr>
+										<th>Documento</th>
+										<th>Estatus</th>
+										<th>Nombre del archivo</th>
+										<th>Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="documento in documentosPppNomina">
+										<td>{{documento.definicion.nombreDocumento}}</td>
+										<td>{{documento.idCMS >= 1?'Documento cargado': 'Documento
+											no cargado'}} <span class="glyphicon glyphicon-ok"
+											style="color: green" ng-show="documento.idCMS >= 1"></span> <span
+											class="glyphicon glyphicon-remove" style="color: brown"
+											ng-show="documento.idCMS == 0"></span>
+										</td>
+										<td>{{documento.nombreArchivo}}</td>
+										<td align="center" >
+
+											<button data-toggle="modal"  ng-click="mostrarModalDocumentoPppNominas(documento)" ng-show="documento.idCMS == 0  && nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 3
+																		&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 4
+																		&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 11
+																		&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 17
+																		&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 7
+																		&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 18
+																		&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 19" tooltip="Guardar documento" class="btn btn-sm btn-indigo">
+												<span class="glyphicon glyphicon-floppy-open"></span>
+											</button>
+									    	<button data-toggle="modal"  ng-click="descargarDocumentoByIdCMS(documento.idCMS)" ng-show="documento.idCMS >= 1" tooltip="Descargar documento" class="btn btn-sm btn-alizarin" >
+									    		<span class="glyphicon glyphicon-cloud-download"></span>
+									    	</button>
+									    	<button data-toggle="modal"  ng-click="eliminarDocumentoNominaPpp(documento)" ng-show="documento.idCMS >= 1 && nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 3
+																		&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 4
+																		&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 11
+																		&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 17
+																		&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 7
+																		&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 18
+																		&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 19" tooltip="Eliminar documento" class="btn btn-sm btn-midnightblue">
+									    		<span class="glyphicon glyphicon-trash"></span>
+									    	</button>
+									    	<button data-toggle="modal"  ng-click="verDocumento(documento.idCMS)" ng-show="documento.idCMS >= 1" tooltip="Ver documento" class="visualizadorDocumento btn btn-sm btn-alizarin" >
+												<span class="glyphicon glyphicon-eye-open"></span>
+											</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<br />
+					<div class="row" ng-show="factura.montoComprobantePago != null
+												&& factura.totalDocumentosRegistrados == 3
+												&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 3
+												&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 4
+												&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 11
+												&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 17
+												&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 7
+												&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 18
+												&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 19
+												&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 20">
+
+
+						<div class="col-xs-12" align="right">
+							<button class="btn-green btn" ng-click="enviarNominaFacturaCargada()">
+								<span class="glyphicon glyphicon-send"></span>  Enviar a tesoreria (dispersi&oacute;n colaboradores)
+							</button>
+
+						</div>
+					</div>
+				</panel>
+			</div>
+
+
+<!----------------------------------------------------------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------------------------------------------------------->
+<!-- PASO 4: ESTE DIV SE VISUALIZA LOS CAMPOS A LLENAR PARA LA FACTURA -->
+<!----------------------------------------------------------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------------------------------------------------------->
+			<div ng-show="habilitaPaso4Factura && isComplementariaNomina===false && nominaDto.idNominaPPPPadre ===0 ">
+
+				<panel panel-class="panel-sky"
+					heading="Facturaci&oacute;n N&oacute;mina - {{nominaDto.claveNomina}}">
+				<panel-controls>
+					<span class="btn btn-info-alt" ><strong>Paso 4 </strong>
+							<span class="glyphicon glyphicon-ok" style="color:green"   ng-show="factura.conceptos != null ? true : false" ></span>
+
+							<span class="glyphicon glyphicon-remove" style="color:red" ng-show="factura.conceptos  === null
+																								|| factura.conceptos.length === 0
+																								|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 14
+																								|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 15"></span>
+						</span>
+					<panel-control-collapse></panel-control-collapse>
+				</panel-controls>
+
+				<form id="complementoNominaForm" name="complementoNominaForm"
+					novalidate>
+					<div ng-show="habilitaCampos">
+						<div class="row">
+							<div class="col-xs-4 ">
+								<label class="control-label ">Regimen Fiscal: </label>
+								<select name="regimenFiscal"
+									class="form-control " placeholder="Estado "
+									ng-model="factura.regimenFiscal"  ng-disabled="true" required
+									ng-options="(item.clave + ' - '+ item.descripcion) for item in comboRegimenFiscal | orderBy:'item.descripcion' track by item.idCatGeneral">
+
+									<option value="">Seleccione una opci&oacute;n</option>
+								</select>
+
+
+
+
+								<span class="messages"ng-show="complementoNominaForm.$submitted || complementoNominaForm.regimenFiscal.$touched">
+											<span ng-show="complementoNominaForm.regimenFiscal.$error.required">El
+												campo es obligatorio.</span>
+										</span>
+							</div>
+
+							<div class="col-xs-4 ">
+								<label class="control-label ">Tipo comprobante: </label>
+								<select name="tipoComprobante"
+									class="form-control " ng-model="factura.tipoComprobante"
+									required
+									ng-disabled="true"
+									ng-options="(item.clave + ' - '+ item.descripcion) for item in comboTipoComprobante | orderBy:'item.descripcion' track by item.idCatGeneral">
+									<option value="">Seleccione una opci&oacute;n</option>
+								</select>
+
+
+								<span class="messages"ng-show="complementoNominaForm.$submitted || complementoNominaForm.tipoComprobante.$touched">
+									<span ng-show="complementoNominaForm.tipoComprobante.$error.required">
+									El campo es obligatorio.</span>
+								</span>
+
+							</div>
+
+							<div class="col-xs-4 ">
+								<label class="control-label ">Moneda: </label>
+								<select name="moneda"
+									class="form-control " ng-model="factura.moneda"  ng-disabled="true" required
+									ng-options="(item.clave + ' - '+  item.descripcion) for item in comboMoneda | orderBy:'item.descripcion' track by item.idCatGeneral">
+									<option value="">Seleccione una opci&oacute;n</option>
+								</select>
+
+								<span class="messages"ng-show="complementoNominaForm.$submitted || complementoNominaForm.moneda.$touched">
+									<span ng-show="complementoNominaForm.moneda.$error.required">
+									El campo es obligatorio.</span>
+								</span>
+							</div>
+						</div>
+
+
+						<br />
+
+						<div class="row">
+							<div class="col-xs-4 ">
+								<label class="control-label ">Uso CFDI: </label>
+								<select name="usoCFDI"
+									class="form-control " ng-model="factura.usoCFDI"  ng-disabled="true" required
+									ng-options="(item.clave + ' - '+ item.descripcion) for item in comboUsoCFDI | orderBy:'item.descripcion' track by item.idCatGeneral">
+									<option value="">Seleccione una opci&oacute;n</option>
+								</select>
+
+								<span class="messages"ng-show="complementoNominaForm.$submitted || complementoNominaForm.usoCFDI.$touched">
+									<span ng-show="complementoNominaForm.usoCFDI.$error.required">
+									El campo es obligatorio.</span>
+								</span>
+							</div>
+
+
+						</div>
+						<br/>
+						<div class="row">
+						<h3 align="center" style="font-weight: bold;">FORMULA FACTURACI&Oacute;N</h3>
+							<div class="col-xs-12">
+								<div class="table-responsive" >
+									<table class="table table-striped">
+										<thead class="thead-dark">
+											<tr>
+												<th align="center">Clave n&oacute;mina</th>
+												<th align="center">% Honorario ppp</th>
+												<th align="center">Formula honorario</th>
+												<th align="center">Formula factura</th>
+												<th align="center">Formula IVA</th>
+												<th align="center">IVA Comercial</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td align="left">{{formulaFactura.claveNomina}}</td>
+												<td align="right">{{formulaFactura.honorarioPPP}}</td>
+												<td align="right">{{formulaFactura.formulaPPP.descripcion}}</td>
+												<td align="left">{{formulaFactura.formulaFactura.descripcion}}</td>
+												<td align="left">{{formulaFactura.formulaTipoIva.descripcion}}</td>
+												<td align="right">{{formulaFactura.ivaComercial}}</td>
+											</tr>
+										</tbody>
+
+									</table>
+								</div>
+							</div>
+						</div>
+
+						<h3 align="center" style="font-weight: bold;">CONCEPTOS FACTURACI&Oacute;N</h3>
+						<div class="row">
+							<div class="col-xs-3 ">
+								<label class="control-label ">Cantidad: </label>
+								<input
+									placeholder="Monto a financiar" name="cantidad"
+									ng-model="concepto.cantidad" ng-change="calcularImporte()"
+									class="form-control" type="number" required="required"
+									ng-disabled="true">
+
+									<span class="messages"ng-show="complementoNominaForm.$submitted || complementoNominaForm.cantidad.$touched">
+										<span ng-show="complementoNominaForm.cantidad.$error.required">
+										El campo es obligatorio.</span>
+									</span>
+							</div>
+
+							<div class="col-xs-3 ">
+								<label class="control-label ">Unidad: </label>
+								 <select name="unidad"
+									class="form-control " ng-model="concepto.unidad" ng-disabled="true" required
+									ng-options="(item.clave + ' - '+ item.descripcion) for item in comboUnidadFactura | orderBy:'item.descripcion' | filter:{clave:'E48'} track by item.idCatGeneral">
+									<option value="">Seleccione una opci&oacute;n</option>
+								</select>
+									<span class="messages"ng-show="complementoNominaForm.$submitted || complementoNominaForm.unidad.$touched">
+										<span ng-show="complementoNominaForm.unidad.$error.required">
+										El campo es obligatorio.</span>
+									</span>
+							</div>
+
+							<div class="col-xs-3 ">
+								<label class="control-label ">Precio unitario: </label>
+								<input
+									placeholder="Monto a financiar" name="precioUnitario"
+									ng-change="calcularImporte()" ng-model="concepto.precioUnitario"
+									minlength="1" class="form-control" type="number"
+									required="required" ng-disabled="true">
+
+									<span class="messages"ng-show="complementoNominaForm.$submitted || complementoNominaForm.precioUnitario.$touched">
+										<span ng-show="complementoNominaForm.precioUnitario.$error.required">
+										El campo es obligatorio.</span>
+									</span>
+							</div>
+
+							<div class="col-xs-3 ">
+								<label class="control-label ">Importe: </label>
+								<span class="form-control" disabled>{{concepto.importe | currency}}</span>
+							</div>
+
+						</div>
+						<br />
+
+						<div class="row">
+							<div class="col-xs-2 ">
+								<label class="control-label ">Concepto SAT: </label>
+								<input
+									placeholder="Ej. 94111801" name="codigoSat"
+									ng-model="concepto.codigoSat" minlength="8"  maxlength="8" class="form-control"
+									type="text" required="required" ng-disabled="true">
+
+									<span class="messages"ng-show="complementoNominaForm.$submitted || complementoNominaForm.codigoSat.$touched">
+										<span ng-show="complementoNominaForm.codigoSat.$error.required">
+										El campo es obligatorio.</span>
+									</span>
+							</div>
+
+
+							<div class="col-xs-10 ">
+								<label class="control-label ">Descripci&oacute;n SAT: </label>
+								<input
+									placeholder="Ej. 94111801" name="descripcionSat"
+									ng-model="concepto.descripcionSat"  class="form-control"
+									type="text" required="required" ng-disabled="true">
+
+									<span class="messages"ng-show="complementoNominaForm.$submitted || complementoNominaForm.descripcionSat.$touched">
+										<span ng-show="complementoNominaForm.descripcionSat.$error.required">
+										El campo es obligatorio.</span>
+									</span>
+							</div>
+
+
+
+						</div>
+						<br/>
+						<div class="row">
+							<div class="col-sm-8">
+								<div class="form-group" >
+									<label class="control-label">Concepto de facturaci&oacute;n*:</label>
+									<textarea ng-disabled="true"
+									placeholder="Ej. detalle del concepto de facturaci&oacute;n" name="conceptoFacturacion"
+									ng-model="concepto.descripcionConcepto" class="form-control" required="required" ></textarea>
+
+									<span class="messages"ng-show="complementoNominaForm.$submitted || complementoNominaForm.conceptoFacturacion.$touched">
+										<span ng-show="complementoNominaForm.conceptoFacturacion.$error.required">
+										El campo es obligatorio.</span>
+									</span>
+								</div>
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Iva trasladado 16%: </label> <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<input icheck type="checkbox" ng-model="concepto.ivaTrasladado16" ng-disabled="true"
+									ng-true-value="'SI'" ng-false-value="'NO'"
+									ng-change="cambiarIvaTrasladado16()"> <span
+									ng-show="concepto.ivaTrasladado16 === 'SI'">
+									{{concepto.ivaTrasladado16Monto | currency}}</span>
+
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-8">
+								<div class="form-group" >
+									<label class="control-label">Concepto de facturaci&oacute;n adicional:</label>
+									<textarea
+									placeholder="Ej. detalle del concepto de facturaci&oacute;n" name="conceptoFacturacion"
+									ng-model="concepto.descripcionConceptoAdicional" class="form-control" maxlength="160"></textarea>
+								</div>
+							</div>
+						</div>
+						<br />
+			<!-- 			<div class="row">
+
+							<div class="col-xs-4">
+								<label class="control-label">Iva retenido 6%: </label> <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<input icheck type="checkbox" ng-model="concepto.ivaRetenido6"
+									ng-true-value="'SI'" ng-false-value="'NO'"
+									ng-change="cambiarIvaRetenido6()"> <span
+									ng-show="concepto.ivaRetenido6 === 'SI'">{{concepto.ivaRetenido6Monto | currency}}</span>
+							</div>
+
+						</div>-->
+						<div class="row" ng-show="mostrarAccionesPaso4">
+							<br />
+							<div class="col-xs-12" align="center">
+							<!--
+								<a class="btn-brown btn" ng-click="limpiarConcepto(complementoNominaForm)" >
+									<span class="fa fa-empty"></span> Limpiar Concepto
+								</a>
+							 -->
+							 	<a class="btn-brown btn" ng-click="cancelarUpdateConcepto(complementoNominaForm)" >
+									<span class="fa fa-empty"></span> Cancelar
+								</a>
+								<button class="btn-midnightblue btn" ng-click="agregarConcepto(complementoNominaForm)">
+									<span class="fa fa-save"></span> Guardar Concepto
+								</button>
+
+							</div>
+						</div>
+					</div>
+					<h3 align="center" style="font-weight: bold;">DETALLE CONCEPTOS</h3>
+
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Cantidad</th>
+									<th>Unidad</th>
+									<th>Concepto y descripci&oacute;n</th>
+									<th>Impuesto</th>
+									<th>Precio</th>
+									<th>Importe</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="itemConcepto in conceptos">
+									<td>{{itemConcepto.cantidad}}</td>
+									<td>{{itemConcepto.unidad.clave}} - {{itemConcepto.unidad.descripcion}}</td>
+									<td>
+										<strong>{{itemConcepto.codigoSat}} - {{itemConcepto.descripcionSat}}</strong>
+										<br><strong>{{itemConcepto.descripcionConcepto}}</strong>
+										<br><strong>{{itemConcepto.descripcionConceptoAdicional}}</strong>
+									</td>
+									<td>
+									<!-- 	<span ng-show="itemConcepto.ivaRetenido6 === 'SI'">
+											<span style="color: #3399ff; font-weight: bold;" >
+											IVA retenido 6 %
+											</span>({{itemConcepto.ivaRetenido6Monto | currency}})<br />
+										</span>
+									-->
+										<span ng-show="itemConcepto.ivaTrasladado16 === 'SI'">
+											<span style="color: #3399ff; font-weight: bold;" ng-show="itemConcepto.ivaTrasladado16 === 'SI'">
+											IVA trasladado 16 %
+											</span>({{itemConcepto.ivaTrasladado16Monto | currency}})
+										</span>
+									</td>
+									<td>{{itemConcepto.precioUnitario | currency}}</td>
+
+									<td>{{itemConcepto.importe | currency}}
+									<br/>
+										&nbsp; <span class="fa fa-edit" tooltip="Editar concepto de facturaci&oacute;n" style="color:green" ng-click="editarConcepto(itemConcepto)"
+												ng-show="habilitaCampos"></span>
+
+										&nbsp; <span class="fa fa-remove" tooltip="Eliminar concepto de facturaci&oacute;n" style="color:red" ng-click="eliminarConcepto(itemConcepto)"
+												ng-show="habilitaCampos"></span>
+									</td>
+								</tr>
+
+
+								<tr>
+									<td colspan="4" stye="border:none">&nbsp;</td>
+									<td><span style="font-weight: bold;">Subtotal</span></td>
+									<td>{{totales.subtotal | currency}}</td>
+									<td>&nbsp;</td>
+								</tr>
+
+								<tr>
+									<td colspan="4">&nbsp;</td>
+									<td><span style="font-weight: bold;">IVA trasladado 16 %</span><br /></td>
+									<td>{{totales.sumaImpuestos | currency}}</td>
+									<td>&nbsp;</td>
+								</tr>
+
+								<!-- <tr>
+									<td colspan="4">&nbsp;</td>
+									<td><span style="font-weight: bold;">IVA retenido 6%</span><br /></td>
+									<td>({{totales.retenciones | currency}})</td>
+									<td>&nbsp;</td>
+								</tr>-->
+								<tr>
+									<td colspan="4">&nbsp;</td>
+									<td><span style="font-weight: bold;">TOTAL</span></td>
+									<td>{{totales.total | currency}}</td>
+									<td>&nbsp;</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+
+					<div class="row" ng-show="habilitaCampos">
+						<br />
+
+						<div class="col-xs-12" align="right">
+						<!--
+							<button class="btn-brown btn">
+								<span class="fa fa-empty"></span> Cancelar
+							</button>
+						-->
+							<a class="btn-orange btn" ng-click="vistaPreviaFactura()">
+								<span class="fa fa-save"></span> Pre factura
+							</a>
+						</div>
+					</div>
+
+
+				</form>
+				</panel>
+			</div>
+			 <div ng-show="factura.conceptos !== null && factura.conceptos.length >= 1 && habilitaPaso4Factura && nominaDto.idNominaPPPPadre ===0">
+
+			<!-- <div ng-show="habilitaPaso4Factura">-->
+
+				<panel panel-class="panel-sky"
+					heading="Generar factura (n&oacute;mina {{nominaDto.claveNomina}})">
+					<panel-controls>
+						<span class="btn btn-info-alt" ><strong>Paso 5 </strong>
+								<span class="glyphicon glyphicon-ok" style="color:green" ng-show="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7
+																								|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
+																								|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+																								|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+																								|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 20
+																								|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 23
+																								|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 25
+																								|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 13"></span>
+
+								<span class="glyphicon glyphicon-remove" style="color:red" ng-show="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 7
+																								&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 17
+																								&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 18
+																								&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 19
+																								&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 20
+																								&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 23
+																								&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 25
+																								&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 13"></span>
+
+
+							</span>
+						<panel-control-collapse></panel-control-collapse>
+					</panel-controls>
+					<form id="generarFacturaForm" name="generarFacturaForm">
+					<div class="row">
+						<div class="col-xs-4 ">
+							<label class="control-label ">M&eacute;todo de pago*: </label>
+							<select name="metodoPago" ng-disabled="!habilitaCatMetodoPago"
+								class="form-control "
+								ng-model="generarFacturaPaso5.metodoPago" required
+								ng-options="(item.clave + ' - '+ item.descripcion) for item in comboMetodoPago | orderBy:'item.descripcion' track by item.idCatGeneral">
+								<option value="">Seleccione una opci&oacute;n</option>
+							</select>
+
+							<span class="messages"ng-show="generarFacturaForm.$submitted || generarFacturaForm.metodoPago.$touched">
+								<span ng-show="generarFacturaForm.metodoPago.$error.required">
+								El campo es obligatorio.</span>
+							</span>
+						</div>
+
+						<div class="col-xs-4 ">
+							<label class="control-label ">Forma de pago*: </label>
+							<select name="formaPago" ng-disabled="!habilitaCampos"
+								class="form-control " ng-model="generarFacturaPaso5.formaPago" required
+								ng-options="(item.clave + ' - '+ item.descripcion) for item in comboFormaPago | orderBy:'item.descripcion' track by item.idCatGeneral">
+								<option value="">Seleccione una opci&oacute;n</option>
+							</select>
+
+							<span class="messages"ng-show="generarFacturaForm.$submitted || generarFacturaForm.formaPago.$touched">
+								<span ng-show="generarFacturaForm.formaPago.$error.required">
+								El campo es obligatorio.</span>
+							</span>
+						</div>
+					</div>
+					<br>
+
+					<div class="row">
+						<div class="col-xs-4 ">
+							<label class="control-label ">Monto del comprobante de pago: </label>
+							<input placeholder="Monto comprobante de pago" name="montoComprobantePago"
+									ng-model="generarFacturaPaso5.montoComprobantePago"
+									minlength="1" maxlength="10"  class="form-control" type="number"
+									ng-disabled ="isVisibleSeccionDescargaDocComplementoPago">
+							<!--
+							<span class="messages"ng-show="generarFacturaForm.montoComprobantePago.$submitted || generarFacturaForm.montoComprobantePago.$touched">
+								<span ng-show="generarFacturaForm.montoComprobantePago.$error.required">
+								El campo es obligatorio.</span>
+							</span>
+							-->
+						</div>
+					</div>
+					<br>
+
+					<div class="row" ng-show="isVisibleSeccionCargaDocComplementoPago">
+					<!--<div class="row" ng-show="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 7
+												&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 18
+												&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 19
+												&& factura.idCMS == 0 ? true : false">-->
+						<div class="col-md-9" >
+                				<label class="control-label">Comprobante de pago: </label>
+	                 		<input class="btn btn-info-alt form-control"  name="filePorSubir"
+								id="file_doc_comp_pago" type="file"
+								onchange="angular.element(this).scope().fileChangedDocComplementoPagoPaso5(this)"
+								class="filestyle"
+								data-buttonText="generarFacturaPaso5.nombreArchivoCarga"
+								required="required"
+								/>
+							<span class="messages"ng-show="generarFacturaForm.$submitted || generarFacturaForm.filePorSubir.$touched">
+									<span ng-show="generarFacturaForm.filePorSubir.$error.required">
+									El campo es obligatorio.</span>
+							</span>
+							<br>
+
+							<button data-toggle="modal" class="btn btn-danger" ng-click="cancelarDocComprobantePago()" ng-show="factura.idCMS >= 1">
+                 				Cancelar actulizaci&oacute;n de archivo
+                 			</button>
+
+                 		</div>
+					</div>
+
+					<!-- carga y descarga del archivo de complemento de pago -->
+
+					<div class="row" ng-show="isVisibleSeccionDescargaDocComplementoPago">
+					<!--<div class="row" ng-show="factura.idCMS >= 1">-->
+						<div class="col-md-9" >
+                			<label class="control-label">Comprobante de pago: </label> <BR>
+	                 		<button data-toggle="modal" tooltip="Descargar comprobante de pago" class="btn-info btn" ng-click="descargarDocumentoByIdCMS(factura.idCMS)" >
+	                 			<span class="fa fa-file-o"></span> {{nombreArchivo}}
+	                 		</button>
+	                 		<button data-toggle="modal"  class="btn btn-orange" ng-click="actualizarDocComprobantePago()"  ng-show="actulizaComprobante">
+	                 			Actualizar archivo
+	                 		</button>
+
+                 		</div>
+					</div>
+					<br>
+
+					<div class="row" ng-show="factura.idCmsPdfFactura >= 1 && factura.idCmsXmlFactura >= 1">
+						<div class="col-md-9" >
+							<label class="control-label">Factura (XML / PDF): </label> <BR>
+	                 		<a class="btn-green btn" tooltip="Descargar factura (XML)" ng-click="descargarDocumentoByIdCMS(factura.idCmsXmlFactura)" >
+								<span class="fa fa-file-excel-o"></span> Desacargar XML
+							</a>
+							<a class="btn-orange btn" tooltip="Descargar factura (PDF)" ng-click="descargarDocumentoByIdCMS(factura.idCmsPdfFactura)" >
+								<span class="fa fa-file-pdf-o"></span> Descargar PDF
+							</a>
+                 		</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-xs-12" align="right" >
+							<a class="btn-green btn" ng-click="guardarPasoCinco(generarFacturaForm)" ng-show="habilitaGuardar">
+								<span class="fa fa-save"></span> Guardar
+							</a>
+							<a class="btn-info btn" ng-click="confirmarGeneracionFactura()" ng-show="habilitaGenerarFactura">
+								<span class="fa fa-clipboard"></span> Generar factura
+							</a>
+						</div>
+					</div>
+				</form>
+				</panel>
+			</div>
+
+			<div ng-show="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
+			|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19
+			|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 13
+			|| (nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 23 && isComplementariaNomina===false )">
+				<panel panel-class="panel-sky"
+					heading="Timbrado n&oacute;mina- {{nominaDto.claveNomina}}">
+					<panel-controls>
+						<span class="btn btn-info-alt" >
+								<strong ng-show="nominaProcesoSeleccionada.necesitaFactura == false">Paso 5 </strong>
+								<strong ng-show="nominaProcesoSeleccionada.necesitaFactura == true">Paso 6 </strong>
+								<span class="glyphicon glyphicon-ok" style="color:green" ng-show="dataExcel.contentRows[0] != undefined"></span>
+								<span class="glyphicon glyphicon-remove" style="color:red" ng-show="dataExcel.contentRows[0] === undefined"></span>
+							</span>
+						<panel-control-collapse></panel-control-collapse>
+					</panel-controls>
+					<div class="table-responsive tablaconscroll">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Nombre</th>
+									<th>Apellido paterno</th>
+									<th>Apellido materno</th>
+									<th>RFC</th>
+									<th>Monto PPP</th>
+									<th>Clabe interbancaria ó número de tarjeta</th>
+									<th>CURP</th>
+									<th>Estatus</th>
+									<th>Bitacora de estatus</th>
+								</tr>
+							</thead>
+							<tbody>
+
+
+								<tr ng-repeat="data in dataExcel.contentRows">
+									<td>{{data.nombre}}</td>
+									<td>{{data.apellidoPaterno}}</td>
+									<td>{{data.apellidoMaterno}}</td>
+									<td>{{data.rfc}}</td>
+									<td align="right">{{data.montoPPP | currency}}</td>
+									<td align="right" ng-if="data.clabe != null || data.clabe != undefined">{{data.clabe}}</td>
+									<td align="right" ng-if="data.numeroCuenta != null || data.numeroCuenta != undefined">{{data.numeroCuenta}}</td>
+									<td>{{data.curp}}</td>
+									<td align="center" ng-if="data.idEstatus === 3">
+										<span class="fa fa-check" style="color:green;" tooltip="Timbrado con &eacute;xito"></span>
+									</td>
+									<td align="center" ng-if="data.idEstatus === 10">
+										<span class="fa fa-exclamation-triangle" style="color:#EB5352;" tooltip="{{data.descError}}"></span>
+									</td>
+									<td align="center">
+										<button data-toggle="modal" ng-click="mostrarDialogoColaboradorEstatus(data);"
+											class="btn btn-midnightblue">
+											<span class="fa fa-binoculars"></span> {{data.descEstatus}}
+										</button>
+										<a ng-show="data.idEstatus == 3 && data.idCmsExcel > 0"  class="btn-green btn" tooltip="Descargar factura (XML)" ng-click="descargarDocumentoByIdCMS(data.idCmsExcel)" >
+											<span class="fa fa-file-excel-o"></span>
+										</a>
+										<a ng-show="data.idEstatus == 3 && data.idCmsPdf > 0" class="btn-orange btn" tooltip="Descargar factura (PDF)" ng-click="descargarDocumentoByIdCMS(data.idCmsPdf)" >
+											<span class="fa fa-file-pdf-o"></span>
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="table-responsive">
+							<table class="table" ng-if="dataExcel.contentRows[0] != undefined">
+							<thead></thead>
+								<tr >
+									<th>Total Colaboradores : {{dataExcel.contentRows[0].totalColaboradores}}</th>
+									<th>Total Monto PPP: {{dataExcel.contentRows[0].totalMontoPPP  | currency}}</th>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-xs-12" align="right" ng-show = "nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 13">
+							<button class="btn btn-info" ng-click="confirmarTimbradoColaboradores()" ng-show="habilitaTimbradoColaborador == true">
+								<span class="fa fa-users"></span>  Timbrar colaboradores
+							</button>
+							<button class="btn btn-brown"   ng-click="timbrarNomina()"  ng-show="habilitaTimbradoNomina == true && nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 23">
+								<span class="glyphicon glyphicon-send"></span>  Cerrar n&oacute;mina
+							</button>
+						</div>
+					</div>
+				</panel>
+			</div>
+		</panel>
+	</div>
+</div>
+
+
+
+		<div class="modal fade" id="modalColaborador" role="dialog">
+			<div class="modal-dialog modal-lg" style="width: 50%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Detalle colaborador</h4>
+					</div>
+					<div class="modal-body">
+						<div>
+							<h4>
+								<strong> N&Oacute;MINA: 1</strong>
+							</h4>
+							<h4>
+								<strong> DATOS GENERALES</strong>
+							</h4>
+						</div>
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Nombre*: </label> <input
+									type="text" class="form-control" placeholder="Nonmbre"
+									required="required" ng-model="colaborador.nombre">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Apellido paterno*: </label> <input
+									type="text" class="form-control"
+									placeholder="RApellido paterno" required="required"
+									ng-model="colaborador.apellidoPaterno">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Apellido materno: </label> <input
+									type="text" class="form-control" placeholder="Apellido materno"
+									required="required" ng-model="colaborador.apellidoMaterno">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+
+							<div class="col-xs-4 ">
+								<label class="control-label ">Nacionalidad: </label> <select
+									class="form-control " placeholder="Estado ">
+									<option>Nacionalidad 1</option>
+									<option>Nacionalidad 2</option>
+									<option>Nacionalidad 3</option>
+								</select>
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Fecha de nacimiento*: </label> <input
+									type="DATE" class="form-control"
+									placeholder="Fecha de nacimiento">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">RFC*: </label> <input type="text"
+									class="form-control" placeholder="RFC"
+									ng-model="colaborador.rfc" required="required" maxlength="15"
+									min="15" required="required"
+									ng-pattern="/^([A-Z�&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">CURP*: </label> <input type="text"
+									class="form-control" placeholder="RFC"
+									ng-model="colaborador.curp" required="required" maxlength="15"
+									min="15" required="required"
+									ng-pattern="/^([A-Z�&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Estado civil: </label> <select
+									class="form-control" placeholder="Estado"">
+									<option>Estado civil 1</option>
+									<option>Estado civil 2</option>
+									<option>Estado civil 3</option>
+								</select>
+							</div>
+							<div class="col-xs-4 ">
+								<label class="control-label ">G&eacute;nero: </label> <select
+									class="form-control " placeholder="Estado ">
+									<option>G&eacute;nero 1</option>
+									<option>G&eacute;nero 2</option>
+									<option>G&eacute;nero 3</option>
+								</select>
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Celular: </label> <input
+									type="text" class="form-control" placeholder="Celular"
+									ng-model="apoderadoDto.rfc" required="required" maxlength="15"
+									min="15" required="required">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Tel&eacute;fono: </label> <input
+									type="text" class="form-control" placeholder="Tel&eacute;fono"
+									ng-model="apoderadoDto.curp" required="required" maxlength="15"
+									min="15" required="required">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Correo electr&oacute;nico:
+								</label> <input type="text" class="form-control"
+									placeholder="Correo electr&oacute;nico"
+									ng-model="apoderadoDto.curp" required="required" maxlength="15"
+									min="15" required="required">
+							</div>
+						</div>
+						<br>
+
+						<h4>
+							<strong>DOMICILIO</strong>
+						</h4>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Pa&iacute;s: </label> <input
+									type="text" class="form-control" placeholder="Pa&iacute;s"
+									required="required" maxlength="15" min="15" required="required"
+									value="M&eacute;xico">
+							</div>
+
+							<div class="col-xs-4 ">
+								<label class="control-label ">Entidad federativa: </label> <select
+									class="form-control " placeholder="Estado ">
+									<option>Entidad federativa 1</option>
+									<option>Entidad federativa 2</option>
+									<option>Entidad federativa 3</option>
+								</select>
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Calle: </label> <input type="text"
+									class="form-control" placeholder="Calle"
+									ng-model="clienteTempDto.idMedioContacto.calle">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Colonia: </label> <input
+									type="text" class="form-control" placeholder="Colonia"
+									ng-model="clienteTempDto.idMedioContacto.calle">
+							</div>
+							<div class="col-xs-2">
+								<label class="control-label">Codigo Postal*: </label> <input
+									type="text" class="form-control" placeholder="Codigo Postal"
+									ng-model="clienteTempDto.idMedioContacto.codigoPostal">
+							</div>
+						</div>
+						<br>
+
+						<h4>
+							<strong>DATOS N&Oacute;MINA</strong>
+						</h4>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Salario diario: </label> <input
+									type="text" class="form-control" placeholder="Salario diario"
+									required="required" maxlength="15" min="15" required="required">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Diario: </label> <input type="text"
+									class="form-control" placeholder="Diario" required="required"
+									maxlength="15" min="15" required="required">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Fecha de alta (firma
+									contrato)*: </label> <input type="DATE" class="form-control"
+									placeholder="Fecha de alta (firma contrato)">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Antig&uuml;edad: </label> <input
+									type="text" class="form-control" placeholder="Antig�edad">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">IMSS: </label> <input type="text"
+									class="form-control" placeholder="IMSS">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label ">Nivel de estudios: </label> <select
+									class="form-control " placeholder="Estado ">
+									<option>Nivel de estudios 1</option>
+									<option>Nivel de estudios 2</option>
+									<option>Nivel de estudios 3</option>
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Profesi&oacute;n: </label> <input
+									type="text" class="form-control" placeholder="Profesi&oacute;n">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Tipo de sangre: </label> <input
+									type="text" class="form-control" placeholder="Tipo de sangre">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label ">Forma de pago: </label> <select
+									class="form-control " placeholder="Forma de pago ">
+									<option>Forma de pago 1</option>
+									<option>Forma de pago 2</option>
+									<option>Forma de pago 3</option>
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label ">Banco operador: </label> <select
+									class="form-control " placeholder="Banco operador ">
+									<option>Banco operador 1</option>
+									<option>Banco operador 2</option>
+									<option>Banco operador 3</option>
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Control de banco: </label> <input
+									type="text" class="form-control" placeholder="Control de banco">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Cuenta clabe deposito 1: </label> <input
+									type="text" class="form-control"
+									placeholder="Cuenta clabe deposito"> <input
+									type="radio" ng-model="valor.radio" value="1" /> <label
+									class="control-label">&#191;Es cuenta principal?</label>
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Cuenta clabe deposito 2: </label> <input
+									type="text" class="form-control"
+									placeholder="Cuenta clabe deposito"> <input
+									type="radio" ng-model="valor.radio" value="0" /> <label
+									class="control-label">&#191;Es cuenta principal?</label>
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Tipo de empleado: </label> <input
+									type="text" class="form-control" placeholder="Tipo de empleado">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Tipo de jornada: </label> <input
+									type="text" class="form-control" placeholder="Tipo de jornada">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label ">Turno: </label> <select
+									class="form-control " placeholder="Banco operador ">
+									<option>Turno 1</option>
+									<option>Turno 2</option>
+									<option>Turno 3</option>
+								</select>
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Unidad m&eacute;dica
+									familiar: </label> <input type="text" class="form-control"
+									placeholder="Unidad m&eacute;dica familiar">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Descuento pensi&oacute;n
+									alimenticia: </label> <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input
+									type="checkbox" value="1">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Registro patronal: </label> <input
+									type="text" class="form-control"
+									placeholder="Registro patronal">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Clasificaci&oacute;n: </label> <input
+									type="text" class="form-control"
+									placeholder="Clasificaci&oacute;n">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Departamento: </label> <input
+									type="text" class="form-control" placeholder="Departamento">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Puesto: </label> <input type="text"
+									class="form-control" placeholder="Puesto">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Tipo Contrato: </label> <input
+									type="text" class="form-control" placeholder="Tipo Contrato">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Tipo de ingresos: </label> <input
+									type="text" class="form-control" placeholder="Tipo de ingresos">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Clave de regimen de
+									contrataci&oacute;n: </label> <input type="text" class="form-control"
+									value="99" disabled="true"
+									placeholder="Clave de regimen de contrataci&oacute;n">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Base de cotizaci&oacute;n*:
+								</label> <input type="text" class="form-control"
+									placeholder="Base de cotizaci&oacute;n">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Clave de tipo de contrato:
+								</label> <input type="text" class="form-control"
+									placeholder="Clave de tipo de contrato">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Clave de tipo de jornada: </label>
+								<input type="text" class="form-control" value="99"
+									disabled="true" placeholder="Clave de tipo de jornada">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Clave de tipo de entidad
+									federativa: </label> <input type="text" class="form-control"
+									placeholder="Clave de tipo de entidad federativa">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Ruta plantilla: </label> <input
+									type="text" class="form-control"
+									placeholder="Clave de tipo de contrato">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Clave regimen contrato: </label> <input
+									type="text" class="form-control" value="99" disabled="true"
+									placeholder="Clave regimen contrato V12">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Clave de banco operador: </label> <input
+									type="text" class="form-control"
+									placeholder="Clave de banco operador">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">D&iacute;s de
+									duraci&oacute;n: </label> <input type="text" class="form-control"
+									placeholder="D&iacute;s de duraci&oacute;n">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label ">Beneficios adicionales: </label> <select
+									class="form-control " placeholder="Banco operador ">
+									<option>Beneficios adicionales 1</option>
+									<option>Beneficios adicionales 2</option>
+									<option>Beneficios adicionales 3</option>
+								</select>
+							</div>
+						</div>
+						<br>
+
+						<div class="row " align="right ">
+							<br />
+							<button class="btn-primary btn " type="submit "
+								ng-click=guardarCelula();>Guardar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="modalAutorizacion" role="dialog">
+			<div class="modal-dialog" style="width: 50%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Autorizar N&oacute;mina</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<form>
+
+									<div class="row">
+										<div class="col-xs-6">
+											<label class="control-label">Adjuntar factura
+												nómina: </label> <input id="inputFile" type="file"
+												accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+												onchange="angular.element(this).scope().fileChanged(this)"
+												class="filestyle">
+										</div>
+										<div class="col-xs-6">
+											<label class="control-label">Adjuntar comprobante
+												pago: </label> <input id="inputFile" type="file"
+												accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+												onchange="angular.element(this).scope().fileChanged(this)"
+												class="filestyle">
+										</div>
+									</div>
+									<br />
+									<div class="row">
+										<div class="col-xs-3">
+											<label class="control-label">Monto nómina PPP: </label> <input
+												placeholder="100,000" name="montoNomina"
+												ng-model="autororizar.montonominappp" class="form-control"
+												type="text" required="required">
+										</div>
+
+										<div class="col-xs-3">
+											<label class="control-label">Monto nómina fiscal: </label> <input
+												placeholder="29,000" name="nomina"
+												ng-model="autorizar.montonominafiscal" class="form-control"
+												type="text" required="required">
+										</div>
+
+										<div class="col-xs-3">
+											<label class="control-label">Comision: </label> <input
+												placeholder="9,000" name="comision"
+												ng-model="autorizar.montoComision" class="form-control"
+												type="text" required="required">
+										</div>
+
+										<div class="col-xs-3">
+											<label class="control-label">Monto nómina factura: </label>
+											<input placeholder="129,000" name="buscarRFC"
+												ng-model="clienteTempDto.rfc" maxlength="13" minlength="12"
+												class="form-control" type="text" required="required">
+										</div>
+
+
+									</div>
+									<br />
+
+									<div class="row">
+										<div class="form-group">
+											<label class="col-sm-3 control-label">Requiere
+												financiamiento</label>
+											<div class="col-sm-6">
+												<input type="checkbox" ng-model="switchStatus" ng-change="cambiaRequiereFinanciamiento()"
+													class="js-switch"
+													ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" />
+											</div>
+										</div>
+									</div>
+									<br />
+									<div class="row" ng-show="switchStatus">
+										<div class="col-xs-3">
+											<label class="control-label">Monto financiamiento </label> <input
+												placeholder="Monto a financiar" name="buscarRFC"
+												ng-model="clienteTempDto.rfc" maxlength="13" minlength="12"
+												class="form-control" type="text" required="required">
+										</div>
+
+										<div class="col-xs-3">
+											<label class="control-label">Comisión financiamiento
+											</label> <input placeholder="procentaje o monto" name="buscarRFC"
+												ng-model="clienteTempDto.rfc" maxlength="13" minlength="12"
+												class="form-control" type="text" required="required">
+										</div>
+
+										<div class="col-xs-3">
+											<label class="control-label">Total + Comisi&oacute;n</label>
+											<input placeholder="procentaje o monto" name="buscarRFC"
+												ng-model="clienteTempDto.rfc" maxlength="13" minlength="12"
+												class="form-control" type="text" required="required">
+										</div>
+
+										<div class="col-xs-3">
+											<label class="control-label">Plazo: </label> <input
+												placeholder="total de meses para liquidar nómina"
+												name="buscarRFC" ng-model="clienteTempDto.rfc"
+												maxlength="13" minlength="12" class="form-control"
+												type="text" required="required">
+										</div>
+
+
+									</div>
+
+									<br />
+									<div class="row">
+										<div class="form-group">
+											<label class="col-sm-12 control-label">Comentario:</label>
+											<div class="col-sm-12">
+												<textarea class="form-control"></textarea>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">
+							<span class="fa fa-undo"></span> Cancelar
+						</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal">
+							<span class="fa fa-save"></span> Guardar
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="modal fade" id="modalAgregarColaborador" role="dialog" data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog modal-xl" style="width: 50%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Agregar colaborador</h4>
+					</div>
+					<div class="modal-body">
+					<form id="colaboradorForm" name="colaboradorForm" novalidate="novalidate">
+						<div class="row">
+ 								<div class="col-xs-4">
+											<label class="control-label">Nombre*:</label> <input
+												placeholder="Nombre colaborador" name="nombreCompleto"
+												ng-model="colaborador.nombre" maxlength="45" minlength="3"
+												class="form-control" type="text" required="required">
+									<span class="messages" ng-show="colaboradorForm.nombreCompleto.$submitted || colaboradorForm.nombreCompleto.$touched">
+											<span ng-show="colaboradorForm.nombreCompleto.$error.required">El
+												campo es obligatorio.</span>
+										</span>
+										</div>
+										<div class="col-xs-4">
+											<label class="control-label">Apellido paterno*:</label> <input
+												placeholder="Apellido paterno colaborador" name="apellidoPaterno"
+												ng-model="colaborador.apellidoPaterno" maxlength="45" minlength="3"
+												class="form-control" type="text" required="required">
+									<span class="messages" ng-show="colaboradorForm.apellidoPaterno.$submitted || colaboradorForm.apellidoPaterno.$touched">
+											<span ng-show="colaboradorForm.apellidoPaterno.$error.required">El
+												campo es obligatorio.</span>
+										</span>
+										</div>
+										<div class="col-xs-4">
+											<label class="control-label">Apellido materno:</label> <input
+												placeholder="Apellido materno colaborador" name="apellidoMaterno"
+												ng-model="colaborador.apellidoMaterno" maxlength="45"
+												class="form-control" type="text">
+									<!-- <span class="messages" ng-show="colaboradorForm.nombreCompleto.$submitted || colaboradorForm.nombreCompleto.$touched">
+											<span ng-show="colaboradorForm.nombreCompleto.$error.required">El
+												campo es obligatorio.</span>
+										</span> -->
+										</div>
+										</div>
+										<br/>
+
+						<div class="row">
+
+								<div class="col-xs-4">
+											<label class="control-label">RFC*:
+											</label> <input placeholder="RFC Colaborador" name="rfc" id="rfc"
+												ng-model="colaborador.rfc" maxlength="13" minlength="13"
+												class="form-control" type="text" required="required" ng-blur="verificarDatosColaboradorRfc(colaborador)">
+										<label style="color: red" ng-show="existeRfcColaborador">El rfc ingresado ya existe, favor de verificar</label>
+										<span class="messages" ng-show="colaboradorForm.rfc.$submitted || colaboradorForm.rfc.$touched">
+											<span ng-show="colaboradorForm.rfc.$error.required">El
+												campo es obligatorio.</span>
+										</span>
+										</div>
+										<div class="col-xs-4">
+											<label class="control-label">CURP*:</label> <input
+												placeholder="Clave &Uacute;nica de registro de poblaci&oacute;n"
+												name="curp" ng-model="colaborador.curp" id="curp"
+												maxlength="18" minlength="18" class="form-control"
+												type="text" required="required" ng-blur="verificarDatosColaboradorCurp(colaborador)"
+												pattern="([A-Z]{4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM](AS|BC|BS|CC|CL|CM|CS|CH|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[A-Z]{3}[0-9A-Z]\d)">
+										<label style="color: red" ng-show="existeCurpColaborador">El curp ingresado ya existe, favor de verificar</label>
+										<span class="messages" ng-show="colaboradorForm.curp.$submitted || colaboradorForm.curp.$touched">
+											<span ng-show="colaboradorForm.curp.$error.required">El
+												campo es obligatorio.</span>
+												<span ng-show="colaboradorForm.curp.$error.pattern">El campo curp no tiene un formato valido.</span>
+										</span>
+										</div>
+										<div class="col-xs-4">
+											<label class="control-label">N&uacute;mero de seguro social*:
+											</label> <input placeholder="N&uacute;mero de seguro social de colaborador" name="nss" id="nss"
+												ng-model="colaborador.nss" maxlength="11" minlength="11"
+												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+												class="form-control" type="text" required="required" ng-blur="verificarDatosColaboradorNss(colaborador)">
+										<label style="color: red" ng-show="existeNssColaborador">El N&uacute;mero de seguro social ingresado ya existe, favor de verificar</label>
+										<span class="messages" ng-show="colaboradorForm.nss.$submitted || colaboradorForm.nss.$touched">
+											<span ng-show="colaboradorForm.nss.$error.required">El
+												campo es obligatorio.</span>
+										</span>
+										</div>
+										</div>
+										<br/>
+
+								<div class="row">
+										<div class="col-xs-3" ng-show= "nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 23 || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 24">
+											<label class="control-label">Monto PPP*: </label>
+											<input placeholder="Monto PPP" name="montoPPP"
+												   ng-model="colaborador.montoPPP"
+												   ng-blur="validaMonto(colaborador.montoPPP)"
+												class="form-control" type="text" required="required" >
+												<!--  ng-disabled="conceptos.length > 0">   -->
+										<span class="messages" ng-show="colaboradorForm.montoPPP.$submitted || colaboradorForm.montoPPP.$touched">
+											<span ng-show="colaboradorForm.montoPPP.$error.required">El
+												campo es obligatorio.</span>
+										</span>
+										</div>
+										<div class="col-xs-3" ng-show= "nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 23 && nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 24">
+											<label class="control-label">Monto PPP*: </label>
+											<input placeholder="Monto PPP" name="montoPPP"
+												   ng-model="colaborador.montoPPP"
+												class="form-control" type="text" required="required" >
+												<!--  ng-disabled="conceptos.length > 0">   -->
+										<span class="messages" ng-show="colaboradorForm.montoPPP.$submitted || colaboradorForm.montoPPP.$touched">
+											<span ng-show="colaboradorForm.montoPPP.$error.required">El
+												campo es obligatorio.</span>
+										</span>
+										</div>
+
+										<div class="col-xs-5">
+											<label class="control-label">Clabe interbancaria &oacute; N&uacute;m de cuenta*:</label> <input
+												placeholder="N&uacute;mero de clabe interbancaria" id="numeroClabe"
+												name="numeroClabe" ng-model="colaborador.clabe"
+												maxlength="18" minlength="16" class="form-control"
+												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+												type="text" required="required" ng-blur="verificarDatosColaboradorClabe(colaborador)">
+												 <label style="color: red" ng-show="existeClabeColaborador">La Clabe interbancaria &oacute; N&uacute;m de cuenta ya existe, favor de verificar</label>
+												<span class="messages" ng-show="colaboradorForm.$submitted || colaboradorForm.numeroClabe.$touched">
+                                            <span ng-show="colaboradorForm.numeroClabe.$error.required">El campo es obligatorio.</span>
+                                        </span>
+										</div>
+										<div class="col-xs-4">
+											<label class="control-label">Instituci&oacute;n contraparte*:</label> <input
+												placeholder="Instituci&oacute;n contraparte"
+												name="institucion" ng-model="colaborador.institucionContraparte"
+												maxlength="3" class="form-control"
+												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+												type="text" required="required">
+												<span class="messages" ng-show="colaboradorForm.$submitted || colaboradorForm.institucion.$touched">
+                                            <span ng-show="colaboradorForm.institucion.$error.required">El campo es obligatorio.</span>
+                                        </span>
+										</div>
+								</div>
+								<br/>
+								<div class="row">
+										<div class="col-sm-4">
+                                        <label class="control-label">Correo electr&oacute;nico: </label> <input
+                                            placeholder="ejemplo@correo.com" name="correoElectronico" id="correoElectronico"
+                                            ng-pattern="/^[a-zA-z0-9_]*(\.[_a-zA-Z0-9-]+)*[a-zA-Z0-9]@[a-zA-Z0-9]+[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})$/"
+                                            ng-model="colaborador.correoElectronico" maxlength="89"
+                                            class="form-control" type="email">
+                                        <span class="messages" ng-show="colaboradorForm.$submitted || colaboradorForm.correoElectronico.$touched">
+                                            <!-- <span ng-show="colaboradorForm.correoElectronico.$error.required">El campo es obligatorio.</span> -->
+                                            <span ng-show="colaboradorForm.correoElectronico.$error.pattern">
+                                                Formato de Correo Electronico incorrecto.
+                                            </span>
+                                        </span>
+                                    </div>
+
+										</div>
+						</form>
+					</div>
+					<br/>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal"
+						ng-show= "nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 23 && nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 24"
+						ng-disabled="colaboradorForm.$invalid || existeRfcColaborador ===true ||
+						existeCurpColaborador === true || existeNssColaborador=== true || existeClabeColaborador === true"
+						ng-click="guardarColaborador(colaborador);">
+							<span class="fa fa-save"></span>Agregar
+						</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal"
+						ng-show= "nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 23 || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 24"
+						ng-disabled="colaboradorForm.$invalid || existeRfcColaborador ===true ||
+						existeCurpColaborador === true || existeNssColaborador=== true || existeClabeColaborador === true ||validaMontoPPP===true"
+						ng-click="guardarColaboradorComplementaria(colaborador);">
+							<span class="fa fa-save"></span>Agregar
+						</button>
+						<button type="button" class="btn btn-green" data-dismiss="modal"
+						ng-disabled="colaboradorForm.$invalid || existeRfcColaborador ===true ||
+						existeCurpColaborador === true || existeNssColaborador=== true || existeClabeColaborador === true" ng-show="isEditarColaborador === true && nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 23"
+						ng-click="guardarColaborador(colaborador);">
+							<span class="fa fa-save"></span>Guardar
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="modalEstatus" role="dialog">
+			<div class="modal-dialog modal-lg" style="width: 50%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Resumen Estatus</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<form>
+								<table class="table table-striped">
+										<thead>
+											<tr>
+												<th align="center">Nombre:&nbsp; {{estatusColaborador[0].pppColaboradorDto.nombre}}</th>
+												<th align="center">RFC:&nbsp; {{estatusColaborador[0].pppColaboradorDto.rfc}}</th>
+												<th align="center">Monto PPP:&nbsp; {{estatusColaborador[0].pppColaboradorDto.montoPPP}}</th>
+												<th align="center">N&uacute;mero de clabe:&nbsp; {{estatusColaborador[0].pppColaboradorDto.clabe}}</th>
+											</tr>
+										</thead>
+									</table>
+									<br />
+									<table class="table table-striped">
+										<thead>
+											<tr>
+												<th align="center">#</th>
+												<th align="center">Estatus</th>
+												<th align="center">Fecha</th>
+												<th align="center">Usuario Movimiento</th>
+												<!-- <th>Comentario</th> -->
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat= "estatus in estatusColaborador">
+												<td align="center">{{estatus.consecutivo}}</td>
+												<td align="center">{{estatus.catEstatusColaborador.descripcionEstatus}}</td>
+												<td align="center">{{estatus.fechaAltaFormato}}</td>
+												<td align="center">{{estatus.usuarioAlta.nombre}} {{estatus.usuarioAlta.primerApellido}} {{estatus.usuarioAlta.segundoApellido}}</td>
+											</tr>
+										</tbody>
+									</table>
+
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="modalDetalleNominas" role="dialog"  data-backdrop="static" >
+			<div class="modal-dialog" style="width: 80%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Resumen N&oacute;minas</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<form>
+									<div class="row">
+										<div class="highlight col-md-12">
+											<h5>
+												Nombre operativo / Nombre o Raz&oacute;nSocial: <strong> {{nombreCliente}}</strong>
+											</h5>
+										</div>
+
+										<br/><br/>
+									</div>
+
+									<div class="table-responsive" ng-if="gridDetalleNominaCliente.length == 0">
+										<h4 align="center">
+											<br/><strong style="color:red"> NO CUENTA CON N&Oacute;MINAS DE CRM</strong>
+										</h4>
+									</div>
+
+									<div class="table-responsive" ng-if="gridDetalleNominaCliente.length > 0">
+										<table class="table table-striped">
+											<thead class="thead-dark">
+												<tr>
+													<th align="center">Clave n&oacute;mina</th>
+													<th align="center">% Honorario ppp</th>
+													<th align="center">Formula honorario</th>
+													<th align="center">Formula factura</th>
+													<th align="center">Formula IVA</th>
+													<th align="center">IVA Comercial</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="detalle in gridDetalleNominaCliente">
+													<td align="left">{{detalle.claveNomina}}</td>
+													<td align="right">{{detalle.honorarioPPP}}</td>
+													<td align="right">{{detalle.formulaPPP.descripcion}}</td>
+													<td align="left">{{detalle.formulaFactura.descripcion}}</td>
+													<td align="left">{{detalle.formulaTipoIva.descripcion}}</td>
+													<td align="right">{{detalle.ivaComercial}}</td>
+												</tr>
+											</tbody>
+
+										</table>
+									</div>
+
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="modal fade" id="modalCrearNominas" role="dialog"  data-backdrop="static" >
+			<div class="modal-dialog" style="width: 70%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Crear N&oacute;minas</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="row">COLABORADORES
+									<strong>CLIENTE:</strong> {{catNominaCliente[0].clienteDto.razonSocial}}{{catNominaCliente[0].clienteDto.nombre}} {{catNominaCliente[0].clienteDto.apellidoPaterno}} {{catNominaCliente[0].clienteDto.apellidoMaterno}}
+								</div>
+								<div class="row">
+									<strong>PRESTADORA (FONDO):</strong> {{catNominaCliente[0].clienteDto.prestadoraServicioFondo.razonSocial}}
+								</div>
+								<form name="creacionNomForm" novalidate>
+									<br />
+									<div class="row">
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="control-label">N&oacute;minas*:</label>
+												<select class="form-control"
+														name="giro_"
+														id="giro"
+														ng-change="validaCreacionNomina(nominaDto.nominaClienteDto)"
+														ng-model="nominaDto.nominaClienteDto"
+														ng-options="nomina.descripcionCompuesta for nomina in catNominaCliente | orderBy:'nomina.nombreNomina' track by nomina.idNominaCliente"
+														ng-required="true"
+														placeholder="Celula">
+													<option value="" class="">-- SELECCIONA UNA OPCI&Oacute;N --</option>
+												</select>
+												<div ng-messages="creacionNomForm.giro_.$error" ng-show="creacionNomForm.giro_.$dirty && creacionNomForm.giro_.$invalid">
+													<small class="form-text-error" ng-message="required">Este campo es obligatorio</small>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-sm-2" ng-show="nominaDto.nominaClienteDto != undefined">
+											<div class="form-group">
+												<label class="control-label">Periodicidad N&oacute;mina*:</label>
+												<span class="form-control">{{nominaDto.nominaClienteDto.periodicidadNomina.descripcion}}</span>
+												<div  ng-show="nominaDto.nominaClienteDto.periodicidadNomina.descripcion === undefined ||
+															nominaDto.nominaClienteDto.periodicidadNomina.descripcion === null" >
+													<small class="form-text-error" >Este necesario capturar la periodicidad en la secci&oacute;n del CRM</small>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="row">
+										<br />
+										<div class="col-xs-4">
+											<label class="control-label">Fecha inicio de n&oacute;mina</label>
+											<input id="fechaInicioNomina" type="date"
+													name="fechaInicioNomina"
+													class="form-control"
+													placeholder="Fecha inicio de n&oacute;mina"
+													ng-model="nominaDto.fechaInicioNomina"
+													ng-required="true"
+													name= "fechaInicioNomina_"/>
+											<span class="messages" ng-show="creacionNomForm.$submitted || creacionNomForm.fechaFinNomina_.$touched">
+												<span ng-show="buscarClienteForm.fechaInicioNomina_.$error.required">El campo es obligatorio.</span>
+											</span>
+										</div>
+										<div class="col-xs-4">
+											<label class="control-label">Fecha fin de n&oacute;mina</label>
+												<input id="fechaFinNomina" type="date"
+												       name="fechaFinNomina_"
+													   class="form-control"
+														placeholder="Fecha inicio de n&oacute;mina"
+														ng-model="nominaDto.fechaFinNomina" ng-required="true" />
+												<span class="messages" ng-show="creacionNomForm.$submitted || creacionNomForm.fechaFinNomina_.$touched">
+												<span ng-show="buscarClienteForm.fechaFinNomina_.$error.required">El campo es obligatorio.</span>
+											</span>
+										</div>
+									</div>
+									<br>
+									<div class="row" ng-show="errorSecciones.esCliente == true">
+										<div id="errorNominaCliente"></div>
+									</div>
+									<div class="row" ng-show="errorSecciones.esPrestadoraServicio == true">
+										<div id="errorNominaPrestadora"></div>
+									</div>
+									<br>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-danger"
+											data-dismiss="modal">Cerrar</button>
+										<button type="submit" class="btn-green btn" name="crearNomina" ng-show="errorSecciones.esCliente == false && errorSecciones.esPrestadoraServicio == false "
+											ng-click="crearNomina();" ng-disabled="creacionNomForm.$invalid">Crear n&oacute;mina</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+			<div class="modal fade" id="modalHistoricoMovimiento" role="dialog"  data-backdrop="static" >
+			<div class="modal-dialog" style="width: 40%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Hist&oacute;rico n&oacute;mina</h4><br>
+						<h4 class="modal-title">Clave n&oacute;mina: {{claveNomina}}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="table-responsive">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>Responsable movimiento</th>
+												<th>Estatus de la n&oacute;mina</th>
+												<th>Observaci&oacute;n</th>
+												<th>Fecha movimiento</th>
+											</tr>
+										</thead>
+										<tbody>
+
+											<tr ng-repeat="historico in gridHistorico">
+												<td align="left">{{historico.nombreUsuarioMovimiento}}</td>
+												<td align="left">{{historico.descEstatusNomina}}</td>
+												<td align="left">{{historico.observacion}}</td>
+												<td align="left">{{historico.fechaMovimientoFormato}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+								<div class="modal-footer">
+										<button type="button" class="btn btn-danger"
+											data-dismiss="modal">Cerrar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="modalColaboradores" role="dialog"  data-backdrop="static" >
+			<div class="modal-dialog" style="width: 40%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Colaboradores de n&oacute;mina</h4><br>
+						<h4 class="modal-title">Clave n&oacute;mina: {{claveNomina}}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="table-responsive">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>Nombre</th>
+												<th>RFC</th>
+												<th>Monto PPP</th>
+												<th>Cuenta</th>
+
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="data in dataExcel.contentRows">
+												<td>{{data.nombre}}</td>
+												<td>{{data.rfc}}</td>
+												<td align="right">{{data.montoPPP | currency}}</td>
+												<td align="right">{{data.numeroCuenta}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+								<div class="modal-footer">
+										<button type="button" class="btn btn-danger"
+											data-dismiss="modal">Cerrar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	<div class="modal fade" id="agregarDocumentoNominaPpp"
+		role="dialog" data-backdrop="static" data-keyboard="false"
+		tabindex="-1">
+		<div class="modal-dialog modal-lg modal-dialog-scrollable"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Documentos </h5>
+				</div>
+				<form id="modalDocNominaPpp" name="modalDocNominaPpp" novalidate>
+					<div class="modal-body">
+
+						<div class="row">
+							<div class="col-md-12">
+
+								<input class="btn btn-info-alt form-control" required
+									name="filePorSubir" id="file_nominappp" type="file"
+									accept="{{tipoDoc}}"
+									onchange="angular.element(this).scope().fileChangedDocNominaPpp(this)"
+									class="filestyle"
+									data-buttonText="archivoPrestadora.nombreArchivo" /> <span
+									class="messages"
+									ng-show="modalDocNominaPpp.$submitted || modalDocNominaPpp.filePorSubir.$touched">
+									<span ng-show="modalDocNominaPpp.filePorSubir.$error.required">
+										El campo es obligatorio. </span>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<br />
+
+					<div class="modal-footer">
+						<button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>
+						<button type="button" class="btn-green btn"
+							ng-click="guardarDocumentoNominaPpp()">GUARDAR</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+
+	 <div class="modal fade" id="verDocumentoFactura" role="dialog"  data-backdrop="static" data-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document" >
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <h5 class="modal-title">Documento</h5>
+                </div>
+                <form id="modalDoc" name="modalDoc" novalidate>
+                <div class="modal-body">
+                	<div class="row">
+                		<div class="col-md-12">
+                			<div id="pdfPrefactura"></div>
+                		</div>
+                	</div>
+			</div>
+			<br/>
+                <div class="modal-footer">
+                   <button type="button" class="btn-brown btn" data-dismiss="modal" ng-click="cancelarPrefactura()">CANCELAR</button>
+               </div>
+               </form>
+             </div>
+        </div>
+    </div>
+
+   	<div class="modal fade" tabindex="-1" role="dialog"
+		data-backdrop="static" id="modalCancelarNomina"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Cancelar N&oacute;mina</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<label class="control-label">Motivo:<span
+								class="ng-scope">*</span></label>
+							<div class="form-group">
+								<textarea type="text" class="form-control" maxlength="1000"
+									ng-model="motivoCancelacion" ng-required="true"
+									required="required"
+									onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"> </textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>
+					<button type="button" class="btn-green btn" ng-click="cancelarNomina(clienteSeleccionado);" ng-disabled="!motivoCancelacion" id="idCancelarNomina" data-dismiss="modal">ACEPTAR</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" tabindex="-1" role="dialog"
+		data-backdrop="static" id="modalPacTimbrado"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Selecci&oacute;n de PAC</h4>
+				</div>
+				<div class="modal-body">
+					<form id="pacForm" name="pacForm">
+						<div class="row" >
+							<div class="col-xs-6">
+								<label class="control-label ">PAC timbrador*: </label>
+								<select name="pacTimbrado"
+									class="form-control "
+									ng-model="pacTimbrado.catPacTimbrado" required
+									ng-options="item.descripcion for item in comboPac | orderBy:'item.descripcion' track by item.idCatGeneral">
+									<option value="">Seleccione una opci&oacute;n</option>
+								</select>
+
+								<span class="messages"ng-show="pacForm.$submitted || pacForm.pacTimbrado.$touched">
+									<span ng-show="pacForm.pacTimbrado.$error.required">
+									El campo es obligatorio.</span>
+								</span>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>
+					<button type="button" class="btn-green btn" ng-click="generarFactura(nominaProcesoSeleccionada, pacForm);" ng-disabled="!pacTimbrado.catPacTimbrado" id="idCancelarNomina" data-dismiss="modal">ACEPTAR</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" tabindex="-1" role="dialog"
+		data-backdrop="static" id="modalPacTimbradoColaboradores"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Selecci&oacute;n de PAC</h4>
+				</div>
+				<div class="modal-body">
+					<form id="pacForm" name="pacForm">
+						<div class="row" >
+							<div class="col-xs-6">
+								<label class="control-label ">PAC timbrador*: </label>
+								<select name="pacTimbrado"
+									class="form-control "
+									ng-model="pacTimbrado.catPacTimbrado" required
+									ng-options="item.descripcion for item in comboPac | orderBy:'item.descripcion' track by item.idCatGeneral">
+									<option value="">Seleccione una opci&oacute;n</option>
+								</select>
+
+								<span class="messages"ng-show="pacForm.$submitted || pacForm.pacTimbrado.$touched">
+									<span ng-show="pacForm.pacTimbrado.$error.required">
+									El campo es obligatorio.</span>
+								</span>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>
+					<button type="button" class="btn-green btn" ng-click="timbrarColaboradores(nominaProcesoSeleccionada, pacForm);" ng-disabled="!pacTimbrado.catPacTimbrado" id="idCancelarNomina" data-dismiss="modal">ACEPTAR</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

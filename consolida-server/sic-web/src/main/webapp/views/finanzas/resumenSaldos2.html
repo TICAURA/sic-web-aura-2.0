@@ -1,0 +1,202 @@
+<link rel='stylesheet' type='text/css'
+	href='assets/css/finanzas/styleResumen2.css' />
+<div class="container-fluid" ng-controller="resumenSaldosController "
+	style="background: #d5d6da;">
+	<div id="page-heading">
+		<ol class="breadcrumb">
+			<li><a href="#/">Menu principal</a></li>
+			<li class="active">Resumen</li>
+		</ol>
+	</div>
+
+	<div class="row">
+
+		<div class="col-xs-12 col-md-12 resumen">
+			
+			<div class="container" style ="width:100%">
+					<!-- FONDOS, fecha y titulos -->
+					<div class="row sep">
+						<div class="col-xs-12 col-md-12 col-lg-6 offset-lg-3 text-center">
+							<p class="fecha"><strong>Fecha de consulta: {{fechaSaldo|date:'dd/MM/yyyy HH:mm:ss'}}</strong></p>					
+						</div>
+						<div class="col-xs-12 col-md-12 col-lg-3 actualizar">
+							<button id="actualizar" class="btn btn-primary" ng-click="resumenSaldo();">
+							<i class="fa fa-refresh" aria-hidden="true"></i> Actualizar
+						</button>
+						</div>
+					</div>
+					<div class="row text-center border-cuadro">
+						<div class="col-xs-12 col-md-6 division">
+							<h2 class="text-center">Fondos</h2>
+							<!-- cuadros de datos -->
+							<ul class="lista">
+								<li>
+									<div class="saldo">
+										<p><strong>Saldo Clientes</strong></p>
+										<p>{{totalSaldoF|currency}}</p>
+									</div>
+								</li>
+								<li>
+									<div class="ingreso_bruto">
+										<p><strong>Ingreso Bruto</strong></p>
+										<p>{{totalSaldoIBF|currency}}</p>
+									</div>
+								</li>
+								<li>
+									<div class="comisiones">
+										<p><strong>Comisiones</strong></p>
+										<p>{{totalSaldoCMF|currency}}</p>
+									</div>
+								</li>
+								<li>
+									<div class="socios">
+										<p><strong>Socios</strong></p>
+										<p>{{totalSaldoSCF|currency}}</p>
+									</div>
+								</li>
+							</ul>
+							<h3 class="text-center mobile">Total de Fondos:<br>{{saldoTotalF|currency}}</h3>
+						</div>
+
+						<div class="col-xs-12 col-md-6 division">
+							<h2 class="text-center">Mixtas</h2>
+							<!-- cuadros de datos -->
+							<ul class="lista">
+								<li>
+									<div class="saldo total_saldo_gastos">
+										<p><strong>Saldo Clientes</strong></p>
+										<p>{{totalSaldoOI|currency}}</p>
+									</div>
+								</li>
+								<li>
+									<div class="ingreso_bruto ingreso_gasto">
+										<p><strong>Ingreso Bruto</strong></p>
+										<p>{{totalSaldoIBOI|currency}}</p>
+									</div>
+								</li>
+								<li>
+									<div class="cargo_social cargo_gasto">
+										<p><strong>Carga Social</strong></p>
+										<p>{{totalSaldoCSOI|currency}}</p>
+									</div>
+								</li>
+								<li>
+									<div class="impuesto_federal federal_gasto">
+										<p><strong>Impuesto Federal</strong></p>
+										<p>{{totalSaldoIFOI|currency}}</p>
+									</div>
+								</li>
+								<li>
+									<div class="socios socio_gasto">
+										<p><strong>Socios</strong></p>
+										<p>{{totalSaldoSCOI|currency}}</p>
+									</div>
+								</li>
+							</ul>
+							<h3 class="text-center mobile">Total Otros Gastos:<br>{{saldoTotalOI|currency}}</h3>
+						</div>
+						<div class="col-xs-12 col-md-6 desktop">
+							<h3 class="text-center">Total de Fondos:<br>{{saldoTotalF|currency}}</h3>
+						</div>
+						<div class="col-xs-12 col-md-6 desktop">
+							<h3 class="text-center">Total de Mixtas:<br>{{saldoTotalOI|currency}}</h3>
+						</div>
+					</div>
+	
+					<!-- subtotal y total -->
+			
+					<div class="row text-center border-cuadro">
+						<div class="col-xs-12 col-md-12">
+							<h2 class="text-center">Total</h2>
+							<!-- cuadros de datos -->	
+							<ul>
+								<li>
+									<div class="saldo total_saldo">
+										<p>Total de Fondos</strong></p>
+										<p>{{saldoTotalF|currency}}</p>
+									</div>
+								</li>
+								
+								<li>
+									<div class="comisiones total_saldo_2">
+										<p>Total de Mixtas</p>
+										<p>{{saldoTotalOI|currency}}</p>
+									</div>
+								</li>
+							</ul>
+							<h3 class="text-center">Total: {{saldoTotal|currency}}</h3>
+						</div>
+					</div>
+					
+			
+					<!-- fin -->
+					
+							<div class="row text-center">
+					<div class="col-xs-12 col-md-12 col-lg-3 ">
+						
+					</div>
+					<div class="col-xs-12 col-md-12 col-lg-6 "> 
+						
+
+					</div>
+					<div class="col-xs-12 col-md-12 col-lg-3 "  >
+						<button id="descarga" ng-json-export-excel data="resumen" 
+							report-fields="{'concepto': 'CONCEPTO', 'montoFondo':'MONTO FONDO', 'montoOtroIngreso':'MONTO MIXTO' }"
+							,
+								filename=" 'resumenSaldos' " separator=","
+							class="css-class btn btn-sky" tooltip="Exportar resumen">
+							<span class="fa fa-download"></span>
+						</button>
+
+					</div>
+				</div>
+
+				
+
+				<panel panel-class="panel-sky" heading="RESUMEN"
+				ng-show="false">
+			<div class="table-responsive">
+				<table class="table" ng-table="tableSaldoParams">
+					<thead style="color: white; background: #353a4d">
+						<tr>
+							<th align="left">CONCEPTO</th>
+							<th align="center">MONTO FONDO</th>
+							<th align="center">MONTO MIXTO</th>
+						</tr>
+
+					</thead>
+					<tbody>
+						<tr ng-repeat="p in $data">
+							<td align="left">{{p.concepto}}</td>
+							<td align="right">{{p.montoFondo | currency }}</td>
+							<td align="right">{{p.montoOtroIngreso | currency }}</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+			
+			</panel>
+			
+					
+				</div>
+	
+		</div>
+	</div>
+
+
+
+
+</div>
+
+<style type="text/css">
+	.resumen ul.lista li {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    display: block;
+    color: #fff;
+}
+</style>
+
+

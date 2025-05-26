@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:context="http://www.springframework.org/schema/context" xmlns:security="http://www.springframework.org/schema/security"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                           http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.3.xsd">
+
+   <bean class="org.springframework.web.client.RestTemplate" />
+	<bean id="userService" class="mx.com.consolida.usuario.UserService">
+	</bean>
+<!--    <security:http auto-config="true" use-expressions="true"> -->
+<!--    <security:intercept-url pattern="/registro.html" access="permitAll"/> -->
+<!--    <security:intercept-url pattern="/" access="isAuthenticated()" />   -->
+     
+<!-- 	<security:intercept-url pattern="/index.html" access="isAuthenticated()" />   -->
+<!--        <security:form-login login-page="/login.html#/login" default-target-url="/index.html"  -->
+<!--         authentication-failure-url="/login.html?error=autentication" -->
+<!--          always-use-default-target="true" /> -->
+<!--       <security:logout logout-success-url="/login.html" />  -->
+
+<!--       <security:session-management> -->
+<!--          <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="false" -->
+<!--             expired-url="/login.html" /> -->
+<!--       </security:session-management>   -->
+<!--    </security:http> -->
+
+<!-- 	<security:authentication-manager> -->
+<!-- 		<security:authentication-provider user-service-ref="userService"> -->
+<!-- 			<security:password-encoder ref="passwordEncoder" /> -->
+<!-- 		</security:authentication-provider> -->
+<!-- 	</security:authentication-manager> -->
+	
+	
+		
+	<!-- Use a Md5 encoder since the user's passwords are stored as Md5 in the 	database -->
+<!-- 	<bean class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" id="passwordEncoder" /> -->
+   
+   <!-- Subir archivos en  Multi part -->
+   <!--bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/-->
+
+</beans>

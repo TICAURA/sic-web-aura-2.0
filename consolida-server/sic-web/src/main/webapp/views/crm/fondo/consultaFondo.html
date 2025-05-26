@@ -1,0 +1,85 @@
+<div id="page-heading">
+    <ol class="breadcrumb">
+        <li><a href="#/">CRM</a></li>
+        <li class="active">Registro de Centro de Costos </li>
+    </ol>
+
+</div>
+
+<div class="container-fluid" ng-controller="consultaCelulaController">
+    <div class="row">
+        <div class="col-md-12">
+            <panel panel-class="panel-primary" heading="Busqueda de fondos">
+                <panel-controls>
+                    <panel-control-collapse></panel-control-collapse>
+
+                    <a class="" href="#/crm/fondo/registroFondo">Crear Centro de Costos<i class="fa fa-plus-square"></i></a>
+
+                </panel-controls>
+                <form>
+                    <div class="row">
+                        <div class="col-xs-5">
+                            <label class="control-label">Nombre/Razon Social: </label>
+                            <input type="text" class="form-control" placeholder="Nombre o raz&oacute;n social">
+                        </div>
+
+                        <div class="col-xs-3">
+                            <label class="control-label">RFC: </label>
+                            <input type="text" class="form-control" placeholder="RFC">
+                        </div>
+
+                        <div class="col-xs-1">
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <button class="btn-primary btn btn-lg">
+                                <span class="fa fa-search"></span> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+            </panel>
+
+            <panel panel-class="panel-sky" heading="Centro de costos registrados">
+                <panel-controls>
+                    <panel-control-collapse></panel-control-collapse>
+                </panel-controls>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="padding-right:100px">Nombre / Raz&oacute;n social</th>
+                                <th>RFC del fondo</th>
+                                <th>Responsable del fondo</th>
+                                <th>RFC responsable del fondo</th>
+                                <th>Correo responsable del fondo</th>
+                                <th>N&uacute;mero patronas</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="celula in gridCelula ">
+                                <td>{{celula.nombreCelula}}</td>
+                                <td>{{celula.rfcCelula}}</td>
+                                <td>{{celula.nombreResponsable}} &nbsp; {{celula.apellidoPaternoResponsable}} &nbsp; {{celula.apellidoMaternoResponsable}} </td>
+                                <td>{{celula.rfcResponsable}}</td>
+                                <td>{{celula.correoResponsable}}</td>
+                                <td>3</td>
+                                <td>
+                                    <!--<a href="#/cotizador/cotizacion" class="glyphicon glyphicon-plus" title="Nueva Cotizaci&oacute;n"></a>-->
+                                    <a ng-click="actualizarCelula(celula.rfcCelula)" class="glyphicon glyphicon-pencil" title="Actualiza fondo"></a>
+                                    <!-- <a ng-click="borrarCelula(celula.idCelula)" class="glyphicon glyphicon-remove" title="Eliminar fondo"></a> -->
+                                    <a  href="#/crm/fondo/registroPersonalFondo" class="glyphicon glyphicon-user" title="Agregar personal"></a>
+                                    <a href="#/crm/fondo/consultaPatrona" class="glyphicon glyphicon-th-list" title="Consultar patronas"></a>
+                                    <a ng-click="nuevoClienteCel()" class="glyphicon glyphicon-plus" title="Crear Cliente"></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </panel>
+        </div>
+    </div>
+
+</div>
+
+<!-- container-fluid -->

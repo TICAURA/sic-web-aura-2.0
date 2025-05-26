@@ -1,0 +1,69 @@
+<div class="container-fluid" >
+    <div id="page-heading">
+        <ol class="breadcrumb">
+            <li><a href="#/">CRM</a></li>
+            <li><a href="#/crm/celula/consultaCelula">Centro de Costos</a></li>
+            <li class="active">Registro nominista</li>
+        </ol>
+
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <panel panel-class="panel-primary" heading="Registro nominista">
+                    <panel-controls>
+                        <panel-control-collapse></panel-control-collapse>
+                    </panel-controls>
+                    <form id="clieneTempForm">
+                        <div class="row">
+                            <b></b>
+                            <H5>Datos Nominista</H5>
+                            </b>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <label class="control-label">Nombre*:
+                                </label>
+                                <input type="text" class="form-control" placeholder="Nombre" ng-model="celulaDto.nombreApoderado" required="required">
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label">Primer apellido*: </label>
+                                <input type="text" class="form-control" placeholder="Primer apellido" ng-model="celulaDto.apellidoPaternoApoderado" required="required">
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label">Segundo apellido: </label>
+                                <input type="text" class="form-control" placeholder="Segundo apellido" ng-model="celulaDto.apellidoMaternoApoderado">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <label class="control-label">Tel&eacute;fono de contacto: </label>
+                                <input type="text" class="form-control" placeholder="Telefono de contacto" ng-model="celulaDto.rfcApoderado" required="required" maxlength="15" min="15" >
+                            </div>
+
+                            <div class="col-xs-3">
+                                <label class="control-label">Correo electr&oacute;nico: </label>
+                                <input placeholder="ejemplo@correo.com" name="correo_field" ng-model="celulaDto.correoApoderado" ng-pattern="/^[a-zA-z0-9_]*(\.[_a-zA-Z0-9-]+)*[a-zA-Z0-9]@[a-zA-Z0-9]+[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})$/" ng-model="celulaDto.correoElectronico" class="ns_ form-control" type="text">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row" align="right">
+                        <br />
+                        <button class="btn-danger btn" ng-click="cancelar();">Cancelar</button>
+                        <button class="btn-primary btn" ng-disabled="celulaForm.$invalid" type="submit" ng-click=guardarCelula();>Guardar</button>
+                    </div>
+                </panel>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- container-fluid -->

@@ -1,0 +1,186 @@
+<div class="container-fluid">
+	<div ng-controller="rentabilidadController">
+		<div id="page-heading">
+			<ol class="breadcrumb">
+				<li><a href="#/">Menu principal</a></li>
+				<li><a href="#/cotizador/cotizaciones">Solicitud
+						Autorizaciones</a></li>
+				<li class="active">Rentabilidad</li>
+			</ol>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<panel panel-class="panel-info" heading="Rentabilidad"> 
+					<panel-controls>
+					<panel-control-collapse></panel-control-collapse> 
+					</panel-controls>
+					<form id="rentabilidadForm" name="rentabilidadForm">
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Tipo de producto: </label> 
+								{{cotizacion.idImss.descripcion}}
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Periodicidad: </label> 
+								{{cotizacion.idPeriodicidad.descripcionTipoPago}}
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Total colaboradores: </label> 
+								{{totalColaboradores}}
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label" for="valorTimbre">Valor timbre: </label> 
+								<input type="text" id="valorTimbre" name="valorTimbre" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15"
+									placeholder="Valor timbre" ng-model="rentabilidad.valorTimbre" ng-required="true"/>
+								<span class="messages" ng-show="rentabilidadForm.$submitted || rentabilidadForm.valorTimbre.$touched || rentabilidadForm.valorTimbre.$error.pattern">
+									<span class="messages" ng-show="rentabilidadForm.valorTimbre.$error.pattern">El campo es valor moneda 999.99.</span>
+									<span class="messages" ng-show="rentabilidadForm.valorTimbre.$error.required || rentabilidadForm.$submitted">El campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label" for="valorSpei">Valor SPEI: </label> 
+								<input type="text" id="valorSpei" name="valorSpei" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15"
+									placeholder="valor SPEI" ng-model="rentabilidad.valorSpei" ng-required="true"/>
+								<span class="messages" ng-show="rentabilidadForm.$submitted || rentabilidadForm.valorSpei.$touched || rentabilidadForm.valorSpei.$error.pattern">
+									<span class="messages" ng-show="rentabilidadForm.valorSpei.$error.pattern">El campo es valor moneda 999.99.</span>
+									<span class="messages" ng-show="rentabilidadForm.valorSpei.$error.required || rentabilidadForm.$submitted">El campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label" for="costoEstrategia">% Costo estrategia: </label> 
+								<input type="text" id="costoEstrategia" name="costoEstrategia" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,15})?$/" maxlength="15"
+									placeholder="% Costo estrategia" ng-model="rentabilidad.costoEstrategia" ng-required="true"/>
+								<span class="messages" ng-show="rentabilidadForm.$submitted || rentabilidadForm.costoEstrategia.$touched || rentabilidadForm.costoEstrategia.$error.pattern">
+									<span class="messages" ng-show="rentabilidadForm.costoEstrategia.$error.pattern">El campo es valor porcentaje 0 al 100.</span>
+									<span class="messages" ng-show="rentabilidadForm.costoEstrategia.$error.required || rentabilidadForm.$submitted">El campo es obligatorio.</span>
+								</span>
+							</div>
+						</div>
+						<div class="row">
+                            <div class="col-xs-12" >
+                                <span style="color: #a2acb3; height: 100%; width: auto; float: left; font-size: 14px; font-weight: 700; padding: 14px 0 14px; position: relative; margin: 0; line-height: 20px; cursor: text; text-transform: uppercase;">SGMM % {{sumarSGMM()}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12" >
+                            	<span class="messages" ng-show="sumarSGMM() > 100">
+									El valor al sumar Cliente, Promotor y Corporativo es mayor del 100%
+								</span>
+                            </div>
+                        </div>
+						<div class="row">
+							<div class="col-xs-3">
+								<label class="control-label" for="montoSGMM">Monto*: </label> 
+								<input type="text" id="montoSGMM" name="montoSGMM" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15"
+									placeholder="Monto SGMM" ng-model="rentabilidad.montoSGMM" ng-required="true"/>
+								<span class="messages" ng-show="rentabilidadForm.$submitted || rentabilidadForm.montoSGMM.$touched || rentabilidadForm.montoSGMM.$error.pattern">
+									<span class="messages" ng-show="rentabilidadForm.montoSGMM.$error.pattern">El campo es valor moneda 999.99.</span>
+									<span class="messages" ng-show="rentabilidadForm.montoSGMM.$error.required || rentabilidadForm.$submitted">El campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-xs-3">
+								<label class="control-label" for="porcentajeClSGMM">% Cliente*: </label> 
+								<input type="text" id="porcentajeClSGMM" name="porcentajeClSGMM" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15"
+									placeholder="porcentaje Cliente" ng-model="rentabilidad.porcentajeClSGMM" ng-required="true" onclick="this.select()"/>
+								<span class="messages" ng-show="rentabilidadForm.$submitted || rentabilidadForm.porcentajeClSGMM.$touched || rentabilidadForm.porcentajeClSGMM.$error.pattern">
+									<span class="messages" ng-show="rentabilidadForm.porcentajeClSGMM.$error.pattern">El campo es valor moneda 999.99.</span>
+									<span class="messages" ng-show="rentabilidadForm.porcentajeClSGMM.$error.required || rentabilidadForm.$submitted">El campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-xs-3">
+								<label class="control-label" for="porcentajePrSGMM">% Promotor*: </label> 
+								<input type="text" id="porcentajePrSGMM" name="porcentajePrSGMM" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15"
+									placeholder="porcentaje Promotor" ng-model="rentabilidad.porcentajePrSGMM" ng-required="true" onclick="this.select()"/>
+								<span class="messages" ng-show="rentabilidadForm.$submitted || rentabilidadForm.porcentajePrSGMM.$touched || rentabilidadForm.porcentajePrSGMM.$error.pattern">
+									<span class="messages" ng-show="rentabilidadForm.porcentajePrSGMM.$error.pattern">El campo es valor moneda 999.99.</span>
+									<span class="messages" ng-show="rentabilidadForm.porcentajePrSGMM.$error.required || rentabilidadForm.$submitted">El campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-xs-3">
+								<label class="control-label" for="porcentajeCoSGMM">% Corporativo*: </label> 
+								<input type="text" id="porcentajeCoSGMM" name="porcentajeCoSGMM" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15"
+									placeholder="porcentaje Promotor" ng-model="rentabilidad.porcentajeCoSGMM" ng-required="true" onclick="this.select()"/>
+								<span class="messages" ng-show="rentabilidadForm.$submitted || rentabilidadForm.porcentajeCoSGMM.$touched || rentabilidadForm.porcentajeCoSGMM.$error.pattern">
+									<span class="messages" ng-show="rentabilidadForm.porcentajeCoSGMM.$error.pattern">El campo es valor moneda 999.99.</span>
+									<span class="messages" ng-show="rentabilidadForm.porcentajeCoSGMM.$error.required || rentabilidadForm.$submitted">El campo es obligatorio.</span>
+								</span>
+							</div>
+						</div>
+						<div class="row">
+                            <div class="col-xs-12" >
+                                <span style="color: #a2acb3; height: 100%; width: auto; float: left; font-size: 14px; font-weight: 700; padding: 14px 0 14px; position: relative; margin: 0; line-height: 20px; cursor: text; text-transform: uppercase;">IMPLANT % {{sumarIMPLANT()}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12" >
+                            	<span class="messages" ng-show="sumarIMPLANT() > 100">
+									El valor al sumar Cliente, Promotor y Corporativo es mayor del 100%
+								</span>
+                            </div>
+                        </div>
+						<div class="row">
+							<div class="col-xs-3">
+								<label class="control-label" for="montoIMPLANT">Monto*: </label> 
+								<input type="text" id="montoIMPLANT" name="montoIMPLANT" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15"
+									placeholder="Monto IMPLANT" ng-model="rentabilidad.montoIMPLANT" ng-required="true"/>
+								<span class="messages" ng-show="rentabilidadForm.$submitted || rentabilidadForm.montoIMPLANT.$touched || rentabilidadForm.montoIMPLANT.$error.pattern">
+									<span class="messages" ng-show="rentabilidadForm.montoIMPLANT.$error.pattern">El campo es valor moneda 999.99.</span>
+									<span class="messages" ng-show="rentabilidadForm.montoIMPLANT.$error.required || rentabilidadForm.$submitted">El campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-xs-3">
+								<label class="control-label" for="porcentajeClIMPLANT">% Cliente*: </label> 
+								<input type="text" id="porcentajeClIMPLANT" name="porcentajeClIMPLANT" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15"
+									placeholder="porcentaje Cliente" ng-model="rentabilidad.porcentajeClIMPLANT" ng-required="true" onclick="this.select()"/>
+								<span class="messages" ng-show="rentabilidadForm.$submitted || rentabilidadForm.porcentajeClIMPLANT.$touched || rentabilidadForm.porcentajeClIMPLANT.$error.pattern">
+									<span class="messages" ng-show="rentabilidadForm.porcentajeClIMPLANT.$error.pattern">El campo es valor moneda 999.99.</span>
+									<span class="messages" ng-show="rentabilidadForm.porcentajeClIMPLANT.$error.required || rentabilidadForm.$submitted">El campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-xs-3">
+								<label class="control-label" for="porcentajePrIMPLANT">% Promotor*: </label> 
+								<input type="text" id="porcentajePrIMPLANT" name="porcentajePrIMPLANT" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15"
+									placeholder="porcentaje Promotor" ng-model="rentabilidad.porcentajePrIMPLANT" ng-required="true" onclick="this.select()"/>
+								<span class="messages" ng-show="rentabilidadForm.$submitted || rentabilidadForm.porcentajePrIMPLANT.$touched || rentabilidadForm.porcentajePrIMPLANT.$error.pattern">
+									<span class="messages" ng-show="rentabilidadForm.porcentajePrIMPLANT.$error.pattern">El campo es valor moneda 999.99.</span>
+									<span class="messages" ng-show="rentabilidadForm.porcentajePrIMPLANT.$error.required || rentabilidadForm.$submitted">El campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-xs-3">
+								<label class="control-label" for="porcentajeCoIMPLANT">% Corporativo*: </label> 
+								<input type="text" id="porcentajeCoIMPLANT" name="porcentajeCoIMPLANT" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15"
+									placeholder="porcentaje Promotor" ng-model="rentabilidad.porcentajeCoIMPLANT" ng-required="true" onclick="this.select()"/>
+								<span class="messages" ng-show="rentabilidadForm.$submitted || rentabilidadForm.porcentajeCoIMPLANT.$touched || rentabilidadForm.porcentajeCoIMPLANT.$error.pattern">
+									<span class="messages" ng-show="rentabilidadForm.porcentajeCoIMPLANT.$error.pattern">El campo es valor moneda 999.99.</span>
+									<span class="messages" ng-show="rentabilidadForm.porcentajeCoIMPLANT.$error.required || rentabilidadForm.$submitted">El campo es obligatorio.</span>
+								</span>
+							</div>
+						</div>
+						<div class="row">
+                            <div class="col-xs-12" >
+                                <span style="color: #a2acb3; height: 100%; width: auto; float: left; font-size: 14px; font-weight: 700; padding: 14px 0 14px; position: relative; margin: 0; line-height: 20px; cursor: text; text-transform: uppercase;">Costos indirectos</span>
+                            </div>
+                        </div>
+                        <div class="row">
+							<div class="col-xs-3">
+								<label class="control-label" for="porcentajeCostIndi">% Indirecto*: </label> 
+								<input type="text" id="porcentajeCostIndi" name="porcentajeCostIndi" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15"
+									placeholder="Porcentaje Indirecto" ng-model="rentabilidad.porcentajeCostIndi" ng-required="true"/>
+								<span class="messages" ng-show="rentabilidadForm.$submitted || rentabilidadForm.porcentajeCostIndi.$touched || rentabilidadForm.porcentajeCostIndi.$error.pattern">
+									<span class="messages" ng-show="rentabilidadForm.porcentajeCostIndi.$error.pattern">El campo es valor moneda 999.99.</span>
+									<span class="messages" ng-show="rentabilidadForm.porcentajeCostIndi.$error.required || rentabilidadForm.$submitted">El campo es obligatorio.</span>
+								</span>
+							</div>
+						</div>
+						<div class="row" align="center" style="padding-top: 25px;">
+							<button class="btn-brown btn" ng-click="cancelar();">Regresar</button>	
+                            <button type="submit" class="btn-green btn"  ng-disabled="rentabilidadForm.$invalid"> <span class="fa fa-gears"/> Calcular rentabilidad</button>
+						</div>
+					</form>
+				</panel>
+			</div>
+		</div>
+	</div>
+</div>

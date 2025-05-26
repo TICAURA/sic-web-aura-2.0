@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="monitor" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="112f648a-fedd-4048-8d3d-5d63d1099d9e">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Miguel\\"]]></defaultValueExpression>
+	</parameter>
+	<field name="totales.totalServidores" class="java.lang.String"/>
+	<field name="totales.totalDiscos" class="java.lang.String"/>
+	<field name="totales.discosActualizados" class="java.lang.String"/>
+	<field name="totales.discosEnActualizacion" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="0" y="13" width="263" height="33" uuid="a5ea1f1f-8f6c-4889-bb19-dbb66a29a6c9"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Monitor Linux DRP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="117" y="46" width="157" height="22" uuid="78a26c0e-e3e4-430b-a1cf-7fcda45a7b79"/>
+				<text><![CDATA[Estatus actual]]></text>
+			</staticText>
+			<image>
+				<reportElement x="286" y="0" width="269" height="70" uuid="98923dda-e68e-4ae5-9100-629965722811"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR} + "logo_conacyt_v2.gif"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement style="Column header" x="0" y="9" width="197" height="15" uuid="930e1f06-4636-4718-a0f4-550b91e06dee"/>
+				<text><![CDATA[Servidores Secundarios Monitor]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="33" width="555" height="1" uuid="18dae021-cfc0-45be-92f6-9e673f785113"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="65" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="65" uuid="779040ae-350c-4d82-adc9-9798b7d3d5a2"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("servidores")]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "servidor.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="70">
+			<rectangle>
+				<reportElement x="0" y="20" width="132" height="20" uuid="7b886d1b-eb36-40a6-b764-220e9ee3f84d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="133" y="20" width="145" height="20" uuid="9978bd3f-5a10-4d34-92d8-5288bd1a513c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="425" y="20" width="129" height="20" uuid="88eb2c1d-cd3a-42bd-b0de-a6f1c1e962b3"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="279" y="20" width="145" height="20" uuid="52f44031-5d03-4e2a-9a87-c03d5a880dd4"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="40" width="132" height="20" uuid="0bd82db6-4ef8-462b-bb95-a327ff0ac515"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="133" y="40" width="145" height="20" uuid="9dcfc87e-7c6a-410c-8eac-28c56a36a3e5"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="425" y="40" width="129" height="20" uuid="73adbcfc-45ac-4ce2-88bd-fab4a90898c2"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="279" y="40" width="145" height="20" uuid="3017c99b-131a-4f6f-a09a-70393d441c60"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="0" width="553" height="20" backcolor="#0066CC" uuid="8c3538e9-8985-464f-9579-e25cac6fb00b"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="Column header" x="219" y="5" width="95" height="15" forecolor="#CCFFFF" uuid="a749e27b-a824-492a-a13a-ca91694d7d97"/>
+				<text><![CDATA[Totales Monitor]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="12" y="40" width="120" height="20" forecolor="#666666" uuid="d0713471-4619-489a-86e4-ef1f18fa15d0"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totales.totalServidores}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="139" y="40" width="100" height="20" forecolor="#666666" uuid="6e3dcf46-f256-4717-902e-e6f976023678"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totales.totalDiscos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="286" y="40" width="100" height="20" forecolor="#666666" uuid="1de45af8-af05-4162-9445-7c7ecf7c2bdb"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totales.discosActualizados}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="433" y="40" width="100" height="20" forecolor="#666666" uuid="4daa0140-0de2-4be4-a657-914ff5aaa99c"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totales.discosEnActualizacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Column header" x="1" y="23" width="95" height="15" uuid="71001ad7-231b-47a4-9858-b3da50c13550"/>
+				<text><![CDATA[Total Servidores]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="138" y="23" width="95" height="15" uuid="bc7c369b-1f66-4e28-b071-0cff1ceb0cb6"/>
+				<text><![CDATA[Totales Discos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="285" y="23" width="123" height="15" uuid="37d337bf-105c-475f-8a97-42adc4f736e4"/>
+				<text><![CDATA[Discos migrados]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="430" y="23" width="123" height="15" uuid="1f2fc488-64ad-4852-80af-407542308b90"/>
+				<text><![CDATA[Discos por migrar]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="44" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="40337e64-7c67-4b00-a980-0b85aa3cc99a"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="03a5d921-8cb6-4659-a82f-86277957dd4d"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="1e168cd5-815a-4b80-91a5-aa5104960b06"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="950df1ef-9f90-44b2-a99d-f5d8d5213dd6"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

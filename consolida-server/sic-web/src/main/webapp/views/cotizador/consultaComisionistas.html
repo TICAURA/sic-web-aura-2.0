@@ -1,0 +1,62 @@
+<div class="container-fluid">
+	<div ng-controller="consultaComisionesController">
+		<div id="page-heading">
+			<ol class="breadcrumb">
+				<li><a href="#/">Cotizador</a></li>
+				<li class="active">Comisionistas</li>
+			</ol>
+			
+	</div>
+		
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+			<panel panel-class="panel-sky" heading="Comisionistas">
+				<panel-controls> <panel-control-collapse></panel-control-collapse>
+				
+				<a class="btn btn-orange" href=""> Agregar comisionistas
+					<i class="fa fa-plus-square"></i>
+				</a> 
+				</panel-controls>
+				<div class="table-responsive">
+				
+				
+					<table class="table table-striped">
+						<thead>
+							<tr >
+								<th align="center">Comisionista</th>
+								<th align="center">RFC</th>
+								<th align="center">Cuenta Bancaria</th>
+								<th align="center">CP</th>
+								<th align="center">Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							 <tr ng-repeat="x in comisionistas | filter : cvFilter">
+								<td>{{x.persona.nombre}} {{x.persona.apellidoPaterno}} {{x.persona.apellidoMaterno}}</td>
+								<td>{{x.persona.rfc}}</td>
+								<td>{{x.cuentaBancaria.clabeInterbancaria}}</td>
+								<td>{{x.domicilio.codigoPostal}}</td>
+						
+								<td align="center">
+									<a class="glyphicon glyphicon-pencil" ng-click="editarCanalVenta(x.idCanalVenta)" title="Editar"></a>
+									<a class="fa fa-building" ng-click="modalOficina(x)" title="Asignar cliente"></a>
+									<!-- <a class="glyphicon glyphicon-trash" title="Eliminar"></a> -->
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				</panel>
+				
+				
+				
+
+        
+			</div>
+		</div>
+
+	</div>
+</div>
+</div>

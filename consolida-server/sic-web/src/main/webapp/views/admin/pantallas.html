@@ -1,0 +1,106 @@
+<div class="container-fluid" ng-controller="pantallaController">
+<div id="page-heading">
+	<ol class="breadcrumb">
+		<li><a href="#/">Admin</a></li>
+		<li class="active">Pantallas</li>
+	</ol>
+</div>
+
+	<div class="row">
+		<div class="col-md-12">
+		
+			<panel panel-class="panel-sky" heading="Resultado de pantallas">
+				<panel-controls> 
+					<panel-control-collapse></panel-control-collapse>
+					<a href="" class="btn btn-orange" ng-click="nuevaPantalla()"><span class="fa fa-plus"></span> Nueva pantalla</a>
+				</panel-controls>
+				<div class="table-responsive" >
+					<table ng-table="tableParams"  class="table table-striped" show-filter="true">
+                        <tbody>
+                            <tr ng-repeat="x in $data">
+                                 <td  data-title="'Nombre'" filter="{nombre: 'text'}"  sortable="'nombre'">{{x.nombre}}</td>
+                                <td  data-title="'Ruta'" filter="{rutaPantalla: 'text'}"  sortable="'rutaPantalla'">{{x.rutaPantalla}}</td>
+                                <td  data-title="'Icono'" filter="{icono: 'text'}"  sortable="'icono'">{{x.icono}}</td>
+                                <td  data-title="'Estatus'"  sortable="'estatus'">{{x.indEstatus =='1'? 'Activo':'Inactivo'}}</td>
+                                <td  data-title="'Acciones'"><button class="btn btn-success" ng-click="editarPantalla(x)" ><span class="fa fa-edit" ></span>Editar</button></td>
+								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</panel>
+			
+			
+			<panel panel-class="panel-primary" heading="{{agregarEditarTitulo}}"> 
+				<panel-controls>
+					<panel-control-collapse></panel-control-collapse>  
+				</panel-controls>
+				
+				<form id="pantallaForm" name="pantallaForm" novalidate >
+					<div class="row">
+						<div class="col-xs-3">
+							<label class="control-label">Nombre pantalla: </label> 
+							<input
+								type="text" name ="nombrePantalla" class="form-control"
+								placeholder="nombre pantalla"
+								ng-model="pantalla.nombre" ng-required="true"/>	
+								
+							<span class="messages" ng-show="pantallaForm.$submitted || pantallaForm.nombrePantalla.$touched">
+       				        <span ng-show="pantallaForm.nombrePantalla.$error.required">El campo es obligatorio.</span>
+                            </span> 
+						</div>
+						
+						<div class="col-xs-3">
+							<label class="control-label">URL: </label> 
+							<input
+									placeholder="url" name="rutaPantalla"
+									ng-model="pantalla.rutaPantalla" 
+									class="form-control" type="text" required="required"> 
+							
+							<span class="messages" ng-show="pantallaForm.$submitted || pantallaForm.rutaPantalla.$touched">
+       				        <span ng-show="pantallaForm.rutaPantalla.$error.required">El campo es obligatorio.</span>
+                           
+							
+						</div> 
+						
+						<div class="col-xs-3">
+							<label class="control-label">Icono: </label> 
+							<input
+									placeholder="icono " name="icono"
+									ng-model="pantalla.icono" 
+									class="form-control" type="text" required="required"> 
+							
+							<span class="messages" ng-show="pantallaForm.$submitted || pantallaForm.icono.$touched">
+       				        <span ng-show="pantallaForm.icono.$error.required">El campo es obligatorio.</span>
+                            
+						</div>
+						
+						<div class="col-xs-3">
+							<label class="control-label">Estatus: </label> 
+							<div class="form-group">
+							<label class="col-sm-3 control-label">&nbsp;&nbsp;&nbsp;</label>
+							<div class="col-sm-6"><input type="checkbox" ng-model="pantalla.indEstatus" name="pantalla.indEstatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></div>
+						</div>
+							
+							<span class="messages" ng-show="pantallaForm.$submitted || pantallaForm.estatus.$touched">
+       				        <span ng-show="pantallaForm.estatus.$error.required">El campo es obligatorio.</span>
+       				        
+						</div>
+						
+						<div class="col-xs-1">
+							<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							<button type="submit" class="btn-primary btn btn-lg" ng-click="guardar(pantallaForm)">
+								<span class="fa fa-search"></span> Guardar
+							</button>
+							
+						</div>
+					</div>
+				</form>
+			</panel>
+			
+		</div>
+	</div>
+	
+	
+	
+</div>

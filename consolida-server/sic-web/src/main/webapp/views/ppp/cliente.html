@@ -1,0 +1,164 @@
+<div class="container-fluid">
+	<div id="page-heading">
+		<ol class="breadcrumb">
+			<li><a href="#/">PPP</a></li>
+			<li class="active">Autorización cliente</li>
+		</ol>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-12">
+		
+			<panel panel-class="panel-sky" heading="Resultado de clientes">
+				<panel-controls> 
+					<panel-control-collapse></panel-control-collapse>
+				</panel-controls>
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							 <tr>
+                               <th style="padding-right:100px">Cliente</th>
+                                <th>RFC</th>
+                                <th>Nominas pendientes</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr >
+                                 <td align="left">Sabritas SA de CV</td>
+                                <td>SACF164834MF00</td>
+                                <td>2</td>
+                                <td>Detalle nóminas</td>
+								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</panel>
+			
+			
+			<panel panel-class="panel-sky" heading="Nominas clientes">
+				<panel-controls> 
+					<panel-control-collapse></panel-control-collapse>
+				</panel-controls>
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							 <tr>
+                               <th style="padding-right:100px">Cliente</th>
+                                <th>RFC</th>
+                                <th>Clave nomina</th>
+                                <th>Tipo de nómina</th>
+                                <th>Total Colaboradores</th>
+                                <th>Monto PPP</th>
+                                <th>Estatus</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td align="left">Sabritas SA de CV</td>
+                                <td>SACF164834MF00</td>
+                                <td>SA-NOM0001</td>
+                                <td>Quincenal</td>
+                                <td>100</td>
+								<td>$100,000.00</td>
+								<td>Autorizado Facturaci&oacute;n</td>
+								<td>
+									<a class="btn btn-green " data-toggle="modal" href="#modalFactura"><span class="fa fa-money"></span> Factura</a>
+								</td>
+									
+							</tr>
+							<tr>
+                                <td align="left">Sabritas SA de CV</td>
+                                <td>SACF164834MF00</td>
+                                <td>SA-NOM0002</td>
+                                <td>Mensual</td>
+                                <td>100</td>
+								<td>$100,000.00</td>
+								<td>Sin autorizaci&oacute;n</td>
+								<td>
+									<a class="btn btn-green " data-toggle="modal" href="#modalFactura"><span class="fa fa-money"></span> Factura</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</panel>
+			
+			
+			<div class="modal fade" id="modalFactura" role="dialog">
+		        <div class="modal-dialog" style="width: 50%;">
+		            <div class="modal-content">
+		                <div class="modal-header">
+		                    <h4 class="modal-title">Detalle factura</h4>
+		                </div>
+		                <div class="modal-body">
+		                
+		                	<div class="row">
+		                		<div class="col-xs-4">
+									<label class="control-label">Monto facturaci&oacute;n Sueldos y Salarios: </label> 
+									<input
+										type="text" name ="NombreRazonS" class="form-control"
+										placeholder="Nombre o Raz&oacute;n social"
+										ng-model="clienteTempDto.NombreRazonS" ng-required="true" minlength="3" maxlength="50"/>	 
+								</div>
+								
+								<div class="col-xs-4">
+									<label class="control-label">Monto facturaci&oacute;n PPP: </label> 
+									<input
+										type="text" name ="NombreRazonS" class="form-control"
+										placeholder="Nombre o Raz&oacute;n social"
+										ng-model="clienteTempDto.NombreRazonS" ng-required="true" minlength="3" maxlength="50"/>	 
+								</div>
+								
+								
+								<div class="col-xs-4">
+									<label class="control-label">Monto total facturaci&oacute;n: </label> 
+									<input
+										type="text" name ="NombreRazonS" class="form-control"
+										placeholder="Nombre o Raz&oacute;n social"
+										ng-model="clienteTempDto.NombreRazonS" ng-required="true" minlength="3" maxlength="50"/>	 
+								</div>
+						
+		                	</div>
+		                	<br/><br/>
+		                    <div class="row">
+			                    <div class="col-md-2" >
+									<tile-shortcut data=" {text: 'Descarga Factura',titleBarInfo: '1',color: 'info',classes: 'fa fa-eye'}"></tile-shortcut>
+									
+								</div>
+		                   
+								<div class="col-md-2" >
+									<tile-shortcut data=" {text: 'Descarga Factura',titleBarInfo: '1',color: 'orange',classes: 'fa fa-eye'}"></tile-shortcut>
+									
+								</div>
+		                        
+		                    </div>
+		                    
+		                    
+		                    <div class="row">
+		                    	<div class="col-xs-12">
+									<label class="control-label">Comentario: </label> 
+									<input
+										type="textarea" name ="NombreRazonS" class="form-control"
+										placeholder="Nombre o Raz&oacute;n social"
+										ng-model="clienteTempDto.NombreRazonS" ng-required="true" minlength="3" maxlength="50"/>	 
+								</div>
+						
+		                    </div>
+		                </div>
+		                <div class="modal-footer">
+		                    <button type="button" class="btn btn-danger" data-dismiss="modal">Rechazar</button>
+		                    <button type="button" class="btn btn-success" data-dismiss="modal">Autorizar</button>
+		                    
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		    
+		    
+		    
+		</div>
+	</div>
+</div>

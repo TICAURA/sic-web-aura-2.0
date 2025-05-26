@@ -1,0 +1,1037 @@
+<style>
+
+/* Definimos el ancho y alto total */
+#botonesConceptpFact {
+	position: relative;
+	left: 10px;
+	top: 30px;
+}
+
+#botonesLogo {
+	position: relative;
+	left: 36px;
+	top: 22px;
+}
+
+</style>
+
+<div class="container-fluid"
+	ng-controller="agregarPrestadoraServicioController">
+	<div id="page-heading">
+		<ol class="breadcrumb">
+			<li><a href="#/">CRM</a></li>
+			<li>Home</li>
+			<li class="active">Prestadora de servicios</li>
+		</ol>
+
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<panel panel-class="panel-sky" heading="Prestadora de servicios">
+				<panel-controls> <panel-control-collapse></panel-control-collapse>
+				</panel-controls>
+
+				<ul class="nav nav-tabs">
+
+					<li ng-class="{'active' : tabSeleccionado === 'generales'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('generales')">Datos
+							Generales</a></li>
+
+					<li ng-class="{active : tabSeleccionado=='registroPatronal'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('registroPatronal')"
+						ng-if="prestadoraServicioDto.idPrestadoraServicio != null">Registro
+							patronal / Clase / Fracci&oacute;n / Prima / IMSS</a></li>
+
+					<li ng-class="{active : tabSeleccionado=='objetoSocial'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('objetoSocial')"
+						ng-if="prestadoraServicioDto.idPrestadoraServicio != null">
+							Objeto social</a></li>
+
+					<li ng-class="{active : tabSeleccionado=='productos'}"
+						ng-if="prestadoraServicioDto.idPrestadoraServicio != null"><a
+						data-toggle="tab" ng-click="seleccionarTab('productos')">Productos</a></li>
+
+					<li ng-class="{active : tabSeleccionado=='domicilioFiscal'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('domicilioFiscal')"
+						ng-if="prestadoraServicioDto.idPrestadoraServicio != null">Domicilio</a></li>
+
+					<li ng-class="{active : tabSeleccionado=='representanteLegal'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('representanteLegal')"
+						ng-if="prestadoraServicioDto.idPrestadoraServicio != null">Representante y Apoderado legal</a></li>
+
+					<li ng-class="{active : tabSeleccionado=='accionista'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('accionista')"
+						ng-if="prestadoraServicioDto.idPrestadoraServicio != null">Accionistas</a></li>
+
+					<li ng-class="{active : tabSeleccionado=='cuentasBancarias'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('cuentasBancarias')"
+						ng-if="prestadoraServicioDto.idPrestadoraServicio != null">Cuentas</a></li>
+					<li ng-class="{active : tabSeleccionado=='stpPrestServ'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('stpPrestServ')"
+						ng-if="prestadoraServicioDto.idPrestadoraServicio != null">Datos STP</a></li>
+					<li ng-class="{active : tabSeleccionado=='fiel'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('fiel')"
+						ng-if="prestadoraServicioDto.idPrestadoraServicio != null">FIEL
+							/CSD</a></li>
+
+					<li ng-class="{active : tabSeleccionado=='documentosPrestServ'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('documentosPrestServ')"
+						ng-if="prestadoraServicioDto.idPrestadoraServicio != null">Documentos</a></li>
+						
+						
+					<!-- ------------ESTE -------------------- -->
+					<!-- <li ng-class="{active : tabSeleccionado=='apoderadoLegal'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('apoderadoLegal')" ng-if="prestadoraServicioDto.idPrestadoraServicio != null">Apoderado
+							legal</a></li>  -->
+					<!-- ------------------------------------------- -->
+
+				</ul>
+
+				<div class="tab-content">
+					<div id="generales" class="tab-pane fade "
+						ng-class="{'in active' : tabSeleccionado === 'generales'}">
+						<div class="col-md-12">
+							<panel panel-class="panel-sky"
+								heading="Datos generales de la prestadora de servicio">
+							<form id="prestadoraServicioForm" name="prestadoraServicioForm" novalidate>
+								<div class="row">
+									<div class="col-xs-3">
+										<label class="control-label">RFC*: </label> <input
+											placeholder="RFC" name="rfcPM"  ng-disabled="inHabilitaEscritura"
+											onkeyup="javascript:this.value=this.value.toUpperCase();"
+											ng-pattern="/^([A-ZÑ\x26]{3}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})$/"
+											ng-model="prestadoraServicioDto.rfc" maxlength="12"
+											minlength="12" class="form-control" type="text"
+											required="required" tooltip="RFC debe contener 12 caracteres">
+										<span class="messages"
+											ng-show="prestadoraServicioForm.rfcPM.$submitted || prestadoraServicioForm.rfcPM.$touched">
+											<span
+											ng-show="prestadoraServicioForm.rfcPM.$error.required === true ?false:!prestadoraServicioForm.rfcPM.$valid">
+												Formato de RFC incorrecto. </span> <span
+											ng-show="prestadoraServicioForm.rfcPM.$error.required">El
+												campo es obligatorio.</span>
+										</span>
+									</div>
+									<div class="col-xs-3">
+										<label class="control-label">Nombre corto*: </label> <input
+											type="text" class="form-control" name="nombreCorto" ng-disabled="inHabilitaEscritura"
+											placeholder="Nombre corto"
+											ng-model="prestadoraServicioDto.nombreCorto"
+											required="required" maxlength="40"> <span
+											class="messages"
+											ng-show="prestadoraServicioForm.nombreCorto.$submitted || prestadoraServicioForm.nombreCorto.$touched">
+											<span
+											ng-show="prestadoraServicioForm.nombreCorto.$error.required">El
+												campo es obligatorio.</span>
+										</span>
+									</div>
+
+									<div class="col-xs-3">
+										<label class="control-label">Raz&oacute;n social*: </label> <input
+											type="text" name="razonSocial" class="form-control"
+											placeholder="Raz&oacute;n social" name="razonSocial" ng-disabled="inHabilitaEscritura"
+											ng-model="prestadoraServicioDto.razonSocial"
+											ng-required="true" minlength="3" maxlength="100" /> <span
+											class="messages"
+											ng-show="prestadoraServicioForm.razonSocial.$submitted || prestadoraServicioForm.razonSocial.$touched">
+											<span
+											ng-show="prestadoraServicioForm.razonSocial.$error.required">El
+												campo es obligatorio.</span>
+										</span>
+									</div>
+
+								</div>
+								<br>
+								<div class="row">
+
+									<div class="col-xs-3">
+										<label class="control-label">Centro de Costos*: </label> <select
+											required class="form-control" name="celula" id="celula" ng-disabled="inHabilitaEscritura"
+											ng-model="prestadoraServicioDto.celulaPrestadoraServicioDto.celula.idCelula">
+											<option value="">-- Selecciona una opci&oacute;n --</option>
+											<option ng-repeat="celula in prestadoraServicioDto.catCelula"
+												ng-selected="celula.idCelula == prestadoraServicioDto.celulaPrestadoraServicioDto.celula.idCelula"
+												value="{{celula.idCelula}}">{{celula.nombre}}</option>
+										</select> <span class="messages"
+											ng-show="prestadoraServicioForm.celula.$submitted || prestadoraServicioForm.celula.$touched">
+											<span ng-show="prestadoraServicioForm.celula.$error.required">El
+												campo es obligatorio.</span>
+										</span>
+									</div>
+<!--  
+									<div class="col-xs-3" ng-show="prestadoraServicioDto.esFondo">
+										<label class="control-label">Clave*: </label> <input
+											type="text" class="form-control" name="clave"
+											placeholder="Clave" ng-model="prestadoraServicioDto.clave"
+											maxlength="45"> <span class="messages"
+											ng-show="prestadoraServicio.clave.$submitted || prestadoraServicio.clave.$touched">
+											<span ng-show="prestadoraServicio.clave.$error.required">El
+												campo es obligatorio.</span>
+										</span>
+									</div>
+-->
+									<div class="col-xs-3" ng-show="prestadoraServicioDto.esFondo">
+										<label class="control-label">ID Consar*: </label> <input
+											class="form-control" name="idConsar"
+											placeholder="Nombre corto" ng-disabled="inHabilitaEscritura"
+											ng-model="prestadoraServicioDto.idConsar"
+											required="prestadoraServicioDto.esFondo" maxlength="50">
+										<span class="messages"
+											ng-show="prestadoraServicio.idConsar.$submitted || prestadoraServicio.idConsar.$touched">
+											<span ng-show="prestadoraServicio.idConsar.$error.required">El
+												campo es obligatorio.</span>
+										</span>
+									</div>
+								</div>
+								<br/>
+								<br>
+								<div class="row">
+									<div class="col-xs-2" style="padding-top: 50px">
+										<label class="control-label ">¿Es fondo?: </label> <input
+											type="checkbox" name="fondo" ng-disabled="inHabilitaEscritura"
+											ng-model="prestadoraServicioDto.esFondo"
+											ng-click="verificarFondo(prestadoraServicioDto);">
+									</div>
+								</div>
+								<br>
+								<div class="row" >
+								<label class="control-label ">Logotipo: </label>
+								<br/>
+								<img style="display:block; width:200px;height:200px;" id="logoBase64" src="{{logotipo}}" ng-show="logotipo != ''"/>
+								</div>
+								<div class="row" >
+									<div class="col-xs-3" style="padding-top: 20px" ng-show="IsVisibleLogotipo">
+										<input
+											id="inputFile" type="file" accept=".jpg, .png" class="btn btn-info "
+											onchange="angular.element(this).scope().fileChangedLogotipo(this)"
+											class="filestyle"
+											data-buttonText="prestadoraServicioDto.nombreArchivoLogotipo" />
+									</div>
+
+									<div id="botonesLogo" class="col-xs-1" ng-show="prestadoraServicioDto.nombreArchivoLogotipo != null && IsVisibleNombreBotonCancelarCarga"> 
+										<button data-toggle="modal" class="btn btn-danger" tooltip="Cancelar" ng-click=cancelarUpload();> CANCELAR </button>
+									</div>
+								</div>
+								<div class="row" ng-show="prestadoraServicioDto.nombreArchivoLogotipo != null && IsVisibleNombreLogotipo">
+									
+									<label class="control-label "> <H5><strong>Nombre archivo:</strong> {{prestadoraServicioDto.nombreArchivoLogotipo}} 
+									</H5> </label> 
+									<button data-toggle="modal" class="btn btn-info" tooltip="Descargar logotipo"  ng-click="descargarLogotipo(prestadoraServicioDto);"  
+									ng-show="prestadoraServicioDto.nombreArchivoLogotipo != null"> <span class="glyphicon glyphicon-arrow-down"></span> </button>
+									<button data-toggle="modal" class="btn btn-primary" tooltip="Actualizar logotipo" ng-click=actualizarLogotipo(); ng-if="!inHabilitaEscritura"> <span class="glyphicon glyphicon-refresh"></span> </button>
+									
+								</div>
+								
+								<div class="row" align="right">
+									<button class="btn-green btn " type="submit" ng-if="!inHabilitaEscritura"
+										ng-click=guardarPrestadoraServicio(prestadoraServicioDto);>Guardar</button>
+								</div>
+							</form>
+
+							</panel>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+
+								<panel panel-class="panel-sky" ng-show="!inHabilitaEscritura"
+									heading="ACTIVIDAD ECON&Oacute;MICA"  ng-if="prestadoraServicioDto.idPrestadoraServicio != null"> <panel-controls>
+								<panel-control-collapse></panel-control-collapse> </panel-controls>
+								<form id="giroForm" name="giroForm">
+									<!-- <div class="table-responsive tablaconscroll"> -->
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label class="control-label">Grupo*: </label> <select
+												required class="form-control" name="giro" id="giro"
+												ng-model="clienteActividad.idGiroComercial" ng-disabled="inHabilitaEscritura"
+												ng-change="obtenerSubgiro(clienteActividad.idGiroComercial);">
+												<option value="-1">{{'-- Selecciona una
+													opci&oacute;n --' | uppercase}}</option>
+												<option
+													ng-repeat="giro in clienteActividad.girosComerciales"
+													ng-selected="giro.idCatGeneral == clienteActividad.idGiroComercial"
+													value="{{giro.idCatGeneral}}">{{giro.descripcion | uppercase}}</option>
+											</select> <span class="messages"
+												ng-show="giroForm.giro.$submitted || giroForm.giro.$touched">
+												<span ng-show="giroForm.giro.$error.required">El
+													campo es obligatorio.</span>
+											</span>
+										</div>
+									</div>
+
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label class="control-label">Sub grupo*: </label> <select
+												required class="form-control" name="subgiro" id="subgiro"
+												ng-model="clienteActividad.idSubGiroComercial" ng-disabled="inHabilitaEscritura">
+												<option value="null">{{'-- Selecciona una
+													opci&oacute;n --' | uppercase}}</option>
+												<option
+													ng-repeat="subgiro in clienteActividad.catSubGiroComercial"
+													ng-selected="subgiro.idCatSubGiroComercial == clienteActividad.idSubGiroComercial"
+													value="{{subgiro.idCatSubGiroComercial}}">{{subgiro.descripcion
+													| uppercase}}</option>
+											</select> <span class="messages"
+												ng-show="giroForm.subgiro.$submitted || giroForm.subgiro.$touched">
+												<span ng-show="giroForm.subgiro.$error.required">El
+													campo es obligatorio.</span>
+											</span>
+										</div>
+									</div>
+									<!-- </div> -->
+									<div class="row" align="right">
+										<br />
+										<button class="btn-green btn" type="submit"
+											ng-disabled="giroForm.$invalid"
+											ng-click=guardarActividad(clienteActividad); formnovalidate>Agregar</button>
+									</div>
+								</form>
+								</panel>
+
+
+								<panel panel-class="panel-sky"
+									heading="ACTIVIDADES ECON&Oacute;MICAS GUARDADAS" ng-if="prestadoraServicioDto.idPrestadoraServicio != null"> <panel-controls>
+								<panel-control-collapse></panel-control-collapse> </panel-controls>
+								<div class="table-responsive">
+									<table class="table">
+										<thead>
+											<tr>
+												<th style="padding-right: 100px">Grupo</th>
+												<th>Sub grupo</th>
+												<th ng-if="!inHabilitaEscritura">Acciones</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr
+												ng-repeat="actividad in clienteActividad.listPrestadorActividad">
+												<td>{{actividad.catGiroComercial.descripcion}}</td>
+												<td>{{actividad.subgiroComercial.descripcion}}</td>
+												<td align="center" ng-if="!inHabilitaEscritura">
+													<button data-toggle="modal"
+														ng-click="eliminarActividad(actividad)"
+														tooltip="Eliminar actividad econ&oacute;mica "
+														class="btn  btn-midnightblue">
+														<span class="fa fa-trash"></span>
+													</button>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								</panel>
+							</div>
+
+						</div>
+
+					</div>
+
+					<div id="productos" class="tab-pane fade " ng-class="{'in active' : tabSeleccionado === 'productos'}">
+					
+						<div ng-include src="'views/crm/prestadoraServicio/prestadoraServicioProductos.html'"></div>
+					
+					</div>
+
+					<div id="objetoSocial" class="tab-pane fade "
+						ng-class="{'in active' : tabSeleccionado === 'objetoSocial'}">
+						<div class="row" ng-cloak>
+							<div class="col-md-12">
+								<panel panel-class="panel-sky" heading="Objeto Social">
+								<panel-controls> </panel-controls>
+								<div class="row">
+									<form id="objetoSocialForm" name="objetoSocialForm" novalidate>
+										<div class="col-xs-6">
+											<label class="control-label">Objeto social*: </label> <input
+												type="textArea" class="form-control" name="objetoSocial"
+												placeholder="Objeto social" id="objetoSocial"
+												ng-model="prestadoraObjetoSocial.descripcion"
+												maxlength="250" min="2" ng-disabled="inHabilitaEscritura"
+												onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+										</div>
+										<div id="botonesConceptpFact" class="col-xs-6"  ng-if="!inHabilitaEscritura">
+											<button type="submit"
+												ng-show="IsVisibleBotonGuardarObjetoSocial"
+												class="btn-green btn" name="guardarRegistro"
+												ng-disabled="!prestadoraObjetoSocial.descripcion"
+												ng-click="guardaObjetoSocial();">AGREGAR</button>
+											<button type="submit"
+												ng-show="IsVisibleBotonActualizarObjetoSocial"
+												class="btn btn-orange" name="actualizarRegistro"
+												ng-disabled="!prestadoraObjetoSocial.descripcion"
+												ng-click="actualizarObjeto();">ACTUALIZAR</button>
+											<button type="submit"
+												ng-show="IsVisibleBotonActualizarObjetoSocial"
+												class="btn-brown btn" name="cancelarRegistro"
+												ng-click="cancelarActualizacionObjetoSocial();">CANCELAR
+												ACTUALIZACI&Oacute;N</button>
+										</div>
+									</form>
+								</div>
+								<br />
+								<br />
+								<div class="row">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>Objeto social</th>
+												<th ng-if="!inHabilitaEscritura">Acciones</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="registro in gridObjetoSocial ">
+												<td align="left">{{registro.descripcion}}</td>
+												<td align="center" ng-if="!inHabilitaEscritura">
+													<button data-toggle="modal"
+														ng-click="actualizarObjetoSocial(registro)"
+														tooltip="Editar objetso social" class="btn btn-info">
+														<span class="glyphicon glyphicon-pencil"></span>
+													</button>
+													<button data-toggle="modal"
+														ng-click="eliminarObjetoSocial(registro)"
+														tooltip="Eliminar objeto social"
+														class="btn  btn-midnightblue">
+														<span class="fa fa-trash"></span>
+													</button>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<br />
+								<br />
+								<!--  div class="row">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>Objeto social</th>
+												<th>Descripci&oacute;n</th>
+												<th>Acciones</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="registro in gridObjetoSocial ">
+												<td align="left">{{registro.registroPatronal}}</td>
+												<td align="left">{{registro.registroPatronal}}</td>
+												<td align="center">
+													<button data-toggle="modal"
+														ng-click="actualizarConceptoFacturan()"
+														tooltip="Editar registro patronal" class="btn btn-info">
+														<span class="glyphicon glyphicon-pencil"></span>
+													</button>
+													<button data-toggle="modal"
+														ng-click="eliminarRegistroPatro()"
+														tooltip="Eliminar registro patronal"
+														class="btn  btn-midnightblue">
+														<span class="fa fa-trash"></span>
+													</button>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+
+								</div>--> </panel>
+							</div>
+						</div>
+					</div>
+
+					<div id="registroPatronal" class="tab-pane fade "
+						ng-class="{'in active' : tabSeleccionado === 'registroPatronal'}">
+						<div class="row">
+							<div class="col-md-12">
+								<panel panel-class="panel-sky" heading="Registro patronal">
+								<panel-controls> <panel-control-collapse></panel-control-collapse>
+								</panel-controls>
+								<div class="row" >
+									<form id="registroPatronalForm" name="registroPatronalForm">
+										<div class="col-xs-6" >
+											<label class="control-label">Registro patronal*: </label> <input
+												type="textArea" class="form-control"
+												name="conceptoFacturacion" placeholder="Registro patronal"
+												id="conceptoFacturacion" ng-disabled="inHabilitaEscritura"
+												ng-model="prestadoraRegistroPatronal.registroPatronal"
+												ng-pattern="/^[A-Z]{1}[\d]{10}$/"
+												maxlength="11" min="2"
+												tooltip="Debe contener 11 car&aacute;cteres (el primer car&aacute;cter debe ser una letra y los restantes num&eacute;ricos)"
+												onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+											<span class="messages"
+												ng-show="registroPatronalForm.conceptoFacturacion.$submitted || registroPatronalForm.conceptoFacturacion.$touched">
+												<span
+												ng-show="registroPatronalForm.conceptoFacturacion.$error.pattern">Debe
+													contener 11 car&aacute;cteres (el primero deber&aacute; ser
+													una letra y los restantes num&eacute;ricos).</span>
+											</span>
+										</div>
+										<div id="botonesConceptpFact" class="col-xs-6"  ng-if="!inHabilitaEscritura">
+											<button type="submit"
+												ng-show="IsVisibleBotonGuardarRegistroPatronal"
+												class="btn-green btn" name="guardarRegistro"
+												ng-disabled="!prestadoraRegistroPatronal.registroPatronal"
+												ng-click="guardaRegistroPatronal();">AGREGAR</button>
+											<button type="submit"
+												ng-show="IsVisibleBotonActualizarRegistroPatronal"
+												class="btn btn-orange" name="actualizarRegistro"
+												ng-disabled="!prestadoraRegistroPatronal.registroPatronal"
+												ng-click="actualizarRegistroPatronal();">ACTUALIZAR</button>
+											<button type="submit"
+												ng-show="IsVisibleBotonActualizarRegistroPatronal"
+												class="btn-brown btn" name="cancelarRegistro"
+												ng-click="cancelarActualizacionRegisPatron();">CANCELAR
+												ACTUALIZACI&Oacute;N</button>
+										</div>
+									</form>
+								</div>
+								<br />
+								<br />
+								<div class="row">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>Registro patronal</th>
+												<th ng-if="!inHabilitaEscritura">Acciones</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="registro in gridRegistroPatronal ">
+												<td align="left">{{registro.registroPatronal}}</td>
+												<td align="center" ng-if="!inHabilitaEscritura">
+													<button data-toggle="modal"
+														ng-click="actualizarConceptoFacturacion(registro)"
+														tooltip="Editar registro patronal" class="btn btn-info">
+														<span class="glyphicon glyphicon-pencil"></span>
+													</button>
+													<button data-toggle="modal"
+														ng-click="eliminarRegistroPatronal(registro)"
+														tooltip="Eliminar registro patronal"
+														class="btn  btn-midnightblue">
+														<span class="fa fa-trash"></span>
+													</button>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+
+								</div>
+								</panel>
+
+								<panel panel-class="panel-sky"
+									heading="Clase / Fracci&oacute;n / Prima">
+								<form id="clasePrimaForm" name="clasePrimaForm" novalidate>
+									<div class="row">
+										<div class="col-sm-3">
+											<div class="form-group">
+												<label class="control-label">Clase (riesgo)*:</label> <select
+													class="form-control" name="regimen" id="regimen"
+													ng-model="presatdoraClase.catClase" ng-disabled="inHabilitaEscritura"
+													ng-options=" (clase.clave +' - '+ clase.descripcion) for clase in listaCatClase | orderBy:'clase.idCatGeneral' track by clase.idCatGeneral"
+													ng-required="true" placeholder="Categoria">
+													<option value="" class="">-- SELECCIONA UNA
+														OPCI&Oacute;N --</option>
+												</select>
+												<div ng-messages="clasePrimaForm.regimen.$error"
+													ng-show="clasePrimaForm.regimen.$dirty && clasePrimaForm.regimen.$invalid">
+													<small class="form-text-error" ng-message="required">
+														Este campo es obligatorio</small>
+												</div>
+											</div>
+										</div>
+										
+										<!--  
+										<div class="col-sm-3">
+											<div class="form-group">
+												<label class="control-label">Riesgo*:</label> <select
+													class="form-control" name="riesgo" id="riesgo"
+													ng-model="presatdoraClase.catRiesgo"
+													ng-options=" riesgo.descripcion for riesgo in listaCatRiesgo | orderBy:'riesgo.idCatGeneral' track by riesgo.idCatGeneral"
+													ng-required="true" placeholder="Categoria">
+													<option value="" class="">-- SELECCIONA UNA
+														OPCI&Oacute;N --</option>
+												</select>
+												<div ng-messages="clasePrimaForm.riesgo.$error"
+													ng-show="clasePrimaForm.riesgo.$dirty && clasePrimaForm.riesgo.$invalid">
+													<small class="form-text-error" ng-message="required">
+														Este campo es obligatorio</small>
+												</div>
+											</div>
+										</div>
+										-->
+
+										<div class="col-xs-3">
+											<label class="control-label">Fracci&oacute;n*: </label> <input
+												name="fraccion_field" type="text" class="form-control"
+												placeholder="Fracci&oacute;n" ng-disabled="inHabilitaEscritura"
+												ng-model="presatdoraClase.fraccion" minlength="3"
+												maxlength="11"
+												onkeyup="javascript:this.value=this.value.toUpperCase();">
+
+										</div>
+										<div class="col-xs-3">
+											<label class="control-label">Prima*: </label> <input
+												name="prima_field" type="text" class="form-control"
+												placeholder="Prima" ng-model="presatdoraClase.prima"
+												minlength="3" maxlength="11" ng-disabled="inHabilitaEscritura"
+												onkeyup="javascript:this.value=this.value.toUpperCase();">
+										</div>
+
+									</div>
+									<br>
+									<div class="row " align="right ">
+										<button class="btn-green btn" type="submit " ng-if="!inHabilitaEscritura"
+											ng-click=guardarClaseFraccionPrima();>Guardar</button>
+									</div>
+								</form>
+								</panel>
+
+								<panel panel-class="panel-sky"
+									heading="IMSS (Datos para acceso a sistema)">
+								<form id="imss" name="imssForm">
+									<div class="row">
+										<div class="col-xs-2">
+											<label class="control-label">Usuario*: </label> <input
+												name="usuario_field" class="form-control" ng-disabled="inHabilitaEscritura"
+												placeholder="Usuario" ng-model="presatdoraImms.usuario"
+												minlength="3" maxlength="50">
+
+										</div>
+										<div class="col-xs-4">
+											<label class="control-label">Contrase&ntilde;a*: </label> <input
+												name="usuario_field" type="password" class="form-control"
+												placeholder="Contrase&ntilde;a" ng-disabled="inHabilitaEscritura"
+												ng-model="presatdoraImms.password" minlength="3"
+												maxlength="40">
+										</div>
+									</div>
+
+									<br>
+									<div class="row " align="right ">
+										<button class="btn-green btn" type="submit " ng-if="!inHabilitaEscritura"
+											ng-click=guardarPresatdoraImss();>Guardar</button>
+									</div>
+								</form>
+								</panel>
+
+
+							</div>
+						</div>
+					</div>
+
+					<div id="fiel" class="tab-pane fade " ng-class="{'in active' : tabSeleccionado === 'fiel'}">
+						
+						<div ng-include src="'views/crm/prestadoraServicio/prestadoraServicioFielCsd.html'"></div>
+
+					</div>
+
+
+					<div id="domicilioFiscal" class="tab-pane fade "
+						ng-class="{'in active' : tabSeleccionado === 'domicilioFiscal'}">
+						<div class="row">
+							<div class="col-md-12">
+								<panel panel-class="panel-primary" heading="Domicilio Fiscal">
+								<form id="domicilioFiscal" name="domicilioFiscal">
+									<div class="row">
+										<div class="col-xs-2">
+											<label class="control-label">C&oacute;digo Postal*: </label>
+											<input type="text" name="codigoPostal" class="form-control"
+												placeholder="C&oacute;digo postal" ng-disabled="inHabilitaEscritura"
+												ng-model="prestadoraServicioDto.prestadoraServicioDomicilioDto.domicilio.codigoPostal"
+												required="required" ng-pattern="/^[_0-9-]{5}$/"
+												maxlength="5"
+												ng-blur="obtenerEntidadFederativaXCP(prestadoraServicioDto.prestadoraServicioDomicilioDto.domicilio.codigoPostal);"
+												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+											<span class="messages"
+												ng-show="domicilioFiscal.$submitted || domicilioFiscal.codigoPostal.$touched">
+												<span ng-show="domicilioFiscal.codigoPostal.$error.required">El
+													campo es obligatorio.</span> <span
+												ng-show="domicilioFiscal.codigoPostal.$error.pattern">Debe
+													ingresar 5 digitos.</span>
+											</span>
+										</div>
+										<div class="col-xs-4">
+											<label class="control-label">Calle: </label> <input
+												type="text" class="form-control" placeholder="Calle" ng-disabled="inHabilitaEscritura"
+												ng-model="prestadoraServicioDto.prestadoraServicioDomicilioDto.domicilio.calle"
+												maxlength="99">
+										</div>
+
+										<div class="col-xs-2">
+											<label class="control-label">N&uacute;mero Ext: </label> <input
+												type="text" class="form-control"
+												placeholder="N&uacute;mero exterior" ng-disabled="inHabilitaEscritura"
+												ng-model="prestadoraServicioDto.prestadoraServicioDomicilioDto.domicilio.numeroExterior"
+												maxlength="9">
+										</div>
+
+										<div class="col-xs-2">
+											<label class="control-label">N&uacute;mero Int.: </label> <input
+												type="text" class="form-control"
+												placeholder="N&uacute;mero interior." ng-disabled="inHabilitaEscritura"
+												ng-model="prestadoraServicioDto.prestadoraServicioDomicilioDto.domicilio.numeroInterior"
+												maxlength="9">
+										</div>
+									</div>
+									<br>
+
+									<div class="row">
+										<div class="col-xs-6">
+											<label class="control-label">Entidad federativa: </label> <select
+												required disabled class="form-control"
+												name="idEntidadFederativa" id="idEntidadFederativa"
+												ng-model="prestadoraServicioDto.prestadoraServicioDomicilioDto.domicilio.idEntidadFederativa"
+												ng-change="obtenerCatMunicipiosByEntidad(prestadoraServicioDto.prestadoraServicioDomicilioDto.domicilio.idEntidadFederativa);">
+												<option value="">Entidad federativa</option>
+												<option
+													ng-repeat="entidad in prestadoraServicioDto.entidadFederativa"
+													ng-selected="entidad.idCatGeneral == prestadoraServicioDto.prestadoraServicioDomicilioDto.domicilio.idEntidadFederativa"
+													value="{{entidad.clave}}">{{entidad.descripcion}}</option>
+											</select> <span class="messages"
+												ng-show="domicilioFiscal.idEntidadFederativa.$submitted || domicilioFiscal.idEntidadFederativa.$touched">
+												<span
+												ng-show="domicilioFiscal.idEntidadFederativa.$error.required">El
+													campo es obligatorio.</span>
+											</span>
+										</div>
+										<div class="col-xs-6">
+											<label class="control-label">Alcald&iacute;a: </label> <select
+												required disabled class="form-control" name="municipio"
+												id="municipio"
+												ng-model="prestadoraServicioDto.prestadoraServicioDomicilioDto.domicilio.catMunicipios.idCatGeneral">
+												<option value="">Alcald&iacute;a</option>
+												<option
+													ng-repeat="municipio in prestadoraServicioDto.municipios"
+													ng-selected="municipio.idCatGeneral == prestadoraServicioDto.prestadoraServicioDomicilioDto.domicilio.catMunicipios.idCatGeneral"
+													value="{{municipio.idCatGeneral}}">{{municipio.descripcion}}</option>
+											</select> <span class="messages"
+												ng-show="domicilioFiscal.municipio.$submitted || domicilioFiscal.municipio.$touched">
+												<span ng-show="domicilioFiscal.municipio.$error.required">El
+													campo es obligatorio.</span>
+											</span>
+										</div>
+									</div>
+									<br>
+									<div class="row">
+										<div class="col-xs-4">
+											<label class="control-label">Colonia: </label> <input
+												type="text" class="form-control" placeholder="Colonia" ng-disabled="inHabilitaEscritura"
+												ng-model="prestadoraServicioDto.prestadoraServicioDomicilioDto.domicilio.colonia"
+												maxlength="99">
+										</div>
+									</div>
+									<br>
+									<div class="row " align="right">
+										<button class="btn-green btn " type="submit"
+											ng-disabled="domicilioFiscal.$invalid" ng-if="!inHabilitaEscritura"
+											ng-click=guardarDomicilio(prestadoraServicioDto);>Guardar</button>
+									</div>
+								</form>
+								</panel>
+							</div>
+						</div>
+					</div>
+
+					<div id="representanteLegal" class="tab-pane fade " ng-class="{'in active' : tabSeleccionado === 'representanteLegal'}">
+					
+						<div ng-include src="'views/crm/prestadoraServicio/prestadoraServicioRepresentantesApoderados.html'"></div>
+						
+					</div>
+
+
+					<div id="accionista" class="tab-pane fade " ng-class="{'in active' : tabSeleccionado === 'accionista'}">
+						<div ng-include src="'views/crm/prestadoraServicio/prestadoraServicioAccionistas.html'"></div>
+
+					</div>
+
+					<div id="apoderadoLegal" class="tab-pane fade "
+						ng-class="{'in active' : tabSeleccionado === 'apoderadoLegal'}">
+						<div class="row">
+							<div class="col-md-12">
+								<panel panel-class="panel-primary"
+									heading="Apoderados legales de la prestadora de servicio ">
+								<div class="table-responsive ">
+									<table class="table ">
+										<thead>
+											<tr>
+												<th style="padding-right: 100px">Nombre</th>
+												<th>RFC o Raz&oacute;n social</th>
+												<th>Estatus documentos</th>
+												<th>Acciones</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>ARMANDO HERNANDEZ MORALES</td>
+												<td>AMANZO840839YT5</td>
+												<td>INCOMPLETO / COMPLETO</td>
+												<td><a ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-pencil "
+													title="Editar apoderado "></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-circle-arrow-up "
+													title="Cargar documentos apoderado "></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-trash "
+													title="Eliminar apoderado "></a></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								</panel>
+
+
+								<panel panel-class="panel-primary" heading="Apoderados Legales">
+								<div class="row ">
+									<h4>
+										<b>&nbsp; DATOS GENERALES</b>
+									</h4>
+								</div>
+								<div class="row">
+									<div class="col-xs-3">
+										<label class="control-label">Nombre*: </label> <input
+											type="text" class="form-control"
+											placeholder="Raz&oacute;n social" required="required">
+									</div>
+
+									<div class="col-xs-3">
+										<label class="control-label">Apellido paterno*: </label> <input
+											type="text" class="form-control"
+											placeholder="Raz&oacute;n social" required="required">
+									</div>
+
+									<div class="col-xs-3">
+										<label class="control-label">Apellido materno*: </label> <input
+											type="text" class="form-control"
+											placeholder="Raz&oacute;n social" required="required">
+									</div>
+								</div>
+								<br>
+
+								<div class="row">
+									<div class="col-xs-3">
+										<label class="control-label">RFC*: </label> <input type="text"
+											class="form-control" placeholder="RFC"
+											ng-model="celulaDto.rfcCelula" required="required"
+											maxlength="15" min="15" required="required"
+											ng-pattern="/^([A-Zï¿½&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/">
+									</div>
+
+									<div class="col-xs-3">
+										<label class="control-label">CURP*: </label> <input
+											type="text" class="form-control" placeholder="RFC"
+											ng-model="celulaDto.rfcCelula" required="required"
+											maxlength="15" min="15" required="required"
+											ng-pattern="/^([A-Zï¿½&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/">
+									</div>
+								</div>
+								<br>
+
+								<div class="row ">
+									<h4>
+										<b>&nbsp; PODER NOTARIAL / FACULTAD</b>
+									</h4>
+								</div>
+								<div class="row">
+									<div class="col-xs-6">
+										<label class="control-label">Poder notarial: </label> <input
+											type="text" class="form-control" placeholder="Poder notarial"
+											ng-model="apoderadoDto.curp" required="required"
+											maxlength="100" required="required">
+									</div>
+									<div class="col-xs-2 ">
+										<label class="control-label ">Facultad: </label> <select
+											class="form-control " placeholder="Estado ">
+											<option>Facultad 1</option>
+											<option>Facultad 2</option>
+											<option>Facultad 3</option>
+										</select>
+									</div>
+								</div>
+
+
+								<div class="row " align="right ">
+									<br />
+									<button class="btn-primary btn " type="submit "
+										ng-click=guardarCelula();>Guardar</button>
+								</div>
+								</panel>
+
+								<!-- 			<panel panel-class="panel-sky "
+									heading="Apoderados legales del cliente ">
+								<div class="table-responsive ">
+									<table class="table ">
+										<thead>
+											<tr>
+												<th style="padding-right: 100px">Nombre</th>
+												<th>RFC</th>
+												<th>CURP</th>
+												<th>Poder notarial</th>
+												<th>Facultades</th>
+												<th>Estatus documentos</th>
+												<th>Acciones</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>ALBERTO MANZO CHIRINO</td>
+												<td>AMANZO840839YT5</td>
+												<td>AMANZO840839YT5HDFRNR02</td>
+												<td>DESCRIPCION PODER NOTARIAL</td>
+												<td>DESCRIPCION FACULTADES</td>
+												<td>INCOMPLETO / COMPLETO</td>
+												<td></td>
+												<td><a ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-pencil "
+													title="Editar apoderado "></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-circle-arrow-up"
+													title="Cargar documentos apoderado "></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-trash "
+													title="Eliminar apoderado "></a></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								</panel> -->
+								<panel panel-class="panel-sky "
+									heading="Documentos apoderados legales del cliente ">
+								<div class="table-responsive ">
+									<table class="table ">
+										<thead>
+											<tr>
+												<th style="padding-right: 100px">Nombre documento</th>
+												<th>Acciones</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>COMPROBANTE DE DOMICILIO</td>
+												<td><a ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-arrow-up"
+													title="Cargar documento"></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-arrow-down"
+													title="Descargar documento"></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-trash"
+													title="Eliminar documento"></a></td>
+											</tr>
+											<tr>
+												<td>IDENTIFICACION OFICIAL (IFE, PASAPORTE)</td>
+												<td><a ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-arrow-up"
+													title="Cargar documento"></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-arrow-down"
+													title="Descargar documento"></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-trash"
+													title="Eliminar documento"></a></td>
+											</tr>
+											<tr>
+												<td>CURP</td>
+												<td><a ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-arrow-up"
+													title="Cargar documento"></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-arrow-down"
+													title="Descargar documento"></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-trash"
+													title="Eliminar documento"></a></td>
+											</tr>
+											<tr>
+												<td>C&Eacute;DULA FISCAL o RFC</td>
+												<td><a ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-arrow-up"
+													title="Cargar documento"></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-arrow-down"
+													title="Descargar documento"></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-trash"
+													title="Eliminar documento"></a></td>
+											</tr>
+											<tr>
+												<td>DOCUMENTO NOTARIAL</td>
+												<td><a ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-arrow-up"
+													title="Cargar documento"></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-arrow-down"
+													title="Descargar documento"></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-trash"
+													title="Eliminar documento"></a></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								</panel>
+
+							</div>
+						</div>
+					</div>
+
+					<div id="cuentasBancarias" class="tab-pane fade "
+						ng-class="{'in active' : tabSeleccionado === 'cuentasBancarias'}">
+						<div ng-include src="'views/crm/prestadoraServicio/prestadoraServicioCuentasBancarias.html'"></div>
+					</div>
+
+					<div id="documentosPrestServ" class="tab-pane fade "
+						ng-class="{'in active' : tabSeleccionado === 'documentosPrestServ'}">
+						
+						<div ng-include src="'views/crm/prestadoraServicio/prestadoraServicioDocumentos.html'"></div>
+						
+					</div>
+					
+					<div class="tab-content">
+					<div id="stpPrestServ" class="tab-pane fade "
+						ng-class="{'in active' : tabSeleccionado === 'stpPrestServ'}">
+						<div class="col-md-12">
+							<panel panel-class="panel-sky"
+								heading="Datos STP">
+							<form id="stpForm" name="stpForm" novalidate>
+							<div class="col-md-12">
+					<div class="col-xs-5">
+											<label class="control-label">Nombre de centro de costos*: </label> <input
+											type="text" class="form-control" name="centroCostos" ng-disabled="inHabilitaEscritura"
+											placeholder="Nombre de centro de costos" ng-model="prestadoraServicioDto.listprestadoraServicioStpDto[0].nombreCentroCostos"
+											maxlength="75" minlength="1"> <span class="messages"
+											ng-show="stpForm.centroCostos.$submitted || stpForm.centroCostos.$touched">
+											<span ng-show="stpForm.centroCostos.$error.required">El
+												campo es obligatorio.</span>
+										</span>
+										</div>
+					<div class="col-xs-4">
+											<label class="control-label">Clabe de cuenta ordenante*:</label> <input
+												placeholder="Clabe de cuenta ordenante" name="clabeOrdenante" ng-disabled="inHabilitaEscritura"
+												ng-model="prestadoraServicioDto.listprestadoraServicioStpDto[0].clabeCuentaOrdenante" maxlength="18" minlength="16"
+												class="form-control" type="text" required="required">
+											<span class="messages"
+											ng-show="stpForm.clabeOrdenante.$submitted || stpForm.clabeOrdenante.$touched">
+											<span ng-show="stpForm.clabeOrdenante.$error.required">El
+												campo es obligatorio.</span>
+										</span>
+										</div>
+					<div class="col-xs-3" align="right" style="padding-top: 30px">
+						<button type="button" class="btn btn-orange" data-dismiss="modal" ng-disabled="stpForm.$invalid" ng-if="!inHabilitaEscritura"
+						 ng-click="guardarCuentaOrdenante(prestadoraServicioDto.listprestadoraServicioStpDto[0]);">
+							<span class="fa fa-save"></span>Guardar</button>
+										</div>
+										</div>
+							</form>
+							</panel>
+							</div>
+							</div>
+							</div>
+
+
+				</div>
+				</panel>
+
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<!-- container-fluid -->

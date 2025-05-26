@@ -1,0 +1,117 @@
+<panel panel-class="panel-primary" heading="Información general">
+<panel-controls> <panel-control-collapse></panel-control-collapse>
+</panel-controls>
+<div class="row"></div>
+<div class="row">
+	<div class="col-sm-1">
+		Persona:
+		<div class="form-group">
+
+			<div class="radio">
+				<label> <input type="radio"
+					ng-model="clienteTempDto.idTipoPersona.idCatGeneral" name="persona"
+					id="optionsRadios1" value="22" checked> Moral
+				</label>
+			</div>
+
+			<div class="radio">
+				<label> <input type="radio"
+					ng-model="clienteTempDto.idTipoPersona.idCatGeneral" name="persona"
+					id="optionsRadios2" value="21"> Fisica
+				</label>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="col-xs-8">
+		<label class="control-label">Nombre comercial: </label> <input
+			type="text" class="form-control" placeholder="Nombre Completo"
+			ng-model="clienteTempDto.razonSocial">
+	</div>
+	<br>
+</div>
+
+<div class="row">
+	</br>
+</div>
+<div class="row">
+
+
+	<div class="col-xs-9"
+		ng-show="clienteTempDto.idTipoPersona.idCatGeneral == '22'">
+		<label class="control-label">Raz&oacute;n social: </label> <input
+			type="text" class="form-control" placeholder="Raz&oacute;n social"
+			ng-model="clienteTempDto.razonSocial">
+	</div>
+
+	<div class="col-xs-3"
+		ng-show="clienteTempDto.idTipoPersona.idCatGeneral == '21'">
+		<label class="control-label">Nombre (s): </label> <input type="text"
+			class="form-control" placeholder="Nombre Completo"
+			ng-model="clienteTempDto.razonSocial">
+	</div>
+	<div class="col-xs-3"
+		ng-show="clienteTempDto.idTipoPersona.idCatGeneral == '21'">
+		<label class="control-label">Apellido paterno: </label> <input
+			type="text" class="form-control" placeholder="Nombre Completo"
+			ng-model="clienteTempDto.razonSocial">
+	</div>
+	<div class="col-xs-3"
+		ng-show="clienteTempDto.idTipoPersona.idCatGeneral == '21'">
+		<label class="control-label">Apellido Materno: </label> <input
+			type="text" class="form-control" placeholder="Nombre Completo"
+			ng-model="clienteTempDto.razonSocial">
+	</div>
+
+	<div class="col-xs-2">
+		<label class="control-label">RFC*: </label> <input type="text"
+			class="form-control" placeholder="RFC" ng-model="clienteTempDto.rfc"
+			required="required" maxlength="12" min="12">
+	</div>
+
+</div>
+
+<div class="row">
+	</br>
+</div>
+<div class="row">
+	<div class="col-xs-3">
+		<label class="control-label">Fecha de Constitución: </label> <input
+			type="DATE" class="form-control" placeholder="Fecha de constitución"
+			ng-model="bitacora.fechaEvento">
+	</div>
+	<div class="col-xs-3">
+		<label class="control-label">Clave de registro patronal: </label> <input
+			type="text" class="form-control"
+			placeholder="Clave de registro patronal" ng-model="">
+	</div>
+	<div class="col-xs-3">
+		<label class="control-label">Producto: </label> <select
+			class="form-control" placeholder="Estado"
+			ng-model="clienteTempDto.idMedioContacto.estado">
+			<option>Producto 1</option>
+			<option>Producto 2</option>
+			<option>Producto 3</option>
+		</select>
+	</div>
+
+	<div class="col-xs-2">
+		<label class="control-label">Comisión por cobrar %*: </label> <input
+			type="text" class="form-control" placeholder="Comisión a cobrar"
+			ng-model="" maxlength="12" min="12">
+	</div>
+</div>
+
+<div class="row">
+	</br>
+</div>
+<div class="row">
+
+	<div class="col-xs-9">
+		<label class="control-label">Concepto(s) de facturación*: </label> <input
+			type="textArea" class="form-control" placeholder="Comisión a cobrar"
+			ng-model="" required="required" maxlength="12" min="12">
+	</div>
+</div>
+</panel>

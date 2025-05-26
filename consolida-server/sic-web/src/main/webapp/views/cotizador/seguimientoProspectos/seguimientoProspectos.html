@@ -1,0 +1,246 @@
+<div class="container-fluid"
+	ng-controller="seguimientoProspectosController">
+	<div id="page-heading">
+		<ol class="breadcrumb">
+			<li><a href="#/">Menu principal</a></li>
+			<li class="active">Contadores</li>
+		</ol>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<panel panel-class="panel-sky" heading="Contadores de prospectos">
+
+			<panel panel-class="panel-sky" heading="Contadores Totales">
+			<panel-controls> <panel-control-collapse></panel-control-collapse>
+			</panel-controls>
+			<form id="seguimientoProspectos" name="seguimientoProspectosForm">
+
+
+				<!-- 
+				<div class="col-md-2" data-clasificacion="EN_COTIZACION" style="width: 11%; padding-left: 8px; padding-right: 0px;">
+					<a class="shortcut-tiles tiles-orange"
+						ng-click="busquedaContadorXEstatus(3);" data="tileDef">
+						<div class="tiles-body">
+							<div class="pull-left">
+							<i class="fa fa-plus-circle"></i>
+							<i class="fa fa-minus-circle"></i>
+							</div>
+							<div class="pull-right" style="line-height: 1">{{totales.totalProspectosEnCotizacion}}</div>
+						</div>
+						<div class="tiles-footer ng-binding" style="font-size: 12px; height: 70px;">
+							<span class="bold">Prospectos en proceso de cotizaci&oacute;n</span>
+						</div>
+					</a>
+				</div>
+				 
+				<div class="col-md-2" data-clasificacion="COTI_EN_REVISION" style="width: 11%; padding-left: 8px; padding-right: 0px;">
+					<a class="shortcut-tiles tiles-toyo"
+						ng-click="busquedaContadorXEstatus(4);" data="tileDef">
+						<div class="tiles-body">
+							<div class="pull-left">
+								<i class="fa fa-eye"></i>
+							</div>
+							<div class="pull-right" style="line-height: 1">{{totales.totalProspectosEnAutorizacion}}</div>
+						</div>
+						<div class="tiles-footer ng-binding" style="font-size: 12px; height: 70px;">
+							<span class="bold"></br>
+							Prospectos con cotizaciones en autorizaci&oacute;n</span>
+						</div>
+					</a>
+				</div>
+				
+				<div class="col-md-2" data-clasificacion="COTI_EN_AUTORIZACION" style="width: 11%; padding-left: 8px; padding-right: 0px;">
+					<a class="shortcut-tiles tiles-green"
+						ng-click="busquedaContadorXEstatus(6);" data="tileDef">
+						<div class="tiles-body">
+							<div class="pull-left">
+								<i class="fa fa-thumbs-o-up"></i>
+							</div>
+							<div class="pull-right" style="line-height: 1">{{totales.totalProspectosAutorizados}}</div>
+						</div>
+						<div class="tiles-footer ng-binding" style="font-size: 12px; height: 70px;">
+							<span class="bold"></br>
+							Prospectos con cotizaciones autorizadas</span>
+						</div>
+					</a>
+				</div>
+				
+				
+				<div class="col-md-2" data-clasificacion="COTI_EN_RECHAZO" style="width: 11%; padding-left: 8px; padding-right: 0px;">
+					<a class="shortcut-tiles tiles-indigo"
+						ng-click="busquedaContadorXEstatus(5);" data="tileDef">
+						<div class="tiles-body">
+							<div class="pull-left">
+								<i class="fa fa-thumbs-o-down"></i>
+							</div>
+							<div class="pull-right" style="line-height: 1">{{totales.totalProspectosRechazados}}</div>
+						</div>
+						<div class="tiles-footer ng-binding" style="font-size: 12px; height: 70px;">
+							<span class="bold"></br>
+							Prospectos con cotizaciones rechazadas</span>
+						</div>
+					</a>
+				</div>
+				 -->
+
+				<div class="row">
+					<div class="col-md-2" data-clasificacion="TOTAL">
+						<a class="shortcut-tiles tiles-info"
+							ng-click="obtenerRegistrosContadorPrincipal();" data="tileDef">
+							<div class="tiles-body">
+								<div class="pull-left">
+									<i class="fa fa-bars"></i>
+								</div>
+								<div class="pull-right" style="line-height: 1">{{totales.totalProspectos}}</div>
+							</div>
+							<div class="tiles-footer ng-binding" style="font-size: 12px; height: 70px;">
+								<span class="bold"></br> Total de prospectos</span>
+							</div>
+						</a>
+					</div>
+
+
+					<div class="col-md-2" data-clasificacion="EN_PROCESO">
+						<a class="shortcut-tiles tiles-magenta"
+							ng-click="busquedaContadorXEstatus(2);" data="tileDef">
+							<div class="tiles-body">
+								<div class="pull-left">
+									<i class="fa fa-plus-circle"></i>
+								</div>
+								<div class="pull-right" style="line-height: 1" align="right">{{totales.totalProspectosEnProceso}}</div>
+							</div>
+							<div class="tiles-footer ng-binding" style="font-size: 12px; height: 70px;">
+								<span class="bold"></br> Prospectos sin cotizaci&oacute;n</span>
+							</div>
+						</a>
+					</div>
+
+					<div class="col-md-2" data-clasificacion="COTI">
+						<a class="shortcut-tiles tiles-toyo"
+							ng-click="busquedaContadorXEstatus(23456);" data="tileDef">
+							<div class="tiles-body">
+								<div class="pull-left">
+									<i class="fa fa-eye"></i>
+								</div>
+								<div class="pull-right" style="line-height: 1">{{totales.totalProspectosConCotizacion}}</div>
+							</div>
+							<div class="tiles-footer ng-binding" style="font-size: 12px; height: 70px;">
+								<span class="bold"></br> Prospectos con cotizaciones en proceso</span>
+							</div>
+						</a>
+					</div>
+
+					<div class="col-md-2" data-clasificacion="PROSP_RECHAZADOS">
+						<a class="shortcut-tiles tiles-danger"
+							ng-click="busquedaContadorXEstatus(9);" data="tileDef">
+							<div class="tiles-body">
+								<div class="pull-left">
+									<i class="fa fa-minus-circle"></i>
+								</div>
+								<div class="pull-right" style="line-height: 1">{{totales.totalProspectosDeclinados}}</div>
+							</div>
+							<div class="tiles-footer ng-binding" style="font-size: 12px; height: 70px;">
+								<span class="bold"></br> Prospectos que declinaron</span>
+							</div>
+						</a>
+					</div>
+
+
+					<div class="col-md-2"
+						data-clasificacion="PROSP_RECHAZADOS_MESA_CTRL">
+						<a class="shortcut-tiles tiles-midnightblue"
+							ng-click="busquedaContadorXEstatus(16);" data="tileDef">
+							<div class="tiles-body">
+								<div class="pull-left">
+									<i class="fa fa-close"></i>
+								</div>
+								<div class="pull-right" style="line-height: 1;">{{totales.totalProspectosDeclinadosMesaCtrl}}</div>
+							</div>
+							<div class="tiles-footer ng-binding" style="font-size: 12px; height: 70px;">
+								<span class="bold"></br>Prospectos rechazados</span>
+							</div>
+						</a>
+					</div>
+
+
+					<div class="col-md-2" data-clasificacion="PROSP_AUTORIZADO">
+						<a class="shortcut-tiles tiles-success"
+							ng-click="busquedaContadorXEstatus(8);" data="tileDef">
+							<div class="tiles-body">
+								<div class="pull-left">
+									<i class="fa fa-check-circle-o"></i>
+								</div>
+								<div class="pull-right" style="line-height: 1">{{totales.totalProspectosAutorizadosMesaCtrl}}</div>
+							</div>
+							<div class="tiles-footer ng-binding" style="font-size: 12px; height: 70px;">
+								<span class="bold"></br> Prospectos autorizados</span>
+							</div>
+						</a>
+					</div>
+
+				</div>
+
+
+			</form>
+			</panel> <panel panel-class="panel-sky"
+				heading="{{nombreContadorSelecionado}}">
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+						<tr>
+							<th style="padding-right: 78px" align="center">Nombre/Raz&oacute;n
+								social</th>
+							<th align="center">Total de pre cotizaciones</th>
+							<th align="center">Total de cotizaciones detalladas</th>
+							<th align="center" ng-show="idEstatus == 23456">Total de
+								cotizaciones en proceso</th>
+							<th align="center" ng-show="idEstatus == 23456">Total de
+								cotizaciones en autorizaci&oacute;n</th>
+							<th align="center" ng-show="idEstatus == 23456">Total de
+								cotizaciones autorizadas</th>
+							<th align="center" ng-show="idEstatus == 23456">Total de
+								cotizaciones rechazadas</th>
+							<th align="center">Fecha de &uacute;ltima cotizaci&oacute;n
+							</th>
+							<th align="center">Tipo persona</th>
+							<th align="center">Estatus de prospecto</th>
+							<th align="center">Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="cliente in gridClientes">
+							<td align="left" ng-if="cliente.razonSocial != undefined">{{cliente.razonSocial}}
+							</td>
+							<td align="left" ng-if="cliente.razonSocial == undefined">{{cliente.nombre}}
+								{{cliente.apellidoPaterno}} {{cliente.apellidoMaterno}}</td>
+							<!-- <td align="left" ng-if="cliente.nombreComercial != undefined">{{cliente.nombreComercial}} </td> -->
+
+							<td align="center">{{cliente.numeroPreCotizaciones}}</td>
+							<td align="center">{{cliente.numeroCotizacionesDetalladas}}
+							</td>
+							<td align="center" ng-show="idEstatus == 23456">{{cliente.numeroCotizacionesEnProceso}}
+							</td>
+							<td align="center" ng-show="idEstatus == 23456">{{cliente.numeroCotizacionesEnAutorizacion}}
+							</td>
+							<td align="center" ng-show="idEstatus == 23456">{{cliente.numeroCotizacionesAutorizacion}}
+							</td>
+							<td align="center" ng-show="idEstatus == 23456">{{cliente.numeroCotizacionesRechazadas}}
+							</td>
+							<td align="center">{{cliente.fechaUltimaCotizacion |
+								date:'dd/MM/yyyy'}}</td>
+							<td align="center">{{cliente.idTipoPersona.descripcion}}</td>
+							<td align="center">{{cliente.estatusCliente[0].idEstatus.descripcionEstatus}}</td>
+							<td>
+                                    <a tooltip-append-to-body="true" tooltip-placement="bottom" data-tooltip="Ver detalles de prospecto">
+                                			<span ng-click="verCotizaciones(cliente.idClienteTemp)" class="glyphicon glyphicon-search" ></span>
+                                        </a>
+                            </td> 
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			</panel> </panel>
+		</div>
+	</div>
+</div>
+

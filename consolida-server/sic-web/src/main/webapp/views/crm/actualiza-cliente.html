@@ -1,0 +1,196 @@
+<style>
+
+/* Definimos el ancho y alto total */
+#botonesConceptpFact {
+	position: relative;
+	left: 10px;
+	top: 30px;
+}
+</style>
+<script>
+$(document).ready(function(){
+	$('html, body').animate({scrollTop: 0}, 1500);
+});
+</script>
+<div class="container-fluid"
+	ng-controller="actualizaClienteFinalController">
+	<div id="page-heading">
+		<ol class="breadcrumb">
+			<li><a href="#/">CRM</a></li>
+			<li>Home</li>
+			<li class="active">Clientes</li>
+		</ol>
+
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<panel panel-class="panel-sky" heading="Cliente">
+				
+				<ul class="nav nav-tabs">
+					<li ng-class="{'active' : tabSeleccionado=='generales'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('generales')">Datos
+							Generales</a></li>
+
+					<li ng-class="{active : tabSeleccionado=='domicilio'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('domicilio')">Domicilio
+							y medio de contacto</a></li>
+
+					<li ng-class="{active : tabSeleccionado=='celula'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('celula')">Fondo</a>
+					</li>
+
+					<li ng-class="{active : tabSeleccionado=='productos'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('productos')">Conceptos
+							de facturaci&oacute;n y Servicios</a></li>
+
+					<li ng-class="{active : tabSeleccionado=='nominas'}"><a id="nominas"
+						data-toggle="tab" ng-click="seleccionarTab('nominas')">N&oacute;minas</a>
+					</li>
+
+					<li ng-class="{active : tabSeleccionado=='comisiones'}" ng-show="muestaComisiones"><a
+						data-toggle="tab" ng-click="seleccionarTab('comisiones')">Comisiones</a>
+					</li>
+
+					<li ng-class="{active : tabSeleccionado=='formulaHono'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('formulaHono')">Honorarios</a></li>
+
+					<li ng-class="{active : tabSeleccionado=='cuentasBancarias'}">
+						<a data-toggle="tab" ng-click="seleccionarTab('cuentasBancarias')">Cuentas
+							bancarias</a>
+					</li>
+
+					<li ng-class="{active : tabSeleccionado=='stpCliente'}">
+						<a data-toggle="tab" ng-click="seleccionarTab('stpCliente')"
+						ng-if="clienteDto.idCliente != null">Datos STP</a>
+					</li>
+
+					<li ng-class="{active : tabSeleccionado=='apoderadoLegal'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('apoderadoLegal')">Representante y Apoderado legal</a></li>
+
+					<li ng-class="{active : tabSeleccionado=='docCliente'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('docCliente')">Documentos</a>
+					</li>
+
+				</ul>
+
+
+
+				<div class="tab-content">
+					<div id="generales" class="tab-pane fade " ng-class="{'in active' : tabSeleccionado === 'generales'}">
+					
+						<div ng-include src="'views/crm/cliente/datosGenerales_ActividadEconomica.html'"></div>
+
+					</div>
+
+					<div id="domicilio" class="tab-pane fade" ng-class="{'in active' : tabSeleccionado === 'domicilio'}">
+					
+						<div ng-include src="'views/crm/cliente/clienteDomicilio.html'"></div>
+
+					</div>
+
+
+					<!-- Comisiones -->
+					<div id="comisiones" class="tab-pane fade" ng-class="{'in active' : tabSeleccionado === 'comisiones'}">
+					
+						<div ng-include src="'views/crm/cliente/clienteComisiones.html'"></div>
+
+					</div>
+
+
+					<div id="formulaHono" class="tab-pane fade" ng-class="{'in active' : tabSeleccionado === 'formulaHono'}">
+					
+						<div ng-include src="'views/crm/cliente/clienteFormulaHonorarios.html'"></div>
+						
+					</div>
+
+					<div id="productos" class="tab-pane fade" ng-class="{'in active' : tabSeleccionado === 'productos'}">
+						
+						<div ng-include src="'views/crm/cliente/clienteProductos.html'"></div>
+						
+					</div>
+
+
+					<div id="apoderadoLegal" class="tab-pane fade" ng-class="{'in active' : tabSeleccionado === 'apoderadoLegal'}">
+
+						<div ng-include src="'views/crm/cliente/clienteRepresentanteApoderado.html'"></div>
+
+					</div>
+
+
+					<!-- nominas -->
+					<div id="nominas" class="tab-pane fade" ng-class="{'in active' : tabSeleccionado === 'nominas'}">
+					
+						<div ng-include src="'views/crm/cliente/clienteNominas.html'"></div>
+
+					</div>
+
+					<div id="cuentasBancarias" class="tab-pane fade" ng-class="{'in active' : tabSeleccionado === 'cuentasBancarias'}">
+					
+						<div ng-include src="'views/crm/cliente/clienteCuentasBancarias.html'"></div>
+
+					</div>
+					
+					<div id="datosStpCliente" class="tab-pane fade" ng-class="{'in active' : tabSeleccionado === 'stpCliente'}">
+					
+						<div ng-include src="'views/crm/cliente/datosStp.html'"></div>
+
+					</div>
+
+					<div id="docCliente" class="tab-pane fade" ng-class="{'in active' : tabSeleccionado === 'docCliente'}">
+					
+						<div ng-include src="'views/crm/cliente/clienteDocumentos.html'"></div>
+
+					</div>
+
+					<div id="celula" class="tab-pane fade" ng-class="{'in active' : tabSeleccionado === 'celula'}">
+					
+						<div ng-include src="'views/crm/cliente/clienteCelula.html'"></div>
+
+					</div>
+
+
+					<div id="honorarios" class="tab-pane fade" ng-class="{'in active' : tabSeleccionado === 'honorarios'}">
+						<div class="row">
+							<div class="col-md-12"></div>
+						</div>
+					</div>
+
+
+
+				</div>
+				</panel>
+
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<div class="modal fade" id="modalCargaDocumento" role="dialog">
+	<div class="modal-dialog" style="width: 50%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Cargar Archivo</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<label class="control-label">Selecciona el archivo a
+							subir: </label> <input id="inputFile" type="file"
+							accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+							onchange="angular.element(this).scope().fileChanged(this)"
+							class="filestyle">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Subir</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- container-fluid -->

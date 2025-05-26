@@ -1,0 +1,285 @@
+<div ng-controller="nominasCtrl">
+  <div id="page-heading">
+    <ol class="breadcrumb">
+        <li><a href="#/">CRM</a></li>
+        <li><a href="#/crm/clientes">Clientes</a></li>
+        <li class="active">Nominas</li>
+    </ol>
+  </div>
+
+	<div class="container-fluid">
+	    
+	    <div class="row">
+	        <div class="col-md-12">
+	            <panel panel-class="panel-info" heading="Nominas">
+	                
+	                 <panel-controls>
+	                    <panel-control-collapse></panel-control-collapse>
+	                             
+	                </panel-controls>
+	            
+					<div class="row">
+						<div class="col-xs-3">
+							<label class="control-label" ><b>Nombre/Razon Social:</b> Cliente</label> 
+						</div>
+						<div class="col-xs-3">
+							<label class="control-label"><b>RFC:</b> SDFASD123HJE</label> 
+						</div>
+						<div >
+							<a href="#/crm/registroNominas" class="color: white">
+								<button class="btn-primary btn">Registrar archivos de n&oacute;minas</button>
+							</a>
+						</div>
+						<!--
+						<div class="col-xs-4" >
+							<div class="form-group">
+							<label class="col-xs-3 control-label"><b>Registrar n&oacute;mina</b></label>
+							<div class="col-xs-3">
+								<div class="fileinput fileinput-new" data-provides="fileinput">
+									<span class="btn btn-default btn-file" style="background: #e6e9ee">
+										<span class="fileinput-new">Buscar n&oacute;mina</span>
+										<b><span class="fileinput-filename"><a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">&times;</a></span></b>
+										<input type="file" name="...">
+									</span>
+								</div>
+								<div >
+									<button class="btn-primary btn">Guardar n&oacute;mina</button>
+								</div>
+
+							</div>
+							</div>
+						</div>
+						-->
+						
+
+					</div>
+					<br>
+	                <div class="table-responsive">
+	                    <table class="table">
+	                        <thead>
+	                            <tr>
+	                                <th style="padding-right:100px">Nombre n&oacute;mina</th>
+	                                <th>N&uacute;mero de colaboradores</th>
+	                            </tr>
+	                        </thead>
+	                        <tbody>
+	                            <tr>
+	                                <td align="left">N&oacute;mina 1</td>
+	                                <td><a ng-click="ShowHide()" style="cursor: pointer; margin-left: 5px;" tooltip-append-to-body="true" tooltip-placement="right" data-tooltip="Ver colaboradores registrados">87</a></td>
+	                            </tr>
+	                           
+	                            <tr>
+	                                 <td align="left">N&oacute;mina 2</td>
+	                                <td><a ng-click="ShowHide2()" style="cursor: pointer; margin-left: 5px;" tooltip-append-to-body="true" tooltip-placement="right" data-tooltip="Ver colaboradores registrados">100</a></td>
+	                            </tr>
+	                            
+	 							<tr>
+	                                <td align="left">N&oacute;mina 3</td>
+	                                <td><a ng-click="ShowHide()" style="cursor: pointer; margin-left: 5px;" tooltip-append-to-body="true" tooltip-placement="right" data-tooltip="Ver colaboradores registrados">56</a></td>
+	                            </tr> 
+	                        </tbody>
+	                        
+	                    </table>
+	                </div>
+	            </panel>
+	        </div>
+	    </div>
+	
+	</div> 
+	<div class="container-fluid"  ng-show = "IsVisible">
+		<div class="row">
+	        <div class="col-md-12">
+	            <panel panel-class="panel-info" heading="Colaboradores">
+	           		<panel-controls>
+	                    <panel-control-collapse>
+	                    </panel-control-collapse>         
+	                </panel-controls>
+	                
+	                
+	            <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="padding-right:100px">Nombre colaborador</th>
+                                <th>Rfc</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td align="left" ><a ng-click="ShowColaboradores()" style="cursor: pointer; margin-left: 5px;" tooltip-append-to-body="true" tooltip-placement="left" data-tooltip="Actualizar datos del colaborador">Sergio Andres Hernandez Gonzalez</a></td>
+                                <td align="left">HGS8976547T5</a></td>
+                                <td align="left">$ 10000</td>
+                            </tr>
+                           
+                            <tr>
+                                <td align="left" ><a ng-click="ShowColaboradores()" style="cursor: pointer; margin-left: 5px;" tooltip-append-to-body="true" tooltip-placement="left" data-tooltip="Actualizar datos del colaborador">Andres Gonzalez Hernandez </a></td>
+                                <td align="left">HGS8976547T5</td>
+                                <td align="left">$ 10000</td>
+                            </tr>
+                            
+                            <tr>
+                                <td align="left" ><a ng-click="ShowColaboradores()" style="cursor: pointer; margin-left: 5px;" tooltip-append-to-body="true" tooltip-placement="left" data-tooltip="Actualizar datos del colaborador">Armando Alberto Hernandez Gonzalez </a></td>
+                                
+                                <td align="left">HGS8976547T5</td>
+                                <td align="left">$ 10000</td>
+                            </tr>
+                        </tbody>
+                        
+                    </table>
+                </div>
+	            <div class="row">
+				 <br/>
+			      	<div class="col-sm-2 col-sm-offset-9">
+			      		<div class="btn-toolbar btn-lg ">
+				      		<button class="btn-primary btn" ng-click="ShowColaboradores()">Registrar colaborador a la n&oacute;mina</button>
+				      	</div>
+			      	</div>
+			     </div>
+	            </panel>
+
+	        </div>
+	     </div>
+	</div>
+	
+	
+		<div class="container-fluid"  ng-show = "IsVisible2">
+		<div class="row">
+	        <div class="col-md-12">
+	            <panel panel-class="panel-info" heading="Colaboradores">
+	           		<panel-controls>
+	                    <panel-control-collapse>
+	                    </panel-control-collapse>         
+	                </panel-controls>
+	                
+	                
+	            <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="padding-right:100px">Nombre colaborador</th>
+                                <th>Rfc</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td align="left"><a ng-click="ShowColaboradores()" style="cursor: pointer; margin-left: 5px;" tooltip-append-to-body="true" tooltip-placement="left" data-tooltip="Actualizar datos del colaborador">Miguel Angel Lopez Jimenez</a></td>
+                                <td align="left">HGS8976547T5</a></td>
+                                <td align="left">$ 10000</td>
+                            </tr>
+                           
+                            <tr>
+                                <td align="left"><a ng-click="ShowColaboradores()" style="cursor: pointer; margin-left: 5px;" tooltip-append-to-body="true" tooltip-placement="left" data-tooltip="Actualizar datos del colaborador">Consuelo de Lopez Jimenez</a></td>
+                                <td align="left">HGS8976547T5</td>
+                                <td align="left">$ 10000</td>
+                            </tr>
+                            
+                            <tr>
+                                <td align="left"><a ng-click="ShowColaboradores()" style="cursor: pointer; margin-left: 5px;" tooltip-append-to-body="true" tooltip-placement="left" data-tooltip="Actualizar datos del colaborador">Miguelito Lopez</a></td>
+                                <td align="left">HGS8976547T5</td>
+                                <td align="left">$ 10000</td>
+                            </tr>
+                        </tbody>
+                        
+                    </table>
+                </div>
+				<div class="row">
+				 <br/>
+			      	<div class="col-sm-2 col-sm-offset-9">
+			      		<div class="btn-toolbar btn-lg ">
+				      		<button class="btn-primary btn" ng-click="ShowColaboradores()">Registrar colaborador a la n&oacute;mina</button>
+				      	</div>
+			      	</div>
+			     </div>
+	            </panel>
+
+	        </div>
+	     </div>
+	</div>
+	
+	
+		<div class="container-fluid"  ng-show = "regColaboradores">
+		<div class="row">
+	        <div class="col-md-12">
+	            <panel panel-class="panel-info" heading="Registro de colaboradores">
+	           		<panel-controls>
+	                    <panel-control-collapse>
+	                    </panel-control-collapse>         
+	                </panel-controls>
+	                
+	                
+			<form>
+				<div class="row">
+					<div class="col-xs-3">
+						<label class="control-label">Nombre: </label> <input
+							type="text" class="form-control"
+							placeholder="Nombre">
+					</div>
+					<div class="col-xs-3">
+						<label class="control-label">Apellido paterno*: </label> <input
+							type="text" class="form-control"
+							placeholder="Apellido paterno">
+					</div>
+					<div class="col-xs-3">
+						<label class="control-label">Apellido materno: </label> <input
+							type="text" class="form-control"
+							placeholder="Apellido materno">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-3">
+						<label class="control-label">RFC: </label> <input type="text"
+							class="form-control" placeholder="RFC" >
+					</div>
+					<div class="col-xs-3">
+						<label class="control-label">Correo electr&oacute;nico: </label> <input type="text"
+							class="form-control" placeholder="Correo electr&oacute;nico" >
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-3">
+						<label class="control-label">Fecha alta: </label> <input type="text"
+							class="form-control" placeholder="Fecha alta" >
+					</div>
+					<div class="col-xs-3">
+						<label class="control-label">Fecha baja:  </label> <input type="text"
+							class="form-control" placeholder="Fecha baja" >
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group">
+						<div class="col-xs-3">
+							<label class="control-label">Frecuencia de pago: </label>
+					        <ui-select ng-model="tipoPago.selected">
+					          <ui-select-match placeholder="- Seleccione una opci&oacute;n -">{{$select.selected}}</ui-select-match>
+					          <ui-select-choices repeat="pago in getTiposDePago($select.search) | filter: $select.search">
+					            <div ng-bind="pago"></div>
+					          </ui-select-choices>
+					        </ui-select>
+						</div>
+						<div class="col-xs-3">
+							<label class="control-label">Ingreso diario:  </label> <input type="text"
+								class="form-control" placeholder="Ingreso diario" >
+						</div>
+					</div>
+				</div>
+				
+				
+			</form>
+	            <div class="row">
+				 <br/>
+			      	<div class="col-sm-2 col-sm-offset-9">
+			      		<div class="btn-toolbar btn-lg ">
+				      		<button class="btn-primary btn">Guardar</button>
+				      	</div>
+			      	</div>
+			     </div>
+	            </panel>
+
+	        </div>
+	     </div>
+	</div>
+	
+<!-- container-fluid -->
+</div>

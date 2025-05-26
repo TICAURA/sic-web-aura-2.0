@@ -1,0 +1,1267 @@
+<div ng-controller="autorizaTesoreriaController">
+	<br>
+	<div class="container-fluid">
+		<div id="page-heading">
+			<ol class="breadcrumb">
+				<li><a href="#/">PPP</a></li>
+				<li class="active">Autorizaci&oacute;n de financiamientos</li>
+			</ol>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<!--
+				<panel panel-class="panel-sky" heading="Clientes"> <panel-controls>
+				<panel-control-collapse></panel-control-collapse> </panel-controls>
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th style="padding-right: 80px">Nombre operativo / Nombre o
+									Raz&oacute;n Social</th>
+								<th>RFC</th>
+								<th>Total de n&oacute;minas (crm)</th>
+								<th align="right">Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							<tr ng-repeat="nominaCliente in gridNominaCliente">
+								<td align="left">{{nominaCliente.clienteDto.nombreComercial}}
+									{{nominaCliente.clienteDto.nombreCompleto}}
+									{{nominaCliente.clienteDto.razonSocial}}</td>
+								<td align="left">{{nominaCliente.clienteDto.rfc}}</td>
+								<td align="right">{{nominaCliente.totalNominas}}</td>
+								<td align="right"><button data-toggle="modal"
+										ng-click="modalDetalleNomina(nominaCliente)"
+										tooltip="Detalle n&oacute;minas" class="btn btn-success">
+										<span class="fa fa-bars"></span>
+									</button>
+									<button data-toggle="modal"
+										ng-click="listaNominaEnProceso(nominaCliente)"
+										tooltip="N&oacute;minas en Proceso" class="btn btn-info">
+										<span class="fa fa-edit"></span>
+									</button>
+									<button data-toggle="modal"
+										ng-click="modalCrearNomina(nominaCliente)"
+										class="btn  btn-midnightblue" tooltip="Crear n&oacute;mina">
+										<span class="fa fa-check-square-o"></span>
+
+									</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				</panel>
+  -->
+
+
+				<div>
+					<panel panel-class="panel-sky"
+						heading="N&oacute;minas para autorizar financiamiento"> <panel-controls>
+					<panel-control-collapse></panel-control-collapse> </panel-controls>
+					<div class="table-responsive"
+						ng-show="gridNominasParaAutorizarFinanciamiento.length == 0">
+						<h4 align="center">
+							<br /> <strong style="color: red"> NO CUENTA CON
+								N&Oacute;MINAS PARA AUTORIZAR FINANCIAMIENTO</strong>
+						</h4>
+					</div>
+					<div class="table-responsive"
+						ng-show="gridNominasParaAutorizarFinanciamiento.length > 0">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Raz&oacute;n social / nombre</th>
+									<th>Clave n&oacute;mina</th>
+									<th>Tipo de n&oacute;mina</th>
+									<th>Periodicidad</th>
+									<th>Total Colaboradores</th>
+									<th>Monto PPP</th>
+									<th>Periodo actual</th>
+									<th>Estatus</th>
+									<th>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr
+									ng-repeat="proceso in gridNominasParaAutorizarFinanciamiento">
+									<td>{{proceso.nominaClienteDto.clienteDto.razonSocial}}{{proceso.nominaClienteDto.clienteDto.nombreCompleto}}</td>
+									<td>{{proceso.claveNomina}}</td>
+									<td>{{proceso.nominaClienteDto.catProductoNomina.descripcion}}</td>
+									<td>Quincenal</td>
+									<td align="right">
+										<button data-toggle="modal" ng-click="modalColaboradores(proceso)" tooltip="Ver colaboradores" class="btn  btn-green" >
+											<span class="fa fa-users"></span><strong>{{proceso.nominaClienteDto.totalColaboradores}}</strong>
+										</button>										
+									</td>
+									<td align="right"><strong>{{proceso.nominaClienteDto.montoTotalColaboradores
+											| currency}}</strong></td>
+									<td align="center">{{proceso.fechaInicioNominaFormato}} -
+										{{proceso.fechaFinNominaFormato}}</td>
+									<td align="center">
+										<button data-toggle="modal" ng-click="getHistoricoByIdPppNomina(proceso)" tooltip="Ver bit&aacute;cora n&oacute;mina"
+											class="btn btn-midnightblue">
+											<span class="fa fa-binoculars"></span> {{proceso.catEstatusNomina.descripcion}}
+										</button>
+									</td>
+									<td>
+										<button data-toggle="modal"
+											ng-click="getDatosNominaByIdNomina(proceso)"
+											tooltip="Editar N&oacute;mina" class="btn  btn-midnightblue">
+											<span class="fa fa-edit"></span>
+										</button>
+
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					</panel>
+				</div>
+
+				<panel panel-class="panel-sky" ng-show="isVisibleSeccionesNomina"
+					heading="Detalle N&oacute;mina - {{nominaDto.claveNomina}} ">
+				<panel-controls> </panel-controls>
+
+
+				<div ng-show="isVisibleSeccionesNomina">
+					<panel panel-class="panel-sky"
+						heading="Datos Generales N&oacute;mina - {{nominaDto.claveNomina}} ">
+					<panel-controls> <span class="btn btn-info-alt">
+										<strong>Paso 1 <span class="glyphicon glyphicon-ok" style="color:green"></span>
+										</strong>
+									</span> <panel-control-collapse></panel-control-collapse>
+					</panel-controls>
+
+					<form id="generalNominaForm" name="generalNominaForm" novalidate>
+						<div class="row">
+							<div class="col-xs-3">
+								<label class="control-label">Clave de n&oacute;mina</label> <input
+									type="text" name="claveNomina" class="form-control"
+									placeholder="Clave de n&oacute;mina"
+									ng-model="nominaDto.claveNomina" ng-required="true" disabled />
+								<span class="messages"
+									ng-show="buscarClienteForm.$submitted || buscarClienteForm.claveNomina.$touched">
+									<span ng-show="buscarClienteForm.claveNomina.$error.required">El
+										campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-xs-3">
+								<label class="control-label">Fecha inicio de
+									n&oacute;mina</label> <input type="date" name="fechaInicioNomina"
+									class="form-control"
+									placeholder="Fecha inicio de n&oacute;mina"
+									ng-model="nominaDto.fechaInicioNomina" ng-required="true"
+									readonly="true" /> <span class="messages"
+									ng-show="buscarClienteForm.$submitted || buscarClienteForm.fechaInicioNomina.$touched">
+									<span
+									ng-show="buscarClienteForm.fechaInicioNomina.$error.required">El
+										campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-xs-3">
+								<label class="control-label">Fecha fin de n&oacute;mina</label>
+								<input type="date" name="fechaFinNomina" class="form-control"
+									placeholder="Fecha inicio de n&oacute;mina"
+									ng-model="nominaDto.fechaFinNomina" ng-required="true"
+									readonly="true" /> <span class="messages"
+									ng-show="buscarClienteForm.$submitted || buscarClienteForm.fechaFinNomina.$touched">
+									<span
+									ng-show="buscarClienteForm.fechaFinNomina.$error.required">El
+										campo es obligatorio.</span>
+								</span>
+							</div>
+						</div>
+
+<!--  
+						<div class="row">
+							<br />
+							<div class="col-xs-12" align="right ">
+								<button type="submit" class="btn-green btn" name="editarNomina"
+									ng-click="crearNomina();">
+									<span class="fa fa-save"></span> Editar
+								</button>
+							</div>
+						</div>
+-->
+
+					</form>
+
+
+					</panel>
+				</div>
+				<div ng-show="isVisibleSeccionesNomina">
+
+					<panel panel-class="panel-sky"
+						heading="Colaboradores N&oacute;mina - {{nominaDto.claveNomina}} ">
+					<panel-controls> <span class="btn btn-info-alt" ><strong>Paso 2 
+						<span class="glyphicon glyphicon-ok" style="color:green" ng-show="dataExcel.contentRows[0] != undefined"></span>
+						<span class="glyphicon glyphicon-remove" style="color:red" ng-show="dataExcel.contentRows[0] === undefined"></span>
+					</strong></span><panel-control-collapse></panel-control-collapse>
+					</panel-controls>
+					<form id="colaboradoresForm" name="colaboradoresForm" novalidate>
+						<div class="table-responsive">
+							<table class="table"
+								ng-if="dataExcel.contentRows[0] != undefined">
+								<thead></thead>
+								<tr>
+									<th>Total Colaboradores :
+										{{dataExcel.contentRows[0].totalColaboradores}}</th>
+									<th>Total Monto PPP:
+										{{dataExcel.contentRows[0].totalMontoPPP | currency}}</th>
+								</tr>
+								</tbody>
+							</table>
+							<table class="table">
+								<thead>
+									<tr>
+									<th>Nombre</th>
+									<th>Apellido paterno</th>
+									<th>Apellido materno</th>
+									<th>RFC</th>
+									<th>Monto PPP</th>
+									<th>Clabe interbancaria &oacute; n&uacute;mero de tarjeta</th>
+									<th>CURP</th>
+									<th>N&uacute;mero seguro social</th>
+									<th>Instituci&oacute;n contraparte</th>
+									<th>Correo electr&oacute;nico</th>
+									<th>Estatus</th>
+									<th>Bit&aacute;cora de estatus</th>
+										<!-- <th>Acciones</th> -->
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="data in dataExcel.contentRows">
+									<td>{{data.nombre}}</td>
+									<td>{{data.apellidoPaterno}}</td>
+									<td>{{data.apellidoMaterno}}</td>
+									<td>{{data.rfc}}</td>
+									<td align="right">{{data.montoPPP | currency}}</td>
+									<td align="right" ng-if="data.clabe != null || data.clabe != undefined">{{data.clabe}}</td>
+									<td align="right" ng-if="data.numeroCuenta != null || data.numeroCuenta != undefined">{{data.numeroCuenta}}</td>
+									<td align="right">{{data.curp}}</td>
+									<td align="right">{{data.nss}}</td>
+									<td align="right">{{data.institucionContraparte}}</td>
+									<td align="right">{{data.correoElectronico}}</td>
+									<td align="center" ng-if="data.estatus === 1 && data.idEstatus != 8 && data.idEstatus != 9">
+										<span class="fa fa-check" style="color:green;" tooltip="{{data.descError}}"></span>
+									</td>
+									<td align="center" ng-if="data.estatus === 0 && data.idEstatus != 8 && data.idEstatus != 9">
+										<span class="fa fa-exclamation-triangle" style="color:#EB5352;" tooltip="{{data.descError}}"></span>
+									</td>
+									<td align="center" ng-if="data.idEstatus === 8"><span
+											class="fa fa-check" style="color: green;"
+											tooltip="Dispersi&oacute;n realizada en el sistema STP"></span></td>
+
+										<td align="center" ng-if="data.idEstatus === 9"><span
+											class="fa fa-exclamation-triangle" style="color: #EB5352;"
+											tooltip="{{data.descripcionErrorStp}}"></span></td>
+									<td align="center">
+										<button data-toggle="modal" ng-show="data.idEstatus != 9"
+										ng-click="mostrarDialogoColaboradorEstatus(data);"
+											class="btn btn-midnightblue">
+											<span class="fa fa-binoculars"></span> {{data.descEstatus}}
+										</button>
+										<button data-toggle="modal" ng-show="data.idEstatus === 9"
+												ng-click="mostrarDialogoColaboradorEstatus(data);"
+												class="btn btn-danger">
+												<span class="fa fa-binoculars"></span> {{data.descEstatus}}
+											</button>
+									</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</form>
+					<div class="modal fade" id="cargarDocumento" role="dialog">
+						<div class="modal-dialog" style="width: 50%;">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title">Carga de colaboradores</h4>
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<div class="col-md-12">
+											<form>
+												<div class="col-md-12">
+													<div class="col-md-6">
+														<input id="inputFile" type="file"
+															accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+															onchange="angular.element(this).scope().fileChanged(this)"
+															class="btn btn-orange filestyle"
+															onClick="this.form.reset()">
+													</div>
+
+													<!-- <div class="row" style="padding-top: 25px;"> -->
+													<div class="col-md-6">
+														<a href="./LayoutNominaPPP.xlsx"
+															class="btn btn-midnightblue pull-right"
+															download="LayoutNominaPPP.xlsx"
+															tooltip="Descargar layout"> <span
+															class="glyphicon glyphicon-download-alt" /> Descargar
+															Layout
+														</a>
+													</div>
+												</div>
+												<!-- </div> -->
+											</form>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button id="idCerrarModalColab" type="button"
+										class="btn btn-brown" ng-click="cerrar()">Cancelar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					</panel>
+				</div>
+
+				<div ng-show="isVisibleSeccionesNomina">
+					<panel panel-class="panel-sky"
+						heading="Datos adicionales (N&oacute;mina - {{nominaDto.claveNomina}}) ">
+					<panel-controls> <span class="btn btn-info-alt" ><strong>Paso 3 </strong>
+						<span class="glyphicon glyphicon-ok" style="color:green" ng-show="nominaComplementoDto.idNominaComplemento != undefined"></span>
+						<span class="glyphicon glyphicon-remove" style="color:red" ng-show="nominaComplementoDto.idNominaComplemento === undefined || nominaComplementoDto.idNominaComplemento === '' "></span>
+						</span> <panel-control-collapse></panel-control-collapse>
+					</panel-controls>
+					<form id="complementoNominaForm" name="complementoNominaForm"
+						novalidate>
+						<div class="row">
+							<div class="col-xs-3">
+								<label class="control-label">Fecha facturaci&oacute;n: </label>
+
+
+								<input placeholder="RFC" name="fechaFacturacion_"
+									ng-model="nominaComplementoDto.fechaFacturacion"
+									class="form-control" type="date" required="required"
+									readonly="true"> <span class="messages"
+									ng-show="complementoNominaForm.$submitted || complementoNominaForm.fechaFacturacion_.$touched">
+									<span
+									ng-show="complementoNominaForm.fechaFacturacion_.$error.required">El
+										campo es obligatorio.</span>
+								</span>
+							</div>
+
+							<div class="col-xs-3">
+								<label class="control-label">Fecha dispersi&oacute;n: </label> <input
+									placeholder="RFC" name="fechaDispersion_"
+									ng-model="nominaComplementoDto.fechaDispersion"
+									class="form-control" type="date" required="required"
+									readonly="true"> <span class="messages"
+									ng-show="complementoNominaForm.$submitted || complementoNominaForm.fechaDispersion_.$touched">
+									<span
+									ng-show="complementoNominaForm.fechaDispersion_.$error.required">El
+										campo es obligatorio.</span>
+								</span>
+
+							</div>
+							<div class="col-xs-3">
+								<label class="control-label">Fecha timbrado: </label> <input
+									placeholder="RFC" name="fechaTimbrado_"
+									ng-model="nominaComplementoDto.fechaTimbrado"
+									class="form-control" type="date" required="required"
+									readonly="true"> <span class="messages"
+									ng-show="complementoNominaForm$submitted || complementoNominaForm.fechaTimbrado_.$touched">
+									<span
+									ng-show="complementoNominaForm.fechaTimbrado_.$error.required">El
+										campo es obligatorio.</span>
+								</span>
+
+							</div>
+
+						</div>
+						<br />
+
+
+
+
+						<div class="row">
+
+							<div class="col-xs-3">
+								<label class="control-label">Monto total PPP </label> <span
+									class="form-control" type="text" disabled>{{totalNominaPPPColaboradores
+									| currency}}</span>
+							</div>
+
+							<div class="col-xs-3">
+								<label class="control-label">Total de colaboradores PPP
+								</label> <span class="form-control" type="text" disabled>{{totalPPPColaboradores}}</span>
+							</div>
+						</div>
+
+						<br />
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Requiere
+									financiamiento</label>
+								<div class="col-sm-6">
+									<input type="checkbox"
+										ng-change="verificarCheckboxFinanciamiento()"
+										ng-model="nominaComplementoDto.requiereFianciamiento"
+										class="js-switch"
+										ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}"
+										disabled="disabled" />
+								</div>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-xs-3"
+								ng-show="nominaComplementoDto.requiereFianciamiento">
+								<label class="control-label">Monto financiamiento </label> <input
+									placeholder="Monto a financiar" name="buscarRFC"
+									ng-model="nominaComplementoDto.montoFinanciamiento"
+									class="form-control" type="text" required="required"
+									readonly="true">
+							</div>
+
+
+							<div class=" col-xs-9 form-group"
+								ng-show="nominaComplementoDto.requiereFianciamiento">
+								<label class="col-sm-12 control-label">Motivo
+									financiamiento*:</label>
+								<div class="col-sm-12">
+									<textarea class="form-control"
+										ng-model="nominaComplementoDto.observaciones" minlength="5"
+										maxlength="250" readonly="true"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="row" >
+							<div class="col-md-9" ng-show="nominaComplementoDto.requiereFianciamiento">
+                 				<label class="control-label">Documento sustento (financiamiento): </label> <BR>
+		                 		<button data-toggle="modal" tooltip="Descargar documento" class="btn-info btn" ng-click="descargarDocumentoByIdCMS(nominaComplementoDto.idCMS)">
+		                 			<span class="fa fa-file-o"></span> {{nombreArchivo}}
+		                 		</button>	                 		
+	                 		</div>
+						</div>
+
+						<div class="row"
+							ng-show="nominaComplementoDto.requiereFianciamiento">
+							<br />
+							<div class="col-xs-12" align="right ">
+								<button data-toggle="modal" class="btn-danger btn"
+									ng-click="modalRechazarFinanciamiento(nominaComplementoDto.nominaDto.idNomina);">
+									<span class="fa fa-times"></span> Rechazar financiamiento
+								</button>
+								<button type="submit" class="btn-green btn"
+									name="guardarNominaComplemento"
+									ng-click="modalAutorizarFinanciamiento(nominaComplementoDto.nominaDto.idNomina);">
+									<span class="fa fa-check"></span> Autorizar Financiamiento
+								</button>
+							</div>
+						</div>
+
+
+					</form>
+					</panel>
+				</div>
+				</panel>
+			</div>
+
+		</div>
+
+
+
+		<div class="modal fade" id="modalColaborador" role="dialog">
+			<div class="modal-dialog modal-lg" style="width: 50%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Detalle colaborador</h4>
+					</div>
+					<div class="modal-body">
+						<div>
+							<h4>
+								<strong> N&Oacute;MINA: 1</strong>
+							</h4>
+							<h4>
+								<strong> DATOS GENERALES</strong>
+							</h4>
+						</div>
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Nombre*: </label> <input
+									type="text" class="form-control" placeholder="Nonmbre"
+									required="required" ng-model="colaborador.nombre">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Apellido paterno*: </label> <input
+									type="text" class="form-control"
+									placeholder="RApellido paterno" required="required"
+									ng-model="colaborador.apellidoPaterno">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Apellido materno: </label> <input
+									type="text" class="form-control" placeholder="Apellido materno"
+									required="required" ng-model="colaborador.apellidoMaterno">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+
+							<div class="col-xs-4 ">
+								<label class="control-label ">Nacionalidad: </label> <select
+									class="form-control " placeholder="Estado ">
+									<option>Nacionalidad 1</option>
+									<option>Nacionalidad 2</option>
+									<option>Nacionalidad 3</option>
+								</select>
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Fecha de nacimiento*: </label> <input
+									type="DATE" class="form-control"
+									placeholder="Fecha de nacimiento">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">RFC*: </label> <input type="text"
+									class="form-control" placeholder="RFC"
+									ng-model="colaborador.rfc" required="required" maxlength="15"
+									min="15" required="required"
+									ng-pattern="/^([A-Z�&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">CURP*: </label> <input type="text"
+									class="form-control" placeholder="RFC"
+									ng-model="colaborador.curp" required="required" maxlength="15"
+									min="15" required="required"
+									ng-pattern="/^([A-Z�&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Estado civil: </label> <select
+									class="form-control" placeholder="Estado"">
+									<option>Estado civil 1</option>
+									<option>Estado civil 2</option>
+									<option>Estado civil 3</option>
+								</select>
+							</div>
+							<div class="col-xs-4 ">
+								<label class="control-label ">G&eacute;nero: </label> <select
+									class="form-control " placeholder="Estado ">
+									<option>G&eacute;nero 1</option>
+									<option>G&eacute;nero 2</option>
+									<option>G&eacute;nero 3</option>
+								</select>
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Celular: </label> <input
+									type="text" class="form-control" placeholder="Celular"
+									ng-model="apoderadoDto.rfc" required="required" maxlength="15"
+									min="15" required="required">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Tel&eacute;fono: </label> <input
+									type="text" class="form-control" placeholder="Tel&eacute;fono"
+									ng-model="apoderadoDto.curp" required="required" maxlength="15"
+									min="15" required="required">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Correo electr&oacute;nico:
+								</label> <input type="text" class="form-control"
+									placeholder="Correo electr&oacute;nico"
+									ng-model="apoderadoDto.curp" required="required" maxlength="15"
+									min="15" required="required">
+							</div>
+						</div>
+						<br>
+
+						<h4>
+							<strong>DOMICILIO</strong>
+						</h4>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Pa&iacute;s: </label> <input
+									type="text" class="form-control" placeholder="Pa&iacute;s"
+									required="required" maxlength="15" min="15" required="required"
+									value="M&eacute;xico">
+							</div>
+
+							<div class="col-xs-4 ">
+								<label class="control-label ">Entidad federativa: </label> <select
+									class="form-control " placeholder="Estado ">
+									<option>Entidad federativa 1</option>
+									<option>Entidad federativa 2</option>
+									<option>Entidad federativa 3</option>
+								</select>
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Calle: </label> <input type="text"
+									class="form-control" placeholder="Calle"
+									ng-model="clienteTempDto.idMedioContacto.calle">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Colonia: </label> <input
+									type="text" class="form-control" placeholder="Colonia"
+									ng-model="clienteTempDto.idMedioContacto.calle">
+							</div>
+							<div class="col-xs-2">
+								<label class="control-label">Codigo Postal*: </label> <input
+									type="text" class="form-control" placeholder="Codigo Postal"
+									ng-model="clienteTempDto.idMedioContacto.codigoPostal">
+							</div>
+						</div>
+						<br>
+
+						<h4>
+							<strong>DATOS N&Oacute;MINA</strong>
+						</h4>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Salario diario: </label> <input
+									type="text" class="form-control" placeholder="Salario diario"
+									required="required" maxlength="15" min="15" required="required">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Diario: </label> <input type="text"
+									class="form-control" placeholder="Diario" required="required"
+									maxlength="15" min="15" required="required">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Fecha de alta (firma
+									contrato)*: </label> <input type="DATE" class="form-control"
+									placeholder="Fecha de alta (firma contrato)">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Antig&uuml;edad: </label> <input
+									type="text" class="form-control" placeholder="Antig�edad">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">IMSS: </label> <input type="text"
+									class="form-control" placeholder="IMSS">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label ">Nivel de estudios: </label> <select
+									class="form-control " placeholder="Estado ">
+									<option>Nivel de estudios 1</option>
+									<option>Nivel de estudios 2</option>
+									<option>Nivel de estudios 3</option>
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Profesi&oacute;n: </label> <input
+									type="text" class="form-control" placeholder="Profesi&oacute;n">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Tipo de sangre: </label> <input
+									type="text" class="form-control" placeholder="Tipo de sangre">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label ">Forma de pago: </label> <select
+									class="form-control " placeholder="Forma de pago ">
+									<option>Forma de pago 1</option>
+									<option>Forma de pago 2</option>
+									<option>Forma de pago 3</option>
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label ">Banco operador: </label> <select
+									class="form-control " placeholder="Banco operador ">
+									<option>Banco operador 1</option>
+									<option>Banco operador 2</option>
+									<option>Banco operador 3</option>
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Control de banco: </label> <input
+									type="text" class="form-control" placeholder="Control de banco">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Cuenta clabe deposito 1: </label> <input
+									type="text" class="form-control"
+									placeholder="Cuenta clabe deposito"> <input
+									type="radio" ng-model="valor.radio" value="1" /> <label
+									class="control-label">&#191;Es cuenta principal?</label>
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Cuenta clabe deposito 2: </label> <input
+									type="text" class="form-control"
+									placeholder="Cuenta clabe deposito"> <input
+									type="radio" ng-model="valor.radio" value="0" /> <label
+									class="control-label">&#191;Es cuenta principal?</label>
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Tipo de empleado: </label> <input
+									type="text" class="form-control" placeholder="Tipo de empleado">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Tipo de jornada: </label> <input
+									type="text" class="form-control" placeholder="Tipo de jornada">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label ">Turno: </label> <select
+									class="form-control " placeholder="Banco operador ">
+									<option>Turno 1</option>
+									<option>Turno 2</option>
+									<option>Turno 3</option>
+								</select>
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Unidad m&eacute;dica
+									familiar: </label> <input type="text" class="form-control"
+									placeholder="Unidad m&eacute;dica familiar">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Descuento pensi&oacute;n
+									alimenticia: </label> <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input
+									type="checkbox" value="1">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Registro patronal: </label> <input
+									type="text" class="form-control"
+									placeholder="Registro patronal">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Clasificaci&oacute;n: </label> <input
+									type="text" class="form-control"
+									placeholder="Clasificaci&oacute;n">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Departamento: </label> <input
+									type="text" class="form-control" placeholder="Departamento">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Puesto: </label> <input type="text"
+									class="form-control" placeholder="Puesto">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Tipo Contrato: </label> <input
+									type="text" class="form-control" placeholder="Tipo Contrato">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Tipo de ingresos: </label> <input
+									type="text" class="form-control" placeholder="Tipo de ingresos">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Clave de regimen de
+									contrataci&oacute;n: </label> <input type="text" class="form-control"
+									value="99" disabled="true"
+									placeholder="Clave de regimen de contrataci&oacute;n">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Base de cotizaci&oacute;n*:
+								</label> <input type="text" class="form-control"
+									placeholder="Base de cotizaci&oacute;n">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Clave de tipo de contrato:
+								</label> <input type="text" class="form-control"
+									placeholder="Clave de tipo de contrato">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Clave de tipo de jornada: </label>
+								<input type="text" class="form-control" value="99"
+									disabled="true" placeholder="Clave de tipo de jornada">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Clave de tipo de entidad
+									federativa: </label> <input type="text" class="form-control"
+									placeholder="Clave de tipo de entidad federativa">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Ruta plantilla: </label> <input
+									type="text" class="form-control"
+									placeholder="Clave de tipo de contrato">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label">Clave regimen contrato: </label> <input
+									type="text" class="form-control" value="99" disabled="true"
+									placeholder="Clave regimen contrato V12">
+							</div>
+
+							<div class="col-xs-4">
+								<label class="control-label">Clave de banco operador: </label> <input
+									type="text" class="form-control"
+									placeholder="Clave de banco operador">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">D&iacute;s de
+									duraci&oacute;n: </label> <input type="text" class="form-control"
+									placeholder="D&iacute;s de duraci&oacute;n">
+							</div>
+						</div>
+						<br>
+
+						<div class="row">
+							<div class="col-xs-4">
+								<label class="control-label ">Beneficios adicionales: </label> <select
+									class="form-control " placeholder="Banco operador ">
+									<option>Beneficios adicionales 1</option>
+									<option>Beneficios adicionales 2</option>
+									<option>Beneficios adicionales 3</option>
+								</select>
+							</div>
+						</div>
+						<br>
+
+						<div class="row " align="right ">
+							<br />
+							<button class="btn-primary btn " type="submit "
+								ng-click=guardarCelula();>Guardar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="modalAutorizacion" role="dialog">
+			<div class="modal-dialog" style="width: 50%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Autorizar N&oacute;mina</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<form>
+
+									<div class="row">
+										<div class="col-xs-6">
+											<label class="control-label">Adjuntar factura
+												nómina: </label> <input id="inputFile" type="file"
+												accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+												onchange="angular.element(this).scope().fileChanged(this)"
+												class="filestyle">
+										</div>
+										<div class="col-xs-6">
+											<label class="control-label">Adjuntar comprobante
+												pago: </label> <input id="inputFile" type="file"
+												accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+												onchange="angular.element(this).scope().fileChanged(this)"
+												class="filestyle">
+										</div>
+									</div>
+									<br />
+									<div class="row">
+										<div class="col-xs-3">
+											<label class="control-label">Monto nómina PPP: </label> <input
+												placeholder="100,000" name="montoNomina"
+												ng-model="autororizar.montonominappp" class="form-control"
+												type="text" required="required">
+										</div>
+
+										<div class="col-xs-3">
+											<label class="control-label">Monto nómina fiscal: </label> <input
+												placeholder="29,000" name="nomina"
+												ng-model="autorizar.montonominafiscal" class="form-control"
+												type="text" required="required">
+										</div>
+
+										<div class="col-xs-3">
+											<label class="control-label">Comision: </label> <input
+												placeholder="9,000" name="comision"
+												ng-model="autorizar.montoComision" class="form-control"
+												type="text" required="required">
+										</div>
+
+										<div class="col-xs-3">
+											<label class="control-label">Monto nómina factura: </label>
+											<input placeholder="129,000" name="buscarRFC"
+												ng-model="clienteTempDto.rfc" maxlength="13" minlength="12"
+												class="form-control" type="text" required="required">
+										</div>
+
+
+									</div>
+									<br />
+
+									<div class="row">
+										<div class="form-group">
+											<label class="col-sm-3 control-label">Requiere
+												financiamiento</label>
+											<div class="col-sm-6">
+												<input type="checkbox" ng-model="switchStatus"
+													ng-change="cambiaRequiereFinanciamiento()"
+													class="js-switch"
+													ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" />
+											</div>
+										</div>
+									</div>
+									<br />
+									<div class="row" ng-show="switchStatus">
+										<div class="col-xs-3">
+											<label class="control-label">Monto financiamiento </label> <input
+												placeholder="Monto a financiar" name="buscarRFC"
+												ng-model="clienteTempDto.rfc" maxlength="13" minlength="12"
+												class="form-control" type="text" required="required">
+										</div>
+
+										<div class="col-xs-3">
+											<label class="control-label">Comisión financiamiento
+											</label> <input placeholder="procentaje o monto" name="buscarRFC"
+												ng-model="clienteTempDto.rfc" maxlength="13" minlength="12"
+												class="form-control" type="text" required="required">
+										</div>
+
+										<div class="col-xs-3">
+											<label class="control-label">Total + Comisi&oacute;n</label>
+											<input placeholder="procentaje o monto" name="buscarRFC"
+												ng-model="clienteTempDto.rfc" maxlength="13" minlength="12"
+												class="form-control" type="text" required="required">
+										</div>
+
+										<div class="col-xs-3">
+											<label class="control-label">Plazo: </label> <input
+												placeholder="total de meses para liquidar nómina"
+												name="buscarRFC" ng-model="clienteTempDto.rfc"
+												maxlength="13" minlength="12" class="form-control"
+												type="text" required="required">
+										</div>
+
+
+									</div>
+
+									<br />
+									<div class="row">
+										<div class="form-group">
+											<label class="col-sm-12 control-label">Comentario:</label>
+											<div class="col-sm-12">
+												<textarea class="form-control"></textarea>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">
+							<span class="fa fa-undo"></span> Cancelar
+						</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal">
+							<span class="fa fa-save"></span> Guardar
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="modal fade" id="modalColaboradores" role="dialog"  data-backdrop="static" >
+			<div class="modal-dialog" style="width: 40%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Colaboradores de n&oacute;mina</h4><br>
+						<h4 class="modal-title">Clave n&oacute;mina: {{claveNomina}}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="table-responsive">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>Nombre</th>
+												<th>RFC</th>
+												<th>Monto PPP</th>
+												<th>Clabe interbancaria</th>
+			
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="data in dataExcel.contentRows">
+												<td>{{data.nombre}}</td>
+												<td>{{data.rfc}}</td>
+												<td align="right">{{data.montoPPP | currency}}</td>
+												<td align="right">{{data.clabe}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								
+								<div class="modal-footer">
+										<button type="button" class="btn btn-danger"
+											data-dismiss="modal">Cerrar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="modalEstatus" role="dialog">
+			<div class="modal-dialog modal-lg" style="width: 50%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Resumen Estatus</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<form>
+								<table class="table table-striped">
+										<thead>
+											<tr>
+												<th align="center">Nombre:&nbsp; {{estatusColaborador[0].pppColaboradorDto.nombre}}</th>
+												<th align="center">RFC:&nbsp; {{estatusColaborador[0].pppColaboradorDto.rfc}}</th>
+												<th align="center">Monto PPP:&nbsp; {{estatusColaborador[0].pppColaboradorDto.montoPPP}}</th>
+												<th align="center">Clabe interbancaria:&nbsp; {{estatusColaborador[0].pppColaboradorDto.clabe}}</th>
+											</tr>
+										</thead>
+									</table>
+									<br />
+									<table class="table table-striped">
+										<thead>
+											<tr>
+												<th align="center">#</th>
+												<th align="center">Estatus</th>
+												<th align="center">Fecha</th>
+												<th align="center">Usuario Movimiento</th>
+												<!-- <th>Comentario</th> -->
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat= "estatus in estatusColaborador">
+												<td align="center">{{estatus.consecutivo}}</td>
+												<td align="center">{{estatus.catEstatusColaborador.descripcionEstatus}}</td>
+												<td align="center">{{estatus.fechaAlta | date}}</td>
+												<td align="center">{{estatus.usuarioAlta.nombre}} {{estatus.usuarioAlta.primerApellido}} {{estatus.usuarioAlta.segundoApellido}}</td>
+											</tr>
+										</tbody>
+									</table>
+
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="modalDetalleNominas" role="dialog"
+			data-backdrop="static">
+			<div class="modal-dialog" style="width: 80%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Resumen N&oacute;minas</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<form>
+									<br />
+									<div class="row">
+										<div class="col-md-12">
+											<h3>
+												Nombre operativo / Nombre o Raz&oacute;nSocial: <br /> <strong>
+													{{nombreCliente}}</strong>
+											</h3>
+										</div>
+
+										<br />
+									</div>
+
+									<div class="table-responsive"
+										ng-if="gridDetalleNominaCliente.length == 0">
+										<h4 align="center">
+											<br /> <strong style="color: red"> NO CUENTA CON
+												N&Oacute;MINAS DE CRM</strong>
+										</h4>
+									</div>
+
+									<div class="table-responsive"
+										ng-if="gridDetalleNominaCliente.length > 0">
+										<table class="table">
+											<thead>
+												<tr>
+													<th align="center">Clave n&oacute;mina</th>
+													<th align="center">Producto n&oacute;mina</th>
+													<th align="center">% Honorario ppp</th>
+													<th align="center">% Honorario s y s</th>
+													<th align="center">Fondo prestadora de servicio</th>
+													<th align="center">Prestadora de servicio</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="detalle in gridDetalleNominaCliente">
+													<td align="left">{{detalle.claveNomina}}</td>
+													<td align="left">{{detalle.catProductoNomina.descripcion}}</td>
+													<td align="right">{{detalle.comisionPpp}}</td>
+													<td align="right">{{detalle.comisionSs}}</td>
+													<td align="left">{{detalle.prestadoraServicio.razonSocial}}</td>
+													<td align="left">{{detalle.prestadoraServicioFondo.razonSocial}}</td>
+												</tr>
+											</tbody>
+
+										</table>
+									</div>
+
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="modal fade" tabindex="-1" role="dialog"
+			data-backdrop="static" id="modalRechazarFinanciamiento"
+			aria-labelledby="myModalLabel">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title">{{titulo}}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<label class="control-label">Motivo:<span
+									class="ng-scope">*</span></label>
+								<div class="form-group">
+									<textarea type="text" class="form-control" maxlength="1000"
+										ng-model="motivoRechazo" ng-required="true"
+										required="required"
+										onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"> </textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>							
+						<button type="button" ng-show="esVisibleBotonRechazar" class="btn-green btn" ng-click="rechazarFinanciamiento(idPppNomina);"ng-disabled="!motivoRechazo" id="idRechazarProspecto" data-dismiss="modal">ACEPTAR</button>
+						<button type="button" ng-show="esVisibleBotonAutorizar" class="btn-green btn" ng-click="autorizarFinanciamiento(idPppNomina);"ng-disabled="!motivoRechazo" id="idAutorizarProspecto" data-dismiss="modal">ACEPTAR</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	
+		<div class="modal fade" id="modalHistoricoMovimiento" role="dialog"  data-backdrop="static" >
+			<div class="modal-dialog" style="width: 40%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Hist&oacute;rico n&oacute;mina</h4><br>
+						<h4 class="modal-title">Clave n&oacute;mina: {{claveNomina}}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="table-responsive">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>Responsable movimiento</th>
+												<th>Estatus de la n&oacute;mina</th>
+												<th>Observaci&oacute;n</th>
+												<th>Fecha movimiento</th>
+											</tr>
+										</thead>
+										<tbody>
+										
+											<tr ng-repeat="historico in gridHistorico">
+												<td align="left">{{historico.nombreUsuarioMovimiento}}</td>	
+												<td align="left">{{historico.descEstatusNomina}}</td>
+												<td align="left">{{historico.observacion}}</td>
+												<td align="left">{{historico.fechaMovimientoFormato}}</td>										
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								
+								<div class="modal-footer">
+										<button type="button" class="btn btn-danger"
+											data-dismiss="modal">Cerrar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+</div>

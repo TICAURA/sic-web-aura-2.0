@@ -1,0 +1,35 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+
+
+			<panel panel-class="panel-sky"
+				heading="Datos STP"> <panel-controls>
+			<panel-control-collapse></panel-control-collapse> </panel-controls>
+				<form id="datosStpForm" name="datosStpForm" novalidate>
+					<div class="row">
+						<div class="col-xs-5">
+							<label class="control-label">Prefijo STP cliente (clave interna)*: </label> 
+							<input  name="prefijo" type="text" class="form-control"
+								ng-required="true" placeholder="Prefijo STP "
+								ng-model="clienteDto.prefijoSTP" minlength="2" maxlength="6"
+								ng-pattern="/^[a-zA-Z0-9]*$/"
+								tooltip = "Prefijo asociado a las dispersiones de los colaboradores del cliente" ng-disabled="inHabilitaEscritura" >
+							<span class="messages" ng-show="datosStpForm.prefijo.$submitted || datosStpForm.prefijo.$touched">
+								<span ng-show="datosStpForm.prefijo.$error.required">El campo es obligatorio.</span>
+							</span>
+							<div class="messages"  ng-show="datosStpForm.prefijo.$error.pattern">
+                    			Favor de ingresar solo caracteres alfanum&eacute;ricos
+                    		</div>
+						</div>
+					</div>
+					<br>
+					<div class="row" align="right">
+						<br />
+						<button type="submit" class="btn-green btn" name="guardar" ng-click="guardarPrefijoStp(datosStpForm);" ng-disabled="datosStpForm.$invalid" ng-if="!inHabilitaEscritura">GUARDAR</button>
+					</div>
+				</form>
+			</panel>
+		</div>
+	</div>
+</div>

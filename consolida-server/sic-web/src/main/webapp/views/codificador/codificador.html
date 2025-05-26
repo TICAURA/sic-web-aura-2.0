@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<div class="container-fluid" ng-controller="codificadorController">
+
+<div id="page-heading">
+	<ol class="breadcrumb">
+		<li><a href="#/">Admin</a></li>
+		<li class="active">Codificador</li>
+	</ol>
+</div>
+
+	<div class="row">
+		<div class="col-md-12">
+				<panel panel-class="panel-sky" heading="Decodificador">
+				<panel-controls> 
+					<panel-control-collapse></panel-control-collapse>
+					
+				</panel-controls>
+				
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<label class="control-label">Texto encriptado<span
+								class="ng-scope">*</span></label>
+							<div class="form-group">
+								<textarea type="text" class="form-control" id="textoDecodificar"
+									ng-model="textoDecodificar" ng-required="true"
+									required="required"> </textarea>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<label class="control-label">Texto desencriptado:<span
+								class="ng-scope"></span></label>
+							<div class="form-group">
+								<textarea type="text" class="form-control" id="textoDecodificado"
+									ng-model="textoDecodificado" ng-required="true"> </textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn-brown btn"
+						ng-click="initDecodificador()" onclick="limpiar()">LIMPIAR</button>
+					<button type="button" class="btn-green btn"
+						ng-click="decodificar(textoDecodificar);"
+						ng-disabled="!textoDecodificar">ACEPTAR</button>
+				</div>
+				
+				
+		
+			</panel>
+			
+			
+		
+	
+	</div>
+	<script>
+	function limpiar(){
+		document.getElementById("textoDecodificar").value = "";
+		document.getElementById("textoDecodificado").value = "";
+	}
+</script>
+	
+</div>
+
+</html>

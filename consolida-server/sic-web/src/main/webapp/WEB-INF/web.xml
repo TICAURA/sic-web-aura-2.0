@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javaee:web-app version="3.0" xmlns:javaee="http://java.sun.com/xml/ns/javaee"
+ xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+ metadata-complete="true">
+	
+	<javaee:display-name>sic-web</javaee:display-name>
+	
+	<javaee:welcome-file-list>
+    	<javaee:welcome-file>/index.html</javaee:welcome-file>
+	</javaee:welcome-file-list>
+
+    <javaee:context-param>
+       <javaee:param-name>
+           javax.servlet.jsp.jstl.fmt.locale
+       </javaee:param-name>
+       <javaee:param-value>
+           es_MX
+       </javaee:param-value>
+   </javaee:context-param>
+    
+     <javaee:context-param>
+      <javaee:param-name>contextConfigLocation</javaee:param-name>
+       <javaee:param-value>
+       		classpath:mvc.xml
+       		classpath:bo-cfg.xml
+       		classpath:bo-cfg-jetty.xml
+       		classpath:bo-cfg-dev.xml
+       		classpath:datos-spring-cfg.xml
+        	classpath:datos-spring-cfg-jetty.xml
+        	classpath:datos-spring-cfg-dev.xml
+            classpath:web-security-cfg.xml
+        </javaee:param-value>
+     </javaee:context-param>
+  
+     <javaee:listener>
+        <javaee:listener-class>org.springframework.web.context.ContextLoaderListener</javaee:listener-class>
+    </javaee:listener>
+
+    <javaee:listener>
+        <javaee:listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</javaee:listener-class>
+    </javaee:listener>
+    
+    
+    <javaee:filter>
+        <javaee:filter-name>springSecurityFilterChain</javaee:filter-name>
+        <javaee:filter-class>org.springframework.web.filter.DelegatingFilterProxy</javaee:filter-class>
+    </javaee:filter>
+    
+    <javaee:filter>
+      <javaee:filter-name>characterEncodingFilter</javaee:filter-name>
+      <javaee:filter-class>org.springframework.web.filter.CharacterEncodingFilter</javaee:filter-class>
+      <javaee:init-param>
+         <javaee:param-name>encoding</javaee:param-name>
+         <javaee:param-value>UTF-8</javaee:param-value>
+      </javaee:init-param>
+      <javaee:init-param>
+         <javaee:param-name>forceEncoding</javaee:param-name>
+         <javaee:param-value>true</javaee:param-value>
+      </javaee:init-param>
+   </javaee:filter>
+    <!-- <javaee:filter>
+        <javaee:filter-name>corsFilter</javaee:filter-name>
+        <javaee:filter-class>com.mx.billez.filter.CORSFilter</javaee:filter-class>
+    </javaee:filter>
+    <javaee:filter-mapping>
+        <javaee:filter-name>corsFilter</javaee:filter-name>
+        <javaee:url-pattern>*</javaee:url-pattern>
+    </javaee:filter-mapping> -->
+    
+     <javaee:filter-mapping>
+        <javaee:filter-name>springSecurityFilterChain</javaee:filter-name>
+        <javaee:url-pattern>*</javaee:url-pattern>
+    </javaee:filter-mapping>
+    
+    <javaee:filter-mapping>
+      <javaee:filter-name>characterEncodingFilter</javaee:filter-name>
+      <javaee:url-pattern>*</javaee:url-pattern>
+   	</javaee:filter-mapping>
+   	
+	 <javaee:servlet>
+        <javaee:servlet-name>dispatcher</javaee:servlet-name>
+        <javaee:servlet-class>org.springframework.web.servlet.DispatcherServlet</javaee:servlet-class>
+      <javaee:load-on-startup>1</javaee:load-on-startup>
+    </javaee:servlet>
+    
+    <javaee:servlet-mapping>
+        <javaee:servlet-name>dispatcher</javaee:servlet-name>
+        <javaee:url-pattern>*.json</javaee:url-pattern>
+        <javaee:url-pattern>*.pdf</javaee:url-pattern>
+        <javaee:url-pattern>*.txt</javaee:url-pattern>
+        <javaee:url-pattern>/#*</javaee:url-pattern>
+    </javaee:servlet-mapping>
+    
+<!--     <javaee:context-param>
+	    <javaee:param-name>spring.profiles.active</javaee:param-name>
+	    <javaee:param-value>dev</javaee:param-value>
+	</javaee:context-param>   --> 
+	
+	<javaee:session-config>
+	    <javaee:session-timeout>50</javaee:session-timeout>
+	    <!-- 
+	    <javaee:cookie-config>
+	        <javaee:http-only>true</javaee:http-only>
+	        <javaee:secure>true</javaee:secure>
+	    </javaee:cookie-config>
+	    <javaee:tracking-mode>COOKIE</javaee:tracking-mode> 
+	    -->
+	</javaee:session-config>
+	
+</javaee:web-app>

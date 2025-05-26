@@ -1,0 +1,339 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<panel panel-class="panel-primary"
+				heading="Accionistas de la prestadora de servicio">
+				
+				<panel-controls> <panel-control-collapse></panel-control-collapse>
+					<a href="" class="btn btn-orange" ng-click="nuevoAccionista()" ng-show="!inHabilitaEscritura">
+						<span class="fa fa-plus"></span> Agregar accionista
+					</a> 
+				</panel-controls>
+			
+			<div class="table-responsive ">
+				<table class="table ">
+					<thead>
+						<tr>
+							<th style="padding-right: 100px">Nombre</th>
+							<th>RFC</th>
+							<th>Porcentaje de acci&oacute;n</th>
+							<th ng-show="!inHabilitaEscritura">Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="accionista in gridAccionistas ">
+							<td align="left">{{accionista.nombre}}
+								{{accionista.apellidoPaterno}} {{accionista.apellidoMaterno}}</td>
+							<td align="left">{{accionista.rfc}}</td>
+							<td align="right">{{accionista.porcentajeAccion}} %</td>
+							<td align="center" ng-show="!inHabilitaEscritura">
+								<a
+									ng-click="actualizarAccionista(accionista)"
+									tooltip="Editar accionista" class="btn btn-success">
+									<span class="glyphicon glyphicon-pencil"></span>
+								</a>
+								<button data-toggle="modal"
+									ng-click="docmuentosAccionista(accionista);"
+									tooltip="Carga de documentos" class="btn btn-info">
+									<span class="glyphicon glyphicon-circle-arrow-up"></span>
+								</button>
+								<button data-toggle="modal"
+									ng-click="eliminarAccionista(accionista)"
+									tooltip="Eliminar accionista" class="btn  btn-midnightblue">
+									<span class="fa fa-trash"></span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="alert alert-primary"
+				ng-show="sumatoriaPorcentajeAccionista() > 0  && sumatoriaPorcentajeAccionista() < 100">
+				El valor al sumar el porcentaje de los accionistas debe ser igual 100% <br/>
+				Porcentaje total accionistas = {{sumatoriaPorcentajeAccionista()}}%
+			</div>
+			<div class="alert alert-danger"
+				ng-show="sumatoriaPorcentajeAccionista() > 0  && sumatoriaPorcentajeAccionista() > 100">
+				El valor al sumar el porcentaje de los accionistas debe ser igual 100% <br/>
+				Porcentaje total accionistas = {{sumatoriaPorcentajeAccionista()}}%</div>
+			</div>
+		</div>
+			</panel>
+
+			<panel id="pnlRegistroAccionista" panel-class="panel-sky" heading="Registro de accionista "
+				ng-show="IsVisibleFormularioAccionista">
+			<form id="accionistaForm" name="accionistaForm" novalidate>
+				<div class="row ">
+					<h4>
+						<b>&nbsp; DATOS GENERALES</b>
+					</h4>
+				</div>
+				<div class="row">
+					<div class="col-xs-3">
+						<label class="control-label">Nombre*: </label> <input type="text"
+							class="form-control" ng-model="accionistaDto.nombre"
+							placeholder="Nombre" required="required">
+					</div>
+
+					<div class="col-xs-3">
+						<label class="control-label">Apellido paterno*: </label> <input
+							type="text" class="form-control"
+							ng-model="accionistaDto.apellidoPaterno"
+							placeholder="Apellido paterno" required="required">
+					</div>
+
+					<div class="col-xs-3">
+						<label class="control-label">Apellido materno: </label> <input
+							type="text" class="form-control"
+							ng-model="accionistaDto.apellidoMaterno"
+							placeholder="Apellido materno">
+					</div>
+
+				</div>
+				<br>
+
+				<div class="row"></div>
+				<br>
+
+				<div class="row">
+
+					<div class="col-xs-3">
+						<label class="control-label">Fecha de nacimiento: </label> <input
+							type="DATE" class="form-control"
+							ng-model="accionistaDto.fechaNacimiento"
+							placeholder="Fecha de nacimiento" required="required">
+					</div>
+
+					<div class="col-xs-3">
+						<label class="control-label">RFC*: </label> <input type="text"
+							class="form-control" placeholder="RFC"
+							ng-model="accionistaDto.rfc" ng-model="accionistaDto.rfc"
+							required="required" maxlength="13" min="13"
+							tooltip="RFC debe contener 13 caracteres"
+							ng-pattern="/^([A-Z�&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/">
+					</div>
+
+				</div>
+				<br>
+				<div class="row ">
+					<h4>
+						<b>&nbsp; PORCENTAJE DE ACCI&Oacute;N</b>
+					</h4>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-6">
+						<label class="control-label">Porcentaje de acci&oacute;n*:
+						</label> <input type="text" class="form-control" name="porcentajeAccionista"
+							placeholder="Porcentaje de acci&oacute;n"
+							ng-model="accionistaDto.porcentajeAccion" required="required"
+							ng-pattern="/^[0-9]+(\.[0-9]{1,15})?$/" maxlength="15">
+							<span class="messages" >
+                            	<span ng-show="validaPorcentajeIngresado() > 100">
+	                            	El valor al sumar el porcentaje de los accionistas debe ser igual 100%.<br/>
+									Porcentaje total accionistas = {{validaPorcentajeIngresado()}}%
+								</span>
+                            </span>
+                            <div class="alert alert-primary" ng-show="validaPorcentajeIngresado() > 0  && validaPorcentajeIngresado() < 100">
+								El valor al sumar el porcentaje de los accionistas debe ser igual 100% <br/>
+								Porcentaje total accionistas = {{validaPorcentajeIngresado()}}%
+							</div>
+					</div>
+				</div>
+				<br>
+				<div>
+					<H4>
+						<strong>DOMICILIO</strong>
+					</H4>
+				</div>
+
+				<div class="row pad-b">
+					<div class="col-sm-2">
+						<label class="control-label">C&oacute;digo postal: </label> <input
+							type="text" name="codigoPostal" id="codigoPostal"
+							class="form-control" placeholder="C&oacute;digo postal"
+							ng-model="accionistaDto.domicilioDto.codigoPostal"
+							ng-pattern="/^[_0-9-]{5}$/" maxlength="10"
+							ng-blur="obtenerEntidadFederativaXCPAccionistas(accionistaDto.domicilioDto.codigoPostal);" />
+						<span class="messages"
+							ng-show="clienteTempForm.$submitted || accionistaForm.codigoPostal.$touched">
+							<span ng-show="accionistaForm.codigoPostal.$error.required">El
+								campo es obligatorio.</span> <span
+							ng-show="accionistaForm.codigoPostal.$error.required === true ?false:!accionistaForm.codigoPostal.$valid">
+								C&oacute;digo Postal incorrecto. </span>
+						</span>
+					</div>
+					<div class="col-sm-4">
+						<label class="control-label">Calle: </label> <input type="text"
+							class="form-control" placeholder="Calle"
+							ng-model="accionistaDto.domicilioDto.calle" maxlength="200">
+					</div>
+					<div class="col-sm-2">
+						<label class="control-label">N&uacute;mero ext.: </label> <input
+							name="numeroCalle" type="text" class="form-control"
+							placeholder="N&uacute;mero exterior."
+							ng-model="accionistaDto.domicilioDto.numeroExterior"
+							maxlength="10" name="numeroExt" />
+
+					</div>
+					<div class="col-sm-2">
+						<label class="control-label">N&uacute;mero int.: </label> <input
+							name="numeroCalle" type="text" class="form-control"
+							placeholder="N&uacute;mero interior."
+							ng-model="accionistaDto.domicilioDto.numeroInterior"
+							maxlength="10" />
+
+					</div>
+				</div>
+				<div class="row pad-b">
+					<div class="col-sm-4">
+						<label class="control-label">Entidad federativa: </label> <select
+							disabled class="form-control" name="entidad_federativa"
+							id="idEntidadFederativa"
+							ng-model="accionistaDto.domicilioDto.idEntidadFederativa">
+							<option value="">{{'Entidad federativa' | uppercase}}</option>
+							<option ng-repeat="entidad in entidadFederativa"
+								ng-selected="entidad.idCatGeneral == accionistaDto.domicilioDto.idEntidadFederativa"
+								value="{{entidad.clave}}">{{entidad.descripcion |
+								uppercase}}</option>
+						</select> <span class="messages"
+							ng-show="clienteTempForm.$submitted || clienteTempForm.estado.$touched">
+							<span ng-show="clienteTempForm.estado.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+					<div class="col-sm-4">
+						<label class="control-label">Alcald&iacute;a: </label> <select
+							disabled class="form-control" name="municipio" id="idMunicipio"
+							ng-model="accionistaDto.domicilioDto.catMunicipios">
+							<option value="">{{'Alcald&iacute;a' | uppercase}}</option>
+							<option ng-repeat="municipio in accionistaDto.municipios"
+								ng-selected="municipio.idCatGeneral == accionistaDto.domicilioDto.catMunicipios.idCatGeneral"
+								value="{{municipio.idCatGeneral}}">{{municipio.descripcion
+								| uppercase}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="row pad-b">
+					<div class="col-sm-6">
+						<label class="control-label">Colonia: </label> <input type="text"
+							name="colonia" class="form-control" maxlength="50"
+							placeholder="Colonia"
+							ng-model="accionistaDto.domicilioDto.colonia" />
+					</div>
+				</div>
+				<div class="row " align="right">
+					<br />
+					<button class="btn-green btn " type="submit"
+						ng-disabled="accionistaForm.$invalid"
+						ng-click=guardarAccionista(accionistaForm);>Agregar</button>
+				</div>
+
+			</form>
+			</panel>
+			<panel id="pnlDocumentosAccionista" panel-class="panel-sky " heading="Documentos del accionista "
+				ng-show="IsVisibleDocumentosAccionista">
+
+			<H5>
+				<strong>NOMBRE DEL ACCIONISTA: </strong> {{accionistaDto.nombre |
+				uppercase}} {{accionistaDto.apellidoPaterno | uppercase}}
+				{{accionistaDto.apellidoMaterno | uppercase}}
+			</H5>
+
+			<div class="table-responsive ">
+				<table class="table ">
+					<thead>
+						<tr>
+							<th>Documento</th>
+							<th>Estatus</th>
+							<th>Nombre del archivo</th>
+							<th>Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="documento in documentosPrestadoraAccionista">
+							<td>{{documento.definicion.nombreDocumento}}</td>
+							<td>{{documento.idCMS >= 1?'Documento cargado': 'Documento
+								no cargado'}} <span class="glyphicon glyphicon-ok"
+								style="color: green" ng-show="documento.idCMS >= 1"></span> <span
+								class="glyphicon glyphicon-remove" style="color: brown"
+								ng-show="documento.idCMS == 0"></span>
+							</td>
+							<td>{{documento.nombreArchivo}}</td>
+							<td align="center">
+								<button data-toggle="modal"
+									ng-click="mostrarModalDocumentoAccionista(documento)"
+									ng-show="documento.idCMS == 0" tooltip="Guardar documento"
+									class="btn btn-sm btn-indigo">
+									<span class="glyphicon glyphicon-floppy-open"></span>
+								</button>
+								<button data-toggle="modal"
+									ng-click="descargarDocumentoByIdCMS(documento.idCMS)"
+									ng-show="documento.idCMS >= 1" tooltip="Descargar documento"
+									class="btn btn-sm btn-alizarin">
+									<span class="glyphicon glyphicon-cloud-download"></span>
+								</button>
+
+								<button data-toggle="modal"
+									ng-click="eliminarDocumentoAccionista(documento)"
+									ng-show="documento.idCMS >= 1" tooltip="Eliminar documento"
+									class="btn btn-sm btn-midnightblue">
+									<span class="glyphicon glyphicon-trash"></span>
+								</button>
+								
+								<button data-toggle="modal"  ng-click="verDocumento(documento.idCMS)" ng-show="documento.idCMS >= 1" tooltip="Ver documento" class="visualizadorDocumento btn btn-sm btn-alizarin" >
+									<span class="glyphicon glyphicon-eye-open"></span>
+								</button>
+
+							</td>
+
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			</panel>
+
+		</div>
+	</div>
+
+	<div class="modal fade" id="agregarDocumentoAccionista" role="dialog"
+		data-backdrop="static" data-keyboard="false" tabindex="-1">
+		<div class="modal-dialog modal-lg modal-dialog-scrollable"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Documento accionista</h5>
+				</div>
+				<form id="modalCatSatForm" name="modalDocAccionista" novalidate>
+					<div class="modal-body">
+
+						<div class="row">
+							<div class="col-md-12">
+
+								<input class="btn btn-info-alt form-control" required
+									name="filePorSubir" id="file_accionista" type="file"
+									onchange="angular.element(this).scope().fileChangedDocPrestadora(this)"
+									class="filestyle"
+									data-buttonText="archivoPrestadora.nombreArchivo" /> <span
+									class="messages"
+									ng-show="modalDocAccionista.$submitted || modalDocAccionista.filePorSubir.$touched">
+									<span ng-show="modalDocAccionista.filePorSubir.$error.required">
+										El campo es obligatorio. </span>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<br />
+
+					<div class="modal-footer">
+						<button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>
+						<button type="button" class="btn-green btn"
+							ng-click="guardarDocumentoAccionista()">GUARDAR</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+</div>

@@ -1,0 +1,244 @@
+
+<div class="container-fluid" ng-controller="celulaController">
+
+<div id="page-heading">
+	<ol class="breadcrumb">
+		<li><a href="#/">Admin</a></li>
+		<li class="active">Centro de Costos</li>
+	</ol>
+</div>
+
+	<div class="row">
+		<div class="col-md-12">
+				<panel panel-class="panel-sky" heading="Resultado de Centro de Costos">
+				<panel-controls> 
+					<panel-control-collapse></panel-control-collapse>
+					<a href="" class="btn btn-orange" ng-click="nuevaCelula()"><span class="fa fa-plus"></span> Nueva centro de costos</a>
+				</panel-controls>
+				<div class="table-responsive tablaconscroll">
+					<table class="table">
+						<thead>
+							 <tr>
+                               	<th>Clave</th>
+                                <th>Descripci&oacute;n</th>
+                                <th>Estatus centro de costos</th>
+                                <th>Nombre administrador</th>
+                                <th>Correo administrador</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="x in celulas">
+                                <td>{{x.clave}}</td>
+                                <td>{{x.nombre}}</td>
+                                <td>{{x.indEstatus== '1'?'ACTIVO':'INACTIVO'}}</td>
+                                <td>{{x.administrador.nombre}} {{x.administrador.primerApellido }} {{x.administrador.segundoApellido }}</td>
+                                <td>{{x.administrador.usuario}}</td>
+                                <td>
+                                	<button class="btn btn-success" ng-click="editarcelula(x)" ><span class="fa fa-edit" ></span>Editar</button>
+                                </td>
+							</tr>
+					
+						</tbody>
+					</table>
+				</div>
+			</panel>
+			
+			
+			<panel panel-class="panel-sky" heading="{{agregarEditarTitulo}}"> 
+				<panel-controls>
+					<panel-control-collapse></panel-control-collapse>  
+				</panel-controls>
+				
+				<form id="celulaForm" name="celulaForm" novalidate>
+					<div class="row">
+						<div class="col-xs-3">
+							<label class="control-label">Clave: </label> 
+							<input
+								type="text" name ="claveCelula" class="form-control"
+								placeholder="clave Centro de Costos"
+								ng-model="celula.clave" ng-required="true"/>	
+								
+							<span class="messages" ng-show="celulaForm.$submitted || celulaForm.nombrerol.$touched">
+       				        <span ng-show="celulaForm.claveCelula.$error.required">El campo es obligatorio.</span>
+                            </span> 
+						</div>
+						
+						<div class="col-xs-3">
+							<label class="control-label">Nombre : </label> 
+							<input
+									placeholder="descripcion" name="descripcion"
+									ng-model="celula.nombre"
+									class="form-control" type="text" required="required"> 
+							
+							<span class="messages" ng-show="celulaForm.$submitted || celulaForm.descripcion.$touched">
+       				        <span ng-show="celulaForm.descripcion.$error.required">El campo es obligatorio.</span>
+                           
+						</div> 
+						
+						<div class="col-xs-3">
+							<label class="control-label">Estatus: </label> 
+							<div class="form-group">
+							<label class="col-sm-3 control-label">&nbsp;&nbsp;&nbsp;</label>
+							<div class="col-sm-6"><input type="checkbox" ng-model="celula.indEstatus" name="estatus" 
+							class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></div>
+						</div>
+							
+							<span class="messages" ng-show="celulaForm.$submitted || celulaForm.estatus.$touched">
+       				        <span ng-show="celulaForm.estatus.$error.required">El campo es obligatorio.</span>
+       				        
+						</div>
+						
+				
+					</div>
+					
+					<div class="row">
+							<div class="col-xs-offset-10 col-xs-2">
+							<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							<button class="btn-green btn " ng-click="guardar(celulaForm)">
+								<span class="fa fa-save"></span> Guardar
+							</button>
+						</div>
+					</div>
+				</form>
+			</panel>
+			
+			
+			
+			<panel panel-class="panel-sky" heading="Agregar o actualizar gerente celula" ng-show="celula.idCelula"> 
+				<panel-controls>
+					<panel-control-collapse></panel-control-collapse>  
+				</panel-controls>
+				
+				<form id="usuarioForm" name="usuarioForm">
+					<div class="row">
+						<div class="col-xs-3">
+							<label class="control-label">Id empleado : </label> 
+							<input
+								type="text" name ="idEmpleado" class="form-control"
+								placeholder="Ej EMP0043" disabled
+								ng-model="usuario.idUsuario"/>	
+								
+								<span class="messages" ng-show="usuarioForm.$submitted || usuarioForm.idEmpleado.$touched">
+       				        	<span ng-show="usuarioForm.idEmpleado.$error.required">El campo es obligatorio.</span>
+                            	</span> 
+						</div>
+					
+						<div class="col-xs-3">
+							<label class="control-label">Nombre : </label> 
+							<input type="text" name="nombre" class="form-control"
+								placeholder="nombre"
+								ng-model="usuario.nombre" ng-required="true" minlength="3" maxlength="50"/>	
+								
+							<span class="messages" ng-show="usuarioForm.$submitted || usuarioForm.nombre.$touched">
+       				        <span ng-show="usuarioForm.nombre.$error.required">El campo es obligatorio.</span>
+                            </span> 
+						</div>
+						
+						<div class="col-xs-3">
+							<label class="control-label">Primer apellido: </label> 
+							<input
+									placeholder="primer apellido" name="rutaPantalla"
+									ng-model="usuario.primerApellido"  minlength="2"
+									class="form-control" type="text" required="required"> 
+							
+							<span class="messages" ng-show="usuarioForm.$submitted || usuarioForm.primerApellido.$touched">
+       				        <span ng-show="usuarioForm.primerApellido.$error.required">El campo es obligatorio.</span>
+                           
+							
+						</div> 
+						
+						<div class="col-xs-3">
+							<label class="control-label">Segundo apellido: </label> 
+							<input
+									placeholder="segundo apellido" name="icono"
+									ng-model="usuario.segundoApellido"  minlength="2"
+									class="form-control" type="text" required="required"> 
+							
+							<span class="messages" ng-show="pantallaForm.$submitted || pantallaForm.segundoApellido.$touched">
+       				        <span ng-show="pantallaForm.segundoApellido.$error.required">El campo es obligatorio.</span>
+                            
+						</div>
+					</div>
+					
+					<br/>
+					<div class="row">
+						<div class="col-xs-3">
+							<label class="control-label">Usuario : </label> 
+							<input
+								 name ="usuario" class="form-control"
+								placeholder="usuario"
+								ng-model="usuario.usuario" ng-required="true" minlength="3" maxlength="50"/>	
+								
+							<span class="messages" ng-show="usuarioForm.$submitted || usuarioForm.usuario.$touched">
+       				        <span ng-show="pantallaForm.usuario.$error.required">El campo es obligatorio.</span>
+                            </span> 
+						</div>
+						
+						<div class="col-xs-3">
+							<label class="control-label">Password:  </label> 
+							<input
+									placeholder="password" name="password"
+									ng-model="usuario.password" maxlength="13" 
+									class="form-control" type="password" ng-required="nuevoUsuario" > 
+							
+							<span class="messages" ng-show="usuarioForm.password.$touched && usuarioForm.confirmPassword.$touched && usuario.confirmPassword != usuario.password ">
+								Los password no coincide
+							</span>
+							
+							<span class="messages" ng-show="usuarioForm.$submitted || usuarioForm.password.$touched">
+       				        <span ng-show="usuarioForm.password.$error.required">El campo es obligatorio.</span>
+                           
+							
+						</div> 
+						
+						<div class="col-xs-3">
+							<label class="control-label">Confirmar password: </label> 
+							<input
+									placeholder="confirmar password" name="confirmPassword"
+									ng-model="usuario.confirmPassword" maxlength="13" 
+									class="form-control" type="password" ng-required="nuevoUsuario"> 
+							
+							<span class="messages" ng-show="usuarioForm.password.$touched && usuarioForm.confirmPassword.$touched && usuario.confirmPassword != usuario.password ">
+								Los password no coincide
+							</span>
+							
+							<span class="messages" ng-show="pantallaForm.$submitted || pantallaForm.rutaPantalla.$touched">
+       				        <span ng-show="pantallaForm.rutaPantalla.$error.required">El campo es obligatorio.</span>
+						</div> 
+						
+						
+						<div class="col-xs-3">
+							<label class="control-label">Estatus: </label> 
+							<div class="form-group">
+							<label class="col-sm-3 control-label">&nbsp;&nbsp;&nbsp;</label>
+							<div class="col-sm-6"><input type="checkbox" ng-model="usuario.indEstatus" name="estatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></div>
+						</div>
+							
+							<span class="messages" ng-show="usuarioForm.$submitted || usuarioForm.indEstatus.$touched">
+       				        <span ng-show="usuarioForm.indEstatus.$error.required">El campo es obligatorio.</span>
+       				        
+						</div>
+						
+					</div>
+					<br/>
+					
+					<div class = "row">
+						<div class="col-xs-offset-10 col-xs-2">
+							<button class="btn-green btn pull-right" ng-click="guardarAdministrador(usuarioForm)">
+								<i class="fa fa-save"></i> Guardar
+							</button>
+						</div>
+					</div>
+					
+				</form>
+					
+			</panel>
+			
+			
+		</div>
+	</div>
+	
+	
+	
+</div>

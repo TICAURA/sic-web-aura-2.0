@@ -1,0 +1,71 @@
+<div ng-controller="HistoricoCtrl">
+  <div id="page-heading">
+    <ol class="breadcrumb">
+      <li><a href="#/">Inicio</a></li>
+      <li class="active">Historico</li>
+    </ol>
+
+    <h1>Historico de Servidores</h1>
+    <div class="options">
+      <div class="btn-toolbar">
+        
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="container-fluid">
+
+      <div class="row">
+          <form name="formHistorico" class="form-horizontal" ng-submit="busquedaHistorico()">
+            <div class="col-md-4">
+            <div class="form-group">
+              <label for="selector1" class="col-sm-3 control-label">Servidor :</label>
+              <div class="col-sm-9">
+                <select name="selector1" id="selector1" class="form-control" required
+                ng-options="item.hostname + '-' +  item.ipServidor for item in servidores track by item.idServidor" ng-model="busqueda.servidor">
+                  
+              </select>
+              </div>  
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+                <label for="selector1" class="col-sm-3 control-label">Limite puntos:</label>
+                <div class="col-sm-6">
+                  <input type="number" class="form-control" required ng-model="busqueda.limite"/>
+              </div>  
+              </div>
+          </div>
+          <div class="col-md-4">
+              <button type="submit" class="btn-primary btn" ng-disabled="formHistorico.$invalid">Buscar</button>
+          </div>
+          </form>
+      </div>
+      <br/><br/>
+
+      <div  ng-repeat="disco in historico.discos">
+          <panel panel-class="panel-info" heading="{{historico.servidor.hostname}} -- {{disco.nombre}} ">
+              
+              <div flot-chart style="width: 100%; height:350px" 
+                  data-flot-data="disco.historicoMap"
+                  data-flot-options="realtimeOptions"
+              ></div>
+          </panel>
+
+      </div>
+    
+
+  
+
+
+    
+
+  </div> <!-- container-fluid -->
+
+
+
+</div>
+
+

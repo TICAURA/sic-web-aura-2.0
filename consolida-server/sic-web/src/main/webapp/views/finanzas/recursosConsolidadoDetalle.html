@@ -1,0 +1,90 @@
+<div class="container-fluid" ng-controller="consolidadoDetalleController">		
+	<div id="page-heading">
+		<ol class="breadcrumb">
+			<li><a href="#/">Menu principal</a></li>
+			<li class="active">Dispersi&oacute;n de ingreso bruto</li>
+		</ol>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<panel panel-class="panel-sky" heading="Dispersi&oacute;n de ingreso bruto">
+
+			<panel panel-class="panel-sky" heading="Datos">
+			 <panel-controls>
+			<panel-control-collapse></panel-control-collapse> </panel-controls>
+			<form id="dispersionIngresoBruto" name="dispersionIngresoBrutoForm">	
+				<div class="row">
+				<div class="col-xs-3">
+									<label class="control-label">Centro de costos*: </label> <select
+										class="form-control"
+										name="centroCostos" id="idcentroCostos"
+										ng-model="data.catCelula"
+										ng-options="celula.nombre for celula in catCelula | orderBy:'celula.nombre' track by celula.idCelula"
+										                                   >
+										<option value="" class="">-- SELECCIONA UNA
+											OPCI&Oacute;N --</option>
+									</select> 
+							
+								</div>
+				
+					<div class="col-xs-4">
+						<label class="control-label">Fecha inicio</label> <input
+							type="date" name="inicioDate" class="form-control"
+							placeholder="Fecha inicio" ng-model="data.inicioDate"
+							 min="2022-01-01"
+							ng-required="true" />
+					</div>
+					<div class="col-xs-4">
+						<label class="control-label">Fecha fin</label> <input type="date"
+							name="finDate" class="form-control" placeholder="Fecha fin"
+							ng-model="data.finDate" 
+							 min="2022-01-01"
+							ng-required="true" />
+
+					</div>
+									<div class="col-xs-4" style="">
+						<label class="control-label">&nbsp;</label>
+						<button type="button" class="btn-green btn form-control"
+							ng-click="dispersar();" style="background: #1b365c;">dispersar</button>
+
+					</div>
+			<div class="col-xs-4" style="">
+						<label class="control-label">&nbsp;</label>
+						<button type="button" class="btn-green btn form-control"
+							ng-click="consultar();" style="background: #1b365c;">Consultar</button>
+
+					</div>
+
+				</div>
+
+				<br>
+				
+				<panel panel-class="panel-sky" style="align-items: center;"
+			heading="Operaciones" 
+				ng-show ="mostrarDetalleDispersion">		
+			<div class="table-responsive">
+				<table class="table" ng-table="tableDetalleCC" show-filter="true">
+					<tbody>		
+					<tr ng-repeat="row in $data">
+					<td data-title="'#'">{{$index+1}}</td>
+					<td data-title="'CC'" filter="{centroCosto: 'text'}" sortable="'centroCosto'">{{row.centroCosto}}</td>
+					<td data-title="'Dep&oacute;sito'" align="right">{{row.depositos | currency}}</td>
+				   <td data-title="'Ingreso Bruto'" align="right">{{row.ingresoBruto | currency}}</td>
+					<td data-title="'Comisiones'" align="right">{{row.utilidad | currency}}</td>
+				    <td data-title="'Comisiones por Transferir'" align="right">{{row.gasto  | currency}}</td>
+				    <td data-title="'Transferido'" align="right">{{row.socios  | currency}}</td>
+				</tr>					
+			</tbody>
+				</table>
+			</div>
+			</panel> 
+			
+			
+			
+			</form>
+
+			</panel> 
+</panel>
+</div>
+</div>
+</div>

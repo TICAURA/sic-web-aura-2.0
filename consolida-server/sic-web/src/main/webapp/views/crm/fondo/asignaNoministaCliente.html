@@ -1,0 +1,65 @@
+<div id="page-heading">
+    <ol class="breadcrumb">
+        <li><a href="#/">CRM</a></li>
+        <li><a href="#/crm/celula/consultaNoministas">Consulta de Noministas</a></li>
+        <li class="active">Asignaci&oacute;n nominista - cliente</li>
+    </ol>
+
+</div>
+
+<div class="container-fluid" ng-controller="consultaCelulaController">
+    <div class="row">
+        <div class="col-md-12">
+            <panel panel-class="panel-sky" heading="Asignaci&oacute;n nominista - cliente">
+                <panel-controls>
+                    <panel-control-collapse></panel-control-collapse>
+                </panel-controls>
+				<div>Nombre de la celula: <B>CELULA DE PRUEBA</B></div>
+                <div>Nombre nominista: <B>ARMANDO ALBERTO HERNANDEZ GONZALEZ</B></div>
+                                
+                <BR>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="padding-right:100px">Cliente</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td align="left">Cliente 1</td>
+                                <td>
+                                    <a class="glyphicon glyphicon-ok" title="Asignar cliente"></a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td align="left">Cliente 2</td>
+                                <td>
+                                    <a class="glyphicon glyphicon-ok" title="Asignar cliente"></a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td align="left">Cliente 3</td>
+                                <td>
+                                    <a class="glyphicon glyphicon-ok" title="Asignar cliente"></a>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+                <div class="row" align="right">
+                    <br />
+
+                    <button class="btn-danger btn"  ng-click="cancelar();">Cancelar</button>
+                </div>
+
+            </panel>
+        </div>
+    </div>
+</div>
+
+<!-- container-fluid -->

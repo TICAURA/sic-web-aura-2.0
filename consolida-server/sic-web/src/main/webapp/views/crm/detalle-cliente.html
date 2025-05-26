@@ -1,0 +1,1117 @@
+<div class="container-fluid"
+	ng-controller="detalleClienteFinalController">
+	<div id="page-heading">
+		<ol class="breadcrumb">
+			<li><a href="#/">CRM</a></li>
+			<li>Home</li>
+			<li class="active">Clientes</li>
+		</ol>
+
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<panel panel-class="panel-primary" heading="Cliente"> 
+
+				<ul class="nav nav-tabs">
+					<li class="active"><a data-toggle="tab" href="#generales">Datos
+							Generales</a></li>
+					<li><a data-toggle="tab" href="#domicilio">Domicilio
+							fiscal / Domicilio comercial</a></li>
+					<li><a data-toggle="tab" href="#apoderadoLegal">Apoderado
+							legal</a></li>
+					<li><a data-toggle="tab" href="#cuentasBancarias">Cuentas
+							bancarias</a></li>
+					<li><a data-toggle="tab" href="#doc">Documentos</a></li>
+				</ul>
+
+				<div class="tab-content">
+					<div id="generales" class="tab-pane fade in active">
+						<form id="clieneTempForm">
+							<panel panel-class="panel-primary" heading="Información general">
+														<panel-controls>
+                    			<panel-control-collapse></panel-control-collapse>
+                			</panel-controls>
+							<div class="row"></div>
+							<div class="row">
+								<div class="col-sm-1">
+									Persona:
+									<div class="form-group">
+
+										<div class="radio">
+											<label> <input disabled type="radio"
+												ng-model="clienteTempDto.idTipoPersona.idCatGeneral"
+												name="persona" id="optionsRadios1" value="22" checked>
+												Moral
+											</label>
+										</div>
+
+										<div class="radio">
+											<label> <input disabled type="radio"
+												ng-model="clienteTempDto.idTipoPersona.idCatGeneral"
+												name="persona" id="optionsRadios2" value="21">
+												Fisica
+											</label>
+										</div>
+
+									</div>
+								</div>
+
+								<div class="col-xs-8">
+									<label class="control-label">Nombre comercial: </label> <input disabled
+										type="text" class="form-control" placeholder="Nombre Completo"
+										ng-model="clienteTempDto.razonSocial">
+								</div>
+								<br>
+							</div>
+
+							<div class="row">
+								</br>
+							</div>
+							<div class="row">
+
+
+								<div class="col-xs-9"
+									ng-show="clienteTempDto.idTipoPersona.idCatGeneral == '22'">
+									<label class="control-label">Raz&oacute;n social: </label> <input disabled
+										type="text" class="form-control"
+										placeholder="Raz&oacute;n social"
+										ng-model="clienteTempDto.razonSocial">
+								</div>
+
+								<div class="col-xs-3"
+									ng-show="clienteTempDto.idTipoPersona.idCatGeneral == '21'">
+									<label class="control-label">Nombre (s): </label> <input disabled
+										type="text" class="form-control" placeholder="Nombre Completo"
+										ng-model="clienteTempDto.razonSocial">
+								</div>
+								<div class="col-xs-3"
+									ng-show="clienteTempDto.idTipoPersona.idCatGeneral == '21'">
+									<label class="control-label">Apellido paterno: </label> <input disabled
+										type="text" class="form-control" placeholder="Nombre Completo"
+										ng-model="clienteTempDto.razonSocial">
+								</div>
+								<div class="col-xs-3"
+									ng-show="clienteTempDto.idTipoPersona.idCatGeneral == '21'">
+									<label class="control-label">Apellido Materno: </label> <input disabled
+										type="text" class="form-control" placeholder="Nombre Completo"
+										ng-model="clienteTempDto.razonSocial">
+								</div>
+
+								<div class="col-xs-2">
+									<label class="control-label">RFC*: </label> <input disabled type="text"
+										class="form-control" placeholder="RFC"
+										ng-model="clienteTempDto.rfc" required="required"
+										maxlength="12" min="12">
+								</div>
+
+							</div>
+
+							<div class="row">
+								</br>
+							</div>
+							<div class="row">
+								<div class="col-xs-3">
+									<label class="control-label">Fecha de Constitución: </label> <input disabled
+										type="DATE" class="form-control"
+										placeholder="Fecha de constitución"
+										ng-model="bitacora.fechaEvento">
+								</div>
+								<div class="col-xs-3">
+									<label class="control-label">Clave de registro
+										patronal: </label> <input disabled type="text" class="form-control"
+										placeholder="Clave de registro patronal" ng-model="">
+								</div>
+								<div class="col-xs-3">
+									<label class="control-label">Producto: </label> <select disabled
+										class="form-control" placeholder="Estado"
+										ng-model="clienteTempDto.idMedioContacto.estado">
+										<option>Producto 1</option>
+										<option>Producto 2</option>
+										<option>Producto 3</option>
+									</select>
+								</div>
+
+								<div class="col-xs-2">
+									<label class="control-label">Comisión por cobrar %*: </label> <input disabled
+										type="text" class="form-control"
+										placeholder="Comisión a cobrar" ng-model="" maxlength="12"
+										min="12">
+								</div>
+							</div>
+
+							<div class="row">
+								</br>
+							</div>
+							<div class="row">
+
+								<div class="col-xs-9">
+									<label class="control-label">Concepto(s) de
+										facturación*: </label> <input disabled type="textArea" class="form-control"
+										placeholder="Comisión a cobrar" ng-model=""
+										required="required" maxlength="12" min="12">
+								</div>
+							</div>
+							</panel>
+							
+														<panel panel-class="panel-sky "
+								heading="Actividad empresarial/Giro comercial">
+								
+																						<panel-controls>
+                    			<panel-control-collapse></panel-control-collapse>
+                			</panel-controls>
+								
+							<div class="row">
+
+								<div class="col-xs-6">
+									Actividad empresarial:
+
+									<div class="table-responsive tablaconscroll">
+										<div>
+											<h3 class="accordion" ng-class="{active:accordion1==1}">
+												<a href ng-click="accordion1 = 1">
+													<div class="col-xs-10">Actividad empresarial 1</div> <span
+													class="glyphicon glyphicon-plus-sign"
+													ng-hide="accordion1==1"></span>
+												</a>
+											</h3>
+
+											<div class="accordion-content" ng-show="accordion1==1">
+												<table class="table">
+													<tbody>
+
+														<tr>
+															<td>Descripción Actividad 1</td>
+															<td><input disabled type="checkbox" ng-model="pantalla.indEstatus" name="pantalla.indEstatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+
+											<h3 class="accordion" ng-class="{active:accordion1==2}">
+												<a href ng-click="accordion1 = 2">
+													<div class="col-xs-10">Actividad empresarial 2</div> <span
+													class="glyphicon glyphicon-plus-sign"
+													ng-hide="accordion1==2"></span>
+												</a>
+											</h3>
+											<div class="accordion-content" ng-show="accordion1==2">
+												<table class="table">
+													<tbody>
+
+														<tr>
+															<td>Descripción Actividad 2</td>
+															<td><input disabled type="checkbox" ng-model="pantalla.indEstatus" name="pantalla.indEstatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+
+											<h3 class="accordion" ng-class="{active:accordion1==3}">
+												<a href ng-click="accordion1 = 3">
+													<div class="col-xs-10">Actividad empresarial 3</div> <span
+													class="glyphicon glyphicon-plus-sign"
+													ng-hide="accordion1==3"></span>
+												</a>
+											</h3>
+											<div class="accordion-content" ng-show="accordion1==3">
+												<table class="table">
+													<tbody>
+
+														<tr>
+															<td>Descripción Actividad 1</td>
+															<td><input disabled type="checkbox" ng-model="pantalla.indEstatus" name="pantalla.indEstatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+
+											<h3 class="accordion" ng-class="{active:accordion1==4}">
+												<a href ng-click="accordion1 = 4">
+													<div class="col-xs-10">Actividad empresarial 4</div> <span
+													class="glyphicon glyphicon-plus-sign"
+													ng-hide="accordion1==4"></span>
+												</a>
+											</h3>
+											<div class="accordion-content" ng-show="accordion1==4">
+												<table class="table">
+													<tbody>
+
+														<tr>
+															<td>Descripción Actividad 1</td>
+															<td><input disabled type="checkbox" ng-model="pantalla.indEstatus" name="pantalla.indEstatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<h3 class="accordion" ng-class="{active:accordion1==5}">
+												<a href ng-click="accordion1 = 5">
+													<div class="col-xs-10">Actividad empresarial 5</div> <span
+													class="glyphicon glyphicon-plus-sign"
+													ng-hide="accordion1==5"></span>
+												</a>
+											</h3>
+											<div class="accordion-content" ng-show="accordion1==5">
+												<table class="table">
+													<tbody>
+
+														<tr>
+															<td>Descripción Actividad 1</td>
+															<td><input disabled type="checkbox" ng-model="pantalla.indEstatus" name="pantalla.indEstatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<h3 class="accordion" ng-class="{active:accordion1==6}">
+												<a href ng-click="accordion1 = 6">
+													<div class="col-xs-10">Actividad empresarial 6</div> <span
+													class="glyphicon glyphicon-plus-sign"
+													ng-hide="accordion1==6"></span>
+												</a>
+											</h3>
+											<div class="accordion-content" ng-show="accordion1==6">
+												<table class="table">
+													<tbody>
+
+														<tr>
+															<td>Descripción Actividad 1</td>
+															<td><input disabled type="checkbox" ng-model="pantalla.indEstatus" name="pantalla.indEstatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<h3 class="accordion" ng-class="{active:accordion1==7}">
+												<a href ng-click="accordion1 = 7">
+													<div class="col-xs-10">Actividad empresarial 7</div> <span
+													class="glyphicon glyphicon-plus-sign"
+													ng-hide="accordion1==7"></span>
+												</a>
+											</h3>
+											<div class="accordion-content" ng-show="accordion1==7">
+												<table class="table">
+													<tbody>
+
+														<tr>
+															<td>Descripción Actividad 1</td>
+															<td><input disabled type="checkbox" ng-model="pantalla.indEstatus" name="pantalla.indEstatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+
+										</div>
+									</div>
+								</div>
+
+								<div class="col-xs-6">
+									Giro comercial:
+									<div class="table-responsive tablaconscroll">
+										<div>
+											<h3 class="accordion" ng-class="{active:accordion==1}">
+												<a href ng-click="accordion = 1">
+													<div class="col-xs-10">Giro comercial 1</div> <span
+													class="glyphicon glyphicon-plus-sign"
+													ng-hide="accordion==1"></span>
+												</a>
+											</h3>
+
+											<div class="accordion-content" ng-show="accordion==1">
+												<table class="table">
+													<tbody>
+
+														<tr>
+															<td>Descripción Giro comercial 1</td>
+															<td><input disabled type="checkbox" ng-model="pantalla.indEstatus" name="pantalla.indEstatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+
+											<h3 class="accordion" ng-class="{active:accordion==2}">
+												<a href ng-click="accordion = 2">
+													<div class="col-xs-10">Giro comercial 2</div> <span
+													class="glyphicon glyphicon-plus-sign"
+													ng-hide="accordion==2"></span>
+												</a>
+											</h3>
+											<div class="accordion-content" ng-show="accordion==2">
+												<table class="table">
+													<tbody>
+
+														<tr>
+															<td>Descripción Giro comercial 2</td>
+															<td><input disabled type="checkbox" ng-model="pantalla.indEstatus" name="pantalla.indEstatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+
+											<h3 class="accordion" ng-class="{active:accordion==3}">
+												<a href ng-click="accordion = 3">
+													<div class="col-xs-10">Giro comercial 3</div> <span
+													class="glyphicon glyphicon-plus-sign"
+													ng-hide="accordion==3"></span>
+												</a>
+											</h3>
+											<div class="accordion-content" ng-show="accordion==3">
+												<table class="table">
+													<tbody>
+
+														<tr>
+															<td>Descripción Giro comercial 1</td>
+															<td><input disabled type="checkbox" ng-model="pantalla.indEstatus" name="pantalla.indEstatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+
+											<h3 class="accordion" ng-class="{active:accordion==4}">
+												<a href ng-click="accordion = 4">
+													<div class="col-xs-10">Giro comercial 4</div> <span
+													class="glyphicon glyphicon-plus-sign"
+													ng-hide="accordion==4"></span>
+												</a>
+											</h3>
+											<div class="accordion-content" ng-show="accordion==4">
+												<table class="table">
+													<tbody>
+
+														<tr>
+															<td>Descripción Giro comercial 1</td>
+															<td><input disabled type="checkbox" ng-model="pantalla.indEstatus" name="pantalla.indEstatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<h3 class="accordion" ng-class="{active:accordion==5}">
+												<a href ng-click="accordion = 5">
+													<div class="col-xs-10">Giro comercial 5</div> <span
+													class="glyphicon glyphicon-plus-sign"
+													ng-hide="accordion==5"></span>
+												</a>
+											</h3>
+											<div class="accordion-content" ng-show="accordion==5">
+												<table class="table">
+													<tbody>
+
+														<tr>
+															<td>Descripción Giro comercial 1</td>
+															<td><input disabled type="checkbox" ng-model="pantalla.indEstatus" name="pantalla.indEstatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<h3 class="accordion" ng-class="{active:accordion==6}">
+												<a href ng-click="accordion = 6">
+													<div class="col-xs-10">Giro comercial 6</div> <span
+													class="glyphicon glyphicon-plus-sign"
+													ng-hide="accordion==6"></span>
+												</a>
+											</h3>
+											<div class="accordion-content" ng-show="accordion==6">
+												<table class="table">
+													<tbody>
+
+														<tr>
+															<td>Descripción Giro comercial 1</td>
+															<td><input disabled type="checkbox" ng-model="pantalla.indEstatus" name="pantalla.indEstatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<h3 class="accordion" ng-class="{active:accordion==7}">
+												<a href ng-click="accordion = 7">
+													<div class="col-xs-10">Giro comerciall 7</div> <span
+													class="glyphicon glyphicon-plus-sign"
+													ng-hide="accordion==7"></span>
+												</a>
+											</h3>
+											<div class="accordion-content" ng-show="accordion==7">
+												<table class="table">
+													<tbody>
+
+														<tr>
+															<td>Descripción Giro comercial 1</td>
+															<td><input disabled type="checkbox" ng-model="pantalla.indEstatus" name="pantalla.indEstatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+							</panel>
+							
+							
+							<panel panel-class="panel-sky " heading="Medio de contacto ">
+														<panel-controls>
+                    			<panel-control-collapse></panel-control-collapse>
+                			</panel-controls>
+								
+																<div class="row">
+									<div class="col-xs-3">
+										<label class="control-label">Nombre*: </label> <input disabled
+											type="text" class="form-control"
+											placeholder="Raz&oacute;n social" required="required">
+									</div>
+
+									<div class="col-xs-3">
+										<label class="control-label">Apellido paterno*: </label> <input disabled
+											type="text" class="form-control"
+											placeholder="Raz&oacute;n social" required="required">
+									</div>
+
+									<div class="col-xs-3">
+										<label class="control-label">Apellido materno: </label> <input disabled
+											type="text" class="form-control">
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-xs-3">
+										<label class="control-label">Correo del contacto*: </label> <input disabled
+											type="text" class="form-control"
+											placeholder="Raz&oacute;n social" required="required">
+									</div>
+									
+									<div class="col-xs-3">
+										<label class="control-label">Tel&eacute; de contacto*: </label> <input disabled
+											type="text" class="form-control"
+											placeholder="Raz&oacute;n social" required="required">
+									</div>
+								</div>
+
+								</panel>
+							
+							
+							<panel panel-class="panel-sky " heading="Nominista ">
+														<panel-controls>
+                    			<panel-control-collapse></panel-control-collapse>
+                			</panel-controls>
+								
+																<div class="row">
+									<div class="col-xs-3">
+										<label class="control-label">Nombre*: </label> <input disabled
+											type="text" class="form-control"
+											placeholder="Raz&oacute;n social" required="required">
+									</div>
+
+									<div class="col-xs-3">
+										<label class="control-label">Apellido paterno*: </label> <input disabled
+											type="text" class="form-control"
+											placeholder="Raz&oacute;n social" required="required">
+									</div>
+
+									<div class="col-xs-3">
+										<label class="control-label">Apellido materno: </label> <input disabled
+											type="text" class="form-control"
+											placeholder="Raz&oacute;n social" required="required">
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-xs-2 ">
+										<label class="control-label ">Celula: </label> <select disabled
+											class="form-control " placeholder="Estado ">
+											<option>Celula 1</option>
+											<option>Celula 2</option>
+											<option>Celula 3</option>
+										</select>
+									</div>
+								</div>
+
+								</panel>
+							
+
+
+
+							<!-- 							<div class="row"> -->
+							<!-- 								<H5>Contacto</H5> -->
+							<!-- 								<div class="col-xs-4"> -->
+							<!-- 									<label class="control-label">Correo electronico *: </label> <input disabled -->
+							<!-- 										placeholder="ejemplo@correo.com" name="correo_field" -->
+							<!-- 										ng-pattern="/^[a-zA-z0-9_]*(\.[_a-zA-Z0-9-]+)*[a-zA-Z0-9]@[a-zA-Z0-9]+[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})$/" -->
+							<!-- 										ng-model="clienteTempDto.idMedioContacto.correoElectronico" -->
+							<!-- 										class="ns_ form-control" type="text" required="required"> -->
+
+							<!-- 								</div> -->
+							<!-- 								<div class="col-xs-4"> -->
+							<!-- 									<label class="control-label">Número de teléfono *: </label> <input disabled -->
+							<!-- 										type="text" class="form-control" -->
+							<!-- 										placeholder="Número de teléfono " -->
+							<!-- 										ng-model="clienteTempDto.idMedioContacto.telefono"> -->
+							<!-- 								</div> -->
+							<!-- 							</div> -->
+
+							<div class="row">
+								<div class="row" align="right">
+									<br />
+
+									<button class="btn-danger btn" ng-click="cancelar();">Cancelar</button>
+									<button class="btn-primary btn"
+										ng-disabled="clienteTempForm.$invalid" type="submit"
+										ng-click=actualizaCliente();>Guardar</button>
+								</div>
+
+							</div>
+						</form>
+					</div>
+					<div id="domicilio" class="tab-pane fade">
+
+						<panel panel-class="panel-primary" heading="Domicilio fiscal">
+						<div class="row">
+							<div class="row">
+
+								<div class="col-xs-4">
+									<label class="control-label">Calle: </label> <input disabled type="text"
+										class="form-control" placeholder="Calle"
+										ng-model="clienteTempDto.idMedioContacto.calle">
+								</div>
+
+								<div class="col-xs-1">
+									<label class="control-label">Numero *: </label> <input disabled
+										type="text" class="form-control" placeholder="Numero"
+										ng-model="clienteTempDto.idMedioContacto.numeroCalle">
+								</div>
+
+								<div class="col-xs-2">
+									<label class="control-label">Estado *: </label> <select disabled
+										class="form-control" placeholder="Estado"
+										ng-model="clienteTempDto.idMedioContacto.estado">
+										<option>Opción 1</option>
+										<option>Opción 2</option>
+										<option>Opción 3</option>
+										<option>Opción 4</option>
+									</select>
+								</div>
+								<div class="col-xs-2">
+									<label class="control-label">Alcaldia: </label> <select disabled
+										class="form-control" placeholder="Alcaldia"
+										ng-model="clienteTempDto.idMedioContacto.alcaldia">
+										<option>Opción 2 1</option>
+										<option>Opción 2 2</option>
+										<option>Opción 2 3</option>
+										<option>Opción 2 4</option>
+									</select>
+								</div>
+
+								<div class="col-xs-2">
+									<label class="control-label">Colonia: </label> <input disabled type="text"
+										class="form-control" placeholder="Colonia"
+										ng-model="clienteTempDto.idMedioContacto.colonia">
+								</div>
+
+								<div class="col-xs-1">
+									<label class="control-label">CP *: </label> <input disabled type="text"
+										class="form-control" placeholder="Codigo postal"
+										ng-model="clienteTempDto.idMedioContacto.codigoPostal">
+								</div>
+							</div>
+
+						</div>
+						</panel>
+						<panel panel-class="panel-sky" heading="Domicilio comercial">
+						<div class="row">
+
+							<div class="row">
+
+								<div class="col-xs-4">
+									<label class="control-label">Calle: </label> <input disabled type="text"
+										class="form-control" placeholder="Calle"
+										ng-model="clienteTempDto.idMedioContacto.calle">
+								</div>
+
+								<div class="col-xs-1">
+									<label class="control-label">Numero *: </label> <input disabled
+										type="text" class="form-control" placeholder="Numero"
+										ng-model="clienteTempDto.idMedioContacto.numeroCalle">
+								</div>
+
+								<div class="col-xs-2">
+									<label class="control-label">Estado *: </label> <select disabled
+										class="form-control" placeholder="Estado"
+										ng-model="clienteTempDto.idMedioContacto.estado">
+										<option>Opción 1</option>
+										<option>Opción 2</option>
+										<option>Opción 3</option>
+										<option>Opción 4</option>
+									</select>
+								</div>
+								<div class="col-xs-2">
+									<label class="control-label">Alcaldia: </label> <select disabled
+										class="form-control" placeholder="Alcaldia"
+										ng-model="clienteTempDto.idMedioContacto.alcaldia">
+										<option>Opción 2 1</option>
+										<option>Opción 2 2</option>
+										<option>Opción 2 3</option>
+										<option>Opción 2 4</option>
+									</select>
+								</div>
+
+								<div class="col-xs-2">
+									<label class="control-label">Colonia: </label> <input disabled type="text"
+										class="form-control" placeholder="Colonia"
+										ng-model="clienteTempDto.idMedioContacto.colonia">
+								</div>
+
+								<div class="col-xs-1">
+									<label class="control-label">CP *: </label> <input disabled type="text"
+										class="form-control" placeholder="Codigo postal"
+										ng-model="clienteTempDto.idMedioContacto.codigoPostal">
+								</div>
+							</div>
+
+						</div>
+						</panel>
+					</div>
+
+					<div id="cuentasBancarias" class="tab-pane fade">
+						<div class="row">
+							<div class="col-md-12">
+								<panel panel-class="panel-primary" heading="Cuentas bancarias">
+								<form>
+									<div class="row">
+										<div class="col-xs-2">
+											<label class="control-label">Banco: </label> <select disabled
+												class="form-control" placeholder="banco">
+												<option>Banco 1</option>
+												<option>Banco 2</option>
+												<option>Banco 3</option>
+												<option>Banco 4</option>
+											</select>
+										</div>
+
+										<div class="col-xs-5">
+											<label class="control-label">N&uacute;mero cuenta
+												bancaria: </label> <input disabled type="text" class="form-control"
+												placeholder="N&uacute;mero cuenta bancaria">
+										</div>
+
+										<div class="col-xs-3">
+											<label class="control-label">Clabe interbancaria: </label> <input disabled
+												type="text" class="form-control"
+												placeholder="Clabe interbancaria">
+										</div>
+
+										<div class="col-xs-1">
+											<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+											<button class="btn-primary btn btn-lg">Guardar</button>
+										</div>
+									</div>
+								</form>
+
+								</panel>
+
+								<panel panel-class="panel-sky"
+									heading="Bancos registrados del cliente">
+								<div class="table-responsive">
+									<table class="table">
+										<thead>
+											<tr>
+												<th style="padding-right: 100px">Banco</th>
+												<th>N&uacute;mero cuenta bancaria</th>
+												<th>Clabe interbancaria</th>
+												<th>Acciones</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>BBVA</td>
+												<td>000000000000</td>
+												<td>1231231231231231</td>
+												<td><a ng-click="nuevoClienteCel()"
+													class="glyphicon glyphicon-pencil"
+													title="Editar cuenta bancaria"></a> <a
+													ng-click="nuevoClienteCel()"
+													class="glyphicon glyphicon-trash"
+													title="Eliminar cuenta bancaria"></a></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								</panel>
+							</div>
+						</div>
+					</div>
+
+					<div id="apoderadoLegal" class="tab-pane fade">
+						<div class="row">
+							<div class="col-md-12">
+								<panel panel-class="panel-primary" heading="Apoderados Legales">
+
+								<div class="row">
+									<div class="col-xs-3">
+										<label class="control-label">Nombre*: </label> <input disabled
+											type="text" class="form-control"
+											placeholder="Raz&oacute;n social" required="required">
+									</div>
+
+									<div class="col-xs-3">
+										<label class="control-label">Apellido paterno*: </label> <input disabled
+											type="text" class="form-control"
+											placeholder="Raz&oacute;n social" required="required">
+									</div>
+
+									<div class="col-xs-3">
+										<label class="control-label">Apellido materno*: </label> <input disabled
+											type="text" class="form-control"
+											placeholder="Raz&oacute;n social" required="required">
+									</div>
+								</div>
+								<br>
+
+								<div class="row">
+									<div class="col-xs-3">
+										<label class="control-label">RFC*: </label> <input disabled type="text"
+											class="form-control" placeholder="RFC"
+											ng-model="celulaDto.rfcCelula" required="required"
+											maxlength="15" min="15" required="required"
+											ng-pattern="/^([A-Z�&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/">
+									</div>
+
+									<div class="col-xs-3">
+										<label class="control-label">CURP*: </label> <input disabled
+											type="text" class="form-control" placeholder="RFC"
+											ng-model="celulaDto.rfcCelula" required="required"
+											maxlength="15" min="15" required="required"
+											ng-pattern="/^([A-Z�&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/">
+									</div>
+
+									<div class="col-xs-2">
+										<label class="control-label">Poder notarial: </label> <select disabled
+											class="form-control" placeholder="Estado"">
+											<option>Poder notarial 1</option>
+											<option>Poder notarial 2</option>
+											<option>Poder notarial 3</option>
+										</select>
+									</div>
+									<div class="col-xs-2 ">
+										<label class="control-label ">Facultad: </label> <select disabled
+											class="form-control " placeholder="Estado ">
+											<option>Facultad 1</option>
+											<option>Facultad 2</option>
+											<option>Facultad 3</option>
+										</select>
+									</div>
+								</div>
+								<div class="row " align="right ">
+									<br />
+									<button class="btn-primary btn " type="submit "
+										ng-click=guardarCelula();>Guardar</button>
+								</div>
+								</panel>
+
+								<panel panel-class="panel-sky "
+									heading="Apoderados legales del cliente ">
+								<div class="table-responsive ">
+									<table class="table ">
+										<thead>
+											<tr>
+												<th style="padding-right: 100px">Nombre</th>
+												<th>RFC</th>
+												<th>CURP</th>
+												<th>Poder notarial</th>
+												<th>Facultades</th>
+												<th>Estatus documentos</th>
+												<th>Acciones</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>ALBERTO MANZO CHIRINO</td>
+												<td>AMANZO840839YT5</td>
+												<td>AMANZO840839YT5HDFRNR02</td>
+												<td>DESCRIPCION PODER NOTARIAL</td>
+												<td>DESCRIPCION FACULTADES</td>
+												<td>INCOMPLETO / COMPLETO</td>
+												<td></td>
+												<td><a ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-pencil "
+													title="Editar apoderado "></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-circle-arrow-up"
+													title="Cargar documentos apoderado "></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-trash "
+													title="Eliminar apoderado "></a></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								</panel>
+								<panel panel-class="panel-sky "
+									heading="Documentos apoderados legales del cliente ">
+								<div class="table-responsive ">
+									<table class="table ">
+										<thead>
+											<tr>
+												<th style="padding-right: 100px">Nombre documento</th>
+												<th>Acciones</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>COMPROBANTE DE DOMICILIO</td>
+												<td><a ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-arrow-up"
+													title="Cargar documento"></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-arrow-down"
+													title="Descargar documento"></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-trash"
+													title="Eliminar documento"></a></td>
+											</tr>
+											<tr>
+												<td>IDENTIFICACION OFICIAL (IFE, PASAPORTE)</td>
+												<td><a ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-arrow-up"
+													title="Cargar documento"></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-arrow-down"
+													title="Descargar documento"></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-trash"
+													title="Eliminar documento"></a></td>
+											</tr>
+											<tr>
+												<td>RFC</td>
+												<td><a ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-arrow-up"
+													title="Cargar documento"></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-arrow-down"
+													title="Descargar documento"></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-trash"
+													title="Eliminar documento"></a></td>
+											</tr>
+											<tr>
+												<td>C&Eacute;DULA FISCAL o RFC</td>
+												<td><a ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-arrow-up"
+													title="Cargar documento"></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-arrow-down"
+													title="Descargar documento"></a> <a
+													ng-click="nuevoClienteCel() "
+													class="glyphicon glyphicon-trash"
+													title="Eliminar documento"></a></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								</panel>
+
+							</div>
+						</div>
+					</div>
+
+
+					<div id="doc" class="tab-pane fade">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-12">
+									<panel panel-class="panel-primary" heading="Documentos">
+
+									<div class="table-responsive">
+										<table class="table">
+											<thead>
+												<tr>
+													<th>Documento</th>
+													<th>Nombre del archivo</th>
+													<th>Usuario Alta</th>
+													<th>Estatus</th>
+													<th>Acción</th>
+
+												</tr>
+											</thead>
+											<tbody>
+
+												<tr>
+													<td>Acta Constitutiva</td>
+													<td><a>Acta_Constitutiva.pdf</a></td>
+													<td>Implementador 1 (nombre)</td>
+													<td><span class="glyphicon glyphicon-ok"></span></td>
+													<td><a class="glyphicon glyphicon-cloud-download"></a>
+														<a class="glyphicon glyphicon-edit"></a> <a
+														class="glyphicon glyphicon-eye-open"></a></td>
+
+												</tr>
+
+												<tr>
+													<td>Registro público de la propiedad</td>
+													<td><a>reg_publico.pdf</a></td>
+													<td>Implementador 1 (nombre)</td>
+													<td><span class="glyphicon glyphicon-ok"></span></td>
+													<td><a class="glyphicon glyphicon-cloud-download"></a>
+														<a class="glyphicon glyphicon-edit"></a> <a
+														class="glyphicon glyphicon-eye-open"></a></td>
+
+												</tr>
+
+												<tr>
+													<td>RFC</td>
+													<td><a>RFC.jpg</a></td>
+													<td>Implementador 1 (nombre)</td>
+													<td><span class="glyphicon glyphicon-ok"></span></td>
+													<td><a class="glyphicon glyphicon-cloud-download"></a>
+														<a class="glyphicon glyphicon-edit"></a> <a
+														class="glyphicon glyphicon-eye-open"></a></td>
+
+												</tr>
+
+<!-- 												<tr> -->
+<!-- 													<td>ID Representante legal</td> -->
+<!-- 													<td><a>id_representante_legal.pdf</a></td> -->
+<!-- 													<td>Implementador 1 (nombre)</td> -->
+<!-- 													<td><span class="glyphicon glyphicon-ok"></span></td> -->
+<!-- 													<td><a class="glyphicon glyphicon-cloud-download"></a> -->
+<!-- 														<a class="glyphicon glyphicon-edit"></a> <a -->
+<!-- 														class="glyphicon glyphicon-eye-open"></a></td> -->
+
+<!-- 												</tr> -->
+
+												<tr>
+													<td>Identificación de representante legal</td>
+													<td></td>
+													<td></td>
+													<td><span class="glyphicon glyphicon-minus"></span></td>
+													<td><a class="glyphicon glyphicon-cloud-upload"
+														data-toggle="modal" href="#modalCargaDocumento"></a></td>
+
+												</tr>
+
+												<tr>
+													<td>Cumplimiento de obligaciones 32D</td>
+													<td><a>Cumplimiento32DRFC.pdf</a></td>
+													<td>Implementador 1 (nombre)</td>
+													<td><span class="glyphicon glyphicon-ok"></span></td>
+													<td><a class="glyphicon glyphicon-cloud-download"></a>
+														<a class="glyphicon glyphicon-edit"></a> <a
+														class="glyphicon glyphicon-eye-open"></a></td>
+
+												</tr>
+
+												<tr>
+													<td>Tarjeta de identificación patronal (IMSS)</td>
+													<td><a>IMSSID.pdf</a></td>
+													<td>Implementador 1 (nombre)</td>
+													<td><span class="glyphicon glyphicon-ok"></span></td>
+													<td><a class="glyphicon glyphicon-cloud-download"></a>
+														<a class="glyphicon glyphicon-edit"></a> <a
+														class="glyphicon glyphicon-eye-open"></a></td>
+
+												</tr>
+												
+												<tr>
+													<td>Constancia situación fiscal</td>
+													<td><a>constanciafiscal_cliente000.pdf</a></td>
+													<td>Implementador 1 (nombre)</td>
+													<td><span class="glyphicon glyphicon-ok"></span></td>
+													<td><a class="glyphicon glyphicon-cloud-download"></a>
+														<a class="glyphicon glyphicon-edit"></a> <a
+														class="glyphicon glyphicon-eye-open"></a></td>
+
+												</tr>
+												
+												<tr>
+													<td>Comprobante fiscal</td>
+													<td><a>comprobanteiscal_cliente000.pdf</a></td>
+													<td>Implementador 1 (nombre)</td>
+													<td><span class="glyphicon glyphicon-ok"></span></td>
+													<td><a class="glyphicon glyphicon-cloud-download"></a>
+														<a class="glyphicon glyphicon-edit"></a> <a
+														class="glyphicon glyphicon-eye-open"></a></td>
+
+												</tr>
+
+												<tr>
+													<td>CheckList</td>
+													<td><a>checklist.pdf</a></td>
+													<td>Implementador 1 (nombre)</td>
+													<td><span class="glyphicon glyphicon-ok"></span></td>
+													<td><a class="glyphicon glyphicon-cloud-download"></a>
+														<a class="glyphicon glyphicon-edit"></a> <a
+														class="glyphicon glyphicon-eye-open"></a></td>
+
+												</tr>
+
+												<tr>
+													<td>Cuestionario Fiscal</td>
+													<td><a>cuestionariofiscal_cliente000.pdf</a></td>
+													<td>Implementador 1 (nombre)</td>
+													<td><span class="glyphicon glyphicon-ok"></span></td>
+													<td><a class="glyphicon glyphicon-cloud-download"></a>
+														<a class="glyphicon glyphicon-edit"></a> <a
+														class="glyphicon glyphicon-eye-open"></a></td>
+
+												</tr>
+
+												<tr>
+													<td>Ficha técnica</td>
+													<td><a>ficha_tecnica_cliente_0000.pdf</a></td>
+													<td>Implementador 1 (nombre)</td>
+													<td><span class="glyphicon glyphicon-ok"></span></td>
+													<td><a class="glyphicon glyphicon-cloud-download"></a>
+														<a class="glyphicon glyphicon-edit"></a> <a
+														class="glyphicon glyphicon-eye-open"></a></td>
+
+												</tr>
+												<tr>
+													<td>Costeo</td>
+													<td></td>
+													<td></td>
+													<td><span class="glyphicon glyphicon-minus"></span></td>
+													<td><a class="glyphicon glyphicon-cloud-upload"></a></td>
+
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									</panel>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+
+				</div>
+				</panel>
+
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<div class="modal fade" id="modalCargaDocumento" role="dialog">
+	<div class="modal-dialog" style="width: 50%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Cargar Archivo</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<label class="control-label">Identificación de registro
+							legal: </label> <input disabled id="inputFile" type="file"
+							accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+							onchange="angular.element(this).scope().fileChanged(this)"
+							class="filestyle">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Subir</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- container-fluid -->

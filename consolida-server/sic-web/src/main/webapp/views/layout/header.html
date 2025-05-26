@@ -1,0 +1,177 @@
+<div ng-controller="MainController"
+	id="headerbar"
+	ng-class="{headerbarHide: getLayoutOption('headerBarHidden'), headerbarShow: !getLayoutOption('headerBarHidden')}"
+	ng-show="!getLayoutOption('fullscreen')"
+	ng-cloak>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-6 col-sm-2">
+				<a href="#" class="shortcut-tiles tiles-brown">
+					<div class="tiles-body">
+						<div class="pull-left"><i class="glyphicon glyphicon-star"></i></div>
+            <div class="pull-right"><span class="badge">0</span></div>
+					</div>
+					<div class="tiles-footer">
+						Alertas
+					</div>
+				</a>
+			</div>
+			<div class="col-xs-6 col-sm-2">
+				<a href="#" class="shortcut-tiles tiles-grape">
+					<div class="tiles-body">
+						<div class="pull-left"><i class="glyphicon glyphicon-tasks"></i></div>
+						<div class="pull-right"><span class="badge">2</span></div>
+					</div>
+					<div class="tiles-footer">
+						Servidores
+					</div>
+				</a>
+			</div>
+			<div class="col-xs-6 col-sm-2">
+				<a href="#" class="shortcut-tiles tiles-primary">
+					<div class="tiles-body">
+						<div class="pull-left"><i class="glyphicon glyphicon-envelope"></i></div>
+						<div class="pull-right"><span class="badge">10</span></div>
+					</div>
+					<div class="tiles-footer">
+						Mensajes
+					</div>
+				</a>
+			</div>
+			<div class="col-xs-6 col-sm-2">
+				<a href="#" class="shortcut-tiles tiles-inverse">
+					<div class="tiles-body">
+						<div class="pull-left"><i class="glyphicon glyphicon-camera"></i></div>
+						<div class="pull-right"><span class="badge">3</span></div>
+					</div>
+					<div class="tiles-footer">
+						Usuario
+					</div>
+				</a>
+			</div>
+
+			<div class="col-xs-6 col-sm-2">
+				<a href="#" class="shortcut-tiles tiles-midnightblue">
+					<div class="tiles-body">
+						<div class="pull-left"><i class="glyphicon glyphicon-cog"></i></div>
+					</div>
+					<div class="tiles-footer">
+						Settings
+					</div>
+				</a>
+			</div>
+			<div class="col-xs-6 col-sm-2">
+				<a href="#" class="shortcut-tiles tiles-orange">
+					<div class="tiles-body">
+						<div class="pull-left"><i class="glyphicon glyphicon-wrench"></i></div>
+					</div>
+					<div class="tiles-footer">
+						Configuracion
+					</div>
+				</a>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<header
+	id="topnav"
+	class="navbar ng-hide"
+	ng-class="{'navbar-fixed-top': getLayoutOption('fixedHeader'), 'navbar-static-top': !getLayoutOption('fixedHeader')}"
+	ng-controller="MainController"
+	role="banner"
+	ng-show="!layoutLoading"
+	ng-cloak>
+	<a id="leftmenu-trigger" ng-click="toggleLeftBar()" ></a>
+	<!--a id="rightmenu-trigger" ng-click="toggleRightBar()"></a-->
+
+
+	<div class="navbar-header pull-left">
+		<a class="navbar-brand" href="#/">Maverick</a>
+	</div>
+
+	<div id="search-inline" ng-show=""
+		class="nav navbar-nav navbar-form hidden-xs"
+		ng-class="{
+		  active: getLayoutOption('showSmallSearchBar')
+		}">
+		<div class="input-icon" >
+			<i class="glyphicon glyphicon-search search"></i>
+			<input type="text" placeholder="Busqueda..." class="form-control" tabindex="1">
+			<i class="glyphicon glyphicon-remove remove visible-xs-inline-block" ng-click="toggleSearchBar($event)"></i>
+		</div>
+	</div>
+
+	<ul class="nav navbar-nav pull-right toolbar">
+	  <li class="dropdown" ng-show="isLoggedIn">
+		<a href="j_spring_security_logout" style="font-size: 14px"><p style="color: white"><i class="fa fa-sign-in"></i> Salir</p></a>
+	  </li>
+	
+<!--  
+	  <li class="dropdown" ng-show="isLoggedIn" dropdown>
+		<a href class="dropdown-toggle username" dropdown-toggle>
+			<img src="assets/demo/avatar/avatar.png" alt="Dangerfield" />
+		</a>
+		<ul class="dropdown-menu animated userinfo arrow">
+		  <li class="userlinks">
+			<ul class="dropdown-menu">
+			  <li><a href="#">Edita perfil <i class="pull-right glyphicon glyphicon-pencil"></i></a></li>
+			  <li><a href="#">Cuenta <i class="pull-right glyphicon glyphicon-user"></i></a></li>
+			  <li><a href="#">Configuraci&oacute;n <i class="pull-right glyphicon glyphicon-cog"></i></a></li>
+			  <li class="divider"></li>
+
+			  <li><a href="j_spring_security_logout" class="text-right">Salir</a></li>
+			</ul>
+		  </li>
+		</ul>
+		</li>
+-->
+	<li class="dropdown" ng-show="isLoggedIn">
+		<a href="#/" style="font-size: 15px"><!--<i class="fa fa-user"></i>--><b style="color: white">BIENVENIDO: {{usuarioDTO.nombre +" "+ usuarioDTO.primerApellido}} {{+" "+ (usuarioDTO.segundoApellido==null ? '':usuarioDTO.segundoApellido)}}</b></a>
+	  </li>	
+	  
+		<li class="dropdown" ng-show="isLoggedIn" ng-controller="MessagesController" >
+
+			<a href="#/admin/notificaciones" style="font-size: 14px"  data-pulsate="{color:'#09f'}" ng-if="totalNotificaciones>0">
+				<i class="fa fa-bell-o"></i>
+				 <span class="badge badge-danger"  ng-bind="totalNotificaciones"></span></a>
+			</li>
+
+	  
+		
+	  <li class="dropdown" dropdown ng-controller="NotificationsController" >
+		<!--  
+		<a href dropdown-toggle class="dropdown-toggle" >
+		  <i class="glyphicon glyphicon-globe"></i><span class="badge badge-indigo" ng-if="unseenCount>0" ng-bind="unseenCount"></span>
+		</a>
+		-->
+		<ul class="dropdown-menu animated notifications arrow">
+		  <li class="dd-header">
+			<span>Notificaciones ({{unseenCount}})</span>
+			<span><a href="#"><i class="glyphicon glyphicon-cog"></i></a></span>
+		  </li>
+				<div class="scrollthis" scrollable>
+			<li ng-repeat="item in notifications">
+			  <a href="#" class="{{item.class}}" ng-class="{active: !item.seen}">
+				<button tooltip-placement="top" tooltip-append-to-body="true" tooltip="Mark seen" class="btn-mark-read" ng-if="!item.seen" ng-click="setSeen(item, $event)"><i class="glyphicon glyphicon-unchecked"></i></button>
+				<button tooltip-placement="top" tooltip-append-to-body="true" tooltip="Mark unseen" class="btn-mark-unread" ng-if="item.seen" ng-click="setUnseen(item, $event)"><i class="glyphicon glyphicon-check"></i></button>
+				<span class="time">{{item.time}}</span>
+				<i class="{{item.iconClasses}}"></i>
+				<span class="msg">{{item.text}}</span>
+			  </a>
+			</li>
+				</div>
+		  <li class="dd-footer"><a href="javascript:;" ng-click="setSeenAll($event)">Mark all seen</a></li>
+		</ul>
+	  </li>
+	  <li class="visible-xs-block">
+		  <a href="#" ng-click="toggleSearchBar($event)"><i class="glyphicon glyphicon-search"></i></a>
+	  </li>
+	  <!-- 
+	  <li ng-click="showHeaderBar($event)" class="hidden-xs" >
+		  <a href="" id="headerbardropdown"><i class="glyphicon glyphicon-th"></i></a>
+	  </li>
+-->
+	</ul>
+</header>

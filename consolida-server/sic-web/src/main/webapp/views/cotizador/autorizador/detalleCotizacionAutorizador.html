@@ -1,0 +1,144 @@
+<div class="container-fluid">
+	<div id="page-heading">
+		<ol class="breadcrumb">
+			<li><a href="#/">Menu principal</a></li>
+			<li><a href="#/cotizador/autorizador/">Autorizar cotizaciones</a></li>
+			<li class="active">Detalle cotizaci&oacute;n</li>
+		</ol>
+	</div>
+<style>
+#frmDetalle > .row {
+padding-bottom: 10px;
+padding-top: 10px;
+}
+
+</style>
+
+
+	<div class="row">
+		<div class="col-md-12">
+			<panel panel-class="panel-primary" heading="Cliente"> 
+			<panel-controls><panel-control-collapse></panel-control-collapse></panel-controls>
+			<form id="frmDetalle">
+				<div class="row">
+					<div class="col-xs-4">
+						<label class="col-sm-12 control-label">Nombre/Raz&oacute;n Social:*</label>
+						<input type="text" class="form-control"
+							placeholder="Nombre del cliente*">
+					</div>
+					<div class="col-xs-4">
+						<label class="col-sm-12 control-label">RFC:* </label> 
+						<input type="text" class="form-control" placeholder="RFC">
+					</div>
+					<div class="col-xs-4">
+						<label class="col-sm-12 control-label">Nombre comercial:</label>
+						<input type="text" class="form-control"
+							placeholder="Nombre comercial">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4">
+						<label class="col-sm-12 control-label">Tipo persona:* </label> 
+						<select class="form-control" id="exampleFormControlSelect2">
+							<option>----Seleccione una opcion----</option>
+							<option>Fisica</option>
+							<option>Moral</option>
+						</select>
+					</div>
+					<div class="col-xs-4">
+						<label class="control-label">Correo electronico:*</label> <input
+							type="text" class="form-control" placeholder="correo eletronico">
+					</div>
+					<div class="col-xs-4">
+						<label class="control-label">Proveedor actual:*</label> <select
+							class="form-control" id="exampleFormControlSelect2">
+							<option>----Seleccione una opcion----</option>
+							<option>S&iacute;</option>
+							<option>No</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4">
+						<label class="control-label">Costo proveedor actual:* </label> <input
+							type="text" class="form-control"
+							placeholder="Nombre o razón social">
+					</div>
+
+					<div class="col-xs-4">
+						<label class="control-label">Propuesta costo
+							comisi&oacute;n:* </label> <input type="text" class="form-control"
+							placeholder="Nombre o razón social">
+					</div>
+					<div class="col-xs-4">
+						<label class="control-label">%	comisi&oacute;n:* </label> 
+						<input type="text" class="form-control"
+							placeholder="Nombre o razón social">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4">
+						<label class="control-label">Promotor:*</label> <select
+							class="form-control" id="exampleFormControlSelect2">
+							<option>----Seleccione una opcion----</option>
+							<option>Promotor 1</option>
+							<option>Promotor 2</option>
+							<option>Promotor 3</option>
+							<option>Promotor 4</option>
+							<option>Promotor 5</option>
+						</select>
+					</div>
+					<div class="col-xs-4">
+						<label class="control-label">Tipo producto:*</label> 
+						<select
+							class="form-control" id="exampleFormControlSelect2">
+							<option>----Seleccione una opci&oacute;n----</option>
+							<option>Nomina fiscal</option>
+							<option>PPP</option>
+							<option>Productos especializados</option>
+						</select>
+					</div>
+					<div class="col-xs-4">
+						<label class="control-label">Giro:* </label> 
+						<input type="text" class="form-control"
+							placeholder="Giro de la empresa">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4">
+						<label for="idCuestionario">Adjuntar Cuestionario:</label> 
+						<input type="file" id="idCuestionario">
+						<p class="help-block">Cuestionario Fiscal.</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4">
+						<label for="idCuestionario">Fondo:</label> 
+						<select
+							class="form-control" id="exampleFormControlSelect2">
+							<option>----Seleccione una opci&oacute;n----</option>
+							<option>Freyxenet - coreconsulting</option>
+							<option>Lynher - ComplementaMx</option>
+							<option>Upper Media - CreaInternational</option>
+						</select>
+					</div>
+					<div class="col-xs-4">
+						<label for="idCuestionario">Periodo Pago:</label> 
+						<select
+							class="form-control" id="exampleFormControlSelect2">
+							<option>----Seleccione una opci&oacute;n----</option>
+							<option>Semanal</option>
+							<option>Catorcenal</option>
+							<option>Quincenal</option>
+							<option>Mensual</option>
+							<option>Anual</option>
+						</select>
+					</div>
+				</div>
+			</form>
+			</panel>
+		</div>
+	</div>
+</div>
+
+<!-- container-fluid -->

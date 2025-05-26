@@ -1,0 +1,86 @@
+
+<div id="page-heading">
+	<ol class="breadcrumb">
+		<li><a href="#/">CRM</a></li>
+		<li>Home</li>
+		<li class="active">Clientes</li>
+	</ol>
+
+</div>
+
+<div class="container-fluid" >
+	<div class="row">
+		<div class="col-md-12">
+			<panel panel-class="panel-primary" heading="Carga Archivo de nomina">
+			<panel-controls>
+                <panel-control-collapse></panel-control-collapse>
+            </panel-controls>
+			<form>
+				
+				
+				<div class="row">
+					<h3>{{tituloPantalla}}</h3>
+					<input id="inputFile"
+					   type="file"
+					   accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+					   onchange="angular.element(this).scope().fileChanged(this)"
+					   class="filestyle">
+					 	
+				 </div>
+				 
+				 </form>
+			
+			</panel>
+						
+		</div>
+	</div>
+	
+	
+	
+	
+	<div class="row"  ng-show="dataExcel != undefined">
+		<div class="col-md-12">
+			<panel panel-class="panel-primary" heading="Excel Cargado...">
+			<panel-controls>
+                <panel-control-collapse></panel-control-collapse>
+            </panel-controls>
+			<form>
+				
+				
+				<div class="row" ng-show="false">
+					<div class="panel panel-default">
+					  <div class="panel-body">{{dataExcel | json}}</div>
+					</div>
+					 	
+				 </div>
+				 
+				 <div class="row">
+					<table style="width:100%">
+					  <thead>
+					    <th ng-repeat="itemHeader in dataExcel.header">{{itemHeader}}</th>
+					  </thead>
+					  
+					  <tr ng-repeat="x in dataExcel.contentRows">
+					     <td>{{ x.nombre }}</td>
+					    <td>{{ x.edad }}</td>
+					    <td>{{ x.rfc }}</td>
+					    <td>{{ x.salario }}</td>
+					  </tr>
+					 
+					</table>
+					 	
+				 </div>
+				 
+				 
+				 
+				 
+				 </form>
+			
+			</panel>
+						
+		</div>
+	</div>
+
+</div>
+
+<!-- container-fluid -->

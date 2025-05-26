@@ -1,0 +1,384 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">				
+			<panel panel-class="panel-sky" heading="Datos generales">
+				<panel-controls> <panel-control-collapse></panel-control-collapse>
+				</panel-controls>
+				<form id="datosGeneralesForm" name="datosGeneralesForm" novalidate>
+					<div class="row">
+						<H5>
+							<strong>DATOS GENERALES</strong>
+						</H5>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<label class="control-label">Tipo de persona*:</label>
+								</div>
+								<div class="col-sm-6">
+									<div class="radio">
+										<label> <input icheck type="radio" ng-disabled="inHabilitaEscritura"
+											ng-model="clienteDto.catTipoPersona.idCatGeneral"
+											ng-change="limpiarSeleccion(clienteDto.catTipoPersona.idCatGeneral);"
+											name="persona" id="optionsRadios1" value="22" checked>
+											MORAL
+										</label>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="radio">
+										<label> <input icheck type="radio" ng-disabled="inHabilitaEscritura"
+											ng-change="limpiarSeleccion(clienteDto.catTipoPersona.idCatGeneral);"
+											ng-model="clienteDto.catTipoPersona.idCatGeneral"
+											name="persona" id="optionsRadios2" value="21">
+											FISICA
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6"
+							ng-show="clienteDto.catTipoPersona.idCatGeneral === '22' || clienteDto.catTipoPersona.idCatGeneral ===22 || clienteDto.catTipoPersona.idCatGeneral ==='21' || clienteDto.catTipoPersona.idCatGeneral ===21">
+							<div class="form-group">
+								<label class="control-label">Cliente (nombre comercial
+									o grupo)*:</label> <select class="form-control" name="grupo"
+									id="grupo" ng-model="clienteDto.catGrupo.idCatGrupo" ng-disabled="inHabilitaEscritura">
+									<option value="">-- SELECCIONA UNA OPCI&Oacute;N --</option>
+									<option ng-repeat="grupos in listaGrupos"
+										ng-selected="grupos.idCatGrupo == clienteDto.catGrupo.idCatGrupo"
+										value="{{grupos.idCatGrupo}}">{{grupos.descripcionRazonSocial
+										| uppercase}}</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<!--*********RFC Persona Fisica*********-->
+						<div class="col-xs-3"
+							ng-show="clienteDto.catTipoPersona.idCatGeneral === '21' || clienteDto.catTipoPersona.idCatGeneral ===21">
+							<label name="rfc" class="control-label">RFC*: </label> <input
+								type="text" placeholder="RFC" name="rfcPF_field" ng-disabled="inHabilitaEscritura"
+								onkeyup="javascript:this.value=this.value.toUpperCase();"
+								ng-pattern="/^([A-ZÑ\x26]{4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})$/"
+								ng-model="clienteDto.rfc" maxlength="13" minlength="13"
+								class="form-control" type="text"
+								onkeyup="javascript:this.value=this.value.toUpperCase();"
+								tooltip="RFC debe contener 13 caracteres"> <span
+								class="messages"
+								ng-show="datosGeneralesForm.rfcPF_field.$touched"> <span
+								ng-show="datosGeneralesForm.rfcPF_field.$error.required === true ?false:!datosGeneralesForm.rfcPF_field.$valid">
+									Formato incorrecto. </span>
+							</span>
+						</div>
+						<!--*********RFC Persona Moral*********-->
+						<div class="col-xs-3"
+							ng-show="clienteDto.catTipoPersona.idCatGeneral === '22' || clienteDto.catTipoPersona.idCatGeneral === 22">
+							<label name="rfc" class="control-label">RFC*: </label> <input
+								type="text" placeholder="RFC" name="rfcPM_field" ng-disabled="inHabilitaEscritura"
+								onkeyup="javascript:this.value=this.value.toUpperCase();"
+								ng-pattern="/^([A-ZÑ\x26]{3}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})$/"
+								ng-model="clienteDto.rfc" maxlength="12" minlength="12"
+								class="form-control" type="text"
+								onkeyup="javascript:this.value=this.value.toUpperCase();"
+								tooltip="RFC debe contener 12 caracteres"> <span
+								class="messages"
+								ng-show="datosGeneralesForm.rfcPM_field.$touched"> <span
+								ng-show="datosGeneralesForm.rfcPM_field.$error.required === true ?false:!datosGeneralesForm.rfcPM_field.$valid">
+									Formato incorrecto. </span>
+							</span>
+						</div>
+
+						<div class="col-xs-3">
+							<br /> <label name="rfc" class="control-label">&iquest;Es
+								activo?: </label> <input type="checkbox" ng-disabled="inHabilitaEscritura"
+								ng-model="clienteDto.esActivo" name="esActivo"
+								class="js-switch"
+								ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" />
+							<!-- <span class="messages"
+								ng-show="datosGeneralesForm.rfcPM_field.$touched"> <span
+								ng-show="datosGeneralesForm.rfcPM_field.$error.required === true ?false:!datosGeneralesForm.rfcPM_field.$valid">
+									Formato incorrecto. </span>
+							</span> -->
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-xs-9"
+							ng-show="clienteDto.catTipoPersona.idCatGeneral === '22' || clienteDto.catTipoPersona.idCatGeneral ===22">
+							<label class="control-label">Raz&oacute;n social*: </label> <input
+								type="text" class="form-control" ng-disabled="inHabilitaEscritura"
+								placeholder="Raz&oacute;n social" name="razonSocial_field"
+								ng-model="clienteDto.razonSocial" minlength="3"
+								maxlength="100"
+								onkeyup="javascript:this.value=this.value.toUpperCase();">
+
+
+							<span class="messages"
+								ng-show="datosGeneralesForm.razonSocial_field.$touched">
+								<span
+								ng-show="datosGeneralesForm.razonSocial_field.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+
+						</div>
+
+						<div class="col-xs-3"
+							ng-show="clienteDto.catTipoPersona.idCatGeneral ==='21' || clienteDto.catTipoPersona.idCatGeneral ===21">
+							<label class="control-label">Nombre (s)*: </label> <input
+								type="text" name="nombre_field" class="form-control" ng-disabled="inHabilitaEscritura"
+								placeholder="Nombre(s)" ng-model="clienteDto.nombre"
+								minlength="3" maxlength="50"
+								onkeyup="javascript:this.value=this.value.toUpperCase();">
+							<span class="messages"
+								ng-show="datosGeneralesForm.nombre_field.$touched"> <span
+								ng-show="datosGeneralesForm.nombre_field.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+						<div class="col-xs-3"
+							ng-show="clienteDto.catTipoPersona.idCatGeneral ==='21' || clienteDto.catTipoPersona.idCatGeneral ===21">
+							<label class="control-label">Apellido paterno*: </label> <input
+								type="text" name="apellidoPaterno_field" class="form-control" ng-disabled="inHabilitaEscritura"
+								placeholder="Apellido paterno"
+								ng-model="clienteDto.apellidoPaterno" minlength="3"
+								maxlength="50"
+								onkeyup="javascript:this.value=this.value.toUpperCase();">
+							<span class="messages"
+								ng-show="datosGeneralesForm.apellidoPaterno_field.$touched">
+								<span
+								ng-show="datosGeneralesForm.apellidoPaterno_field.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+						<div class="col-xs-3"
+							ng-show="clienteDto.catTipoPersona.idCatGeneral ==='21' || clienteDto.catTipoPersona.idCatGeneral ===21">
+							<label class="control-label">Apellido materno: </label> <input
+								type="text" class="form-control" ng-disabled="inHabilitaEscritura"
+								placeholder="Apellido Materno"
+								ng-model="clienteDto.apellidoMaterno" minlength="3"
+								maxlength="50"
+								onkeyup="javascript:this.value=this.value.toUpperCase();">
+						</div>
+
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-xs-3"
+							ng-show="clienteDto.catTipoPersona.idCatGeneral === '22' || clienteDto.catTipoPersona.idCatGeneral ===22 || 
+									 clienteDto.catTipoPersona.idCatGeneral ==='21' || clienteDto.catTipoPersona.idCatGeneral ===21">
+							<label class="control-label">Fecha constituci&oacute;n
+								de la empresa*: </label> <input type="date" ng-disabled="inHabilitaEscritura"
+								name="fechaConstitucionEmpresa_field" ng-required="true"
+								id="exampleInput" class="form-control" name="input"
+								ng-model="clienteDto.fechaConstitucionEmpresa"
+								placeholder="dd/MM/yyyy" /></br> <span class="messages"
+								ng-show="datosGeneralesForm.fechaConstitucionEmpresa_field.$submitted || datosGeneralesForm.fechaConstitucionEmpresa_field.$touched">
+								<span
+								ng-show="datosGeneralesForm.fechaConstitucionEmpresa_field.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+
+						<div class="col-xs-3"
+							ng-show="clienteDto.catTipoPersona.idCatGeneral === '22' || clienteDto.catTipoPersona.idCatGeneral ===22 || 
+									 clienteDto.catTipoPersona.idCatGeneral ==='21' || clienteDto.catTipoPersona.idCatGeneral ===21">
+							<label class="control-label">Clave registro patronal*:
+							</label> <input name="cveRegistroPatronal_field" type="text" ng-disabled="inHabilitaEscritura"
+								class="form-control" placeholder="Clave registro patronal"
+								ng-model="clienteDto.cveRegistroPatronal" minlength="3"
+								maxlength="11"
+								onkeyup="javascript:this.value=this.value.toUpperCase();"
+								tooltip="Clave registro patronal debe contener 11 caracteres ">
+
+						</div>
+						
+						<div class="col-sm-3"
+							ng-show="clienteDto.catTipoPersona.idCatGeneral === '22' || clienteDto.catTipoPersona.idCatGeneral ===22 || clienteDto.catTipoPersona.idCatGeneral ==='21' || clienteDto.catTipoPersona.idCatGeneral ===21">
+							<div class="form-group">
+								<label class="control-label">Categoria*:</label> <select
+									class="form-control" name="categoria" id="categoria"
+									ng-model="clienteDto.catCategoria" ng-disabled="inHabilitaEscritura"
+									ng-options="categoria.descripcion for categoria in listaCategorias | orderBy:'categoria.idCatGeneral' track by categoria.idCatGeneral"
+									ng-required="true" placeholder="Categoria">
+									<option value="" class="">-- SELECCIONA UNA
+										OPCI&Oacute;N --</option>
+								</select>
+								<div ng-messages="frmInfSolicitud.categoria.$error"
+									ng-show="clienteForm.categoria.$dirty && clienteForm.categoria.$invalid">
+									<small class="form-text-error" ng-message="required">
+										Este campo es obligatorio</small>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row" ng-show="clienteDto.catTipoPersona.idCatGeneral === '21' || clienteDto.catTipoPersona.idCatGeneral ===21
+					|| clienteDto.catTipoPersona.idCatGeneral === '22' || clienteDto.catTipoPersona.idCatGeneral ===22">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label class="control-label">Centro de costos*:</label> <select
+									class="form-control" name="celula" id="celula"
+									ng-model="clienteDto.celula" ng-disabled="inHabilitaEscritura"
+									ng-options="celula.nombre for celula in listaCelulas | orderBy:'celula.nombre' track by celula.idCelula"
+									ng-change="getPrestadoras(clienteDto.celula.idCelula)"
+									ng-required="true"
+									disabled="true"
+									placeholder="Celula">
+									<option value="" class="">-- SELECCIONA UNA
+										OPCI&Oacute;N --</option>
+								</select> <span class="messages"
+									ng-show="celulaForm.$submitted || celulaForm.celula.$touched">
+									<span ng-show="celulaForm.celula.$error.required">El
+										campo es obligatorio.</span>
+								</span>
+							</div>
+						</div>
+						<div class="col-xs-3">
+							<label class="control-label">Prestadora de
+								servicio (fondo)*: </label> <select class="form-control"
+								name="prestadoraFondo" id="prestadoraFondo" ng-disabled="inHabilitaEscritura"
+								ng-model="clienteDto.prestadoraServicioFondo"
+								ng-options="prestadoraFondo.razonSocial for prestadoraFondo in listaPrestadorasFondo | orderBy:'prestadoraFondo.razonSocial' track by prestadoraFondo.idPrestadoraServicio"
+								ng-required="true" placeholder="Prestadora Fondo"
+								disabled="true">
+								<option value="" class="">-- SELECCIONA UNA
+									OPCI&Oacute;N --</option>
+							</select>
+							<div ng-messages="nominaClienteForm.tipoPago.$error"
+								ng-show="nominaClienteForm.tipoPago.$dirty && nominaClienteForm.tipoPago.$invalid">
+								<small class="form-text-error" ng-message="required">Este
+									campo es obligatorio</small>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-sm-6"
+							ng-show="clienteDto.catTipoPersona.idCatGeneral === '22' || clienteDto.catTipoPersona.idCatGeneral ===22 || clienteDto.catTipoPersona.idCatGeneral ==='21' || clienteDto.catTipoPersona.idCatGeneral ===21">
+							<div class="form-group">
+								<label class="control-label">Regimen fiscal*:</label> <select
+									class="form-control" name="regimen" id="regimen"
+									ng-model="clienteDto.catRegimenFiscal" ng-disabled="inHabilitaEscritura"
+									ng-options=" (regimen.clave + ' - '+ regimen.descripcion) for regimen in listaRegimenes | orderBy:'regimen.idCatGeneral' track by regimen.idCatGeneral"
+									ng-required="true" placeholder="Categoria">
+									<option value="" class="">-- SELECCIONA UNA
+										OPCI&Oacute;N --</option>
+								</select>
+								<div ng-messages="frmInfSolicitud.regimen.$error"
+									ng-show="clienteForm.regimen.$dirty && clienteForm.regimen.$invalid">
+									<small class="form-text-error" ng-message="required">
+										Este campo es obligatorio</small>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-5"
+							ng-show="clienteDto.catTipoPersona.idCatGeneral === '22' || clienteDto.catTipoPersona.idCatGeneral ===22 || 
+									 clienteDto.catTipoPersona.idCatGeneral ==='21' || clienteDto.catTipoPersona.idCatGeneral ===21">
+							<label class="control-label">Actividad econ&oacute;mica final*: </label> <input
+								name="actividadEconomica"  id="actividadEconomica"type="text" class="form-control" ng-disabled="inHabilitaEscritura"
+								ng-required="true" placeholder="Actividad econ&oacute;mica final"
+								ng-model="clienteDto.actividadEconomicaFinal" minlength="2" maxlength="250">
+							<span class="messages"
+								ng-show="clienteForm.actividadEconomica.$submitted || clienteForm.actividadEconomica.$touched">
+								<span ng-show="clienteForm.actividadEconomica.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+					</div>
+					<div class="row" align="right"
+						ng-show="clienteDto.catTipoPersona.idCatGeneral === '22' || clienteDto.catTipoPersona.idCatGeneral ===22 || clienteDto.catTipoPersona.idCatGeneral ==='21' || clienteDto.catTipoPersona.idCatGeneral ===21">
+						<br />
+						<button type="submit" class="btn-green btn" name="guardar"  ng-if="!inHabilitaEscritura"
+							ng-click="guardarDatosGenerales();">GUARDAR</button>
+					</div>
+				</form>
+			</panel>
+			<panel panel-class="panel-sky"
+					heading="ACTIVIDAD ECON&Oacute;MICA" ng-show="!inHabilitaEscritura"> <panel-controls>
+				<panel-control-collapse></panel-control-collapse> </panel-controls>
+				<form id="giroForm" name="giroForm">
+					<!-- <div class="table-responsive tablaconscroll"> -->
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="control-label">Grupo*: </label> <select required
+								class="form-control" name="giro" id="giro" ng-disabled="inHabilitaEscritura"
+								ng-model="clienteActividad.idGiroComercial"
+								ng-change="obtenerSubgiro(clienteActividad.idGiroComercial);">
+								<option value="-1">{{'-- Selecciona una opci&oacute;n
+									--' | uppercase}}</option>
+								<option ng-repeat="giro in clienteActividad.girosComerciales"
+									ng-selected="giro.idCatGeneral == clienteActividad.idGiroComercial"
+									value="{{giro.idCatGeneral}}">{{giro.descripcion |
+									uppercase}}</option>
+							</select> <span class="messages"
+								ng-show="giroForm.giro.$submitted || giroForm.giro.$touched">
+								<span ng-show="giroForm.giro.$error.required">El campo
+									es obligatorio.</span>
+							</span>
+						</div>
+					</div>
+
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="control-label">Sub grupo*: </label> <select
+								required class="form-control" name="subgiro" id="subgiro"
+								ng-model="clienteActividad.idSubGiroComercial">
+								<option value="null">{{'-- Selecciona una
+									opci&oacute;n --' | uppercase}}</option>
+								<option
+									ng-repeat="subgiro in clienteActividad.catSubGiroComercial"
+									ng-selected="subgiro.idCatSubGiroComercial == clienteActividad.idSubGiroComercial"
+									value="{{subgiro.idCatSubGiroComercial}}">{{subgiro.descripcion
+									| uppercase}}</option>
+							</select> <span class="messages"
+								ng-show="giroForm.subgiro.$submitted || giroForm.subgiro.$touched">
+								<span ng-show="giroForm.subgiro.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+					</div>
+					<!-- </div> -->
+					<div class="row" align="right">
+						<br />
+						<button class="btn-green btn" type="submit" ng-if="!inHabilitaEscritura"
+							ng-disabled="giroForm.$invalid"
+							ng-click=guardarActividad(clienteActividad); formnovalidate>Agregar</button>
+					</div>
+				</form>
+			</panel>
+			<panel panel-class="panel-sky"
+					heading="ACTIVIDADES ECON&Oacute;MICAS GUARDADAS"> <panel-controls>
+				<panel-control-collapse></panel-control-collapse> </panel-controls>
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th style="padding-right: 100px">Grupo</th>
+								<th>Sub grupo</th>
+								<th>Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr
+								ng-repeat="actividad in clienteActividad.listClienteActividad">
+								<td>{{actividad.catGiroComercial.descripcion}}</td>
+								<td>{{actividad.subgiroComercial.descripcion}}</td>
+								<td align="center">
+									<button data-toggle="modal"  ng-if="!inHabilitaEscritura"
+										ng-click="eliminarActividad(actividad)"
+										tooltip="Eliminar actividad econ&oacute;mica "
+										class="btn  btn-midnightblue">
+										<span class="fa fa-trash"></span>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</panel>
+		</div>
+	</div>
+</div>

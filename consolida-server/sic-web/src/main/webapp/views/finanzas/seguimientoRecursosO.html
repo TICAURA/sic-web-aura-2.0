@@ -1,0 +1,430 @@
+<div class="container-fluid"
+	ng-controller="conciliacionController">
+	<div id="page-heading">
+		<ol class="breadcrumb">
+			<li><a href="#/">Menu principal</a></li>
+			<li class="active">Conciliaciones</li>
+		</ol>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<panel panel-class="panel-sky" heading="Contadores de totales">
+			
+			
+					 
+
+			<panel panel-class="panel-sky" heading=" Totales">
+			<panel-controls> <panel-control-collapse></panel-control-collapse>
+			</panel-controls>
+			
+		
+			
+			
+			
+			<form id="seguimientoProspectos" name="seguimientoProspectosForm">
+			
+				<div class="row"> 
+				
+					<div class="col-md-12">		
+								 <div class="col-xs-3">
+						            <label class="control-label">A&ntilde;o*:</label>
+						            <select class="form-control"
+						             
+						            ng-model="data.year" 
+						            ng-options="y for y in data.years" 
+						            
+						            ng-required="true" ng-change= "activaMes();">
+						            <option  value="" class="">-- SELECCIONA UNA OPCI&Oacute;N --</option>
+						            </select>
+					            </div>					
+								<div class="col-xs-3">
+									<label class="control-label">Mes*:</label>
+						            <select ng-model="data.month" 
+						            class="form-control" 
+						            ng-change = "activaDia();"
+						            ng-disabled="false"
+						            ng-options="m for m in data.months" 
+						            ng-required="data.activaSelectMes" >
+						            <option  value="" class="">-- SELECCIONA UNA OPCI&Oacute;N --</option>
+						            
+						            </select>
+					            </div>
+					            <div class="col-xs-3">
+									<label class="control-label">D&iacute;a*:</label>
+						            <select ng-model="data.day" 
+						            class="form-control" 
+						            name="dia"
+						            ng-disabled="false"
+						            ng-options="d for d in data.days" 
+						            ng-required="data.activaSelectDia">
+						            <option va	lue="" class="">-- SELECCIONA UNA OPCI&Oacute;N --</option>
+						            
+						            </select>
+					            </div>
+					          
+					            
+					      
+					           
+					     </div>	
+					     
+					    
+					 </div>
+					 	 <br>
+					 
+				
+
+			
+
+				<div class="row">	
+					<div class="col-md-2" data-clasificacion="TOTAL">
+						<a class="shortcut-tiles tiles-info"
+							ng-click="init()" data="tileDef">
+							<div class="tiles-body">
+								<div class="pull-left">
+									<i class="fa fa-money"></i>
+								</div>
+								<div class="pull-right" style="font-size: 16px;  line-height: 1">{{totalIngresos|currency}}</div>
+							</div>
+							<div class="tiles-footer ng-binding" style=" height: 70px;">
+								<span class="bold"></br> Total de Ingresos</span>
+							</div>
+						</a>
+					</div>
+
+
+					<div class="col-md-2" data-clasificacion="EN_PROCESO">
+						<a class="shortcut-tiles tiles-magenta"
+							ng-click="getDetalleEgresos();" data="tileDef">
+							<div class="tiles-body">
+								<div class="pull-left">
+									<i class="fa fa-plus-circle"></i>
+								</div>
+								<div class="pull-right" style="font-size: 16px;line-height: 1" align="right">{{totalEgresos| currency}}</div>
+							</div>
+							<div class="tiles-footer ng-binding" style="font-size: 12px; height: 70px;">
+								<span class="bold"></br> Total de egresos</span>
+							</div>
+						</a>
+					</div>
+
+					<div class="col-md-2" data-clasificacion="COTI">
+						<a class="shortcut-tiles tiles-toyo"
+							ng-click="getDetalleIngresos();" data="tileDef">
+							<div class="tiles-body">
+								<div class="pull-left">
+									<i class="fa fa-eye"></i>
+								</div>
+								<div class="pull-right" style="font-size: 16px; line-height: 1">{{totalClientesIngresos}}</div>
+							</div>
+							<div class="tiles-footer ng-binding" style="font-size: 12px;  height: 70px;">
+								<span class="bold"></br> Clientes ingresos</span>
+							</div>
+						</a>
+					</div>
+
+					<div class="col-md-2" data-clasificacion="PROSP_RECHAZADOS">
+						<a class="shortcut-tiles tiles-danger"
+							ng-click="getDetalleEgresos();" data="tileDef">
+							<div class="tiles-body">
+								<div class="pull-left">
+									<i class="fa fa-minus-circle"></i>
+								</div>
+								<div class="pull-right" style="font-size: 16px;line-height: 1">{{totalClientesEgresos}}</div>
+							</div>
+							<div class="tiles-footer ng-binding" style="font-size: 12px; height: 70px;">
+								<span class="bold"></br>Clientes Egresos</span>
+							</div>
+						</a>
+					</div>
+
+
+			
+
+				</div>
+
+			</form>
+			</panel> 
+			
+			<panel panel-class="panel-sky"
+				heading="{{nombreContadorSelecionado}}">
+			<div class="table-responsive">
+				<table class="table" ng-table="tableDetalleParams">
+					<thead>
+						<tr>
+							<th align="center">Beneficiario</th>
+							<th align="center">Cuenta Beneficiario</th>
+							<th align="center" >Ordenante</th>
+							<th align="center" >Cuenta Ordenante</th>
+							<th align="center" >Monto</th>
+							<th align="center" >Acciones</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="orden in $data">
+							<td align="left" >{{orden.beneficiario}}</td>
+							<td align="left" >{{orden.ctaBeneficiario}}</td>
+							<td align="left">{{orden.ordenante}}</td>
+							<td align="left">{{orden.ctaOrdenante}}</td>
+							<td align="right">{{orden.monto | currency}}</td>
+								<td align="right">	<button data-toggle="modal" ng-show="data.idEstatus != 9"
+												ng-click="mostrarDialogoDisponible(orden);"
+												class="btn btn-midnightblue">
+												<span class="fa fa-binoculars" tooltip="Revisar disponibles"></span> 
+											</button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			</panel> 
+		</panel>
+		</div>
+	</div>
+	
+	
+		 	<div class="modal fade" tabindex="-1" role="dialog"	data-backdrop="static" id="mostrarDialogoDisponible"
+		aria-labelledby="decodificador">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Resumen Cliente {{ordenSelect.ordenante}}</h4>
+				</div>
+				<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">		
+								 <div class="col-xs-3">
+						            <label class="control-label">A&ntilde;o*:</label>
+						            <select class="form-control"
+						             name="anio_"
+						            ng-model="data.year" 
+						            ng-options="y for y in data.years" 
+						            
+						            ng-required="true" ng-change= "activaMes();">
+						            <option  value="" class="">-- SELECCIONA UNA OPCI&Oacute;N --</option>
+						            </select>
+					            </div>					
+								<div class="col-xs-3">
+									<label class="control-label">Mes*:</label>
+						            <select ng-model="data.month" 
+						            class="form-control" 
+						            ng-change = "activaDia()"
+						            name="mes_"
+						            ng-disabled="data.activaSelectMes"
+						            ng-options="m for m in data.months" 
+						            ng-required="true" >
+						            <option  value="" class="">-- SELECCIONA UNA OPCI&Oacute;N --</option>
+						            
+						            </select>
+					            </div>
+					            <div class="col-xs-3">
+									<label class="control-label">D&iacute;a*:</label>
+						            <select ng-model="data.day" 
+						            class="form-control" 
+						            name="dia_"
+						            ng-disabled="data.activaSelectDia"
+						            ng-options="d for d in data.days" 
+						            ng-required="true">
+						            <option value="" class="">-- SELECCIONA UNA OPCI&Oacute;N --</option>
+						            
+						            </select>
+					            </div>
+					           
+					     </div>
+					 </div>
+					
+					<hr>
+					
+					 <br>
+					
+					
+					
+				
+				<div class="row">	
+					<div class="col-md-12" >
+						<div class="col-md-5" data-clasificacion="TOTAL">
+							<a 	
+								data="tileDef">
+								<div class="tiles-body">
+									<div class="pull-left">
+										
+									</div>
+									<div class="pull-right" style="font-size: 16px;  line-height: 1"></div>
+								</div>
+							
+							</a>
+						</div>
+						<div class="col-md-2" data-clasificacion="TOTAL">
+							<a class="shortcut-tiles tiles-info"	
+								 data="tileDef">
+								<div class="tiles-body">
+									<div class="pull-left">
+										<i class="fa fa-money"></i>
+									</div>
+									<div class="pull-right" style="font-size: 16px;  line-height: 1">{{detalleCliente.depositos|currency}}</div>
+								</div>
+								<div class="tiles-footer ng-binding" style=" height: 70px;">
+									<span class="bold"></br> Dep&oacute;sitos</span>
+								</div>
+							</a>
+						</div>
+						<div class="col-md-2" data-clasificacion="TOTAL">
+								<a 	
+									data="tileDef">
+									<div class="tiles-body">
+										<div class="pull-left">
+											
+										</div>
+										<div class="pull-right" style="font-size: 16px;  line-height: 1"></div>
+									</div>
+								
+								</a>
+						</div>
+					</div>
+				</div>
+		
+				<div class="row">
+					<div class="col-md-12" >
+						<div class="col-md-2" data-clasificacion="TOTAL">
+							<a 	
+								data="tileDef">
+								<div class="tiles-body">
+									<div class="pull-left">
+										
+									</div>
+									<div class="pull-right" style="font-size: 16px;  line-height: 1"></div>
+								</div>
+							
+							</a>
+						</div>
+						<div class="col-md-2" data-clasificacion="Disponible para dispersar">
+							<a class="shortcut-tiles tiles-green"
+								 data="tileDef">
+								<div class="tiles-body">
+									<div class="pull-left">
+										<i class="fa fa-money"></i>
+									</div>
+									<div class="pull-right" style="font-size: 16px;  line-height: 1">{{detalleCliente.disponible|currency}}</div>
+								</div>
+								<div class="tiles-footer ng-binding" style=" height: 70px;">
+									<span class="bold"></br>Disponible para dispersar</span>
+								</div>
+							</a>
+							
+						</div>
+						<div class="col-md-4" data-clasificacion="TOTAL">
+							<a 	
+								data="tileDef">
+								<div class="tiles-body">
+									<div class="pull-left">
+										
+									</div>
+									<div class="pull-right" style="font-size: 16px;  line-height: 1"></div>
+								</div>
+							
+							</a>
+						</div>
+						<div class="col-md-2" data-clasificacion="TOTAL" >
+						<a class="shortcut-tiles tiles-magenta"
+							 data="tileDef">
+							<div class="tiles-body">
+								<div class="pull-left">
+									<i class="fa fa-money"></i>
+								</div>
+								<div class="pull-right" style="font-size: 16px;  line-height: 1">{{detalleCliente.ingresoBruto|currency}}</div>
+							</div>
+							<div class="tiles-footer ng-binding" style=" height: 70px;">
+								<span class="bold"></br> Ingreso Bruto</span>
+							</div>
+						</a>
+						
+					</div>
+					</div>
+				</div>
+				
+				
+				<div class="row">
+					<div class="col-md-12" >
+									
+						<div class="col-md-5" data-clasificacion="TOTAL">
+							<a 	
+								data="tileDef">
+								<div class="tiles-body">
+									<div class="pull-left">
+										
+									</div>
+									<div class="pull-right" style="font-size: 16px;  line-height: 1"></div>
+								</div>
+							
+							</a>
+						</div>
+						<div class="col-md-6" style="background: orange;"  >
+						<hr style="margin-top: 5px;    margin-bottom: 5px;    border: 0;    border-top: 1px  #dfe2e605;">
+						 <div class="row">
+						  <div class="col-md-2" style=""  >	 Utilidad   </div>
+						  <div class="col-md-2" style=""  >
+						  <input	style="width:30px"				placeholder="20"
+										name="porUtilidad" id="porUtilidad" ng-model="porcentajeUtilidad" maxlength="2"
+										
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+										 type="text" required="required">%</input>
+						   </div>
+							<div class="col-md-2" style=""  >{{detalleCliente.utilidad|currency}}</div>
+						 
+						</div>
+							<hr style="margin-top: 5px;    margin-bottom: 5px;    border: 0;    border-top: 1px  #dfe2e605;">
+						  <div class="row">
+						  <div class="col-md-2" style=""  >	Gasto   </div>
+						  <div class="col-md-2" style=""  >
+						  <input	style="width:30px"				placeholder="20"
+										name="porUtilidad" id="porUtilidad" ng-model="porcentajeGasto" maxlength="2"
+										
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+										 type="text" required="required">%</input>
+						   </div>
+							<div class="col-md-2" style=""  >{{detalleCliente.gasto|currency}}</div>
+						 
+						</div>	<hr style="margin-top: 1px;    margin-bottom: 5px;    border: 0;    border-top: 1px  #dfe2e6;">
+						 <div class="row">
+						 	
+						  <div class="col-md-2" style=""  >	 Comisiones   </div>
+						  <div class="col-md-2" style=""  >
+						  <input	style="width:30px"				placeholder="20"
+										name="porUtilidad" id="porUtilidad" ng-model="porcentajeComision" maxlength="2"
+										
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+										 type="text" required="required">%</input>
+						   </div>
+							<div class="col-md-2" style=""  >{{detalleCliente.comisiones|currency}}</div>
+						 
+						</div>
+						 
+					
+							
+						</div>
+					</div>
+				</div>
+					
+			
+					
+					
+					
+				
+				
+	
+					
+				
+				<div class="modal-footer">
+					<button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>							
+					<button type="button" class="btn-green btn" ng-click="reCalcularRecursos();" ng-disabled="activarBotonCalcular" >Calcular</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+</div>
+

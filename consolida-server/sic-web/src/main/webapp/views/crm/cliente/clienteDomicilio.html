@@ -1,0 +1,388 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<panel panel-class="panel-sky" heading="Domicilio fiscal">
+				<form id="domicilioFiscal" name="domicilioFiscal">
+					<div class="row">
+						<div class="row">
+							<div class="col-sm-2">
+								<label class="control-label">C&oacute;digo Postal*: </label> <input
+									type="text"  ng-disabled="inHabilitaEscritura" name="codigoPostal" class="form-control"
+									placeholder="C&oacute;digo Postal"
+									ng-model="clienteDomicilioDto.domicilio.codigoPostal"
+									required ng-pattern="/^[_0-9-]{5}$/" maxlength="5"
+									ng-blur="obtenerEntidadFederativaXCP(clienteDomicilioDto.domicilio.codigoPostal);"
+									oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+								<span class="messages"
+									ng-show="domicilioFiscal.$submitted || domicilioFiscal.codigoPostal.$touched">
+									<span ng-show="domicilioFiscal.codigoPostal.$error.required">El
+										campo es obligatorio.</span> <span
+									ng-show="domicilioFiscal.codigoPostal.$error.pattern">Debe
+										ingresar 5 digitos.</span>
+								</span>
+							</div>
+							<div class="col-xs-6">
+								<label class="control-label">Calle*: </label> <input
+									type="text"  ng-disabled="inHabilitaEscritura" class="form-control" placeholder="Calle"
+									ng-model="clienteDomicilioDto.domicilio.calle">
+							</div>
+
+							<div class="col-xs-2">
+								<label class="control-label">N&uacute;mero ext.*: </label> <input
+									type="text"  ng-disabled="inHabilitaEscritura" class="form-control"
+									placeholder="N&uacute;mero exterior"
+									ng-model="clienteDomicilioDto.domicilio.numeroExterior">
+							</div>
+							<div class="col-xs-2">
+								<label class="control-label">N&uacute;mero int.: </label> <input
+									type="text"  ng-disabled="inHabilitaEscritura" class="form-control"
+									placeholder="N&uacute;mero interior"
+									ng-model="clienteDomicilioDto.domicilio.numeroInterior">
+							</div>
+						</div>
+						</br>
+						<div class="row pad-b">
+							<div class="col-sm-4">
+								<label class="control-label">Entidad Federativa*: </label> <select
+									required disabled class="form-control"
+									name="idEntidadFederativa" id="idEntidadFederativa"
+									ng-model="clienteDomicilioDto.domicilio.idEntidadFederativa"
+									ng-change="obtenerCatMunicipiosByEntidad(clienteDomicilioDto.domicilio.idEntidadFederativa);">
+									<option value="">-- Selecciona una opci&oacute;n --</option>
+									<option
+										ng-repeat="entidad in clienteDomicilioDto.entidadFederativa"
+										ng-selected="entidad.idCatGeneral == clienteDomicilioDto.domicilio.idEntidadFederativa"
+										value="{{entidad.clave}}">{{entidad.descripcion}}</option>
+								</select> <span class="messages"
+									ng-show="domicilioFiscal.idEntidadFederativa.$submitted || domicilioFiscal.idEntidadFederativa.$touched">
+									<span
+									ng-show="domicilioFiscal.idEntidadFederativa.$error.required">El
+										campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-sm-4">
+								<label class="control-label">Alcald&iacute;a*: </label> <select
+									disabled required class="form-control" name="municipio"
+									id="municipio"
+									ng-model="clienteDomicilioDto.domicilio.catMunicipios.idCatGeneral">
+									<option value="">-- Selecciona una opci&oacute;n --</option>
+									<option
+										ng-repeat="municipio in clienteDomicilioDto.municipios"
+										ng-selected="municipio.idCatGeneral == clienteDomicilioDto.domicilio.catMunicipios.idCatGeneral"
+										value="{{municipio.idCatGeneral}}">{{municipio.descripcion}}</option>
+								</select> <span class="messages"
+									ng-show="domicilioFiscal.municipio.$submitted || domicilioFiscal.municipio.$touched">
+									<span ng-show="domicilioFiscal.municipio.$error.required">El
+										campo es obligatorio.</span>
+								</span>
+							</div>
+						</div>
+						</br>
+						<div class="row pad-b">
+							<div class="col-sm-6">
+								<label class="control-label">Colonia*: </label> <input
+									type="text"  ng-disabled="inHabilitaEscritura" name="colonia" class="form-control"
+									maxlength="50"
+									onkeyup="javascript:this.value=this.value.toUpperCase();"
+									placeholder="Colonia"
+									ng-model="clienteDomicilioDto.domicilio.colonia" />
+							</div>
+						</div>
+
+					</div>
+					<div class="row " align="right">
+						<br />
+						<button class="btn-green btn " type="submit" ng-if="!inHabilitaEscritura"
+							ng-disabled="domicilioFiscal.$invalid" 
+							ng-click=guardarDomicilioCliente(clienteDomicilioDto);>GUARDAR</button>
+					</div>
+				</form>
+			</panel>
+			<panel panel-class="panel-sky" heading="Domicilio comercial">
+				<form id="domicilioComercial" name="domicilioComercial">
+					<div class="row">
+						<div class="row">
+							<div class="col-sm-2">
+								<label class="control-label">C&oacute;digo Postal*: </label> <input
+									type="text"  ng-disabled="inHabilitaEscritura" name="codigoPostal" class="form-control"
+									placeholder="C&oacute;digo Postal"
+									ng-model="clienteDomicilioDto.domicilioComercial.codigoPostal"
+									required ng-pattern="/^[_0-9-]{5}$/" maxlength="5"
+									ng-blur="obtenerEntidadFederativaXCPComercial(clienteDomicilioDto.domicilioComercial.codigoPostal);"
+									oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+								<span class="messages"
+									ng-show="domicilioComercial.codigoPostal.$submitted || domicilioComercial.codigoPostal.$touched">
+									<span
+									ng-show="domicilioComercial.codigoPostal.$error.required">El
+										campo es obligatorio.</span> <span
+									ng-show="domicilioComercial.codigoPostal.$error.pattern">Debe
+										ingresar 5 digitos.</span>
+								</span> </span>
+							</div>
+							<div class="col-xs-6">
+								<label class="control-label">Calle*: </label> <input
+									type="text"  ng-disabled="inHabilitaEscritura" class="form-control" placeholder="Calle"
+									ng-model="clienteDomicilioDto.domicilioComercial.calle">
+							</div>
+
+							<div class="col-xs-2">
+								<label class="control-label">N&uacute;mero ext.*: </label> <input
+									type="text"  ng-disabled="inHabilitaEscritura" class="form-control"
+									placeholder="N&uacute;mero exterior"
+									ng-model="clienteDomicilioDto.domicilioComercial.numeroExterior">
+							</div>
+							<div class="col-xs-2">
+								<label class="control-label">N&uacute;mero int.: </label> <input
+									type="text"  ng-disabled="inHabilitaEscritura" class="form-control"
+									placeholder="N&uacute;mero interior"
+									ng-model="clienteDomicilioDto.domicilioComercial.numeroInterior">
+							</div>
+						</div>
+						</br>
+						<div class="row pad-b">
+							<div class="col-sm-4">
+								<label class="control-label">Entidad Federativa*: </label> <select
+									disabled required class="form-control"
+									name="entidad_federativa" id="entidad_federativa"
+									ng-model="clienteDomicilioDto.domicilioComercial.idEntidadFederativa"
+									ng-change="obtenerCatMunicipiosByEntidad(clienteDomicilioDto.domicilioComercial.idEntidadFederativa);">
+									<option value="">-- Selecciona una opci&oacute;n --</option>
+									<option
+										ng-repeat="entidad in clienteDomicilioDto.entidadFederativa"
+										ng-selected="entidad.idCatGeneral == clienteDomicilioDto.domicilioComercial.idEntidadFederativa"
+										value="{{entidad.clave}}">{{entidad.descripcion}}</option>
+								</select> <span class="messages"
+									ng-show="domicilioComercial.entidad_federativa.$submitted || domicilioComercial.entidad_federativa.$touched">
+									<span
+									ng-show="domicilioComercial.entidad_federativa.$error.required">El
+										campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-sm-4">
+								<label class="control-label">Alcald&iacute;a*: </label> <select
+									disabled required class="form-control" name="idMunicipio"
+									id="idMunicipio"
+									ng-model="clienteDomicilioDto.domicilioComercial.catMunicipios.idCatGeneral">
+									<option value="">-- Selecciona una opci&oacute;n --</option>
+									<option
+										ng-repeat="municipio in clienteDomicilioDto.municipiosDomicilioComercial"
+										ng-selected="municipio.idCatGeneral == clienteDomicilioDto.domicilioComercial.catMunicipios.idCatGeneral"
+										value="{{municipio.idCatGeneral}}">{{municipio.descripcion}}</option>
+								</select> <span class="messages"
+									ng-show="domicilioComercial.idMunicipio.$submitted || domicilioComercial.idMunicipio.$touched">
+									<span
+									ng-show="domicilioComercial.idMunicipio.$error.required">El
+										campo es obligatorio.</span>
+								</span>
+							</div>
+						</div>
+						</br>
+						<div class="row pad-b">
+							<div class="col-sm-6">
+								<label class="control-label">Colonia: </label> <input
+									type="text"  ng-disabled="inHabilitaEscritura" name="colonia" class="form-control"
+									maxlength="50"
+									onkeyup="javascript:this.value=this.value.toUpperCase();"
+									placeholder="Colonia"
+									ng-model="clienteDomicilioDto.domicilioComercial.colonia" />
+							</div>
+						</div>
+					</div>
+					<div class="row " align="right">
+						<br />
+						<button class="btn-green btn " type="submit"
+							ng-disabled="domicilioComercial.$invalid" ng-if="!inHabilitaEscritura"
+							ng-click=guardarDomicilioComercial(clienteDomicilioDto);>GUARDAR</button>
+					</div>
+				</form>
+			</panel>
+
+			<panel panel-class="panel-sky " heading="Medio de contacto ">
+				<panel-controls> <panel-control-collapse></panel-control-collapse>
+				</panel-controls>
+				<form id="medioContacto" name="medioContacto">
+					<div class="row">
+						<div class="col-xs-3">
+							<label class="control-label">Nombre*: </label> <input
+								placeholder="NOMBRE CONTACTO" name="nombreContacto"
+								onkeyup="javascript:this.value=this.value.toUpperCase();"
+								ng-model="clienteMedioContactoDto.nombre"
+								class="ns_ form-control" type="text"  ng-disabled="inHabilitaEscritura" required maxlength="40">
+							<span class="messages"
+								ng-show="medioContacto.nombreContacto.$submitted || medioContacto.nombreContacto.$touched">
+								<span ng-show="medioContacto.nombreContacto.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+
+						<div class="col-xs-3">
+							<label class="control-label">Apellido paterno*: </label> <input
+								placeholder="APELLIDO PATERNO" name="apellidoPaternoContacto"
+								onkeyup="javascript:this.value=this.value.toUpperCase();"
+								ng-model="clienteMedioContactoDto.apellidoPaterno"
+								class="ns_ form-control" type="text"  ng-disabled="inHabilitaEscritura" required maxlength="40">
+							<span class="messages"
+								ng-show="medioContacto.apellidoPaternoContacto.$submitted || medioContacto.apellidoPaternoContacto.$touched">
+								<span
+								ng-show="medioContacto.apellidoPaternoContacto.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+
+						<div class="col-xs-3">
+							<label class="control-label">Apellido materno: </label> <input
+								placeholder="APELLIDO MATERNO" name="apellidoMaternoContacto"
+								onkeyup="javascript:this.value=this.value.toUpperCase();"
+								ng-model="clienteMedioContactoDto.apellidoMaterno"
+								class="ns_ form-control" type="text"  ng-disabled="inHabilitaEscritura" maxlength="40">
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-xs-3">
+							<label class="control-label">Correo
+								electr&oacute;nico*: </label> <input placeholder="ejemplo@correo.com"
+								name="correo_field"
+								ng-pattern="/^[a-zA-z0-9_]*(\.[_a-zA-Z0-9-]+)*[a-zA-Z0-9]@[a-zA-Z0-9]+[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})$/"
+								ng-model="clienteMedioContactoDto.correo"
+								class="ns_ form-control" type="email" required> <span
+								class="messages"
+								ng-show="medioContacto.correo_field.$submitted ||medioContacto.correo_field.$touched">
+								<span ng-show="medioContacto.correo_field.$error.required">El
+									campo es obligatorio.</span> <span
+								ng-show="medioContacto.correo_field.$error.required === true ?false:!medioContacto.correo_field.$valid">
+									Formato de Correo El&eacute;ctronico incorrecto. </span>
+							</span>
+						</div>
+
+						<div class="col-xs-3">
+							<label class="control-label">N&uacute;mero de
+								tel&eacute;fono*: </label> <input type="text"  ng-disabled="inHabilitaEscritura" class="form-control"
+								placeholder="N&Uacute;MERO DE TEL&Eacute;FONO"
+								name="nTelefono" ng-model="clienteMedioContactoDto.telefono"
+								required="required" ng-pattern="/^[0-9]{10,10}$/"
+								maxlength="10"
+								oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+							<span class="messages"
+								ng-show="medioContacto.nTelefono.$submitted || medioContacto.nTelefono.$touched">
+								<span ng-show="medioContacto.nTelefono.$error.required">El
+									campo es obligatorio.</span> <span
+								ng-show="medioContacto.nTelefono.$error.required === true ?false:!medioContacto.nTelefono.$valid">
+									<span ng-show="medioContacto.nTelefono.$error.pattern">El
+										tel&eacute;fono debe contener 10 n&uacute;meros.</span>
+									N&uacute;mero Telefonico incorrecto.
+							</span>
+							</span>
+						</div>
+					</div>
+					<div class="row " align="right">
+						<br />
+						<button class="btn-green btn " type="submit"
+							ng-disabled="medioContacto.$invalid" ng-if="!inHabilitaEscritura"
+							ng-click=guardarClienteMedioContacto(clienteMedioContactoDto);>Guardar</button>
+					</div>
+				</form>
+			</panel>
+
+			<panel panel-class="panel-sky "
+					heading="Director(a) General (CEO)"> <panel-controls>
+				<panel-control-collapse></panel-control-collapse> </panel-controls>
+				<form id="medioContactoCEO" name="medioContactoCEO">
+					<div class="row">
+						<div class="col-xs-3">
+							<label class="control-label">Nombre*: </label> <input
+								placeholder="NOMBRE CONTACTO" name="nombreContacto"
+								onkeyup="javascript:this.value=this.value.toUpperCase();"
+								ng-model="clienteMedioContactoCEODto.nombre"
+								class="ns_ form-control" type="text"  ng-disabled="inHabilitaEscritura" required maxlength="40">
+							<span class="messages"
+								ng-show="medioContactoCEO.nombreContacto.$submitted || medioContactoCEO.nombreContacto.$touched">
+								<span
+								ng-show="medioContactoCEO.nombreContacto.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+
+						<div class="col-xs-3">
+							<label class="control-label">Apellido paterno*: </label> <input
+								placeholder="APELLIDO PATERNO" name="apellidoPaternoContacto"
+								onkeyup="javascript:this.value=this.value.toUpperCase();"
+								ng-model="clienteMedioContactoCEODto.apellidoPaterno"
+								class="ns_ form-control" type="text"  ng-disabled="inHabilitaEscritura" required maxlength="40">
+							<span class="messages"
+								ng-show="medioContactoCEO.apellidoPaternoContacto.$submitted || medioContactoCEO.apellidoPaternoContacto.$touched">
+								<span
+								ng-show="medioContactoCEO.apellidoPaternoContacto.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+
+						<div class="col-xs-3">
+							<label class="control-label">Apellido materno: </label> <input
+								placeholder="APELLIDO MATERNO" name="apellidoMaternoContacto"
+								onkeyup="javascript:this.value=this.value.toUpperCase();"
+								ng-model="clienteMedioContactoCEODto.apellidoMaterno"
+								class="ns_ form-control" type="text"  ng-disabled="inHabilitaEscritura" maxlength="40">
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-xs-3">
+							<label class="control-label">Correo
+								electr&oacute;nico*: </label> <input placeholder="ejemplo@correo.com"
+								name="correo_field"  ng-disabled="inHabilitaEscritura" 
+								ng-pattern="/^[a-zA-z0-9_]*(\.[_a-zA-Z0-9-]+)*[a-zA-Z0-9]@[a-zA-Z0-9]+[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})$/"
+								ng-model="clienteMedioContactoCEODto.correo"
+								class="ns_ form-control" type="email" required> <span
+								class="messages"
+								ng-show="medioContactoCEO.correo_field.$submitted ||medioContactoCEO.correo_field.$touched">
+								<span ng-show="medioContactoCEO.correo_field.$error.required">El
+									campo es obligatorio.</span> <span
+								ng-show="medioContactoCEO.correo_field.$error.required === true ?false:!medioContactoCEO.correo_field.$valid">
+									Formato de Correo El&eacute;ctronico incorrecto. </span>
+							</span>
+						</div>
+
+						<div class="col-xs-3">
+							<label class="control-label">N&uacute;mero de
+								tel&eacute;fono*: </label> <input type="text"  ng-disabled="inHabilitaEscritura" class="form-control"
+								placeholder="N&Uacute;MERO DE TEL&Eacute;FONO"
+								name="nTelefono" 
+								ng-model="clienteMedioContactoCEODto.telefono"
+								required="required" ng-pattern="/^[0-9]{10,10}$/"
+								maxlength="10"
+								oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+							<span class="messages"
+								ng-show="medioContactoCEO.nTelefono.$submitted || medioContactoCEO.nTelefono.$touched">
+								<span ng-show="medioContactoCEO.nTelefono.$error.required">El
+									campo es obligatorio.</span> <span
+								ng-show="medioContactoCEO.nTelefono.$error.required === true ?false:!medioContactoCEO.nTelefono.$valid">
+									<span ng-show="medioContactoCEO.nTelefono.$error.pattern">El
+										tel&eacute;fono debe contener 10 n&uacute;meros.</span>
+									N&uacute;mero Telefonico incorrecto.
+							</span>
+							</span>
+						</div>
+						<div class="col-xs-3">
+							<label class="control-label">Fecha de nacimiento*: </label> <input
+								type="date" class="form-control"  ng-disabled="inHabilitaEscritura" 
+								placeholder="FECHA DE NACIMIENTO" name="fechaNacimiento"
+								ng-model="clienteMedioContactoCEODto.fechaNacimiento"
+								required="required" /> <span class="messages"
+								ng-show="medioContactoCEO.fechaNacimiento.$submitted || medioContactoCEO.fechaNacimiento.$touched">
+								<span ng-show="medioContactoCEO.fechaNacimiento.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+					</div>
+					<div class="row " align="right">
+						<br />
+						<button class="btn-green btn " type="submit"
+							ng-disabled="medioContactoCEO.$invalid" ng-if="!inHabilitaEscritura"
+							ng-click=guardarClienteMedioContactoCEO(clienteMedioContactoCEODto);>Guardar</button>
+					</div>
+				</form>
+			</panel>
+		</div>
+	</div>
+</div>

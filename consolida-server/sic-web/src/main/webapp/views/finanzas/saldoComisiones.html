@@ -1,0 +1,102 @@
+<link rel='stylesheet' type='text/css' href='assets/css/cotizacion.css' />
+<div class="container-fluid" ng-controller="saldoControllerComisiones "
+	style="background: #827ccd;">
+	<div id="page-heading">
+		<ol class="breadcrumb">
+			<li><a href="#/">Menu principal</a></li>
+			<li class="active">Comisiones</li>
+		</ol>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-3"
+			style="border-radius: 0px; padding: 10px; height: 500px;">
+
+			<a class="shortcut-tiles" style="height: 600px;">
+				<div class="tiles-body" style="background: white;">
+					<br>
+
+					<div
+						style="font-size: 24px; color: blue; text-align: center; line-height: 1">TOTAL
+						DE PROVISION COMISIONES</div>
+					<div
+						style="font-size: 24px; color: blue; text-align: center; line-height: 1">
+						A LA FECHA</div>
+					<div style="font-size: 20px; text-align: center; line-height: 1">
+						<br> {{fechaSaldo|date:'dd/MM/yyyy'}}
+					</div>
+					<div style="font-size: 20px; text-align: center; line-height: 1">
+						<br> {{fechaSaldo|date:'HH:mm:ss'}}
+					</div>
+					<div style="font-size: 20px; text-align: center; line-height: 1">
+						<br> <span style="font-size: 20px;"> <i
+							class="fa fa-usd" aria-hidden="true"></i><br>{{saldoTotal|currency}}
+						</span>
+					</div>
+					<div style="font-size: 20px; text-align: center; line-height: 1">
+						<br> <br>
+						<button class="btn btn-primary" ng-click="init();">
+							<i class="fa fa-refresh" aria-hidden="true"></i> Actualizar
+						</button>
+					</div>
+
+
+					<br>
+
+
+				</div> <br>
+
+			</a>
+
+		</div>
+
+		<div class="col-sm-9" style="border-radius: 0px; padding: 10px;">
+
+
+			<panel panel-class="panel-sky" heading="CENTROS DE COSTOS"
+				ng-show="true">
+			<div class="table-responsive">
+				<table class="table" ng-table="tableSaldoParams">
+					<thead style="color: white; background: #353a4d">
+						<tr>
+							<th align="center">#</th>
+							<th align="left">CENTROS DE COSTOS</th>
+							<th align="center">SALDO</th>
+							<!-- 							<th align="center">DETALLE</th> -->
+
+
+						</tr>
+
+					</thead>
+					<tbody>
+
+
+						<tr ng-repeat="p in $data">
+							<td>{{$index+1}}</td>
+							<td align="left">{{p.descCentroCostos}}</td>
+							<td align="right">{{p.saldo | currency }}</td>
+							<!-- 							<td align="center"><i class="fa fa-search" -->
+							<!-- 								aria-hidden="true"></i></td> -->
+
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+			<button ng-json-export-excel data="provision"
+				report-fields="{'descCentroCostos': 'CENTRO DE COSTOS', 'saldo':'SALDO' }"
+				,
+								filename=" 'SALDOS_COMISIONES' " separator=","
+				class="css-class btn btn-sky" tooltip="Exportar saldos">
+				<span class="fa fa-download"></span>
+			</button>
+			</panel>
+		</div>
+
+	</div>
+
+	</panel>
+</div>
+
+
+

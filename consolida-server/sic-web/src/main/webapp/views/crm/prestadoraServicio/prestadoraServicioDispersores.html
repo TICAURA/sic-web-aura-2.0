@@ -1,0 +1,228 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<panel panel-class="panel-sky" heading="Datos dispersores">
+			<div class="row" align="right">
+				<button class="btn-orange btn " type="submit"
+					ng-click=mostrarPanelAgregarDispersor();>Agregar dispersor</button>
+			</div>
+			<br />
+			<div class="row">
+
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Nombre centro de costos</th>
+								<th>Clabe cuenta ordenate</th>
+
+								<th>Tipo de dispersor</th>
+								<th>Activo</th>
+								<th>Acciones</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							<tr
+								ng-repeat="dispersor in prestadoraServicioDto.listprestadoraServicioStpDto">
+								<td>{{dispersor.nombreCentroCostos}}</td>
+								<td>{{dispersor.clabeCuentaOrdenante}}</td>
+								<td>{{dispersor.descripcionTipoDispersor}}</td>
+								<td ng-show="dispersor.activo">S&iacute;</td>
+								<td ng-show="!dispersor.activo">No</td>
+								<td align="center">
+									<button data-toggle="modal"
+										ng-click="editarDispersor(dispersor)"
+										tooltip="Editar dispersor" class="btn btn-success">
+										<span class="glyphicon glyphicon-pencil"></span>
+									</button>
+
+									<button data-toggle="modal"
+										ng-click="eliminarDispersor(dispersor)"
+										ng-show="false"
+										tooltip="Eliminar dispersor" class="btn  btn-midnightblue">
+										<span class="fa fa-trash"></span>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			</panel>
+
+
+			<panel panel-class="panel-sky" heading="Agregar dispersor"
+				ng-show="panelAgregarDispersor" id="panelAgregarDispersor"
+				name="panelAgregarDispersor">
+			<form id="dispersorForm" name="dispersorForm" novalidate>
+
+				<div class="col-md-12">
+				
+					<div class="row">
+						<div class="col-xs-4">
+						 <label class="control-label">Tipo dispersor*</label>
+							<select class="form-control" name="selectTipoDispersor"
+								id="selectTipoDispersor"
+								ng-model="edicionDispersor.idTipoDispersor"
+								ng-change="setDispersor(selectTipoDispersor)">
+								<option value="">{{'-- Selecciona una opci&oacute;n --'	| uppercase}}</option>
+								<option
+									ng-repeat="disp in catDispersor"
+									ng-selected="disp.idCatGeneral == edicionDispersor.idTipoDispersor"
+									value="{{disp.idCatGeneral}}">{{disp.descripcion | uppercase}}
+							</select> <span class="messages"
+								ng-show="dispersorForm.selectTipoDispersor.$submitted || productoForm.selectTipoDispersor.$touched">
+								<span ng-show="productoForm.selectTipoDispersor.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+						<div class="col-xs-4">
+							<label class="control-label">Nombre de centro de costos*:
+							</label> <input type="text" class="form-control" name="centroCostos"
+								placeholder="Nombre de centro de costos"
+								required="required"
+								ng-model="edicionDispersor.nombreCentroCostos" maxlength="75"
+								minlength="1"> <span class="messages"
+								ng-show="dispersorForm.centroCostos.$submitted || dispersorForm.centroCostos.$touched">
+								<span ng-show="dispersorForm.centroCostos.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+						<div class="col-xs-4">
+							<label class="control-label">Clabe de cuenta ordenante*:</label>
+							<input placeholder="Clabe de cuenta ordenante"  
+								name="clabeOrdenante" ng-model="edicionDispersor.clabeCuentaOrdenante"
+								maxlength="18" minlength="16" class="form-control" type="text"
+								required="required"> <span class="messages"
+								ng-show="dispersorForm.clabeOrdenante.$submitted || dispersorForm.clabeOrdenante.$touched">
+								<span ng-show="dispersorForm.clabeOrdenante.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+
+					</div>
+					 <br />
+					<div class="row" ng-show="edicionDispersor.idTipoDispersor==3101 ">
+						<div class="col-xs-4">
+							<label class="control-label">Username*: </label> <input
+								type="text1"  name="userName" class="form-control"
+								placeholder="User name" ng-model="edicionDispersor.userName"
+								ng-required="edicionDispersor.idTipoDispersor==3101"> <span class="messages"
+								ng-show="dispersorForm.userName.$submitted || dispersorForm.userName.$touched">
+								<span ng-show="dispersorForm.userName.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+						
+						<div class="col-xs-4">
+							<label class="control-label">Password*:</label> <input
+								placeholder="Password" name="password"
+								ng-model="edicionDispersor.password" class="form-control"
+								 ng-show="edicionDispersor.idTipoDispersor==3101"
+								type="password" ng-required="edicionDispersor.idTipoDispersor==3101"> <span
+								class="messages"
+								ng-show="dispersorForm.password.$submitted || dispersorForm.password.$touched">
+								<span ng-show="dispersorForm.password.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+						<div class="col-xs-4">
+							<label class="control-label">Client_id*:</label> <input
+								placeholder="Client_id" name="client_Id" class="form-control"
+								ng-model="edicionDispersor.clientId"  type="text1"
+								ng-required="edicionDispersor.idTipoDispersor==3101"> <span class="messages"
+								ng-show="dispersorForm.clientId.$submitted || dispersorForm.clientId.$touched">
+								<span ng-show="dispersorForm.clientId.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+					</div>
+					 <br />
+					<div class="row" ng-show="edicionDispersor.idTipoDispersor==3101 ">
+					<div class="col-xs-4">
+							<label class="control-label">client_secret*:</label> <input
+								placeholder="client_secret" name="client_secret" class="form-control"
+								ng-model="edicionDispersor.clientSecret"  type="password"
+								ng-required="edicionDispersor.idTipoDispersor==3101"> <span class="messages"
+								ng-show="dispersorForm.clientSecret.$submitted || dispersorForm.clientSecret.$touched">
+								<span ng-show="dispersorForm.clientSecret.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+						<div class="col-xs-4">{{edicionDispersor.idCuentaAhorro}}
+							<label class="control-label">id_Cuenta_Ahorro*: </label> <input
+								type="text1" class="form-control" name="idCuentaAhorro"
+								ng-pattern="/^[1-9]\d{2,10}$/"
+								placeholder="id_Cuenta_Ahorro" ng-required="edicionDispersor.idTipoDispersor==3101"
+								ng-model="edicionDispersor.idCuentaAhorro" >
+							<span class="messages"
+								ng-show="dispersorForm.idCuentaAhorro.$submitted || dispersorForm.idCuentaAhorro.$touched">
+								<span ng-show="dispersorForm.idCuentaAhorro.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+						<div class="col-xs-4">
+							<label class="control-label">id_client*:</label> <input
+								placeholder="id_client" name="idCliente" class="form-control"
+								ng-pattern="/^[1-9]\d{2,10}$/"
+								ng-model="edicionDispersor.idCliente"  type="text1"
+								ng-required="edicionDispersor.idTipoDispersor==3101"> <span class="messages"
+								ng-show="dispersorForm.idCliente.$submitted || dispersorForm.idCliente.$touched">
+								<span ng-show="dispersorForm.idCliente.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
+						
+					</div>
+					<div class="row" >
+					<div class="col-xs-4"  ng-show="edicionDispersor.idTipoDispersor==3101">
+							<label class="control-label">api_Key*:</label> <input class="form-control"
+								placeholder="api_Key" name="apiKey" ng-model="edicionDispersor.apiKey"
+								 type="text1" ng-required="edicionDispersor.idTipoDispersor==3101"
+								 ng-show="edicionDispersor.idTipoDispersor==3101"> <span
+								class="messages"
+								ng-show="dispersorForm.apiKey.$submitted || dispersorForm.apiKey.$touched">
+								<span ng-show="dispersorForm.apiKey.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						
+
+					</div>
+										<div class="col-xs-3">
+							<br /> <label  class="control-label">Activar dispersor: </label>
+							 <input type="checkbox" 
+								ng-model="edicionDispersor.activo" name="esActivo"
+								class="js-switch"
+								ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" />
+							<!-- <span class="messages"
+								ng-show="datosGeneralesForm.rfcPM_field.$touched"> <span
+								ng-show="datosGeneralesForm.rfcPM_field.$error.required === true ?false:!datosGeneralesForm.rfcPM_field.$valid">
+									Formato incorrecto. </span>
+							</span> -->
+						</div>
+						</div>
+				
+			</form>
+			<br />
+			<!-- Inicia codigo para boton agregar descripcion --> <br />
+			
+			<div class="row " align="right">
+				<a class="btn-danger btn " type="submit"
+					ng-click=limpiarFormDispersor(dispersorForm);>Cancelar</a>
+
+				<button class="btn-orange btn " type="submit"
+					ng-disabled="dispersorForm.$invalid"
+					ng-show="edicionDispersor.idPrestadoraServicioStp != null"
+					ng-click=guardarCuentaOrdenante(edicionDispersor);>Actualizar</button>
+
+				<button class="btn-green btn " type="submit"
+					ng-disabled="dispersorForm.$invalid"
+					ng-show="edicionDispersor.idPrestadoraServicioStp == null"
+					ng-click=guardarCuentaOrdenante(edicionDispersor);>Agregar</button>
+			</div>
+
+			</panel>
+		</div>
+	</div>
+</div>

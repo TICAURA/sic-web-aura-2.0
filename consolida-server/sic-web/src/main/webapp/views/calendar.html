@@ -1,0 +1,27 @@
+<div class="container-fluid" ng-controller="CalendarController">
+<div id="page-heading">
+    <ol class="breadcrumb">
+        <li><a href="#/">Dashboard</a></li>
+        <li class="active">Calendar</li>
+    </ol>
+</div>
+
+    <div class="row">
+    	<div class="col-xs-12">
+    		Argumentos Default: {{argsDefault}}
+    	 </div>
+    	 
+      <div class="col-xs-12">
+        <div class="panel panel-success calendar">
+            <div class="panel-heading">
+                <h2>Proyecci&oacute;n de pagos</h2>
+            </div>
+            <div class="panel-body">
+                <div data-full-calendar="{ events: demoEvents }" data-update-events="eventsUpdated(args)" ng-model="demoEvents"></div>
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+</div> <!-- container-fluid -->

@@ -1,0 +1,91 @@
+.pad-b{
+	padding-bottom: 15px;
+}
+.pad-t{
+	padding-top: 15px;
+}
+.pad-l{
+	padding-left: 15px;
+}
+.pad-r{
+	padding-right: 15px;
+}
+.messages {
+    color: #FA787E;
+}
+.alert-primary {
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+}
+.alert {
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+.alert {
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+  
+  form.ng-submitted input.ng-invalid{
+    border-color: #FA787E;
+  }
+  
+  form input.ng-invalid.ng-touched {
+    border-color: #FA787E;
+  }
+  
+/*
+  form input.ng-valid.ng-touched {
+    border-color: #78FA89;
+  }
+*/  
+
+#loaderDiv {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1100;
+	background-color: white;
+	opacity: .6;
+}
+
+
+.ajax-loader {
+	position: absolute;
+	left: 30%;
+	top: 20%;
+	margin-left: -12px;
+	/* -1 * image width / 2 */
+	margin-top: -12px;
+	/* -1 * image height / 2 */
+	display: block;
+}
+
+.tablaconscroll{
+	height: 300px;
+	width:100%;
+	display:block;
+	overflow-y : scroll;
+}
+
+.tablaconscroll200{
+	height: 200px;
+	width:100%;
+	display:block;
+	overflow-y : scroll;
+}

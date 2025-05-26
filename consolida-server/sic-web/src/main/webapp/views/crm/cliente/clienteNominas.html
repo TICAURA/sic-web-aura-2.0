@@ -1,0 +1,635 @@
+<div class="container-fluid">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-12">
+
+									<panel panel-class="panel-sky" heading="N&oacute;minas">
+									<panel-controls> <panel-control-collapse></panel-control-collapse>
+									</panel-controls>
+									<div>
+										<a href="" class="btn btn-orange" ng-click="agregarNomina()"  ng-show="!inHabilitaEscritura">
+											<span class="fa fa-plus"></span> Agregar n&oacute;mina 
+										</a>
+
+									</div>
+									<br>
+									<div class="table-responsive">
+										<table class="table">
+											<thead>
+												<tr>
+													<th>N&oacute;mina</th>
+													<th>Producto N&oacute;mina</th>
+													<th>Nominista</th>
+													<th>Acciones</th>
+
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="nomCliente in gridNominaCliente">
+													<td>{{nomCliente.nombreNomina}}</td>
+													<td>{{nomCliente.catProductoNomina.descripcion}}</td>
+													<td>{{nomCliente.usuarioNominista.nombre}}
+														{{nomCliente.usuarioNominista.apellidoPaterno}}
+														{{nomCliente.usuarioNominista.apellidoMaterno}}</td>
+													<td align="center">
+													<a ng-click="verDetalleNominaCliente(nomCliente.idNominaCliente)"
+														class="btn btn-success"
+														tooltip="Ver detalle de la n&oacute;mina"><span
+															class="glyphicon glyphicon-eye-open"></span></a>
+														<button data-toggle="modal"
+															ng-click="editarNominaCliente(nomCliente)"
+															tooltip="Editar n&oacute;mina " class="btn btn-info">
+															<span class="glyphicon glyphicon-pencil"></span>
+														</button>
+														<button data-toggle="modal"  ng-if="!inHabilitaEscritura"
+															ng-click="eliminarNominaCliente(nomCliente.idNominaCliente)"
+															tooltip="Eliminar n&oacute;mina "
+															class="btn  btn-midnightblue">
+															<span class="fa fa-trash"></span>
+														</button></td>
+													<!--  
+													<td>
+														<a href="#/crm/actualiza-nomina"
+														class="glyphicon glyphicon-eye-open"
+														title="Ver detalle de la nómina"></a>
+														 
+														<a ng-click="agregarNomina()"
+														class="glyphicon glyphicon-pencil" title="Editar nómina"></a>
+														
+														<a ng-click="agregarComision()"
+														class="fa fa-money" title="Editar comisión"></a>
+													</td>
+													-->
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									</panel>
+
+									<form id="nominaClienteForm">
+										<panel panel-class="panel-sky"
+											heading="{{tituloNominaCliente}}"
+											ng-show="IsVisibleAgregarNomina"> <panel-controls>
+										<panel-control-collapse></panel-control-collapse> </panel-controls>
+										<div>
+											<div class="row">
+												<div class="col-xs-3">
+													<label class="control-label">Nombre N&oacute;mina*:</label>
+													<input type="text" class="form-control" ng-disabled="inHabilitaEscritura"
+														placeholder="Nombre n&oacute;mina" ng-required="true"
+														ng-model="nominaClienteDto.nombreNomina" minlength="3"
+														maxlength="50" name="nombreNomina_field"
+														onkeyup="javascript:this.value=this.value.toUpperCase();">
+													<span class="messages"
+														ng-show="nominaClienteForm.nombreNomina_field.$submitted || nominaClienteForm.nombreNomina_field.$touched">
+														<span
+														ng-show="nominaClienteForm.nombreNomina_field.$error.required">El
+															campo es obligatorio.</span>
+													</span>
+
+												</div>
+												<div class="col-xs-3">
+													<label class="control-label">Clave N&oacute;mina*:</label>
+													<input type="text" class="form-control" ng-disabled="inHabilitaEscritura"
+														placeholder="Clave N&oacute;mina" required="required"
+														ng-model="nominaClienteDto.claveNomina" minlength="3"
+														maxlength="45"
+														onkeyup="javascript:this.value=this.value.toUpperCase();">
+													<span class="messages"
+														ng-show="nominaClienteForm.nombre_field.$submitted || nominaClienteForm.nombre_field.$touched">
+														<span
+														ng-show="nominaClienteForm.nombre_field.$error.required">El
+															campo es obligatorio.</span>
+													</span>
+												</div>
+
+												<div class="col-sm-3">
+													<label class="control-label">Esquema
+														N&oacute;mina*: </label> <select class="form-control"
+														name="producto" id="producto" ng-disabled="inHabilitaEscritura"
+														ng-change="getFondoDefault(nominaClienteDto.catProductoNomina, nominaClienteDto);"
+														ng-model="nominaClienteDto.catProductoNomina"
+														ng-options="producto.descripcion for producto in listaProductosNomina | orderBy:'producto.descripcion' track by producto.idCatGeneral"
+														required="required" ng-change="campoSueldosSalarios()"
+														placeholder="Producto">
+														<option value="" class="">-- SELECCIONA UNA
+															OPCI&Oacute;N --</option>
+													</select>
+													<div ng-messages="nominaClienteForm.tipoPago.$error"
+														ng-show="nominaClienteForm.tipoPago.$dirty && nominaClienteForm.tipoPago.$invalid">
+														<small class="form-text-error" ng-message="required">Este
+															campo es obligatorio</small>
+													</div>
+												</div>
+											</div>
+											<br />
+											<div class="row">
+												<div class="col-sm-3">
+													<label class="control-label">Centro de Costos: </label> <select
+														class="form-control" name="celula" id="celula"
+														ng-model="nominaClienteDto.clienteDto.celula"
+														ng-options="celula.nombre for celula in listaCelulasDto | orderBy:'celula.nombre' track by celula.idCelula"
+														ng-required="true" placeholder="Producto" disabled="true">
+														<option value="" class="">-- SELECCIONA UNA
+															OPCI&Oacute;N --</option>
+													</select>
+												</div>
+												<div class="col-xs-3 form-group" ng-show="nominaClienteDto.catProductoNomina.idCatGeneral != 304  && catPrestadorasServicio.length > 0">
+													<label class="control-label">Prestadora de servicio*:</label> <select
+														class="form-control" name="prestadoraServicio" id="prestadoraServicio"
+														ng-model="nominaClienteDto.prestadoraServicio"
+														ng-options="(prestadora.nombreCorto + ' - '+ prestadora.razonSocial) for prestadora in catPrestadorasServicio | orderBy:'prestadora.razonSocial' track by prestadora.idPrestadoraServicio"
+														ng-required="true" placeholder="nominista">
+														<option value="" class="">-- SELECCIONA UNA
+															OPCI&Oacute;N --</option>
+													</select> <span class="messages"
+														ng-show="celulaForm.$submitted || celulaForm.prestadoraServicio.$touched">
+														<span ng-show="celulaForm.prestadoraServicio.$error.required">El
+															campo es obligatorio.</span>
+													</span>
+												</div>
+												
+												<div class="col-xs-3 form-group" ng-show="nominaClienteDto.catProductoNomina.idCatGeneral == 304">
+													<label class="control-label">Prestadora de servicio (fondo): </label> <select
+														class="form-control" name="prestadoraServicio" id="prestadoraServicio"
+														ng-model="nominaClienteDto.prestadoraServicioFondo"
+														ng-options="(prestadora.nombreCorto + ' - '+ prestadora.razonSocial) for prestadora in catPrestadorasServicioFondo | orderBy:'prestadora.razonSocial' track by prestadora.idPrestadoraServicio"
+														ng-required="true" placeholder="Prestadora de servicio (fondo)" disabled="true">
+														<option value="" class="">-- SELECCIONA UNA
+															OPCI&Oacute;N --</option>
+													</select>
+													
+												</div>
+
+												<div class="col-xs-3 form-group">
+													<label class="control-label">Nominista*:</label> <select
+														class="form-control" name="nominista" id="nominista" ng-disabled="inHabilitaEscritura"
+														ng-model="nominaClienteDto.usuarioNominista"
+														ng-options="nominista.nombreCompletoNominista for nominista in listaNoministas | orderBy:'nominista.nombre' track by nominista.idNominista"
+														ng-required="true" placeholder="nominista">
+														<option value="" class="">-- SELECCIONA UNA
+															OPCI&Oacute;N --</option>
+													</select> <span class="messages"
+														ng-show="celulaForm.$submitted || celulaForm.nominista.$touched">
+														<span ng-show="celulaForm.nominista.$error.required">El
+															campo es obligatorio.</span>
+													</span>
+												</div>
+												<div class="col-xs-3 form-group" ng-show="nominaClienteDto.catProductoNomina.idCatGeneral !== 306 
+																						  && nominaClienteDto.catProductoNomina.idCatGeneral !== 9949
+																						  && nominaClienteDto.catProductoNomina.idCatGeneral !== 9950">
+													<div class="col-xs-12"><label class="control-label">&#191;Generar factura PPP?</label></div>
+													<div class="col-xs-3"><input type="radio" ng-model="nominaClienteDto.requiereFactura" value="1" ng-change="selectPPP(true)" ng-disabled="inHabilitaEscritura"/> <label >Si</label></div>
+													<div class="col-xs-3"><input type="radio" ng-model="nominaClienteDto.requiereFactura" value="0" ng-change="selectPPP(false)" ng-disabled="inHabilitaEscritura"/> <label >No</label></div>
+												</div>
+												
+
+												<!-- <div class="col-xs-3">
+													<label class="control-label">Prestadora de servicio
+														(fondo)*: </label> <select class="form-control"
+														name="prestadoraFondo" id="prestadoraFondo"
+														ng-model="nominaClienteDto.prestadoraServicioFondo"
+														ng-options="prestadoraFondo.razonSocial for prestadoraFondo in listaPrestadorasFondo | orderBy:'prestadoraFondo.razonSocial' track by prestadoraFondo.idPrestadoraServicio"
+														ng-required="true" placeholder="Prestadora Fondo">
+														<option value="" class="">-- SELECCIONA UNA
+															OPCI&Oacute;N --</option>
+													</select>
+													<div ng-messages="nominaClienteForm.tipoPago.$error"
+														ng-show="nominaClienteForm.tipoPago.$dirty && nominaClienteForm.tipoPago.$invalid">
+														<small class="form-text-error" ng-message="required">Este
+															campo es obligatorio</small>
+													</div>
+												</div>
+
+												<div class="col-xs-3">
+													<label class="control-label">Prestadora de
+														servicio*: </label> <select class="form-control" name="prestadora"
+														id="prestadora"
+														ng-model="nominaClienteDto.prestadoraServicio"
+														ng-options="prestadora.razonSocial for prestadora in listaPrestadoras | orderBy:'prestadora.razonSocial' track by prestadora.idPrestadoraServicio"
+														ng-required="true" placeholder="Prestadora">
+														<option value="" class="">-- SELECCIONA UNA
+															OPCI&Oacute;N --</option>
+													</select>
+												</div> -->
+											</div>
+										</div>
+
+										<div class="row" align="right">
+											<button type="submit" class="btn-green btn" ng-if="!inHabilitaEscritura"
+												name="guardarNominaCliente"
+												ng-disabled="nominaClienteForm.$valid"
+												ng-click="guardarDatosNominaCliente(nominaClienteForm);">AGREGAR</button>
+										</div>
+
+										</panel>
+									</form>
+									<panel panel-class="panel-primary" heading="Comision"
+										ng-show="IsVisibleComision"> <panel-controls>
+									<panel-control-collapse></panel-control-collapse> </panel-controls>
+									<div class="row">
+
+										<table class="table">
+											<thead>
+												<tr>
+													<th>Variable</th>
+													<th>Descripci&oacute;n</th>
+													<th>Variable</th>
+													<th>Descripci&oacute;n</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>a1</td>
+													<td>Total, de percepciones brutas SyS</td>
+													<td>a2</td>
+													<td>Subsidio al empleo pagado</td>
+												</tr>
+												<tr>
+													<td>a3</td>
+													<td>Total, ISR</td>
+													<td>a4</td>
+													<td>Total, Cuota obrera</td>
+												</tr>
+
+												<tr>
+													<td>a5</td>
+													<td>Total, deducciones SyS</td>
+													<td>a6</td>
+													<td>Total, Cuota patronal</td>
+												</tr>
+												<tr>
+													<td>a7</td>
+													<td>Total, impuesto sobre nomina</td>
+													<td>a8</td>
+													<td>Total, PPP bruto</td>
+												</tr>
+												<tr>
+													<td>a9</td>
+													<td>Total, deducciones PPP</td>
+													<td>a10</td>
+													<td>Comisi&oacute;n SyS</td>
+												</tr>
+												<tr>
+													<td>a11</td>
+													<td>Comisi&oacute;n PPP</td>
+													<td>a12</td>
+													<td>IVA (16%)</td>
+												</tr>
+												<tr>
+													<td>a13</td>
+													<td>Retenci&oacute;n IVA (16%)</td>
+													<td>a14</td>
+													<td>IVA Fronterizo (11%)</td>
+												</tr>
+											</tbody>
+
+										</table>
+									</div>
+
+									<div class="row">
+										<table class="table">
+											<thead>
+												<tr>
+													<th>Variable</th>
+													<th>Descripci&oacute;n</th>
+													<th>Variable</th>
+													<th>Descripci&oacute;n</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>b1</td>
+													<td>Base dispersado SyS</td>
+													<td>b2</td>
+													<td>Base dispersado PPP</td>
+												</tr>
+												<tr>
+													<td>b3</td>
+													<td>Base facturado SyS</td>
+													<td>b4</td>
+													<td>Base facturado PPP</td>
+												</tr>
+
+												<tr>
+													<td>b5</td>
+													<td>Base utilidad SyS</td>
+													<td>b6</td>
+													<td>Base utilidad PPP</td>
+												</tr>
+												<tr>
+													<td>b7</td>
+													<td>% Comisi&oacute;n SyS</td>
+													<td>b8</td>
+													<td>% Comisi&oacute;n PPP</td>
+												</tr>
+												<tr>
+													<td>b9</td>
+													<td>Pricing PPP</td>
+													<td>b10</td>
+													<td>Factura de solo honorario = f6+ f7</td>
+												</tr>
+											</tbody>
+
+										</table>
+									</div>
+
+									<div class="row">
+										<h4>
+											<strong> F1. SUB TOTAL COMISION SUELDOS Y SALARIOS</strong>
+										</h4>
+										<div>
+											<div>
+												<table class="table">
+													<thead>
+														<tr>
+															<th>F&oacute;rmula</th>
+															<th>Selecci&oacute;n</th>
+
+														</tr>
+													</thead>
+													<tbody>
+
+														<tr>
+															<td>1) a1 - a2 + a6 + a7</td>
+															<td><input type="checkbox"
+																ng-model="pantalla.indEstatus4"
+																name="pantalla.indEstatus" class="js-switch"
+																ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+														<tr>
+															<td>2) a1 + a6 + a7</td>
+															<td><input type="checkbox"
+																ng-model="pantalla.indEstatus4"
+																name="pantalla.indEstatus" class="js-switch"
+																ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+														<tr>
+															<td>3) a1 - a2</td>
+															<td><input type="checkbox"
+																ng-model="pantalla.indEstatus4"
+																name="pantalla.indEstatus" class="js-switch"
+																ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+														<tr>
+															<td>4) a1</td>
+															<td><input type="checkbox"
+																ng-model="pantalla.indEstatus4"
+																name="pantalla.indEstatus" class="js-switch"
+																ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+
+									</div>
+
+									<div class="row">
+										<h4>
+											<strong> F2. SUB TOTAL COMISIONES PPP</strong>
+										</h4>
+										<div>
+											<div>
+												<table class="table">
+													<thead>
+														<tr>
+															<th>F&oacute;rmula</th>
+															<th>Selecci&oacute;n</th>
+
+														</tr>
+													</thead>
+													<tbody>
+
+														<tr>
+															<td>1) (a8 - a9)</td>
+															<td><input type="checkbox"
+																ng-model="pantalla.indEstatus4"
+																name="pantalla.indEstatus" class="js-switch"
+																ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+														<tr>
+															<td>2) a8</td>
+															<td><input type="checkbox"
+																ng-model="pantalla.indEstatus4"
+																name="pantalla.indEstatus" class="js-switch"
+																ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+
+									<div class="row">
+										<h4>
+											<strong> F3. COMISION SUELDOS Y SALARIOS</strong>
+										</h4>
+										<div>
+											<div>
+												<table class="table">
+													<thead>
+														<tr>
+															<th>F&oacute;rmula</th>
+															<th>Selecci&oacute;n</th>
+
+														</tr>
+													</thead>
+													<tbody>
+
+														<tr>
+															<td>1) f1 *a 10</td>
+															<td><input type="checkbox"
+																ng-model="pantalla.indEstatus4"
+																name="pantalla.indEstatus" class="js-switch"
+																ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+
+									<div class="row">
+										<h4>
+											<strong> F4. IVA Comision SyS</strong>
+										</h4>
+										<div>
+											<div>
+												<table class="table">
+													<thead>
+														<tr>
+															<th>F&oacute;rmula</th>
+															<th>Selecci&oacute;n</th>
+
+														</tr>
+													</thead>
+													<tbody>
+
+														<tr>
+															<td>1) f3 * a12</td>
+															<td><input type="checkbox"
+																ng-model="pantalla.indEstatus4"
+																name="pantalla.indEstatus" class="js-switch"
+																ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+														<tr>
+															<td>2) f3 * (a12 - a13)</td>
+															<td><input type="checkbox"
+																ng-model="pantalla.indEstatus4"
+																name="pantalla.indEstatus" class="js-switch"
+																ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+
+														<tr>
+															<td>3) f3 * (a14)</td>
+															<td><input type="checkbox"
+																ng-model="pantalla.indEstatus4"
+																name="pantalla.indEstatus" class="js-switch"
+																ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+
+														<tr>
+															<td>4) f3 * (a14 - a13)</td>
+															<td><input type="checkbox"
+																ng-model="pantalla.indEstatus4"
+																name="pantalla.indEstatus" class="js-switch"
+																ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+
+
+
+									<div class="row">
+										<h4>
+											<strong> F5. IVA del Subtotal SyS</strong>
+										</h4>
+										<div>
+											<div>
+												<table class="table">
+													<thead>
+														<tr>
+															<th>F&oacute;rmula</th>
+															<th>Selecci&oacute;n</th>
+
+														</tr>
+													</thead>
+													<tbody>
+
+														<tr>
+															<td>1) f1 * serie anterior</td>
+															<td><input type="checkbox"
+																ng-model="pantalla.indEstatus4"
+																name="pantalla.indEstatus" class="js-switch"
+																ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+														</tr>
+
+
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-3">
+											<label class="control-label ">Producto*: </label> <select
+												class="form-control " placeholder="Perioricidad " disabled>
+												<option>PPP</option>
+												<option>Producto especializado</option>
+												<option>Producto mixto</option>
+											</select>
+										</div>
+										<div class="col-xs-3">
+											<label class="control-label">Comision PPP*: </label> <input
+												type="text" class="form-control"
+												placeholder="porcentaje o monto" required="required"
+												ng-model="colaborador.nombre">
+										</div>
+										<div class="col-xs-3">
+											<label class="control-label">Comision SyS*: </label> <input
+												type="text" class="form-control"
+												placeholder="porcentaje o monto" required="required"
+												ng-model="colaborador.nombre">
+										</div>
+									</div>
+
+
+									<div class="row">
+										<div class="col-xs-3">
+											<label class="control-label ">Celula*: </label> <select
+												class="form-control " placeholder="Perioricidad " disabled>
+												<option>Celula 1</option>
+												<option>Celula 2</option>
+												<option>Celula 3</option>
+											</select>
+										</div>
+										<div class="col-xs-3">
+											<label class="control-label">Fondo*: </label> <input
+												type="text" class="form-control"
+												placeholder="Fondo PPP de la celula" required="required"
+												ng-model="colaborador.nombre">
+										</div>
+										<div class="col-xs-3">
+											<label class="control-label">Prestadora de
+												servicios*: </label> <select class="form-control "
+												placeholder="prestadora de servicios " disabled>
+												<option>Prestadora 1</option>
+												<option>Prestadora 2</option>
+												<option>Prestadora 3</option>
+											</select>
+										</div>
+									</div>
+
+									<div class="row " align="right ">
+										<br />
+										<button class="btn-primary btn " type="submit "
+											ng-click=guardarCelula();>Guardar</button>
+									</div>
+
+									</panel>
+
+									<panel panel-class="panel-sky"
+										heading="Cargar archivo de  n&oacute;mina"
+										ng-show="IsVisibleCargarNomina"> <panel-controls>
+									<panel-control-collapse></panel-control-collapse> </panel-controls>
+									<div>
+										<form>
+											<div class="row">
+												<label class="control-label">Archivo de
+													n&oacute;mina*: </label>
+												<div>
+													<div class="fileinput fileinput-new"
+														data-provides="fileinput">
+														<span class="btn btn-default btn-file"
+															style="background: #e6e9ee"> <span
+															class="fileinput-new">Select file</span> <span
+															class="fileinput-exists">Change</span> <input type="file"
+															name="...">
+														</span> <span class="fileinput-filename"></span> <a href="#"
+															class="close fileinput-exists" data-dismiss="fileinput"
+															style="float: none">&times;</a>
+													</div>
+												</div>
+											</div>
+											<div class="row " align="right ">
+												<br />
+												<button class="btn-primary btn " type="submit "
+													ng-click=guardarCelula();>Guardar</button>
+											</div>
+											<br>
+										</form>
+									</div>
+									</panel>
+
+
+
+								</div>
+							</div>
+						</div>
+</div>

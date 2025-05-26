@@ -1,0 +1,206 @@
+@import url('/bootstrap/bootstrap.css');
+
+/** style **/
+h2,p{
+color: #353a4d;	
+}
+h3{
+	font-weight: bolder;
+}
+p.fecha{
+	margin-bottom: 0px;
+	padding-top: 10px;
+}
+.resumen{
+	background: #d5d6da;
+	padding: 3% 2%;
+}
+.resumen .container{
+	background: #fff;
+	padding: 5% 20px;
+	width: auto;
+}
+.resumen .container button{
+	background: #353a4d;
+	color: #fff;
+	border:solid 2px #353a4d;
+	padding: 5px 10px;
+	transition: all ease-in-out .3s;	
+}
+.resumen .container button:hover{
+	background: #fff;
+	color: #353a4d;
+}
+.resumen ul{
+	list-style: none;
+	padding-left: 0px;
+	text-align: center;
+}
+.resumen ul li{
+	width: 33%;
+	display: inline-block;
+	color: #fff;
+}
+.resumen ul li div{
+	width: 90%;
+	margin: 7% auto;
+  padding: 5px 15px;
+  border-radius: 5px;
+  max-width: 500px;
+}
+.resumen ul li div{
+	text-align: left;
+	position: relative;
+	transition: all ease-in-out .3s;
+}
+.resumen ul li div:hover{
+	box-shadow: 2px 4px 4px #b7b8bd;
+}
+.resumen ul li div p strong{
+	font-size: 20px;
+}
+.resumen ul li div p{
+	color: #fff;
+	font-size: 18px;
+}
+.resumen ul li div::before{
+	content: '';
+	position: absolute;
+	right: 14px;
+  top: 20px;	
+  width: 60px;
+  height: 60px;
+}
+.saldo{
+  background: linear-gradient(to right, rgba(65,140,221,1) 0%, rgba(86,105,173,1) 100%);
+}
+.saldo::before{
+	background: url('img/iconos/saldo.png') no-repeat center center / contain;
+}
+.ingreso_bruto{
+  background: linear-gradient(to right, rgba(31,199,205,1) 0%, rgba(79,116,146,1) 100%);
+}
+.ingreso_bruto:before{
+	background: url('img/iconos/ingreso_bruto.png') no-repeat center center / contain;
+}
+.cargo_social{
+  background: linear-gradient(to right, rgba(122,95,242,1) 0%, rgba(42,82,152,1) 100%);
+}
+.cargo_social:before{
+	background: url('img/iconos/cargo_social.png') no-repeat center center / contain;
+}
+.impuesto_federal{
+  background: linear-gradient(to right, rgba(12,36,66,1) 0%, rgba(79,116,146,1) 100%);
+}
+.impuesto_federal:before{
+	background: url('img/iconos/impuesto_federal.png') no-repeat center center / contain;
+}
+.comisiones{
+  background: linear-gradient(to right, rgba(30,59,114,1) 0%, rgba(42,82,152,1) 100%);
+}
+.comisiones:before{
+	background: url('img/iconos/comisiones.png') no-repeat center center / contain;
+}
+.socios{
+  background: linear-gradient(to right, rgba(157,68,225,1) 0%, rgba(12,36,66,1) 100%);
+}
+.socios:before{
+	background: url('img/iconos/socios.png') no-repeat center center / contain;
+}
+
+/** responsive **/
+
+@media only screen and (min-width: 200px) and (max-width: 600px) {
+
+.actualizar{
+	padding-top: 20px;
+}
+.resumen ul{
+	margin-top: 20px;
+}
+.resumen ul li {
+    width: 100%;
+}
+.resumen ul li div {
+  margin: 2% auto;
+}
+/**/
+}
+
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+
+.actualizar{
+	padding-top: 20px;
+}
+.resumen ul{
+	margin-top: 20px;
+}
+.resumen ul li {
+    width: 100%;
+}
+.resumen ul li div {
+  margin: 2% auto;
+}
+/****/
+}
+
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+.actualizar{
+	padding-top: 20px;
+}
+.resumen ul{
+	margin-top: 20px;
+}
+.resumen ul li {
+    width: 70%;
+    max-width: 400px;
+}
+.resumen ul li div {
+  margin: 2% auto;
+}
+/**fin **/
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1024px) {
+.actualizar{
+	padding-top: 20px;
+}
+.resumen ul{
+	margin-top: 20px;
+}
+.resumen ul li {
+    width: 49%;
+    max-width: 400px;
+}
+/**fin **/
+}
+@media only screen and (min-width: 1024px) and (max-width: 1100px) {
+.resumen ul{
+	margin-top: 20px;
+}
+.resumen ul li {
+    width: 49%;
+    max-width: 400px;
+}
+/**fin **/
+}
+@media only screen and (min-width: 1100px) and (max-width: 1200px) {
+.resumen ul{
+	margin-top: 20px;
+}
+.resumen ul li {
+    width: 49%;
+    max-width: 400px;
+}
+/**fin **/
+}
+@media only screen and (min-width: 1201px) and (max-width: 1300px) {
+.resumen ul{
+	margin-top: 20px;
+}
+.resumen ul li {
+    width: 49%;
+    max-width: 400px;
+}
+/**fin **/
+}

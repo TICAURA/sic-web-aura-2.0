@@ -1,0 +1,112 @@
+<div ng-controller="registroNominasCtrl">
+  <div id="page-heading">
+    <ol class="breadcrumb">
+        <li><a href="#/">CRM</a></li>
+        <li><a href="#/crm/clientes">Clientes</a></li>
+        <li class="active">Nominas</li>
+    </ol>
+  </div>
+
+	<div class="container-fluid">
+	    
+	    <div class="row">
+	        <div class="col-md-12">
+	            <panel panel-class="panel-info" heading="Registro de N&oacute;minas">
+	                
+	                 <panel-controls>
+	                    <panel-control-collapse></panel-control-collapse>
+	                             
+	                </panel-controls>
+	            
+					<div class="row">
+						<div class="col-xs-3">
+							<label class="control-label" ><b>Nombre/Razon Social:</b> Cliente</label> 
+						</div>
+						<div class="col-xs-3">
+							<label class="control-label"><b>RFC:</b> SDFASD123HJE</label> 
+						</div>
+						
+						<div class="col-xs-6" >
+							<div class="form-group">
+							<label class="col-xs-2 control-label"><b>Registrar n&oacute;mina</b></label>
+							<div class="col-xs-8">
+								<div class="fileinput fileinput-new" data-provides="fileinput">
+									<span class="btn btn-default btn-file" style="background: #e6e9ee">
+										<span class="fileinput-new">Buscar n&oacute;mina</span>
+										<b><span class="fileinput-filename"><a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">&times;</a></span></b>
+										<input type="file" name="...">
+									</span>
+
+									<button class="btn-primary btn">Calcular n&oacute;mina</button>
+								</div>
+							</div>
+							</div>
+						</div>
+						
+						
+					</div>
+					<div align="right">
+						<button class="btn-primary btn">Guardar n&oacute;mina</button>
+					</div>
+					<br>
+	                <div class="table-responsive">
+	                    <table class="table">
+	                        <thead>
+	                            <tr>
+	                                <th style="padding-right:100px">Informaci&oacute;n consistente</th>
+	                                <th>Informaci&oacute;n inconsistente</th>
+	                            </tr>
+	                        </thead>
+	                        <tbody>
+	                            <tr>
+	                                <td align="left">587</td>
+	                                <td><b><a ng-click="ShowHide()" style="color:Tomato; ursor: pointer; margin-left: 5px;" tooltip-append-to-body="true" tooltip-placement="right" data-tooltip="Ver colaboradores inconsistentes">87</a></b></td>
+	                            </tr>
+	                        </tbody>
+	                    </table>
+	                </div>
+	            </panel>
+	        </div>
+	    </div>
+	
+	</div> 
+
+	
+	
+		<div class="container-fluid"  ng-show = "IsVisible">
+		<div class="row">
+	        <div class="col-md-12">
+	            <panel panel-class="panel-info" heading="Colaboradores inconsistentes">
+	           		<panel-controls>
+	                    <panel-control-collapse>
+	                    </panel-control-collapse>         
+	                </panel-controls>
+	                
+	                
+	            <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="padding-right:100px">Nombre colaborador</th>
+                                <th>Datos inconsistentes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td align="left">Sergio Andres Hernandez Gonzalex</td>
+                                <td align="left">CURP, RFC</a></td>
+                            </tr>
+                        </tbody>
+                        
+                    </table>
+                </div>
+	            </panel>
+
+	        </div>
+	     </div>
+	</div>
+	
+
+	
+<!-- container-fluid -->
+</div>

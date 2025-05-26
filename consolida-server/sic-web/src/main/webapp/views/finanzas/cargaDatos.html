@@ -1,0 +1,281 @@
+<div ng-controller="ordenesController">
+
+	
+
+	<div class="container-fluid">
+		<div id="page-heading">
+			<ol class="breadcrumb">
+				<li><a href="#/">FINANZAS</a></li>
+				<li class="active">Carga dep&oacute;sitos</li>
+		</ol>
+	</div>
+
+		<panel panel-class="panel-sky" ng-show="true"
+			heading="Cargas dep&oacute;sitos "> <panel-controls>
+		</panel-controls>
+
+
+		<div ng-show="true">
+			<panel panel-class="panel-sky" heading=" "> <panel-controls>
+
+			</strong> </span> <panel-control-collapse></panel-control-collapse></panel-controls>
+
+			<form id="cargasPagosForm" name="cargasPagosForm" novalidate>
+
+				<div class="table-responsive tablaconscroll" ng-show="true">
+
+					<br />
+
+					<table ng-table="tableCargasParams" class="table table-striped"
+						show-filter="true">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Descripcion</th>
+								<th>usuario</th>
+								<th>Fecha</th>
+								<th>Estatus</th>
+								<th>Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="data in $data">
+								<td>{{$index+1}}</td>
+								<td>{{data.descCarga }}</td>
+								<td>{{data.usuarioAlta}}</td>
+								<td>{{data.fechaCarga| date:'dd-MM-yyyy'}}</td>
+								<td>{{data.descError}}</td>
+								<td>
+
+									<button ng-click="getCargaOrden(data);" tooltip="Ver Ordenes"
+										class="btn  btn-success">
+										<span class="fa fa-eye"></span>
+									</button>
+								</td>
+
+							</tr>
+
+
+						</tbody>
+					</table>
+
+
+
+				</div>
+
+
+			</form>
+
+
+			</panel>
+		</div>
+
+
+		<div class="row">
+			<div class="col-md-12">
+				<panel panel-class="panel-sky" heading="dep&oacute;sitos"> <panel-controls>
+				<panel-control-collapse></panel-control-collapse> </panel-controls>
+				<div class="table-responsive">
+
+					<form id="pagosForm" name="pagosForm" novalidate>
+
+						<div class="col-md-6">
+							<button class="btn btn-orange" style="padding-left: 10px"
+								ng-click="mostrarDialogo();" ng-disabled="false">Subir
+								archivo de dep&oacute;sitos</button>
+						</div>
+
+						<br />
+
+
+						<div class="table-responsive tablaconscroll"
+							ng-show="dataPagos.contentRows.length>0">
+
+							<br />
+
+							<table ng-table="tablePagosParams" class="table table-striped"
+								show-filter="true">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>ID</th>
+										<th>Folio orden</th>
+										<th>Institución</th>
+										<th>Concepto del pago</th>
+										<th>Beneficiario</th>
+										<th>Cta Beneficiario</th>
+										<th>Contraparte</th>
+										<th>Monto</th>
+										<th>Rastreo</th>
+										<th>Ordenante</th>
+										<th>Cta ordenante</th>
+										<th>Fecha Operación</th>
+										<th>Folio Orden CEP</th>
+										<th>Nombre Cliente CEP</th>
+										<th>Fecha Captura</th>
+										<th>Fecha Liquidación</th>
+										<th>Tiempo Liquidación</th>
+										<th>Causa devolucion</th>
+										<th>Estatus</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="data in $data">
+										<td>{{$index+1}}</td>
+										<td>{{data.idOrdenOrigen}}</td>
+										<td>{{data.folioOrden }}</td>
+										<td>{{data.institucion}}</td>
+										<td>{{data.conceptoPago}}</td>
+										<td>{{data.beneficiario}}</td>
+										<td>{{data.ctaBeneficiario }}</td>
+										<td>{{data.contraparte}}</td>
+										<td align="right">{{data.monto| currency}}</td>
+										<td>{{data.rastreo}}</td>
+										<td>{{data.ordenante}}</td>
+										<td>{{data.ctaOrdenante}}</td>
+										<td>{{data.fechaOperacion | date:'dd-MM-yyyy'}}</td>
+										<td>{{data.folioOrdenCep}}</td>
+										<td align="right">{{data.nombreClienteCep}}</td>
+										<td align="right">{{data.fechaCaptura |
+											date:'dd-MM-yyyy'}}</td>
+										<td align="right">{{data.fechaLiquidacion|
+											date:'dd-MM-yyyy'}}</td>
+										<td>{{data.tiempoLiquidacion}}</td>
+										<td>{{data.causaDevolucion}}</td>
+										<td align="center" ng-if="data.estatus===1">ok</td>
+										<td align="center" ng-if="data.estatus===0"
+											tooltip="{{data.descError}}">error</td>
+									</tr>
+
+								</tbody>
+							</table>
+
+
+
+						</div>
+
+						<div class="table-responsive">
+							<table class="table"
+								ng-if="dataPagos.contentRows[0] != undefined">
+								<thead></thead>
+								<tr>
+									<th>Total registros : {{dataPagos.reg}}</th>
+									<th>Total monto : {{dataPagos.totalMonto | currency}}</th>
+									<th>Registros correctos: {{dataPagos.regCorrectos}}</th>
+									<th>Total monto correcto: {{dataPagos.totalMontoCorrecto |
+										currency}}</th>
+
+								</tr>
+								<th>Registros devueltos: {{dataPagos.regDevueltos}}</th>
+								<th>Total monto devuelto: {{dataPagos.totalMontoDevuelto |
+									currency}}</th>
+
+								<th>Registros incorrectos: {{dataPagos.regIncorrectos}}</th>
+								<th>Total monto incorrecto:
+									{{dataPagos.totalMontoIncorrecto | currency}}</th>
+
+								</tr>
+
+								</tbody>
+							</table>
+						</div>
+
+
+
+
+						<button class="btn-green btn" ng-click="confirmaGuardarOrdenes();"
+							ng-show="dataPagos.contentRows.length>0  && mostrarBotonGuardarPagos;"
+							align="right">
+							<span class="fa fa-save"></span> Guardar dep&oacute;sitos
+						</button>
+
+					</form>
+
+					<div class="modal fade" id="cargarDocumento" role="dialog"
+						data-backdrop="static" data-keyboard="false">
+						<div class="modal-dialog" style="width: 50%;">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title">Carga de dep&oacute;sitos</h4>
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<div class="col-md-12">
+											<form>
+												<div class="col-md-12">
+													<div class="col-md-6">
+														<input id="inputFile" type="file"
+															accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+															onchange="angular.element(this).scope().fileChanged(this)"
+															class="btn btn-orange filestyle"
+															onClick="this.form.reset()">
+													</div>
+
+													<!-- <div class="row" style="padding-top: 25px;"> -->
+													<div class="col-md-6">
+														<a href="./layOutCargaOrdenes.xls"
+															class="btn btn-midnightblue pull-right"
+															download="layOutCargaOrdenes.xls" ng-show="true"
+															tooltip="Descargar layout" ng-disable="true"> <span
+															class="glyphicon glyphicon-download-alt" /> Descargar
+															Layout
+														</a>
+													</div>
+												</div>
+												<!-- </div> -->
+											</form>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button id="idCerrarModalColab" type="button"
+										class="btn btn-brown" ng-click="cerrar()">Cancelar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="modal fade" tabindex="-1" role="dialog"
+						data-backdrop="static" id="modalDescripcionGuardaPagos"
+						aria-labelledby="myModalLabel">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title">Confirmar guardar ordenes de pago
+									</h4>
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<div class="col-md-12">
+											<label class="control-label">Por favor agregue una
+												descripcion a la carga de ordenes:<span class="ng-scope">*</span>
+											</label>
+											<div class="form-group">
+												<textarea type="text" class="form-control" maxlength="1000"
+													ng-model="cargaSelect.descCarga" ng-required="true"
+													required="required"
+													onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"> </textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn-brown btn"
+										data-dismiss="modal">CANCELAR</button>
+									<button type="button" class="btn-green btn"
+										ng-click="guardarOrdenes(cargaSelect);"
+										ng-disabled="!cargaSelect.descCarga" id="idGuardarOrdenes"
+										data-dismiss="modal">ACEPTAR</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</panel>
+			</div>
+		</div>
+	</div>

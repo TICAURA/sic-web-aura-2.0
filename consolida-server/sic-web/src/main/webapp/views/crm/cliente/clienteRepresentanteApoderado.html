@@ -1,0 +1,591 @@
+<div class="container-fluid">
+
+	<div class="row">
+		<div class="col-md-12">
+			<form id="representanteLegalForm" name="representanteLegalForm" novalidate>
+				<panel panel-class="panel-sky "
+					heading="Representante (s) legales del cliente "> <panel-controls>
+				<panel-control-collapse></panel-control-collapse> <a href="" ng-show="!inHabilitaEscritura"
+					class="btn btn-orange" ng-click="nuevoRepresentanteLegal()"> <span
+					class="fa fa-plus"></span> Agregar representante legal
+				</a> </panel-controls>
+
+				<div class="table-responsive ">
+					<table class="table ">
+						<thead>
+							<tr>
+								<th style="padding-right: 100px">Nombre</th>
+								<th>RFC</th>
+								<th>CURP</th>
+								<th ng-show="!inHabilitaEscritura">Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="representante in gridRepresentantesLegales ">
+								<td align="left">{{representante.nombre}}
+									{{representante.apellidoPaterno}}
+									{{representante.apellidoMaterno}}</td>
+								<td align="left">{{representante.rfc}}</td>
+								<td align="left">{{representante.curp}}</td>
+								<td align="center" ng-show="!inHabilitaEscritura">
+									<button data-toggle="modal"
+										ng-click="actualizarRepresentanteLegal(representante)"
+										tooltip="Editar representante" class="btn btn-success">
+										<span class="glyphicon glyphicon-pencil"></span>
+									</button>
+									<button data-toggle="modal"
+										ng-click="showDocumentosRepresentante(representante);"
+										tooltip="Carga de archivos" class="btn btn-info">
+										<span class="glyphicon glyphicon-circle-arrow-up"></span>
+									</button>
+
+									<button data-toggle="modal"
+										ng-click="showDocumentosCerKeyRepresentante(representante, representanteLegalForm);"
+										tooltip="Cargar .cer y .key" class="btn  btn-orange">
+										<span class="fa fa-key"></span>
+									</button>
+
+									<button data-toggle="modal"
+										ng-click="eliminarRepresentanteLegal(representante)"
+										tooltip="Eliminar representante" class="btn  btn-midnightblue">
+										<span class="fa fa-trash"></span>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				</panel>
+
+				<panel panel-class="panel-sky" heading="{{tituloDinamicoLegal}}"
+					ng-show="IsVisibleFormularioRepresentante">
+
+				<div class="row">
+					<div class="row">
+						<div class="col-xs-3">
+							<label class="control-label">Nombre*: </label> <input type="text"
+								class="form-control" placeholder="Nombre" required="required"
+								maxlength="50" ng-model="representanteLegalDto.nombre">
+						</div>
+
+						<div class="col-xs-3">
+							<label class="control-label">Apellido paterno*: </label> <input
+								type="text" class="form-control" placeholder="Apellido paterno"
+								required="required" maxlength="50"
+								ng-model="representanteLegalDto.apellidoPaterno">
+						</div>
+
+						<div class="col-xs-3">
+							<label class="control-label">Apellido materno: </label> <input
+								type="text" class="form-control" maxlength="50"
+								placeholder="Apellido materno"
+								ng-model="representanteLegalDto.apellidoMaterno">
+						</div>
+					</div>
+					<br>
+
+					<div class="row">
+						<div class="col-xs-3">
+							<label class="control-label">RFC*: </label> <input type="text"
+								class="form-control" placeholder="RFC"
+								ng-model="representanteLegalDto.rfc" required="required"
+								maxlength="13" min="13"
+								tooltip="RFC debe contener 13 caracteres" required="required"
+								ng-pattern="/^([A-Z�&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/">
+						</div>
+
+						<div class="col-xs-3">
+							<label class="control-label">CURP*: </label> <input type="text"
+								class="form-control" placeholder="CURP"
+								ng-model="representanteLegalDto.curp" required="required"
+								tooltip="CURP debe contener 18 caracteres" maxlength="18"
+								min="18"
+								ng-pattern="/^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/">
+						</div>
+					</div>
+					<br>
+					<!--  
+										<div class="row">
+											<div class="col-xs-3">
+												<label class="control-label">.CER*: </label> <input
+													type="text" class="form-control" placeholder="CER"
+													maxlength="13" min="13">
+											</div>
+	
+											<div class="col-xs-3">
+												<label class="control-label">.KEY*: </label> <input
+													type="text" class="form-control" placeholder="KEY"
+													maxlength="18" min="18">
+											</div>
+											
+											<div class="col-xs-3">
+												<label class="control-label">Contrase&ntilde;a certificado*: </label> <input
+													type="password" class="form-control" placeholder="Contrase&ntilde;a certificado"
+													ng-model="representanteLegalDto.contrasenaCertificado" required="required"
+													maxlength="45" min="3">
+											</div>
+											
+										</div>
+										<br>
+										-->
+
+					<div class="row " align="right">
+						<br />
+						<button class="btn-green btn " type="submit"
+							ng-click="guardarRepresentanteLegal(representanteLegalForm);">Agregar</button>
+					</div>
+				</div>
+
+				</panel>
+
+				<panel panel-class="panel-sky"
+					heading="Documentos representante legal"
+					ng-show="IsVisibleDocumentosRepresentante">
+				<H5>
+					<strong>NOMBRE REPRESENTANTE LEGAL: </strong>
+					{{representanteLegalDto.nombre | uppercase}}
+					{{representanteLegalDto.apellidoPaterno | uppercase}}
+					{{representanteLegalDto.apellidoMaterno | uppercase}}
+				</H5>
+
+				<div class="row">
+					<div class="table-responsive ">
+						<table class="table ">
+							<thead>
+								<tr>
+									<th>Documento</th>
+									<th>Estatus</th>
+									<th>Nombre del archivo</th>
+									<th>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="documento in documentosPrestadoraRepresentante">
+									<td>{{documento.definicion.nombreDocumento}}</td>
+									<td>{{documento.idCMS >= 1?'Documento cargado': 'Documento
+										no cargado'}} <span class="glyphicon glyphicon-ok"
+										style="color: green" ng-show="documento.idCMS >= 1"></span> <span
+										class="glyphicon glyphicon-remove" style="color: brown"
+										ng-show="documento.idCMS == 0"></span>
+									</td>
+									<td>{{documento.nombreArchivo}}</td>
+									<td>									
+										<button data-toggle="modal"  ng-click="mostrarModalDocumentoRepresentante(documento)" ng-show="documento.idCMS == 0" tooltip="Guardar documento" class="btn btn-sm btn-indigo">
+											<span class="glyphicon glyphicon-floppy-open"></span>
+										</button>
+								    	<button data-toggle="modal"  ng-click="descargarDocumentoByIdCMS(documento.idCMS)" ng-show="documento.idCMS >= 1" tooltip="Descargar documento" class="btn btn-sm btn-alizarin" >
+								    		<span class="glyphicon glyphicon-cloud-download"></span>
+								    	</button>
+								    	
+								    	<button data-toggle="modal"  ng-click="eliminarDocumentoRepresentante(documento)" ng-show="documento.idCMS >= 1"tooltip="Eliminar documento" class="btn btn-sm btn-midnightblue">
+								    		<span class="glyphicon glyphicon-trash"></span>
+								    	</button>
+								    	<button data-toggle="modal"  ng-click="verDocumento(documento.idCMS)" ng-show="documento.idCMS >= 1" tooltip="Ver documento" class="visualizadorDocumento btn btn-sm btn-alizarin" >
+											<span class="glyphicon glyphicon-eye-open"></span>
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				</panel>
+
+				<panel panel-class="panel-sky"
+					heading="Cer/Key de Representante legal"
+					ng-show="IsVisibleRepresentanteArchivos">
+				<H5>
+					<strong>NOMBRE REPRESENTANTE LEGAL: </strong>
+					{{representanteLegalDto.nombre | uppercase}}
+					{{representanteLegalDto.apellidoPaterno | uppercase}}
+					{{representanteLegalDto.apellidoMaterno | uppercase}}
+				</H5>
+
+				<div class="row">
+					<div class="table-responsive ">
+						<table class="table ">
+							<thead>
+								<tr>
+									<th>Documento</th>
+									<th>Estatus</th>
+									<th>Nombre del archivo</th>
+									<th>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="documento in documentosPrestadoraRepCerKey">
+									<td>{{documento.definicion.nombreDocumento}}</td>
+									<td>{{documento.idCMS >= 1?'Documento cargado': 'Documento
+										no cargado'}} <span class="glyphicon glyphicon-ok"
+										style="color: green" ng-show="documento.idCMS >= 1"></span> <span
+										class="glyphicon glyphicon-remove" style="color: brown"
+										ng-show="documento.idCMS == 0"></span>
+									</td>
+									<td>{{documento.nombreArchivo}}</td>
+									<td align="center">
+										<button data-toggle="modal"  ng-click="mostrarModalDocumentoRepresentanteCerKey(documento)" ng-show="documento.idCMS == 0" tooltip="Guardar" class="btn btn-sm btn-indigo">
+											<span class="glyphicon glyphicon-floppy-open"></span>
+										</button>
+								    	<button data-toggle="modal"  ng-click="descargarDocumentoByIdCMS(documento.idCMS)" ng-show="documento.idCMS >= 1" tooltip="Descargar" class="btn btn-sm btn-alizarin" >
+								    		<span class="glyphicon glyphicon-cloud-download"></span>
+								    	</button>
+								    	
+								    	<button data-toggle="modal"  ng-click="eliminarDocumentoRepresentanteCerKey(documento)" ng-show="documento.idCMS >= 1"tooltip="Eliminar" class="btn btn-sm btn-midnightblue">
+								    		<span class="glyphicon glyphicon-trash"></span>
+								    	</button>
+									</td>
+
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-3">
+						<label class="control-label">Contrase&ntilde;a
+							certificado*: </label> <input type="password" class="form-control"
+							placeholder="Contrase&ntilde;a certificado"
+							ng-model="representanteLegalDto.contrasenaCertificado"
+							required="required" maxlength="45" min="3">
+					</div>
+				</div>
+				<br />
+				<div class="row " align="right">
+					<button class="btn-green btn " type="submit"
+						ng-disabled="representanteForm.invalid"
+						ng-click="guardarRepresentanteLegalContrasenia();">Guardar
+						contrase&ntilde;a</button>
+				</div>
+
+
+				</panel>
+
+			</form>
+		</div>
+	</div>
+
+	<div class="modal fade" id="agregarDocumentoRepresentanteCerKey"
+		role="dialog" data-backdrop="static" data-keyboard="false"
+		tabindex="-1">
+		<div class="modal-dialog modal-lg modal-dialog-scrollable"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Documento {{tipoDoc}} apoderado legal</h5>
+				</div>
+				<form id="modalDocPrestadora" name="modalDocPrestadora" novalidate>
+					<div class="modal-body">
+
+						<div class="row">
+							<div class="col-md-12">
+
+								<input class="btn btn-info-alt form-control" required
+									name="fileRepresentanteCerKey" id="fileRepresentanteCerKey"
+									type="file" accept=".{{tipoDoc}}"
+									onchange="angular.element(this).scope().fileChangedFielCsd(this)"
+									class="filestyle"
+									data-buttonText="archivoPrestadora.nombreArchivo" /> <span
+									class="messages"
+									ng-show="modalDocPrestadora.$submitted || modalDocPrestadora.fileRepresentanteCerKey.$touched">
+									<span
+									ng-show="modalDocPrestadora.fileRepresentanteCerKey.$error.required">
+										El campo es obligatorio. </span>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<br />
+
+					<div class="modal-footer">
+						<button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>
+						<button type="button" class="btn-green btn"
+							ng-click="guardarDocumentoRepresentanteCerKey()">GUARDAR</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-md-12">
+			<panel panel-class="panel-sky " heading="Apoderado (s) legales ">
+			<panel-controls> <panel-control-collapse></panel-control-collapse>
+			<a href="" class="btn btn-orange" ng-click="nuevoApoderadoLegal()" ng-show="!inHabilitaEscritura">
+				<span class="fa fa-plus"></span> Agregar apoderado legal
+			</a> </panel-controls>
+			<div class="table-responsive ">
+				<table class="table ">
+					<thead>
+						<tr>
+							<th style="padding-right: 100px">Nombre</th>
+							<th>RFC</th>
+							<th>CURP</th>
+							<th>Poder notarial</th>
+							<th>Facultad</th>
+							<th ng-show="!inHabilitaEscritura">Acciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="apoderado in gridApoderadosLegales ">
+							<td align="left">{{apoderado.nombre}}
+								{{apoderado.apellidoPaterno}} {{apoderado.apellidoMaterno}}</td>
+							<td align="left">{{apoderado.rfc}}</td>
+							<td align="left">{{apoderado.curp}}</td>
+							<td align="left">{{apoderado.poderNotarial}}</td>
+							<td align="left">{{apoderado.catFacultadDto.descripcion}}</td>
+
+							<td align="center" ng-show="!inHabilitaEscritura">
+								<button data-toggle="modal"
+									ng-click="actualizarApoderadoLegal(apoderado)"
+									tooltip="Editar apoderado" class="btn btn-success">
+									<span class="glyphicon glyphicon-pencil"></span>
+								</button>
+								<button data-toggle="modal"
+									ng-click="showDocumentoApoderado(apoderado)"
+									tooltip="Carga de archivos" class="btn btn-info">
+									<span class="glyphicon glyphicon-circle-arrow-up"></span>
+								</button>
+								<button data-toggle="modal"
+									ng-click="eliminarApoderadoLegal(apoderado)"
+									tooltip="Eliminar apoderado" class="btn  btn-midnightblue">
+									<span class="fa fa-trash"></span>
+								</button>
+							</td>
+						</tr>
+
+
+					</tbody>
+				</table>
+			</div>
+			</panel>
+
+			<panel panel-class="panel-sky" heading="{{tituloDinamicoLegal}}"
+				ng-show="IsVisibleFormularioApoderado">
+			<form id="apoderadoLegalForm" name="apoderadoLegalForm" novalidate>
+				<div class="row">
+					<div class="row">
+						<div class="col-xs-3">
+							<label class="control-label">Nombre*: </label> <input type="text"
+								class="form-control" placeholder="Nombre" required="required"
+								ng-model="apoderadoLegalDto.nombre">
+						</div>
+
+						<div class="col-xs-3">
+							<label class="control-label">Apellido paterno*: </label> <input
+								type="text" class="form-control" placeholder="Apellido paterno"
+								required="required" ng-model="apoderadoLegalDto.apellidoPaterno">
+						</div>
+
+						<div class="col-xs-3">
+							<label class="control-label">Apellido materno: </label> <input
+								type="text" class="form-control" placeholder="Apellido materno"
+								ng-model="apoderadoLegalDto.apellidoMaterno">
+						</div>
+					</div>
+					<br>
+
+					<div class="row">
+						<div class="col-xs-3">
+							<label class="control-label">RFC*: </label> <input type="text"
+								class="form-control" placeholder="RFC"
+								ng-model="apoderadoLegalDto.rfc" required="required"
+								maxlength="13" min="13"
+								tooltip="RFC debe contener 13 caracteres"
+								ng-pattern="/^([A-Z�&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/">
+						</div>
+
+						<div class="col-xs-3">
+							<label class="control-label">CURP*: </label> <input type="text"
+								class="form-control" placeholder="CURP"
+								ng-model="apoderadoLegalDto.curp" required="required"
+								maxlength="18" min="18" required="required"
+								tooltip="CURP debe contener 18 caracteres"
+								ng-pattern="/^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/">
+						</div>
+					</div>
+					<br>
+
+					<div class="row">
+						<div class="col-xs-6">
+							<label class="control-label">Poder notarial*: </label> <input
+								type="text" class="form-control" placeholder="Poder notarial"
+								ng-model="apoderadoLegalDto.poderNotarial" required="required"
+								maxlength="300">
+						</div>
+						<div class="col-sm-3">
+							<div class="form-group">
+								<label class="control-label">Facultad*:</label> <select
+									class="form-control" name="facultad" id="facultad"
+									ng-model="apoderadoLegalDto.catFacultadDto"
+									ng-options="facultad.descripcion for facultad in catFacultades | orderBy:'facultad.descripcion' track by facultad.idCatGeneral"
+									ng-required placeholder="Facultad">
+									<option value="" class="">-- SELECCIONA UNA
+										OPCI&Oacute;N --</option>
+								</select>
+								<div ng-messages="datosGeneralesForm.tipoPago.$error"
+									ng-show="datosGeneralesForm.tipoPago.$dirty && datosGeneralesForm.tipoPago.$invalid">
+									<small class="form-text-error" ng-message="required">
+										Este campo es obligatorio</small>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row " align="right">
+						<br />
+						<button class="btn-green btn " type="submit"
+							ng-click="guardarApoderadoLegal(apoderadoLegalForm);">Agregar</button>
+					</div>
+				</div>
+			</form>
+			</panel>
+
+
+			<panel panel-class="panel-sky" heading="Documentos apoderado legal"
+				ng-show="IsVisibleDocumentosApoderado">
+				
+				<H5>
+					<strong>NOMBRE REPRESENTANTE LEGAL: </strong>
+					{{apoderadoLegalDto.nombre | uppercase}}
+					{{apoderadoLegalDto.apellidoPaterno | uppercase}}
+					{{apoderadoLegalDto.apellidoMaterno | uppercase}}
+				</H5>
+				
+			<form id="apoderadoLegalForm" name="apoderadoLegalForm" novalidate>
+				<div class="row">
+					<div class="table-responsive ">
+						<table class="table ">
+							<thead>
+								<tr>
+									<th>Documento</th>
+									<th>Estatus</th>
+									<th>Nombre del archivo</th>
+									<th>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="documento in documentosPrestadoraApoderado">
+									<td>{{documento.definicion.nombreDocumento}}</td>
+									<td>{{documento.idCMS >= 1?'Documento cargado': 'Documento
+										no cargado'}} <span class="glyphicon glyphicon-ok"
+										style="color: green" ng-show="documento.idCMS >= 1"></span> <span
+										class="glyphicon glyphicon-remove" style="color: brown"
+										ng-show="documento.idCMS == 0"></span>
+									</td>
+									<td>{{documento.nombreArchivo}}</td>
+									<td align="center">										
+										<button data-toggle="modal"  ng-click="mostrarModalDocumentoApoderado(documento)" ng-show="documento.idCMS == 0" tooltip="Guardar documento" class="btn btn-sm btn-indigo">
+											<span class="glyphicon glyphicon-floppy-open"></span>
+										</button>
+								    	<button data-toggle="modal"  ng-click="descargarDocumentoByIdCMS(documento.idCMS)" ng-show="documento.idCMS >= 1" tooltip="Descargar documento" class="btn btn-sm btn-alizarin" >
+								    		<span class="glyphicon glyphicon-cloud-download"></span>
+								    	</button>
+								    	
+								    	<button data-toggle="modal"  ng-click="eliminarDocumentoApoderado(documento)" ng-show="documento.idCMS >= 1"tooltip="Eliminar documento" class="btn btn-sm btn-midnightblue">
+								    		<span class="glyphicon glyphicon-trash"></span>
+								    	</button>
+								    	<button data-toggle="modal"  ng-click="verDocumento(documento.idCMS)" ng-show="documento.idCMS >= 1" tooltip="Ver documento" class="visualizadorDocumento btn btn-sm btn-alizarin" >
+											<span class="glyphicon glyphicon-eye-open"></span>
+										</button>
+									</td>
+
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</form>
+			</panel>
+		</div>
+	</div>
+
+
+	<!-- -------------------------------------------------------------------------------- -->
+
+
+
+	<div class="modal fade" id="agregarDocumentoApoderado" role="dialog"
+		data-backdrop="static" data-keyboard="false" tabindex="-1">
+		<div class="modal-dialog modal-lg modal-dialog-scrollable"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Documento apoderado legal</h5>
+				</div>
+				<form id="modalCatSatForm" name="modalDocApoderado" novalidate>
+					<div class="modal-body">
+
+						<div class="row">
+							<div class="col-md-12">
+
+								<input class="btn btn-info-alt form-control" required
+									name="filePorSubir" id="file_apoderado" type="file"
+									onchange="angular.element(this).scope().fileChangedDocPrestadora(this)"
+									class="filestyle"
+									data-buttonText="archivoPrestadora.nombreArchivo" /> <span
+									class="messages"
+									ng-show="modalDocApoderado.$submitted || modalDocApoderado.filePorSubir.$touched">
+									<span ng-show="modalDocApoderado.filePorSubir.$error.required">
+										El campo es obligatorio. </span>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<br />
+
+					<div class="modal-footer">
+						<button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>
+						<button type="button" class="btn-green btn"
+							ng-click="guardarDocumentoApoderado()">GUARDAR</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="agregarDocumentoRepresentante"
+		role="dialog" data-backdrop="static" data-keyboard="false"
+		tabindex="-1">
+		<div class="modal-dialog modal-lg modal-dialog-scrollable"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Documento representante legal</h5>
+				</div>
+				<form id="modalCatSatForm" name="modalDocApoderado" novalidate>
+					<div class="modal-body">
+
+						<div class="row">
+							<div class="col-md-12">
+
+								<input class="btn btn-info-alt form-control" required
+									name="filePorSubir" id="file_representante" type="file"
+									onchange="angular.element(this).scope().fileChangedDocPrestadora(this)"
+									class="filestyle"
+									data-buttonText="archivoPrestadora.nombreArchivo" /> <span
+									class="messages"
+									ng-show="modalDocApoderado.$submitted || modalDocApoderado.filePorSubir.$touched">
+									<span ng-show="modalDocApoderado.filePorSubir.$error.required">
+										El campo es obligatorio. </span>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<br />
+
+					<div class="modal-footer">
+						<button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>
+						<button type="button" class="btn-green btn"
+							ng-click="guardarDocumentoRepresentante()">GUARDAR</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+</div>

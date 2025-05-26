@@ -1,0 +1,223 @@
+ <div class="container-fluid" >
+    <div id="page-heading">
+        <ol class="breadcrumb">
+            <li><a href="#/">Menu principal</a></li>
+            <li class="active">Cotizaciones</li>
+        </ol>
+    </div>
+
+    <div ng-controller="solicitudCotizacionesController">
+        <div class="row" >
+            <div class="col-md-12">
+                
+                <panel panel-class="panel-info" heading="Solicitudes para cotizaci&oacute;n">
+                    <panel-controls>
+                        <panel-control-collapse>
+                        </panel-control-collapse>
+                    </panel-controls>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;">Nombre/raz&oacute;n social</th>
+                                    <th style="text-align: center;">Observaci&oacute;n</th>
+                                    <th style="text-align: center;">Fecha de alta</th>
+                                    <th style="text-align: center;">Estatus de solicitud</th>
+                                    <th style="text-align: center;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                 <tr ng-repeat="cliente in cliente">
+                                    <td ng-if="cliente.razonSocial == undefined">{{cliente.nombre}}  {{cliente.apellidoPaterno}}  {{cliente.apellidoMaterno}}</td>
+                                    <td ng-if="cliente.razonSocial != undefined ">{{cliente.razonSocial}}</td>
+                                    <td>{{cliente.clienteTempBitacoraSolicitudesDto.observacion}}</td>
+                                    <td align="center">{{cliente.clienteTempBitacoraSolicitudesDto.fechaAlta | date:'dd/MM/yyyy'}}</td>
+                                    <td>{{cliente.cotizacionDto === null ? cliente.clienteTempBitacoraSolicitudesDto.catEstatus.descripcionEstatus: 'COTIZACI&Oacute;N EN PROCESO'}}</td>
+                                    <td>
+                                    <div class="col-md-12">
+	                                    <div class="col-md-2">
+	                                    	<a class="glyphicon glyphicon-plus" tooltip-append-to-body="true" 
+	                                        tooltip-placement="top" data-tooltip="REALIZAR NUEVA COTIZACI&Oacute;N" 
+	                                        ng-click="nuevaCotizacion(cliente)" ng-show="cliente.cotizacionDto === null"></a>
+	                                    </div>
+	                                    <div class="col-md-3" ng-show="cliente.clienteTempBitacoraSolicitudesDto.nombreArchivo != null">
+	                                          <button id="idDescargaDoc" type="button" class="glyphicon glyphicon-download-alt" ng-click="descargarArchivo(cliente);" tooltip="DESCARGAR DOCUMENTO"></button>
+	                                    </div>
+                                    </div>
+                                    </td>
+                                </tr>
+                           </tbody>
+                        </table>
+                    </div>
+                </panel>
+                <panel panel-class="panel-info" heading="Pre Cotizaciones">
+                    <panel-controls>
+                        <panel-control-collapse></panel-control-collapse> 
+                    </panel-controls>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="padding-right:100px;text-align: center;">Nombre/raz&oacute;n social</th>
+                                    <th style="padding-right:100px;text-align: center;">Periodicidad</th>
+                                    <th style="text-align: center;">Fecha de alta</th>
+                                    <th style="text-align: center;">Tipo de producto</th>
+                                   <th style="text-align: center;">Estatus
+                                     <!--  <select class="form-control" name="catEstatus" id="idCatEstatus" ng-model="idCatEstatusSelected" 
+                                     ng-change="obtenerCotizacionesPorEstatus(idCatEstatusSelected);">
+                                               <option value=null>{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                               <option ng-repeat="catEstatus in clienteCot.catEstatus" ng-selected="catEstatus.idCatGeneral == idCatEstatusSelected"
+                                            value="{{catEstatus.idCatGeneral}}">{{catEstatus.descripcion}}</option>
+                                            </select>--></th>
+                                    <th style="text-align: center;">N&uacute;mero de colaboradores</th>
+                                    <th style="text-align: center;">Acciones</th>
+                                </tr>
+                            </thead> 
+                            <tbody>
+                                <tr ng-if="cliente.cotizacionDto != null && cliente.cotizacionDto.idTipoSolCotizacion.idCatGeneral == 44" ng-repeat="cliente in clientePreCot">
+                                   <td ng-if="cliente.razonSocial == undefined">{{cliente.nombre}}  {{cliente.apellidoPaterno}}  {{cliente.apellidoMaterno}}</td>
+                                    <td ng-if="cliente.razonSocial != undefined">{{cliente.razonSocial}}</td>
+                                    <td align="left">{{cliente.cotizacionDto.idPeriodicidad.descripcionTipoPago}}</td>
+                                    <td align="center">{{cliente.cotizacionDto.fechaAlta | date:'dd/MM/yyyy'}}</td>
+                                    <td align="left" ng-if="cliente.cotizacionDto.porcentajePpp === 100">PPP</td>
+                                    <td align="left" ng-if="cliente.cotizacionDto.porcentajeNomFis === 100">N&Oacute;MINA FISCAL</td>
+                                    <td align="left" ng-if="cliente.cotizacionDto.porcentajePpp != 100 && cliente.cotizacionDto.porcentajeNomFis != 100">PRODUCTO ESPECIALIZADO</td>
+                                    <td align="left">{{cliente.cotizacionDto.catEstatusCotizacion.descripcionEstatus}}</td>
+                                    <td align="center">{{cliente.cotizacionDto.totalColaboradores | number}}</td>
+                                    <td>
+                                        <a ng-click="verPreCotizacion(cliente)" style="cursor: pointer; margin-left: 5px;" tooltip-append-to-body="true" tooltip-placement="right" data-tooltip="Editar pre cotizaci&oacute;n" class="glyphicon glyphicon-pencil"></a>
+                                        <a style="cursor: pointer;padding-left: 10px;" class="glyphicon glyphicon-search" ng-if="cliente.cotizacionDto.observacionAutorizador != null" tooltip-append-to-body="true" tooltip-placement="left" data-tooltip="Ver Observaci&oacute;n" data-toggle="modal" data-target="#verObservacion"></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </panel>
+                <panel panel-class="panel-info" heading="Cotizaciones Detalladas">
+                    <panel-controls>
+                        <panel-control-collapse></panel-control-collapse> 
+                    </panel-controls>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center; padding-right:100px">Nombre/raz&oacute;n social</th>
+                                    <th style="text-align: center; padding-right:100px">Clave de cotizaci&oacute;n</th>
+                                    <th style="text-align: center; padding-right:100px">Periodicidad</th>
+                                    <th style="text-align: center;">Fecha de alta</th>
+                                    <th style="text-align: center;">Tipo de producto</th>
+                                    <th style="text-align: center;">Estatus
+                                     <select class="form-control" name="catEstatus" id="idCatEstatus" ng-model="idCatEstatusSelected" 
+                                     ng-change="obtenerCotizacionesPorEstatus(idCatEstatusSelected);">
+                                               <option value=null>{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                               <option ng-repeat="catEstatus in clienteCot.catEstatus" ng-selected="catEstatus.idCatGeneral == idCatEstatusSelected"
+                                            value="{{catEstatus.idCatGeneral}}">{{catEstatus.descripcion}}</option>
+                                            </select></th>
+                                    <th style="text-align: center;">N&uacute;mero de colaboradores</th>
+                                    <th style="text-align: center;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-if="cliente.cotizacionDto != null && cliente.cotizacionDto.idTipoSolCotizacion.idCatGeneral == 45" ng-repeat="cliente in clienteCot">
+                                    <td ng-if="cliente.razonSocial == undefined">{{cliente.nombre}}  {{cliente.apellidoPaterno}}  {{cliente.apellidoMaterno}}</td>
+                                    <td ng-if="cliente.razonSocial != undefined">{{cliente.razonSocial}}</td>
+                                    <td>{{cliente.cotizacionDto.cveCotizacion}}</td>
+                                    <td align="left">{{cliente.cotizacionDto.idPeriodicidad.descripcionTipoPago}}</td>
+                                    <td align="center">{{cliente.cotizacionDto.fechaAlta | date:'dd/MM/yyyy'}}</td>
+                                    <td align="left" ng-if="cliente.cotizacionDto.porcentajePpp === 100">PPP</td>
+                                    <td align="left" ng-if="cliente.cotizacionDto.porcentajeNomFis === 100">N&oacute;mina fiscal</td>
+                                    <td align="left" ng-if="cliente.cotizacionDto.porcentajePpp != 100 && cliente.cotizacionDto.porcentajeNomFis != 100">Producto especializado</td>
+                                    <td align="left">{{cliente.cotizacionDto.catEstatusCotizacion.descripcionEstatus}}</td>
+                                    <td align="center">{{cliente.cotizacionDto.totalColaboradores | number}}</td>
+                                    <td>
+                                        <a ng-click="verCotizacion(cliente)" style="cursor: pointer; margin-left: 5px;" tooltip-append-to-body="true" tooltip-placement="right" data-tooltip="Editar cotizaci&oacute;n" class="glyphicon glyphicon-pencil"></a>
+                                        <a style="cursor: pointer;padding-left: 10px;" class="glyphicon glyphicon-search" ng-if="cliente.cotizacionDto.observacionAutorizador != null" tooltip-append-to-body="true" tooltip-placement="left" data-tooltip="Ver Observaci&oacute;n" data-toggle="modal" data-target="#verObservacion"></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </panel>
+            </div>
+        </div>
+        <div class="modal fade" id="modalBitacora" role="dialog">
+            <div class="modal-dialog" style="width: 50%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">BITACORA</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <label class="control-label">Fecha: </label> 
+                                            <input type="date" id="exampleInput" class="form-control" name="input" ng-model="bitacora.fecha"
+                                                   placeholder="MM-dd-yyyy" ng-disabled="!modalBitNuevo"/>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <label class="control-label">Tipo de bitacora: </label> 
+                                            <select class="form-control" name="Tipo Bitacora" id="idTipoBitacora" 
+                                                    ng-model="bitacora.tipoBitacora.id" ng-disabled="!modalBitNuevo">
+                                                <option value="{{}}">----Seleccione una opcion----</option>
+                                                <option value="{{1}}">Telefonica</option>
+                                                <option value="{{2}}">Correo</option>
+                                                <option value="{{3}}">Visita</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-xs-8">
+                                            <label class="control-label">Observaci&oacute;n </label> 
+                                            <textarea placeholder="OBSERVACI&Oacute;N" name="observacion"  ng-disabled="!modalBitNuevo" 
+                                                ng-model="bitacora.observacion" maxlength="500" minlength="3" 
+                                                onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"
+                                                onblur="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"
+                                                class="form-control"  required="required"> </textarea>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-green btn pull-right" data-dismiss="modal" ng-click="guardarBitacora()" ng-hide="!modalBitNuevo">GUARDAR</button>
+                        <button type="button" class="btn-brown btn pull-right" data-dismiss="modal" ng-click="cancelar()">{{modalBitNuevo?'CERRAR':'CANCELAR'}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="verObservacion" role="dialog">
+            <div class="modal-dialog" style="width: 50%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">OBSERVACI&Oacute;N COTIZADOR</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-xs-8">
+                                            <label class="control-label">Observaci&oacute;n: </label> 
+                                            <textarea placeholder="OBSERVACI&Oacute;N" name="observacion" maxlength="500" minlength="3"
+                                            	onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"
+                                                onblur="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"
+                                                      class="form-control"  disabled="disabled" >Se requiere ajuste a la comisi&oacute; ya que no es rentable 
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-brown btn pull-right" data-dismiss="modal">CANCELAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

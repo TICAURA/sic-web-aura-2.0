@@ -1,0 +1,163 @@
+<div class="container-fluid">
+	<div ng-controller="consultaCanalVentaController">
+		<div id="page-heading">
+			<ol class="breadcrumb">
+				<li><a href="#/">Cotizador</a></li>
+				<li class="active">Canal de Venta</li>
+			</ol>
+			
+	</div>
+		
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<panel panel-class="panel-sky" heading="B&uacute;squeda de canal de venta">
+				<panel-controls> <panel-control-collapse></panel-control-collapse>
+
+
+				<a class="btn btn-orange" href="#/cotizador/canalVenta/canalVenta"> Agregar canal de venta
+					<i class="fa fa-plus-square"></i>
+				</a> 
+				<spa>&nbsp;</span>
+				
+				<a class="btn btn-orange" href="#/cotizador/canalVenta/asignacionOficina"> Oficinas
+					<i class="fa fa-plus-square"></i>
+				</a>
+				</panel-controls>
+				<form>
+					<div class="row">
+						
+
+						<div class="col-xs-3">
+							<label class="control-label">Nombre (s): </label> 
+							<input type="text" ng-model="cvFilter.usuario.nombre"
+								class="form-control" placeholder="Nombre" >
+						</div>
+						
+						<div class="col-xs-3">
+							<label class="control-label">Primer apellido: </label> 
+							<input type="text" ng-model="cvFilter.usuario.primerApellido"
+								class="form-control" placeholder="Primer apellido" >
+						</div>
+						
+						<div class="col-xs-3">
+							<label class="control-label">Segundo apellido: </label> 
+							<input type="text" ng-model="cvFilter.usuario.segundoApellido"
+								class="form-control" placeholder="Segundo apellido" >
+						</div>
+						
+						<div class="col-xs-3">
+							<label class="control-label">RFC: </label> 
+							<input type="text" ng-model="cvFilter.usuario.rfc"
+								class="form-control" placeholder="RFC" >
+						</div>
+
+
+
+						
+					</div>
+				</form>
+
+				</panel>
+
+				<panel panel-class="panel-sky" heading="Resultado de canales de venta">
+				<panel-controls> <panel-control-collapse></panel-control-collapse>
+				</panel-controls>
+				<div class="table-responsive">
+				
+				
+					<table class="table table-striped">
+						<thead>
+							<tr >
+								<th align="center">Nombre</th>
+								<th align="center">RFC</th>
+								<th align="center">Tipo canal venta</th>
+								<th align="center">Usuario</th>
+								<th align="center">Entidad sede</th>
+								<th align="center">Ciudad sede</th>
+								<th align="center">&iquest;Genera cotizaciones?</th>
+								<th align="center">Empresa u oficinas</th>
+								<th align="center">Estatus</th>
+								<th align="center">Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							 <tr ng-repeat="x in canalesVenta | filter : cvFilter">
+								<td>{{x.usuario.nombre}} {{x.usuario.primerApellido}} {{x.usuario.segundoApellido}}</td>
+								<td>{{x.usuario.rfc}}</td>
+								<td>{{x.tipoCanalVenta.descripcion}}</td>
+								<td>{{x.usuario.usuario}}</td>
+								<td>{{x.entidadFederativaSede.descripcion}}</td>
+								<td>{{x.ciudadSede}}</td>
+								<td align="center">{{x.generaCotizacion == '1'?'SI':'NO'}}</td>
+								<td>{{x.oficina.razonSocial== undefined?"Independiente":x.oficina.razonSocial}}</td>
+								<td>{{x.usuario.indEstatus== '1'?'ACTIVO':'INACTIVO'}}</td>
+								<td align="center">
+									<a class="glyphicon glyphicon-pencil" ng-click="editarCanalVenta(x.idCanalVenta)" title="Editar"></a>
+									<a class="fa fa-building" ng-click="modalOficina(x)" title="Asignar oficina"></a>
+									<!-- <a class="glyphicon glyphicon-trash" title="Eliminar"></a> -->
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				</panel>
+				
+				
+				<div class="modal fade" id="modalOficina" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" style="width: 50%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Asignación de oficina</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form id="bitacoraForm">
+                                    <div class="row">
+                                        
+                                        <div class="col-xs-10">
+                                            <label class="control-label">Nombre canal de venta *: </label>
+                                            <span class="form-control"> {{canalVenta.usuario.nombre}} {{canalVenta.usuario.primerApellido}} {{canalVenta.usuario.segundoApellido}}</span>
+                                        </div>
+                                        
+                                        
+                                        <div class="col-xs-10">
+                                            <label class="control-label">Oficina *: </label> 
+                                            
+                                            <select required class="form-control" name="catTipoEvento" id="idTipoEvento" required 
+                                            ng-options="('RFC: ' + item.rfc  + ' - ' + item.razonSocial) for item in oficinas track by item.idOficina" ng-model="oficinaSeleccionada">
+                                            
+                                                <option value="">-- SELECCIONE UNA OPCI&Oacute;n --</option>
+                                               
+                                            </select> 
+                                            <span class="messages" ng-show="bitacoraForm.$submitted || bitacoraForm.idTipoEvento.$touched">
+                                            <span ng-show="bitacoraForm.idTipoEvento.$error.required">El campo es obligatorio.</span>
+                                              <span ng-show="bitacoraForm.idTipoEvento.$error.required === true ?false:!bitacoraForm.idTipoEvento.$valid">
+                                                    Debe seleccionar el tipo de bitacora.</span>
+                                             </span>
+                                        </div>
+                                        
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        
+                        <button type="button" class="btn-brown btn" data-dismiss="modal" ng-click="cancelar()">CERRAR</button>
+                        <button type="button" class="btn-green btn" data-dismiss="modal" ng-click="guardarOficina()">
+                        	<span class="fa fa-save"></span> GUARDAR
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+			</div>
+		</div>
+
+	</div>
+</div>
+</div>

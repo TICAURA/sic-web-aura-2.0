@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="disco" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="dd05e266-fe11-48b2-a2de-20513d09edc2">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="fileSystem" class="java.lang.String"/>
+	<field name="tamanio" class="java.lang.String"/>
+	<field name="discoDrdb" class="java.lang.String"/>
+	<field name="discoReplica" class="java.lang.String"/>
+	<field name="discoMetadata" class="java.lang.String"/>
+	<field name="monitoreoDTO.progreso" class="java.lang.String"/>
+	<field name="monitoreoDTO.fecha" class="java.lang.String"/>
+	<field name="monitoreoDTO.megasTransferencia" class="java.lang.String"/>
+	<field name="monitoreoDTO.megasTransferidos" class="java.lang.String"/>
+	<field name="monitoreoDTO.estatusDisco" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="72" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="40" width="130" height="20" uuid="544dfa58-9dae-43f7-9b2a-2a7fcd38192a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="441" y="20" width="114" height="20" forecolor="#666666" uuid="9b868e91-2cba-4f71-9ebb-897e47577aa1"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="441" y="0" width="114" height="20" uuid="4a8dd8d6-6945-4013-94ce-8b42fd35e88e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="328" y="20" width="113" height="20" uuid="454b9a5c-73ee-4c71-801f-8f695ad8532f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="328" y="0" width="113" height="20" uuid="ed534210-4694-408d-af38-193554eb8f9d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="257" y="20" width="71" height="20" forecolor="#666666" uuid="429bda3b-a2d8-4872-9100-93070904835b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="257" y="0" width="71" height="20" uuid="d0efed10-8dbf-4a12-a016-2cbbc1f5b146"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="130" y="20" width="127" height="20" uuid="4a98273c-1451-408e-8df8-5a14f42087ba"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="130" y="0" width="127" height="20" forecolor="#333333" uuid="1a110285-3916-41ec-bff6-787b3b4d04d2"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="20" width="130" height="20" uuid="111cfeaa-10a8-40cf-9491-4ddc62565d68"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="0" width="130" height="20" forecolor="#666666" uuid="4f27a67f-3ee8-4c9d-8425-8b789931a4ba"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="3" y="0" width="130" height="20" forecolor="#666666" uuid="5f405284-03eb-4d46-9a95-f0136b858510"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[File System]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="3" y="20" width="115" height="20" forecolor="#666666" uuid="41347e69-5306-4491-b91a-f5f5d6799058"/>
+				<textFieldExpression><![CDATA[$F{fileSystem}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="259" y="0" width="69" height="20" forecolor="#666666" uuid="3bc14041-7dc6-43b3-a718-a51912ccc842"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Capacidad]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="260" y="20" width="71" height="20" forecolor="#666666" uuid="a2c3c899-c032-428e-bc4b-b4983d10d5f8"/>
+				<textFieldExpression><![CDATA[$F{tamanio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="134" y="0" width="113" height="20" forecolor="#666666" uuid="24e14114-9b06-4d92-95eb-d294de85648a"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DiscoDrdb]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="134" y="20" width="113" height="20" forecolor="#666666" uuid="2233c52f-6b18-4808-8721-ee1c99db709a"/>
+				<textFieldExpression><![CDATA[$F{discoDrdb}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="330" y="0" width="99" height="20" forecolor="#666666" uuid="055d812e-761e-486f-b12b-cb1a61a2628e"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Disco Replica]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="330" y="20" width="99" height="20" forecolor="#666666" uuid="8165e896-9eac-4d2c-be3c-dc7c163e9a7b"/>
+				<textFieldExpression><![CDATA[$F{discoReplica}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="444" y="0" width="114" height="20" forecolor="#666666" uuid="42e82822-1392-42a7-aa0c-3f601e5d2d26"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Disco Metadata]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="443" y="20" width="114" height="20" forecolor="#666666" uuid="c0c68036-c81c-4cd8-81ee-24c20b4d5df6"/>
+				<textFieldExpression><![CDATA[$F{discoMetadata}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="40" width="116" height="20" forecolor="#666666" uuid="da30d449-b7c5-4d94-8c51-b35da76c0ac4"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado Replica:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="130" y="40" width="425" height="20" uuid="feca8b52-ef59-42d3-a040-ece54a1bbbb3"/>
+			</rectangle>
+			<textField>
+				<reportElement x="133" y="40" width="422" height="20" forecolor="#666666" uuid="3ad8b17b-41de-472a-bb8c-4280b1ab282a"/>
+				<textElement markup="none">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Avance:" + $F{monitoreoDTO.progreso}+"%" +" " + $F{monitoreoDTO.fecha} +" " + $F{monitoreoDTO.megasTransferencia} +" " + $F{monitoreoDTO.megasTransferidos} +" " + $F{monitoreoDTO.estatusDisco}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,122 @@
+
+<div class="container-fluid" ng-controller="rolModulosPantallasController">
+	<div id="page-heading">
+		<ol class="breadcrumb">
+			<li><a href="#/">Admin</a></li>
+			<li class="active">Roles Modulos y Pantallas</li>
+		</ol>
+	</div>
+
+
+	<div class="row">
+		<div class="col-md-12">
+		
+			<panel panel-class="panel-sky" heading="Resultado de roles">
+				<panel-controls> 
+					<panel-control-collapse></panel-control-collapse>
+				</panel-controls>
+				<div class="table-responsive">
+					<table ng-table="tableParamsRolesModulos"  class="table table-striped" show-filter="true">
+					<tbody>
+				          <tr ng-repeat="x in $data">
+				          	<td data-title="'#'"> {{$index +1}}</td>
+				          	<td data-title="'Rol'" filter="{nombre: 'text'}"  sortable="'nombre'">{{ x.nombre }}</td>
+				          	<td data-title="'Descripci&oacute;n'" filter="{descripcion: 'text'}"  sortable="'descripcion'">{{x.descripcion}}</td>
+				          	<td data-title="'Total modulos'">{{x.totalModulos}}</td>
+				          	<td data-title="'Total pantallas'">{{x.totalPantallas}}</td>
+				          	<td data-title="'Acciones'"><button class="btn btn-success" ng-click="editarModulosPantalla(x)" ><span class="fa fa-edit" ></span>Editar</button></td>
+				          </tr>
+						</tbody>
+						
+						<!-- <thead>
+							 <tr>
+							 	<th>#</th>
+                                <th>Rol</th>
+                                <th>Descripci&oacute;n</th>
+                                <th>Total modulos</th>
+                                <th>Total pantallas</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>	
+                            <tr ng-repeat="x in rolesModulos">
+                            	<td>{{$index +1}}</td>
+                                <td>{{x.nombre}}</td>
+                                <td>{{x.descripcion}}</td>
+                                <td>{{x.totalModulos}}</td>
+                                <td>{{x.totalPantallas}}</td>
+                                <td><button class="btn btn-success" ng-click="editarModulosPantalla(x)" ><span class="fa fa-edit" ></span>Editar</button></td>
+							</tr>
+						</tbody>-->
+					</table>
+				</div>
+			</panel>
+			
+			
+			<panel panel-class="panel-primary" heading="Modulos y Pantallas por Rol"> 
+				<panel-controls>
+					<panel-control-collapse></panel-control-collapse>  
+				</panel-controls>
+				
+				<form id="pantallaForm" name="pantallaForm">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="table-responsive tablaconscroll200">
+								<table class="table">
+									<thead>
+										 <tr>
+			                               	<th>#</th>
+			                                <th>Modulo</th>
+			                                <th>Descripci&oacute;n</th>
+			                                <th>Estatus</th>
+			                                
+			                            </tr>
+			                        </thead>
+			                        <tbody>
+			                            <tr ng-repeat="x in rolModulos">
+		                                 <td>{{$index +1}}</td>
+		                                 <td>{{x.nombre}}</td>
+		                                <td>{{x.descripcion}}</td>
+		                                <td><input type="checkbox" ng-model="x.asignado" 
+		                                name="pantalla.indEstatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}"
+		                                ng-change="guardarRolModulo(x)" /></td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						
+						<div class="col-md-6">
+							<div class="table-responsive tablaconscroll200">
+								<table class="table">
+									<thead>
+										 <tr>
+			                               	<th>#</th>
+			                                <th>Pantalla</th>
+			                                <th>Ruta</th>
+			                                <th>Estatus</th>
+			                            </tr>
+			                        </thead>
+			                        <tbody>
+			                            <tr ng-repeat="x in rolPantallas">
+		                                 <td>{{$index +1}}</td>
+		                                 <td>{{x.nombre}}</td>
+		                                 <td>{{x.rutaPantalla}}</td>
+		                                 <td><input type="checkbox" ng-model="x.asignado" name="pantalla.indEstatus" class="js-switch" 
+		                                 ng-change="guardarRolPantallas(x)" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+									   </tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</form>
+				
+			</panel>
+			
+		</div>
+	</div>
+	
+	
+	
+</div>

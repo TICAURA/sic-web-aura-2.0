@@ -1,0 +1,336 @@
+<div class="container-fluid" >
+    <div id="page-heading">
+        <ol class="breadcrumb">
+            <li><a href="#/cotizador/cotizador">PROSPECTOS GUARDADOS</a></li>
+            <li class="active">COTIZACIONES PROSPECTO</li>
+        </ol>
+    </div>
+    <div class="container-fluid" ng-controller="cotizacionesClienteController">
+        <div class="row" >
+            <div class="col-md-12">
+                <panel panel-class="panel-info" heading="Datos de Prospecto">
+                    <panel-controls>
+                        <panel-control-collapse></panel-control-collapse> 
+                         <a class="btn-orange btn pull-right"	ng-click="regresarCotizacionesCliente();" style="margin-top: 3px">REGRESAR</a> 
+                    </panel-controls>
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#general">DATOS GENERALES</a></li>
+                        <li><a data-toggle="tab" href="#contacto">DATOS DE CONTACTO</a></li>
+                        <li><a data-toggle="tab" href="#domicilio">DOMICILIO DE PROSPECTO</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="general" class="tab-pane fade in active">
+                         <div class="row">
+                         </p>
+						</div>
+                        <div class="row" ng-show="cliente.idTipoPersona.idCatGeneral ===21">
+                        		<div class="col-xs-3">
+                                    <label class="control-label"><b>RFC:</b> {{cliente.rfc}}</label> 
+                                </div>
+                                <div class="col-xs-3">
+                                    <label class="control-label" ><b>Nombre (s):</b> {{cliente.nombre}}</label> 
+                                </div>
+                                 <div class="col-xs-3">
+                                    <label class="control-label" ><b>Apellido paterno:</b> {{cliente.apellidoPaterno}}</label> 
+                                </div>
+                                 <div class="col-xs-3">
+                                    <label class="control-label" ><b>Apellido materno:</b> {{cliente.apellidoMaterno}}</label> 
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-2" ng-show="cliente.idTipoPersona.idCatGeneral ===22">
+                                    <label class="control-label"><b>RFC:</b> {{cliente.rfc}}</label> 
+                                </div>
+                                <div class="col-xs-4" ng-show="cliente.idTipoPersona.idCatGeneral ===22">
+                                    <label class="control-label" ><b>Raz&oacute;n social:</b> {{cliente.razonSocial}}</label> 
+                                </div>
+                                <div class="col-xs-2">
+                                    <label class="control-label"><b>Tipo persona:</b> {{cliente.idTipoPersona.descripcion}}</label> 
+                                </div>
+                               <!--  <div class="col-xs-4" ng-show="cliente.nombreComercial != undefined ">
+                                    <label class="control-label" ><b>Nombre comercial:</b> {{cliente.nombreComercial}}</label> 
+                                </div> -->
+                                <div class="col-xs-4" ng-show="cliente.grupo.descripcionRazonSocial != undefined ">
+                                    <label class="control-label"><b>Cliente (nombre comercial o grupo):</b> {{cliente.grupo.descripcionRazonSocial}}</label> 
+                                </div>
+								<!-- 
+                                <div class="col-xs-4" ng-show="cliente.grupo.rfc != undefined">
+                                    <label class="control-label"><b>RFC DE GRUPO: </b>{{cliente.grupo.rfc}}</label> 
+                                </div>
+                                -->
+                                <div class="col-xs-4" ng-show="cliente.nombreGiroComercial != undefined">
+                                    <label class="control-label"><b>Giro comercial: </b>{{cliente.nombreGiroComercial}}</label> 
+                                </div>
+                            </div>
+                             <!-- </div> -->
+                        </div>
+                        <div id="contacto" class="tab-pane fade in">
+                        <div class="row">
+                          <div class="row">
+                         </p>
+						</div>
+                                <div class="col-xs-4">
+                                    <label class="control-label" ><b>Nombre (s):</b> {{cliente.idPersonaContacto.nombrePersona}}</label> 
+                                </div>
+                                <div class="col-xs-4">
+                                    <label class="control-label" ><b>Apellido paterno:</b> {{cliente.idPersonaContacto.apellidoPaterno}}</label> 
+                                </div>
+                                <div class="col-xs-4">
+                                    <label class="control-label" ><b>Apellido materno:</b> {{cliente.idPersonaContacto.apellidoMaterno}}</label> 
+                                </div>
+                                <div class="col-xs-4">
+                                    <label class="control-label"><b>E-mail:</b> {{cliente.idPersonaContacto.correoElectronico}}</label> 
+                                </div>
+                                <div class="col-xs-4">
+                                    <label class="control-label"><b>Tel&eacute;fono:</b> {{cliente.idPersonaContacto.telefono}}</label> 
+                                </div>
+                             </div>
+                        </div>
+                        <div id="domicilio" class="tab-pane">
+                        <div class="row">
+                            <div class="row">
+                         </p>
+						</div>
+                                <div class="col-xs-4">
+                                    <label class="control-label" ><b>Calle: </b>{{cliente.idMedioContacto.calle}}</label> 
+                                </div>
+                                <div class="col-xs-4">
+                                    <label class="control-label"><b>N&uacute;mero exterior: </b> {{cliente.idMedioContacto.numeroCalle}}</label> 
+                                </div>
+                                 <div class="col-xs-4">
+                                    <label class="control-label"><b>N&uacute;mero interior: </b> {{cliente.idMedioContacto.numeroCalleInt}}</label> 
+                                </div>
+                                <div class="col-xs-4">
+                                    <label class="control-label"><b>C&oacute;digo postal:</b> {{cliente.idMedioContacto.codigoPostal}}</label> 
+                                </div>
+                                <div class="col-xs-4">
+                                    <label class="control-label"><b>Alcald&iacute;a:</b> {{cliente.idMedioContacto.nombreAlcaldia}}</label> 
+                                </div>
+                                <div class="col-xs-4">
+                                    <label class="control-label"><b>Entidad federativa:</b> {{cliente.idMedioContacto.nombreEstado}}</label> 
+                                </div>
+                                <div class="col-xs-4">
+                                    <label class="control-label"><b>Colonia:</b> {{cliente.idMedioContacto.colonia}}</label> 
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                    
+                </panel>
+                <panel panel-class="panel-info" heading="Pre Cotizaciones">
+                    <panel-controls>
+                        <panel-control-collapse></panel-control-collapse>
+                        <a class="btn-orange btn pull-center" ng-click="realizarPreCotizacion()" style="width: 100%;" ng-show="mostrarBtnPreCotizacion && cliente.estatusCliente[0].idEstatus.idEstatus != 7 && cliente.estatusCliente[0].idEstatus.idEstatus != 9
+                                && cliente.estatusCliente[0].idEstatus.idEstatus != 10 && cliente.estatusCliente[0].idEstatus.idEstatus != 16 && cliente.estatusCliente[0].idEstatus.idEstatus != 13">REALIZAR PRE COTIZACI&Oacute;N</a>
+                        
+                    </panel-controls>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th align="center">Periodicidad</th>
+                                    <th align="center">Tipo producto</th>
+                                    <th align="center">Fecha alta</th>
+                                    <th align="center">Estatus</th>
+                                    <th align="center">N&uacute;mero de colaboradores</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="cotizaciones  in cliente.preCotizaciones" ng-if="cotizaciones.idTipoSolCotizacion.idCatGeneral == 44">
+                                    <td align="left">{{cotizaciones.idPeriodicidad.descripcionTipoPago}}</td>
+                                    <td align="left">{{cotizaciones.porcentajePpp == 100 ? 'Nomina PPP': (cotizaciones.porcentajePpp == 0 ? 'Nomina fiscal':'Nomina especializada')}}</td>
+                                    <td align="center">{{cotizaciones.fechaAlta | date:'dd/MM/yyyy'}}</td>
+                                    <td align="left">{{cotizaciones.idEstatus.descripcion}}</td>
+                                    <td align="center">{{cotizaciones.totalColaboradores}}</td>
+                                    <td align="left">
+                                    <a ng-click="verPreCotizacion(cotizaciones)" style="cursor: pointer; margin-left: 5px;" tooltip-append-to-body="true" tooltip-placement="right" data-tooltip="Ver pre cotizaci&oacute;n" class="glyphicon glyphicon-search"></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </panel>
+                
+                <panel panel-class="panel-info" heading="Cotizaciones Detalladas">
+                    <panel-controls>
+                        <panel-control-collapse></panel-control-collapse>
+                        
+                        <a data-toggle="modal" data-target="#solicitarCotizacion"  class="btn-orange btn pull-center" style="width: 100%;" 
+                        ng-show="!mostrarBtnCotizacion && cliente.estatusCliente[0].idEstatus.idEstatus != 7 && cliente.estatusCliente[0].idEstatus.idEstatus != 9
+                                && cliente.estatusCliente[0].idEstatus.idEstatus != 10 && cliente.estatusCliente[0].idEstatus.idEstatus != 16 && cliente.estatusCliente[0].idEstatus.idEstatus != 13">Solicitar Cotizaci&oacute;n</a>
+                    </panel-controls>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th align="center">Periodicidad</th>
+                                    <th align="center">Tipo producto</th>
+                                    <th align="center">Fecha alta</th>
+                                    <th align="center">Estatus</th>
+                                    <th align="center">N&uacute;mero de colaboradores</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="cotizaciones  in cliente.cotizaciones" ng-if="cotizaciones.idTipoSolCotizacion.idCatGeneral == 45">
+                                    <td align="left">{{cotizaciones.idPeriodicidad.descripcionTipoPago}}</td>
+                                    <td align="left">{{cotizaciones.porcentajePpp == 100 ? 'Nomina PPP': (cotizaciones.porcentajePpp == 0 ? 'NOMINA FISCAL':'NOMINA ESPECIALIZADA')}}</td>
+                                    <td align="center">{{cotizaciones.fechaAlta | date:'dd/MM/yyyy'}}</td>
+                                    <td align="left">{{cotizaciones.idEstatus.descripcion}}</td>
+                                    <td align="center">{{cotizaciones.totalColaboradores}}</td>
+                                    <td align="left">
+                                    <a ng-click="verCotizacion(cotizaciones)" ng-show="mostrarBtnCotizacion || cotizaciones.idEstatus.idCatGeneral != 11" style="cursor: pointer; margin-left: 5px;" tooltip-append-to-body="true" tooltip-placement="right" data-tooltip="Ver cotizaci&oacute;n" class="glyphicon glyphicon-search"></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </panel>
+                <panel panel-class="panel-info" heading="Bitacora de eventos">
+                    <panel-controls>
+                        <panel-control-collapse>
+                        </panel-control-collapse>
+                        <a ng-click="nuevaBitacora()" class="btn-orange btn pull-center" style="width: 100%;" ng-show="cliente.estatusCliente[0].idEstatus.idEstatus != 7 && cliente.estatusCliente[0].idEstatus.idEstatus != 9
+                                && cliente.estatusCliente[0].idEstatus.idEstatus != 10 && cliente.estatusCliente[0].idEstatus.idEstatus != 16 && cliente.estatusCliente[0].idEstatus.idEstatus != 13">AGREGAR NUEVO EVENTO</a>
+                    </panel-controls>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th align="center">Fecha de evento</th>
+                                    <th align="center">Tipo de evento</th>
+                                    <th align="center">Observaci&oacute;n</th>
+                                    <th align="center">Fecha alta</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="bit  in cliente.bitacora">
+                                    <td align="center">{{bit.fechaEvento | date:'dd-MM-yyyy'}}</td>
+                                    <td align="left">{{bit.tipoEvento.descripcionTipoEvento}}</td>
+                                    <td align="left">{{bit.observacion}}</td>
+                                    <td align="center">{{bit.fechaAlta | date:'dd-MM-yyyy'}}</td>
+                                    <td>
+                                        <a ng-click="verBitacora(bit)"  style="cursor: pointer; margin-left: 5px;" tooltip-append-to-body="true" tooltip-placement="right" data-tooltip="Ver Bitacora" >
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </panel>
+            </div>
+        </div>
+        <div class="modal fade" id="modalBitacora" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" style="width: 50%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">BITACORA DE EVENTOS</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form id="bitacoraForm">
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <label class="control-label">Fecha de evento*: </label> 
+                                            <input type="date" id="bitacoraFecha" name="bitacoraFecha" class="form-control" name="input" ng-model="bitacora.fechaEvento"
+                                                   placeholder="MM-dd-yyyy" ng-show="modalBitNuevo" required/></br>
+                                           <label class="control-label" ng-show="!modalBitNuevo" style="background-color: silver;">  {{bitacora.fechaEvento | date:'dd-MM-yyyy'}} </label> 
+                                           <span class="messages" ng-show="bitacoraForm.$submitted || bitacoraForm.bitacoraFecha.$touched">
+                                           <span ng-show="bitacoraForm.bitacoraFecha.$error.required">El campo es obligatorio.</span>
+                                              <span ng-show="bitacoraForm.bitacoraFecha.$error.required === true ?false:!bitacoraForm.bitacoraFecha.$valid">
+                                                    Debe de seleccionar la fecha.</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <label class="control-label">Tipo de evento*: </label> 
+                                            <select required class="form-control" name="catTipoEvento" id="idTipoEvento" ng-model="bitacora.tipoEvento.idCatTipoEvento" required="required"
+                                            ng-disabled="!modalBitNuevo">
+                                                <option value="">-- SELECCIONE UNA OPCI&Oacute;n --</option>
+                                               <option ng-repeat="tipoEvento in cliente.listCatTipoEventoDto" ng-selected="tipoEvento.idCatTipoEvento == bitacora.tipoEvento.idCatTipoEvento"
+                                            value="{{tipoEvento.idCatTipoEvento}}">{{tipoEvento.descripcionTipoEvento | uppercase}}</option>
+                                            </select> 
+                                            <span class="messages" ng-show="bitacoraForm.$submitted || bitacoraForm.idTipoEvento.$touched">
+                                            <span ng-show="bitacoraForm.idTipoEvento.$error.required">El campo es obligatorio.</span>
+                                              <span ng-show="bitacoraForm.idTipoEvento.$error.required === true ?false:!bitacoraForm.idTipoEvento.$valid">
+                                                    Debe seleccionar el tipo de bitacora.</span>
+                                             </span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-xs-8">
+                                            <label class="control-label">Observaci&oacute;n*:</label> 
+                                            <textarea placeholder="OBSERVACI&Oacute;N" name="observacion"  ng-disabled="!modalBitNuevo"
+                                                ng-model="bitacora.observacion" maxlength="500" minlength="3" 
+												onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"
+                                                onblur="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"
+                                                class="form-control"  required> </textarea>
+                                                 <span class="messages" ng-show="bitacoraForm.$submitted || bitacoraForm.observacion.$touched">
+                                            <span ng-show="bitacoraForm.observacion.$error.required">El campo es obligatorio.</span>
+                                              <span ng-show="bitacoraForm.observacion.$error.required === true ?false:!bitacoraForm.observacion.$valid">
+                                                    Debe seleccionar el tipo de bitacora.</span>
+                                             </span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        
+                        <button type="button" class="btn-brown btn" data-dismiss="modal" ng-click="cancelar()">{{modalBitNuevo?'CERRAR':'CANCELAR'}}</button>
+                        <button type="button" class="btn-green btn" data-dismiss="modal"  ng-disabled="bitacoraForm.$invalid"  ng-click="guardarBitacora()" ng-hide="!modalBitNuevo" ng-disabled="bitacoraForm.$valid">GUARDAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal fade" id="solicitarCotizacion" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" style="width: 50%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">SOLICITAR COTIZACI&Oacute;N</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-xs-8">
+                                            <label class="control-label">Observaci&oacute;n </label> 
+                                            <textarea placeholder="Observacion" ng-model="clienteTempBitacoraSolicitud.observacion" name="observacion" maxlength="500" minlength="3"
+                                                class="form-control"  required="required"
+                                                onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"
+                                                onblur="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"> </textarea>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <h3>Anexar documento: </h3>
+                                            <input id="inputFile"
+                                                   type="file"
+                                                   accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                   onchange="angular.element(this).scope().fileChanged(this)"
+                                                   class="filestyle">
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding-top: 25px;">
+										<div class="col-md-12">
+											<a href="./LayoutCotizadorDetallado.xlsx" class="btn btn-midnightblue pull-right" download="LayoutCotizadorDetallado.xlsx" tooltip="Descargar layout"> 
+											<span class="glyphicon glyphicon-download-alt"/> DESCARGAR LAYOUT
+											</a>
+										</div>
+									</div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn-green btn" data-dismiss="modal" ng-click="solicitarCotizacion()" >ENVIAR SOLICITUD</button>
+                        <button type="button" class="btn-brown btn" data-dismiss="modal" ng-click="cancelar()">CANCELAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

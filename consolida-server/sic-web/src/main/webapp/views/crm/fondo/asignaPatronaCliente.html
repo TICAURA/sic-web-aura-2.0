@@ -1,0 +1,64 @@
+<div id="page-heading">
+    <ol class="breadcrumb">
+        <li><a href="#/">CRM</a></li>
+        <li><a href="#/crm/fondo/consultaPatrona">Consulta de Patronas</a></li>
+        <li class="active">Asignaci&oacute;n patrona - cliente</li>
+    </ol>
+
+</div>
+
+<div class="container-fluid" ng-controller="consultaCelulaController">
+    <div class="row">
+        <div class="col-md-12">
+            <panel panel-class="panel-sky" heading="Asignaci&oacute;n patrona - cliente">
+                <panel-controls>
+                    <panel-control-collapse></panel-control-collapse>
+                </panel-controls>
+				<div>Nombre de la patrona: <B>PATRONA DE PRUEBA</B></div>
+                                
+                <BR>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="padding-right:100px">Cliente</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td align="left">Cliente 1</td>
+                                <td>
+                                    <button class="btn-success btn"  ng-click="cancelar();">Asignar</button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td align="left">Cliente 2</td>
+                                <td>
+                                    <button class="btn-success btn"  ng-click="cancelar();">Asignar</button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td align="left">Cliente 3</td>
+                                <td>
+                                    <button class="btn-success btn"  ng-click="cancelar();">Asignar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+                <div class="row" align="right">
+                    <br />
+
+                    <button class="btn-danger btn"  ng-click="cancelar();">Cancelar</button>
+                </div>
+
+            </panel>
+        </div>
+    </div>
+</div>
+
+<!-- container-fluid -->

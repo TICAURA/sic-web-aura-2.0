@@ -1,0 +1,296 @@
+
+<link rel='stylesheet' type='text/css' href='assets/css/cotizacion.css' />
+
+<div class="container-fluid" ng-controller="consolidadoController">
+	<div id="page-heading">
+		<ol class="breadcrumb">
+			<li><a href="#/">Menu principal</a></li>
+			<li class="active">Resumen Ejecutivo</li>
+		</ol>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<panel panel-class="panel-sky" heading="RESUMEN EJECUTIVO">
+
+			<panel panel-class="panel-sky" heading="{{data.orden.fechaInicioS}} {{data.orden.fechaFinS}}" >
+			 <panel-controls>
+			<panel-control-collapse></panel-control-collapse> </panel-controls>
+			<form id="seguimientoProspectos" name="seguimientoProspectosForm">
+				<div class="row">
+					<div class="col-xs-4">
+						<label class="control-label">Fecha inicio</label> <input
+							type="date" name="inicioDate" class="form-control"
+							placeholder="Fecha inicio" ng-model="data.inicioDate"
+							 min="2022-01-01"
+							ng-required="true" />
+					</div>
+					<div class="col-xs-4">
+						<label class="control-label">Fecha fin</label> <input type="date"
+							name="finDate" class="form-control" placeholder="Fecha fin"
+							ng-model="data.finDate" 
+							 min="2022-01-01"
+							ng-required="true" />
+
+					</div>
+									<div class="col-xs-4" style="">
+						<label class="control-label">&nbsp;</label>
+						<button type="button" class="btn-green btn form-control"
+							ng-click="calcular();" style="background: #1b365c;"
+							ng-disabled="activarBotonCalcular">Calcular</button>
+
+					</div>
+
+
+				</div>
+
+				<br>
+
+
+				<body>
+				<div class="container ">
+					
+						<div class="row">			
+							<div class="col-sm-3"
+								style="border-radius: 22px; background-color: white; padding-top: 50px;padding-left:10px">
+								<a class="shortcut-tiles tiles-info" style="height: 120px;padding-right:30px" >
+									<div class="tiles-body"
+										style="border: 3px solid #4da339; border-radius: 22px; background: #4da339;">
+										<div class="pull-left">
+											<i class="fa fa-usd"></i>
+										</div>
+										<div class="pull-right"
+											style="font-size: 17px; line-height: 1">{{depositos|currency}}</div>
+										<span style="font-size: 17px;"></br> Dep&oacute;sitos</span>
+									</div>
+								</a> <a class="shortcut-tiles tiles-green" data="tileDef"
+									style="height: 120px; padding-right:30px">
+									<div class="tiles-body"
+										style="border: 3px solid #02a885; border-radius: 22px; background: #02a885;">
+										<div class="pull-left">
+											<i class="fa fa-plus-circle"></i>
+										</div>
+										<div class="pull-right"
+											style="font-size: 17px; line-height: 1">{{disponible|currency}}</div>
+										<span style="font-size: 17px;"></br>Disponible para
+											dispersar</span>
+									</div>
+								</a> <a class="shortcut-tiles tiles-magenta" data="tileDef"
+									style="height: 120px; padding-right:30px">
+									<div class="tiles-body"
+										style="border: 3px solid #0249fb; border-radius: 22px; background: #0249fb;">
+										<div class="pull-left">
+											<i class="fa fa-money fa-5"></i>
+										</div>
+										<div class="pull-right"
+											style="font-size: 17px; line-height: 1">{{ingresoBruto|currency}}</div>
+										<span style="font-size: 17px;"></br> Ingreso bruto</span>
+									</div>
+
+								</a>
+
+
+							</div>
+							<div  class="col-sm-3" style="padding-right:30px">
+							<div 
+								style="border-left: 50px; border-radius: 22px; border-color: #0249fb; padding-top: 30px; padding-bottom: 20px; border-width: 3px;
+                             border-style: solid;">
+								<a class="shortcut-tiles tiles-success" data="tileDef" style="padding-right:20px; padding-left:20px;">
+									<div class="tiles-body"
+										style="border: 3px solid #0249fb; border-radius: 22px;  background: #0249fb;">
+										<div class="pull-left">
+											<i class="fa fa-money fa-5"></i> <i style="font-size: 17px;">{{data.socios
+												|currency}} </i>
+										</div>
+										<div class="pull-right"
+											style="font-size: 17px; line-height: 1">
+											<input readonly style="width:50px; color: white;text-align: right; background: #0249fb; cursor:pointer;" 
+												name="porUtilidad" id="porUtilidad"  
+												type='text' 
+												ng-model="data.porcentajeSocios" maxlength="5"
+												ng-click="mostrarDialogo(data.porcentajeSociosD, 1);"	
+												   required="required" ng-show="usuarioDTO.rol.idRol!=37">{{usuarioDTO.rol.idRol===37?data.porcentajeSocios:""}} %</input>
+
+										</div>
+										<span style="font-size: 17px;"></br> Socios</span>
+
+									</div>
+								</a> <a class="shortcut-tiles tiles-grape" data="tileDef" style="padding-right:20px; padding-left:20px;" >
+									<div class="tiles-body"
+										style="border: 3px solid #527fef; border-radius: 22px; background: #527fef;">
+										<div class="pull-left">
+											<i class="fa fa-money fa-5"></i> <i style="font-size:17px;">{{data.gasto|currency}}
+											</i>
+										</div>
+										<div class="pull-right"
+											style="font-size: 17px; line-height: 1">
+											<input readonly style="width: 50px; color: white;text-align: right; background: #527fef; cursor:pointer;" placeholder="20"
+												name="porGasto" id="porGasto"
+												ng-model="data.porcentajeGasto" maxlength="5"
+												ng-click="mostrarDialogo(data.porcentajeGastoD, 2);"	
+												type="text" required="required" ng-show="usuarioDTO.rol.idRol!=37">{{usuarioDTO.rol.idRol===37?data.porcentajeGasto:""}}%</input>
+										</div>
+										<span style="font-size: 17px;"></br> Gasto</span>
+
+									</div>
+								</a> <a class="shortcut-tiles tiles-orange" data="tileDef"  style="padding-right:20px; padding-left:20px;">
+									<div class="tiles-body"
+										style="border: 3px solid #7496f6; border-radius: 22px; background: #7496f6;">
+										<div class="pull-left">
+											<i class="fa fa-money fa-5"></i> <i style="font-size: 17px;">{{data.utilidad|currency}}
+											</i>
+										</div>
+										<div class="pull-right"
+											style="font-size: 17px; line-height: 1">
+											<input readonly style="width: 50px; color: white;text-align: right;background: #7496f6; cursor:pointer;" placeholder="20"
+												name="porSocios" id="porSocios"
+												ng-model="data.porcentajeUtilidad" maxlength="5"
+												ng-click="mostrarDialogo(data.porcentajeUtilidadD, 3);"	
+												type="text" required="required" ng-show="usuarioDTO.rol.idRol!=37">{{usuarioDTO.rol.idRol===37?data.porcentajeUtilidad:""}}%</input>
+										</div>
+										<span style="font-size: 17px;"></br> Inversiones</span>
+
+									</div>
+								</a>
+								<a class="shortcut-tiles tiles-indigo" data="tileDef"  style="padding-right:20px; padding-left:20px;">
+									<div class="tiles-body"
+										style="border: 3px solid #9ab3f0; border-radius: 22px; background: #9ab3f0;">
+										<div class="pull-left">
+											<i class="fa fa-money fa-5"></i> <i style="font-size: 17px;">{{data.comisiones|currency}}
+											</i>
+										</div>
+										<div class="pull-right"
+											style="font-size: 17px; line-height: 1">
+											<input readonly style="width: 50px; color: white; text-align: right;background: #9ab3f0; cursor:pointer;" placeholder="20"
+												name="porComisiones" id="porComisiones"
+												ng-model="data.porcentajeComision" maxlength="5"
+												ng-click="mostrarDialogo(data.porcentajeComisionD, 4);"	
+												type="text" required="required" ng-show="usuarioDTO.rol.idRol!=37">{{usuarioDTO.rol.idRol===37?data.porcentajeComision:""}}%</input>
+										</div>
+										<span style="font-size: 17px;"></br> Comisiones</span>
+
+									</div>
+								</a>
+
+							</div>
+							
+							</div>
+
+							<div  class="col-sm-3" style="padding-left:30px">
+							
+							<p class="total">Ingreso Bruto: 100%</p>
+
+								
+								<section class="container_grafico">
+								
+								
+								<div class="grafico"
+									style="background: conic-gradient(var(--color_socios) {{data.porcentajeSociosInt}}%, var(--color_utilidad) {{data.porcentajeSociosInt}}% {{data.porcentajeSociosInt+data.porcentajeUtilidadInt}}%,var(--color_gasto) {{data.porcentajeSociosInt+data.porcentajeUtilidadInt}}% {{data.porcentajeSociosInt+data.porcentajeUtilidadInt+data.porcentajeGastoInt}}%, var(--color_comisiones) {{(data.porcentajeSociosInt+data.porcentajeUtilidadInt+data.porcentajeGastoInt)}}% 100%)"></div>
+							<div class="container_leyenda">
+										<span class="leyenda_all" > <span class="color_socios"></span>{{data.porcentajeSocios}} % Socios		</span>
+								 <span class="leyenda_all" >  <span class="color_gasto"></span> {{data.porcentajeGasto}} % Gasto		</span>
+								<span class="leyenda_all" >	 <span class="color_utilidad"></span>{{data.porcentajeUtilidad}} % Inversiones</span>							 
+									<span class="leyenda_all" > <span class="color_comisiones"></span>{{data.porcentajeComision}}% Comisiones</span>
+										
+								</div>
+								
+							</section>
+							
+
+							</div>
+
+						</div>
+		
+		
+				
+						
+					</div>
+
+				</body>
+
+
+
+
+
+
+
+
+
+			</form>
+		</panel>
+			<panel panel-class="panel-sky" style="align-items: center;"
+			heading="Detalle por Centro de Costos" 
+				ng-show ="mostrarDetalleCC">
+					<div class="row" align="right">
+								<button ng-json-export-excel data="gridlistCC" 
+								report-fields="{'centroCosto': 'CENTRO DE COSTOS', 'depositos': 'DEPOSITOS', 'disponible': 'DISPONIBLE',  
+								'ingresoBruto': 'INGRESO BRUTO', 'socios': 'SOCIOS', 'gasto': 'GASTO',  'utilidad': 'INVERSIONES', 'comisiones': 'COMISIONES' }"
+								filename =" 'REPORTE_DETALLE_CC' " 
+								separator="," class="css-class btn btn-sky">DESCARGAR REPORTE <span class="fa fa-download"></span></button>
+							</div>
+			<div class="table-responsive">
+				<table class="table" ng-table="tableDetalleCCParams" show-filter="true">
+					<tbody>		
+					<tr ng-repeat="row in $data">
+					<td data-title="'#'">{{$index+1}}</td>
+					<td data-title="'CC'" filter="{centroCosto: 'text'}" sortable="'centroCosto'">{{row.centroCosto}}</td>
+					<td data-title="'Dep&oacute;sitos'" align="right">{{row.depositos | currency}}</td>
+					<td data-title="'Disponible para dispersar'" align="right">{{row.disponible | currency}}</td>
+					<td data-title="'Ingreso Bruto'" align="right">{{row.ingresoBruto | currency}}</td>
+				    <td data-title="'Socios'" align="right">{{row.socios  | currency}}</td>
+				    <td data-title="'Gasto'" align="right">{{row.gasto  | currency}}</td>		   
+				    <td data-title="'Inversiones'" align="right">{{row.utilidad | currency}}</td>
+				    <td data-title="'Comisiones'" align="right">{{row.comisiones|currency}}</td>
+				</tr>					
+			</tbody>
+				</table>
+			</div>
+			</panel> 
+		</panel>
+		</div>
+		</div>
+			
+					
+					<div class="modal fade" tabindex="-1" role="dialog"
+						data-backdrop="static" id="modalAgregarPorcentaje"
+						aria-labelledby="myModalLabel">
+						<div class="modal-dialog modal-sm" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title">Porcentaje
+									</h4>
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<div class="col-md-12">
+											<label class="control-label">Porcentaje:<span class="ng-scope">*</span>
+											</label>
+											<div class="form-group">
+												<input  class="form-control" 
+													ng-model="data.variablePorcentaje" ng-required="true"
+													required="required"
+													oninput="this.value =this.value.replace(/[^0-9,.]/g, '').replace(/,/g, '.');"			
+													type="text" maxlength="11"
+													> </input>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn-brown btn"
+										data-dismiss="modal">CANCELAR</button>
+									<button type="button" class="btn-green btn"
+										ng-click="guardarPorcentaje(data.variablePorcentaje);"	
+										data-dismiss="modal">ACEPTAR</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
+		
+		</div>
+		

@@ -1,0 +1,349 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+
+			<panel panel-class="panel-sky" heading="Comisiones"> <panel-controls>
+			<panel-control-collapse></panel-control-collapse> </panel-controls> <br>
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>N&oacute;mina</th>
+							<th>Producto N&oacute;mina</th>
+							<th>Nominista</th>
+							<th>Acciones</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="nomCliente in gridNominaCliente">
+							<td>{{nomCliente.nombreNomina}}</td>
+							<td>{{nomCliente.catProductoNomina.descripcion}}</td>
+							<td>{{nomCliente.usuarioNominista.nombre}}
+								{{nomCliente.usuarioNominista.apellidoPaterno}}
+								{{nomCliente.usuarioNominista.apellidoMaterno}}</td>
+							<td align="center">
+								<!-- <a href="#/crm/actualiza-nomina" class="btn btn-success" tooltip="Ver detalle de la n&oacute;mina"><span class="glyphicon glyphicon-eye-open"></span></a>  -->
+								<button data-toggle="modal"
+									ng-click="seleccionarNominaComision(nomCliente)"
+									tooltip="Seleccionar n&oacute;mina " class="btn btn-info">
+									<span class="glyphicon glyphicon-pencil"></span>
+								</button> <!-- <button data-toggle="modal"  ng-click="eliminarNominaCliente(nomCliente.idNominaCliente)" tooltip="Eliminar n&oacute;mina " class="btn  btn-midnightblue"><span class="fa fa-trash"></span></button> -->
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			</panel>
+
+			<panel panel-class="panel-sky"
+				heading="Lista de pagos de comisi&oacute;n"
+				ng-show="mostrarPanelComisiones"> <panel-controls>
+			<panel-control-collapse></panel-control-collapse> </panel-controls>
+			<div class="row " align="right">
+				<a href="" class="btn btn-orange" ng-click="agregarComision()" ng-if="!inHabilitaEscritura">
+					<span class="fa fa-plus"></span> Agregar comisi&oacute;n
+				</a>
+			</div>
+			<br>
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>N&oacute;mina</th>
+							<th>Producto N&oacute;mina</th>
+							<th>Canal de venta</th>
+							<th>Comisionista</th>
+							<!-- <th>Princing</th>
+													<th>Formula Princing</th>
+													<th>Comisi&oacute;n</th>
+													<th>Formula Comisi&oacute;n</th> -->
+							<th>Acciones</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							ng-repeat="comision in gridNominaComisiones.gridNominaComisiones">
+							<td>{{comision.nominaCliente.nombreNomina}}</td>
+							<td>{{comision.esquema.descripcion}}</td>
+							<td>{{comision.canalVenta.descripcion}}</td>
+							<td>{{comision.usuario.nombreCompleto}}</td>
+							<!-- <td>{{comision.comisionPricing}}</td>
+													<td>{{comision.formulaPricing.descripcion}}</td>
+													<td>{{comision.comision}}</td>
+													<td>{{comision.formulaComision.descripcion}}</td> -->
+							<td align="center">
+								<button data-toggle="modal" ng-click="editarComision(comision);"
+									tooltip="Editar" class="btn btn-info">
+									<span class="glyphicon glyphicon-pencil"></span>
+								</button>
+								<button data-toggle="modal" ng-if="!inHabilitaEscritura"
+									ng-click="eliminarComision(comision);"
+									tooltip="Eliminar comisi&oacute;n"
+									class="btn  btn-midnightblue">
+									<span class="fa fa-trash"></span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			</panel>
+
+			<panel panel-class="panel-sky"
+				heading="Agregar configuraci&oacute;n de comisi&oacute;n"
+				ng-show="mostrarPanelAgregarComision"> <panel-controls>
+			<panel-control-collapse></panel-control-collapse> </panel-controls>
+			<form id="comisionForm" name="comisionForm">
+				<div class="row">
+					<div class="col-xs-3">
+						<input type="hidden" class="form-control"
+							ng-model="comision.idNominaClienteComision" /> <label
+							class="control-label">Nombre de n&oacute;mina*: </label> <input
+							type="text" class="form-control"
+							placeholder="Nombre de n&oacute;mina" name="nombreNomina"
+							id="nombreNomina"
+							ng-model="nominaClienteComisionesDto.nombreNomina"
+							required="required" disabled /> <span class="messages"
+							ng-show="comisionForm.nombreNomina.$submitted || comisionForm.nombreNomina.$touched">
+							<span ng-show="comisionForm.nombreNomina.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+
+
+					<div class="col-sm-3"
+						ng-show="nominaClienteComisionesDto.catProductoNomina.idCatGeneral == 304">
+						<label class="control-label">Esquema de comisi&oacute;n*:</label>
+						<select disabled class="form-control" name="esquema" id="esquema"
+							ng-model="comision.esquema.idCatGeneral">
+							<option value="">{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+							<option ng-repeat="esquema in catEsquema"
+								ng-selected="esquema.idCatGeneral == comision.esquema.idCatGeneral"
+								value="{{esquema.idCatGeneral}}">{{esquema.descripcion
+								| uppercase}}</option>
+						</select> <span class="messages"
+							ng-show="comisionForm.esquema.$submitted || comisionForm.esquema.$touched">
+							<span ng-show="comisionForm.esquema.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+					<div class="col-sm-3"
+						ng-show="nominaClienteComisionesDto.catProductoNomina.idCatGeneral == 306">
+						<label class="control-label">Esquema de comisi&oacute;n*:</label>
+						<select required class="form-control" name="esquema" id="esquema"
+							ng-model="comision.esquema.idCatGeneral">
+							<option value="">{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+							<option ng-repeat="esquema in catEsquema"
+								ng-selected="esquema.idCatGeneral == comision.esquema.idCatGeneral"
+								value="{{esquema.idCatGeneral}}">{{esquema.descripcion
+								| uppercase}}</option>
+						</select> <span class="messages"
+							ng-show="comisionForm.esquema.$submitted || comisionForm.esquema.$touched">
+							<span ng-show="comisionForm.esquema.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+					<div class="col-sm-3"
+						ng-show="nominaClienteComisionesDto.catProductoNomina.idCatGeneral == 9949">
+						<label class="control-label">Esquema de comisi&oacute;n*:</label>
+						<select required class="form-control" name="esquema" id="esquema"
+							ng-model="comision.esquema.idCatGeneral">
+							<option value="">{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+							<option ng-repeat="esquema in catEsquemaMaquila"
+								ng-selected="esquema.idCatGeneral == comision.esquema.idCatGeneral"
+								value="{{esquema.idCatGeneral}}">{{esquema.descripcion
+								| uppercase}}</option>
+						</select> <span class="messages"
+							ng-show="comisionForm.esquema.$submitted || comisionForm.esquema.$touched">
+							<span ng-show="comisionForm.esquema.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+					<div class="col-sm-3"
+						ng-show="nominaClienteComisionesDto.catProductoNomina.idCatGeneral == 9950">
+						<label class="control-label">Esquema de comisi&oacute;n*:</label>
+						<select required class="form-control" name="esquema" id="esquema"
+							ng-model="comision.esquema.idCatGeneral">
+							<option value="">{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+							<option ng-repeat="esquema in catEsquemaMixto"
+								ng-selected="esquema.idCatGeneral == comision.esquema.idCatGeneral"
+								value="{{esquema.idCatGeneral}}">{{esquema.descripcion
+								| uppercase}}</option>
+						</select> <span class="messages"
+							ng-show="comisionForm.esquema.$submitted || comisionForm.esquema.$touched">
+							<span ng-show="comisionForm.esquema.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+					<div class="col-xs-3">
+						<label class="control-label">Canal de venta*: </label> <select
+							required class="form-control" name="canalVenta" id="canalVenta"
+							ng-model="comision.canalVenta.idCatGeneral"
+							ng-change="obtenerUsuarioCanalVenta(comision.canalVenta.idCatGeneral);" ng-disabled="inHabilitaEscritura">
+							<option value="">{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+							<option ng-repeat="canal in tipoCanalVenta"
+								ng-selected="canal.idCatGeneral == comision.canalVenta.idCatGeneral"
+								value="{{canal.idCatGeneral}}">{{canal.descripcion |
+								uppercase}}</option>
+						</select>
+						<!-- ng-selected="canal.razonSocial == clienteTempDto.idGiroComercial" -->
+						<span class="messages"
+							ng-show="comisionForm.canalVenta.$submitted || comisionForm.canalVenta.$touched">
+							<span ng-show="comisionForm.canalVenta.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+
+					<div class="col-xs-3">
+						<label class="control-label">Comisionista*: </label> <select
+							required class="form-control" name="comisionista"
+							id="comisionista" ng-model="comision.usuario.idUsuario" ng-disabled="inHabilitaEscritura">
+							<option value="">{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+							<option ng-repeat="canal in tipoCanalVentaUsuario"
+								ng-selected="canal.idUsuario == comision.usuario.idUsuario"
+								value="{{canal.idUsuario}}">{{canal.nombreCompleto |
+								uppercase}}</option>
+						</select> <span class="messages"
+							ng-show="comisionForm.comisionista.$submitted || comisionForm.comisionista.$touched">
+							<span ng-show="comisionForm.comisionista.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-xs-3"
+						ng-show="comision.canalVenta.idCatGeneral == 61 || comision.canalVenta.idCatGeneral == 64">
+						<label class="control-label">% Pricing*: </label> <input
+							type="text" class="form-control" placeholder="% Pricing"  ng-disabled="inHabilitaEscritura"
+							name="nTelefono" ng-model="comision.comisionPricing"
+							maxlength="3"
+							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+						<!-- <span class="messages"
+												ng-show="medioContactoCEO.nTelefono.$submitted || medioContactoCEO.nTelefono.$touched">
+												<span ng-show="medioContactoCEO.nTelefono.$error.required">El
+													campo es obligatorio.</span> 
+											</span> -->
+					</div>
+
+					<div class="col-xs-5"
+						ng-show="comision.canalVenta.idCatGeneral == 61 || comision.canalVenta.idCatGeneral == 64">
+						<label class="control-label">F&oacute;rmula de Pricing*: </label>
+						<select disabled class="form-control" name="canalVenta"
+							id="canalVenta" ng-model="comision.formulaPricing.idCatGeneral"  ng-disabled="inHabilitaEscritura">
+							<option value="">{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+							<option ng-repeat="formulaPrincing in catFormulaPrincing"
+								value="{{formulaPrincing.idCatGeneral}}">{{formulaPrincing.descripcion
+								| uppercase}}</option>
+						</select>
+						<!-- <span class="messages"
+												ng-show="medioContactoCEO.nTelefono.$submitted || medioContactoCEO.nTelefono.$touched">
+												<span ng-show="medioContactoCEO.nTelefono.$error.required">El
+													campo es obligatorio.</span> 
+											</span> -->
+					</div>
+
+
+					<div class="col-xs-3"
+						ng-show="comision.canalVenta.idCatGeneral == 60 || comision.canalVenta.idCatGeneral == 63 
+										|| comision.canalVenta.idCatGeneral == 62">
+						<label class="control-label">% Comisi&oacute;n*: </label> <input
+							type="text" class="form-control" placeholder="% Comisi&oacute;n"
+							name="comision" ng-model="comision.comision" maxlength="3"  ng-disabled="inHabilitaEscritura"
+							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+						<!-- <span class="messages"
+												ng-show="medioContactoCEO.nTelefono.$submitted || medioContactoCEO.nTelefono.$touched">
+												<span ng-show="medioContactoCEO.nTelefono.$error.required">El
+													campo es obligatorio.</span> 
+											</span> -->
+					</div>
+
+					<div class="col-xs-3"
+						ng-show="comision.canalVenta.idCatGeneral == 65">
+						<label class="control-label">% Comisi&oacute;n*: </label> <select
+							class="form-control" name="porcentajeComision"
+							id="porcentajeComision"  ng-disabled="inHabilitaEscritura"  ng-disabled="inHabilitaEscritura"
+							ng-model="comision.porcentajeComision.idCatGeneral">
+							<option value="">{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+							<option ng-repeat="porcentaje in catPorcentajeComision"
+								value="{{porcentaje.idCatGeneral}}">{{porcentaje.descripcion
+								| uppercase}}</option>
+						</select>
+					</div>
+
+
+					<div class="col-xs-5"
+						ng-show="comision.canalVenta.idCatGeneral == 60 || comision.canalVenta.idCatGeneral == 63 
+										|| comision.canalVenta.idCatGeneral == 65 || comision.canalVenta.idCatGeneral == 62">
+						<label class="control-label">Formula de Comisi&oacute;n*:
+						</label> <select disabled class="form-control" name="canalVenta"
+							id="canalVenta" ng-model="comision.formulaComision.idCatGeneral">
+							<option value="">{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+							<option ng-repeat="formulaComision in catFormulaComision"
+								ng-selected="formulaComision.idCatGeneral == comision.formulaComision.idCatGeneral"
+								value="{{formulaComision.idCatGeneral}}">{{formulaComision.descripcion
+								| uppercase}}</option>
+						</select>
+						<!-- <span class="messages"
+												ng-show="medioContactoCEO.nTelefono.$submitted || medioContactoCEO.nTelefono.$touched">
+												<span ng-show="medioContactoCEO.nTelefono.$error.required">El
+													campo es obligatorio.</span> 
+											</span> -->
+					</div>
+				</div>
+				<br />
+				<div class="row" ng-show="comision.canalVenta.idCatGeneral == 65">
+					<div class="col-xs-3">
+						<label class="control-label">Fecha inicial de pago*: </label> <input
+							type="date" id="bitacoraFecha" name="bitacoraFecha"
+							class="form-control" name="input"
+							ng-model="comision.fechaInicioPago" placeholder="MM-dd-yyyy"
+							disabled /> <label class="control-label" style="color: red"
+							ng-if="comision.fechaFinPago == null">No se ha realizado
+							dispersi&oacute;n de primer pago</label>
+					</div>
+
+					<div class="col-xs-3">
+						<label class="control-label">Fecha final de pago*: </label> <input
+							type="date" id="bitacoraFecha" name="bitacoraFecha"
+							class="form-control" name="input"
+							ng-model="comision.fechaFinPago" placeholder="MM-dd-yyyy"
+							disabled /> <label class="control-label" style="color: red"
+							ng-if="comision.fechaFinPago == null">No se ha realizado
+							dispersi&oacute;n de primer pago</label>
+					</div>
+				</div>
+				<br />
+
+				<div class="row" align="right">
+					<br /> <a class="btn-danger btn " type="submit"
+						ng-click="cancelarAgregarComision();">Cancelar</a>
+
+					<button class="btn-orange btn " type="submit"
+						ng-disabled="comisionForm.$invalid" ng-if="!inHabilitaEscritura"
+						ng-show="comision.idNominaClienteComision != null"
+						ng-click="guardarComision(comision);">Actualizar</button>
+
+					<button class="btn-green btn " type="submit"
+						ng-show="comision.idNominaClienteComision == null"
+						ng-disabled="comisionForm.$invalid" ng-if="!inHabilitaEscritura"
+						ng-click="guardarComision(comision, comisionForm);">Agregar</button>
+				</div>
+
+			</form>
+			</panel>
+
+		</div>
+	</div>
+</div>

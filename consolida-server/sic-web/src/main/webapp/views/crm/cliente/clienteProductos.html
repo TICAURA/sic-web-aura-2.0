@@ -1,0 +1,41 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<panel panel-class="panel-sky" heading="Productos"> <panel-controls>
+			<panel-control-collapse></panel-control-collapse> </panel-controls>
+			<div class="row">
+
+				<div class="table-responsive">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Prestadora de servicio</th>
+								<th>C&oacute;digo SAT</th>
+								<th>Descripci&oacute;n SAT</th>
+								<th>Descripci&oacute;n producto consolida</th>
+								<th>Selecci&oacute;n</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							<tr
+								ng-repeat="producto in clienteProductoDto.listaPrestadoraProductos">
+								<td>{{producto.prestadoraServicioDto.razonSocial}}</td>
+								<td>{{producto.clave}}</td>
+								<td>{{producto.descripcion | uppercase}}</td>
+								<td>{{producto.descripcionProductoConsolida | uppercase}}</td>
+								<td><input type="checkbox" ng-model="producto.indEstatus" ng-disabled="inHabilitaEscritura"
+									name="producto.indEstatus" class="js-switch"
+									ng-change="guardarProducto(producto)"
+									ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+
+			</div>
+			</panel>
+		</div>
+	</div>
+</div>

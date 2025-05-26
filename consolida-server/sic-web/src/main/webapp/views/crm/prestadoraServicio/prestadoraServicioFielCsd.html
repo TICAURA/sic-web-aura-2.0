@@ -1,0 +1,172 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<panel panel-class="panel-sky" heading="Fiel">
+			<form id="fielForm" name="fielForm">
+			
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead class="thead-dark">
+						<tr>
+							<th>Documento</th>
+							<th>Estatus</th>
+							<th>Nombre del archivo</th>
+							<th ng-if="!inHabilitaEscritura">Acci&oacute;n</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="documento in documentosPrestadoraGenerico" ng-if="documento.definicion.idDefinicionDocumento == 11 || documento.definicion.idDefinicionDocumento == 12">
+							<td>{{documento.definicion.nombreDocumento}}</td>
+							<td>{{documento.idCMS >= 1?'Documento cargado': 'Documento no cargado'}}
+								<span class="glyphicon glyphicon-ok" style="color:green" ng-show="documento.idCMS >= 1"></span>
+								<span class="glyphicon glyphicon-remove" style="color:brown" ng-show="documento.idCMS == 0"></span>
+							</td>
+							<td>{{documento.nombreArchivo}}</td>
+							<td align="center" ng-if="!inHabilitaEscritura">
+								<button data-toggle="modal"  ng-click="mostrarModalDocumentoPrestadoraFielCsd(documento)" ng-show="documento.idCMS == 0" tooltip="Guardar documento" class="btn btn-indigo">
+									<span class="glyphicon glyphicon-floppy-open"></span>
+								</button>
+						    	<button data-toggle="modal"  ng-click="descargarDocumentoByIdCMS(documento.idCMS)" ng-show="documento.idCMS >= 1" tooltip="Descargar documento" class="btn btn-alizarin" >
+						    		<span class="glyphicon glyphicon-cloud-download"></span>
+						    	</button>
+						    	
+						    	<button data-toggle="modal"  ng-click="eliminarDocumentoFielCsd(documento)" ng-show="documento.idCMS >= 1"tooltip="Eliminar documento" class="btn  btn-midnightblue">
+						    		<span class="glyphicon glyphicon-trash"></span>
+						    	</button>
+								
+							</td>
+
+						</tr>
+					</tbody>
+				</table>
+				</div>
+				<div class="row">
+				<div class="col-xs-3">
+						<label class="control-label">Contrase&ntilde;a
+							certificado FIEL*: </label> <input type="password" class="form-control"
+							ng-model="prestadoraServicioDocumento.passwordFiel"
+							placeholder="Contrase&ntilde;a certificado" maxlength="44"
+							name="contraFiel" required> <span class="messages"
+							ng-show="fielForm.contraFiel.$submitted || fielForm.contraFiel.$touched">
+							<span ng-show="fielForm.contraFiel.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+					</div>
+			
+				<br>
+				<div class="row " align="right">
+					<button class="btn-green btn " type="submit" ng-if="!inHabilitaEscritura"
+						ng-disabled="fielForm.$invalid" ng-click=guardarArchivosFiel();>Guardar contrase&ntilde;a</button>
+				</div>
+				</form>
+			</panel>
+			
+			
+			<panel panel-class="panel-sky" heading="CSD">
+			<form id="fielForm" name="fielForm">
+			
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead class="thead-dark">
+						<tr>
+							<th>Documento</th>
+							<th>Estatus</th>
+							<th>Nombre del archivo</th>
+							<th ng-if="!inHabilitaEscritura">Acci&oacute;n</th>
+
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr ng-repeat="documento in documentosPrestadoraGenerico" ng-if="documento.definicion.idDefinicionDocumento == 13 || documento.definicion.idDefinicionDocumento == 14">
+							<td>{{documento.definicion.nombreDocumento}}</td>
+							<td>{{documento.idCMS >= 1?'Documento cargado': 'Documento no cargado'}}
+								<span class="glyphicon glyphicon-ok" style="color:green" ng-show="documento.idCMS >= 1"></span>
+								<span class="glyphicon glyphicon-remove" style="color:brown" ng-show="documento.idCMS == 0"></span>
+							</td>
+							<td>{{documento.nombreArchivo}}</td>
+							<td align="center" ng-if="!inHabilitaEscritura">								
+								<button data-toggle="modal"  ng-click="mostrarModalDocumentoPrestadoraFielCsd(documento)" ng-show="documento.idCMS == 0" tooltip="Guardar documento" class="btn btn-indigo">
+									<span class="glyphicon glyphicon-floppy-open"></span>
+								</button>
+						    	<button data-toggle="modal"  ng-click="descargarDocumentoByIdCMS(documento.idCMS)" ng-show="documento.idCMS >= 1" tooltip="Descargar documento" class="btn btn-alizarin" >
+						    		<span class="glyphicon glyphicon-cloud-download"></span>
+						    	</button>
+						    	
+						    	<button data-toggle="modal"  ng-click="eliminarDocumentoFielCsd(documento)" ng-show="documento.idCMS >= 1"tooltip="Eliminar documento" class="btn  btn-midnightblue">
+						    		<span class="glyphicon glyphicon-trash"></span>
+						    	</button>
+								
+							</td>
+
+						</tr>
+					</tbody>
+				</table>
+				</div>
+				<div class="row">
+					<div class="col-xs-3">
+						<label class="control-label">Contrase&ntilde;a
+							certificado CSD*: </label> <input type="password" class="form-control"
+							ng-model="prestadoraServicioDocumento.passwordCsd"
+							placeholder="Contrase&ntilde;a certificado" maxlength="44"
+							name="contraCsd" required> <span class="messages"
+							ng-show="fielForm.contraCsd.$submitted || fielForm.contraCsd.$touched">
+							<span ng-show="fielForm.contraCsd.$error.required">El campo
+								es obligatorio.</span>
+						</span>
+					</div>
+					</div>
+			
+				<br>
+				<div class="row " align="right">
+					<button class="btn-green btn " type="submit" ng-if="!inHabilitaEscritura"
+						ng-disabled="fielForm.$invalid" ng-click=guardarArchivosCsd();>Guardar contrase&ntilde;a</button>
+				</div>
+				</form>
+			</panel>
+			
+			
+		</div>
+		
+		<div class="modal fade" id="agregarDocumentoPrestadoraFielCsd" role="dialog"  data-backdrop="static" data-keyboard="false" tabindex="-1">
+         <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document" >
+             <div class="modal-content" >
+                 <div class="modal-header">
+                     <h5 class="modal-title">Documento {{tipoDoc}} prestadora</h5>
+                 </div>
+                 <form id="modalCatSatForm" name="modalDocPrestadora" novalidate>
+                 <div class="modal-body">
+                 
+                 	<div class="row">
+                 		<div class="col-md-12">
+                 		
+                 		<input class="btn btn-info-alt form-control" required name="fielKeyCsd"
+							id="fielKeyCsd" type="file" accept=".{{tipoDoc}}"
+							onchange="angular.element(this).scope().fileChangedFielCsd(this)"
+							class="filestyle"
+							data-buttonText="archivoPrestadora.nombreArchivo" />
+							
+						<span class="messages" ng-show="modalDocPrestadora.$submitted || modalDocPrestadora.fielKeyCsd.$touched">
+							<span ng-show="modalDocPrestadora.fielKeyCsd.$error.required">
+								El campo es obligatorio.
+							</span> 
+						</span>	
+                 		</div>
+                 	</div>
+				</div>
+				
+				<br/>
+		                    
+                 <div class="modal-footer">
+                    <button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>
+                    <button type="button" class="btn-green btn" ng-click="guardarDocumentoPrestadoraFielCsd()">GUARDAR</button>
+                </div>
+                </form>
+              </div>
+         </div>
+     </div>
+		
+	</div>
+</div>

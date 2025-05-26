@@ -1,0 +1,102 @@
+<style>
+#scrollable-area {
+  margin: auto;
+    width: 100%;
+    height: 140%;
+    border: 2px solid #ccc;
+    overflow-y: scroll; /* <-- here is what is important*/
+}
+</style>
+
+<div class="container-fluid"">
+	<div id="page-heading">
+		<ol class="breadcrumb">
+			<li><a href="#/">CRM</a></li>
+			<li>HOME</li>
+			<li class="active">CLIENTES</li>
+		</ol>
+
+	</div>
+
+	<div class="container-fluid"
+		ng-controller="consultaClienteFinalController">
+		<div class="row">
+			<div class="col-md-12">
+				<panel panel-class="panel-sky" heading="Busqueda de clientes">
+				<panel-controls> <panel-control-collapse></panel-control-collapse>
+				
+				<button class="btn btn-orange" ng-show="inHabilitaEscritura" name="autorizarPros" type="submit" ng-click="autorizarProspecto();"><span class="fa fa-plus"></span>AUTORIZAR PROSPECTO
+				</button> &nbsp;&nbsp;
+				<button class="btn btn-green" ng-show="inHabilitaEscritura" name="agregarClie" type="submit" ng-click="agregarCliente();"><span class="fa fa-plus"></span>AGREGAR CLIENTE
+				</button> </panel-controls>
+				<form id="buscarClienteForm" name="buscarClienteForm">
+			 <!--  
+					<div class="row">
+						<div class="col-xs-5">
+							<label class="control-label">RFC/Nombre/Raz&oacute;n Social: </label>
+						    <input
+								type="text" class="form-control"
+								placeholder="RFC/Nombre/Raz&oacute;n Social"
+								name="buscarNombrerazonSocial" ng-model="gridProspectosAut.rfc" maxlength= "50" onkeyup="javascript:this.value=this.value.toUpperCase();>								
+												
+									</div> 
+
+		                        <div class="col-xs-1">
+							<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							<button class="btn-primary btn btn-lg" ng-click="buscarCliente();" type="submit">
+								<span class="fa fa-search"></span> BUSCAR
+							</button>
+						</div>						
+					</div>
+					-->
+					<div class="row">
+                        <div class="col-xs-3">
+                            <label class="control-label">Grupo o nombre comercial/Nombre/Raz&oacute;n Social: </label> 
+                            <!--<input type="text" class="form-control" placeholder="RFC">-->
+                            <input
+                                placeholder="RFC/Nombre/Raz&oacute;n Social" name="buscarNombrerazonSocial"
+                                ng-model="gridProspectosAut.rfc" maxlength="50" onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                class="form-control" type="text"/> 
+
+                        </div> 
+
+                        <div class="col-xs-1">
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <button class="btn-primary btn btn-lg" ng-click="buscarCliente();" type="submit">
+                                <span class="fa fa-search"></span> BUSCAR
+                            </button>
+                        </div>
+                    </div>
+					
+				</form>
+
+				</panel>
+
+				<panel panel-class="panel-sky" heading="Resultado de clientes">
+				<panel-controls> <panel-control-collapse></panel-control-collapse>
+				</panel-controls>
+				<div class="table-responsive" id="scrollable-area">
+					<table ng-table="tableParams"  class="table table-striped" show-filter="true">
+						<tbody>
+				          <tr ng-repeat="row in $data">
+				            <td data-title="'Grupo o nombre comercial'" filter="{descripcionRazonSocial: 'text'}" sortable="'catGrupo.descripcionRazonSocial'">{{ row.descripcionRazonSocial | uppercase }}</td>
+				            <td data-title="'Nombre o raz&oacute;n social'" filter="{nombreRazonSocial: 'text'}" sortable="'nombreRazonSocial'">{{row.nombreRazonSocial}}</td>
+				            <td data-title="'Tipo'" filter="{descripcionTipoPersona: 'text'}" sortable="'descripcionTipoPersona'">{{ row.descripcionTipoPersona }}</td>
+				            <td data-title="'&iquest;Es activo?'" sortable="'esActivo'" >{{ row.esActivo === true ? 'Si' : 'No' }}</td>
+				            <td data-title="'Acciones'">
+				            	<button data-toggle="modal"  ng-click="enviarSeccionesCliente(row)" tooltip="Editar" class="btn btn-info" ><span class="fa fa-clipboard"></span></button>
+								<button data-toggle="modal" ng-show="inHabilitaEscritura" ng-click="eliminarCliente(row.idCliente)" tooltip="Eliminar cliente " class="btn  btn-midnightblue"><span class="fa fa-trash"></span></button>
+                            </td>
+				          </tr>
+				        </tbody>
+					</table>
+
+				</div>
+				</panel>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<!-- container-fluid -->

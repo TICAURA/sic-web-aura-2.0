@@ -1,0 +1,229 @@
+<div ng-controller="serieFolioController">
+<br>
+	<div class="container-fluid">
+		<div id="page-heading">
+			<ol class="breadcrumb">
+				<li><a href="#/">PPP</a></li>
+				<li class="active">Serie y Folio</li>
+			</ol>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<form id="serieForm" name="serieForm" novalidate>
+					<panel panel-class="panel-info" heading="Series"> <panel-controls>
+					<panel-control-collapse></panel-control-collapse> </panel-controls>
+					<div><H5><strong>CONSULTA DE SERIES REGISTRADAS</strong></H5></div>
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Centro de costos</th>
+									<th>Tipo comprobante</th>
+									<th>Nombre de la serie</th>
+									<th>Folio inicial</th>
+									<th>Inicio Vigencia</th>
+									<th>Fin Vigencia</th>
+									<th>Activo</th>
+									<th>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr  ng-repeat="serie in gridSeries ">
+									<td align="left">{{serie.catCelula.descripcion}}</td>
+									<td align="left">{{serie.catTipoComprobante.descripcion}}</td>
+									<td align="left">{{serie.nombreSerie}}</td>
+									<td align="right">{{serie.folioInicial}}</td>
+									<td align="right">{{serie.fechaInicioVigenciaFormato}}</td>
+									<td align="right">{{serie.fechaFinVigenciaFormato}}</td>
+							
+									<td align="right">{{serie.idEstatusSerie == 1? "Activa": serie.idEstatusSerie == 0 ?"Por iniciar": "Caducada" }}</td>
+									<td align="center">
+										<a ng-click="actualizarSerie(serie)"class="glyphicon glyphicon-pencil" title="Actualizar serie"></a>
+										<a ng-click="eliminarSerie(serie.idCatSerie)"class="glyphicon glyphicon-remove" title="Eliminar serie"></a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					</panel>
+					
+					<panel panel-class="panel-info" heading="Registro de serie y folio"> 
+					<panel-controls>
+						<panel-control-collapse></panel-control-collapse> 
+					</panel-controls>
+					<div class="row">		
+						<div class="row">
+							<div class="col-sm-4">
+									<div class="form-group" >
+										<label class="control-label">Centro de costos*:</label> 
+										<select class="form-control" 
+												name="celula" 
+												id="celula"
+												ng-model="catSerieDto.catCelula"
+												ng-options="celula.descripcion for celula in comboCelula | orderBy:'celula.descripcion' track by celula.idCatGeneral"	
+												ng-required="true"
+												placeholder="tipoComprobante">
+												<option value="" class="">-- SELECCIONA UNA OPCI&Oacute;N --</option>
+										</select>
+									
+									 <span class="messages"
+										ng-show="serieForm.$submitted || serieForm.celula.$touched">
+										<span ng-show="serieForm.celula.$error.required">
+											Este campo es obligatorio.</span>
+									</span>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="form-group" >
+										<label class="control-label">Tipo de comprobante*:</label> 
+										<select class="form-control" 
+												name="tipoComprobante" 
+												id="tipoComprobante"
+												ng-model="catSerieDto.catTipoComprobante"
+												ng-options="tipoComp.idMasdescripcion for tipoComp in comboTipoComprobante | orderBy:'tipoComp.descripcion' track by tipoComp.idCatGeneral"	
+												required="required"
+												placeholder="tipoComprobante">
+												<option value="" class="">-- SELECCIONA UNA OPCI&Oacute;N --</option>
+										</select>
+										<span class="messages"
+										ng-show="serieForm.$submitted || serieForm.tipoComprobante.$touched">
+										<span ng-show="serieForm.tipoComprobante.$error.required">
+											Este campo es obligatorio.</span>
+									</span>
+									</div>
+								</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-2">
+								<label class="control-label">Nombre de la serie*: </label> 
+								<input type="textArea" class="form-control" name="nombreSerie"
+									placeholder="Nombre serie" ng-model="catSerieDto.nombreSerie"
+									required="required" maxlength="45" min="3"  onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+								 <span class="messages"
+										ng-show="serieForm.$submitted || serieForm.nombreSerie.$touched">
+										<span ng-show="serieForm.nombreSerie.$error.required">
+											Este campo es obligatorio.</span>
+									</span>
+							</div>
+							
+							
+								<div class="col-xs-2">
+								
+							<label class="control-label">Vigencia Inicio: </label> 
+							<input
+									placeholder="" name="vigenciaInicio"
+									ng-model="fechaInicioVigencia.value" 
+									class="form-control" type="date" required="required"> 
+								
+							
+							<span class="messages" ng-show="serieForm.$submitted || serieForm.vigenciaInicio.$touched">
+       				        <span ng-show="vigenciaInicio.$error.required">El campo es obligatorio.</span>
+                            <span ng-show="vigenciaInicio.$error.required === true ?false:!serieForm.vigenciaInicio.$valid">
+                              Fecha incorrecta.</span>
+                             </span>
+							
+						</div>
+						<div class="col-xs-2">
+							<label class="control-label">Vigencia Fin: </label> 
+							<input
+									placeholder="" name="vigenciaFin"
+									ng-model="fechaFinVigencia.value" 
+									class="form-control" type="date" required="required" min="2018-01-01"> 
+							
+							<span class="messages" ng-show="serieForm.$submitted || serieForm.vigenciaFin.$touched">
+       				        <span ng-show="vigenciaFin.$error.required">El campo es obligatorio.</span>
+                            <span ng-show="vigenciaFin.$error.required === true ?false:!serieForm.vigenciaFin.$valid">
+                              Fecha incorrecta.</span>
+                             </span>
+							
+						</div>    
+							
+						</div>
+					</div>
+					<br>
+					<div class="row" align="right">
+							<button type="submit" ng-show="IsVisibleBotonGuardarSerie" class="btn-green btn" name="guardarSerie"  ng-click="validarSerie(serieForm);">GUARDAR</button>
+							<button type="submit" ng-show="IsVisibleBotonActualizarSerie" class="btn btn-orange" name="actualizarDatosSerie"  ng-click="actualizarDatosSerie(serieForm);">ACTUALIZAR</button>
+							<button type="submit" ng-show="IsVisibleBotonActualizarSerie" class="btn-brown btn" name="cancelarSerie" ng-click="cancelarActualizacionSerie(serieForm);">CANCELAR ACTUALIZACI&Oacute;N</button>
+					</div>
+					
+					</panel-controls>
+					
+				</form>
+				
+				<!-- 
+				<form id="folioForm" name="folioForm" novalidate>
+					<panel panel-class="panel-info" heading="Folios"> <panel-controls>
+					<panel-control-collapse></panel-control-collapse> </panel-controls>
+					<div><H5><strong>CONSULTA DE FOLIOS REGISTRADOS</strong></H5></div>
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th style="padding-right: 100px">Clave (serie)</th>
+									<th style="padding-right: 100px">Descripci&oacute;n (serie)</th>
+									<th style="padding-right: 100px">Color (serie)</th>
+									<th style="padding-right: 100px">N&uacute;mero folio</th>
+									<th>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr  ng-repeat="folio in gridFolios ">
+									<td align="left">{{folio.catSerieDto.clave}}</td>
+									<td align="left">{{folio.catSerieDto.descripcion}}</td>
+									<td align="left">{{folio.catSerieDto.color}}</td>
+									<td align="left">{{folio.numeroFolio}}</td>
+									<td align="center">
+										<a ng-click="actualizarFolio(folio)"class="glyphicon glyphicon-pencil" title="Actualizar folio"></a>
+										<a ng-click="eliminarFolio(folio.idCatFolio)"class="glyphicon glyphicon-remove" title="Eliminar folio"></a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="row">		
+						<div><H5><strong>REGISTRO DE FOLIO</strong></H5></div>
+						<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group" >
+								<label class="control-label">Serie*:</label> 
+								<select class="form-control" 
+										name="serie" 
+										id="serie"
+										ng-model="catFolioDto.catSerieDto"
+										ng-options="series.descripcion for series in listaCatSerie | orderBy:'series.descripcion' track by series.idCatSerie"	
+										ng-required="true"
+										placeholder="Serie">
+										<option value="" class="">-- SELECCIONA UNA OPCI&Oacute;N --</option>
+								</select>
+								<div ng-messages="frmInfSolicitud.area.$error"
+									ng-show="clienteForm.celula.$dirty && clienteForm.celula.$invalid">
+									<small class="form-text-error" ng-message="required">
+									Este campo es obligatorio</small>
+								</div>
+							</div>
+						</div>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-xs-3">
+								<label class="control-label">N&uacute;mero de folio*: </label> 
+								<input type="textArea" class="form-control" name="numeroFolio"
+									placeholder="N&uacute;mero folio" ng-model="catFolioDto.numeroFolio"
+									required="required" maxlength="45" min="1"  onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row" align="right">
+							<button type="submit" ng-show="IsVisibleBotonGuardarFolio" class="btn-green btn" name="guardarFolio"  ng-click="guardarFolio();">GUARDAR</button>
+							<button type="submit" ng-show="IsVisibleBotonActualizarFolio" class="btn btn-orange" name="actualizarDatosFolio"  ng-click="actualizarDatosFolio();">ACTUALIZAR</button>
+							<button type="submit" ng-show="IsVisibleBotonActualizarFolio" class="btn-brown btn" name="cancelarFolio" ng-click="cancelarActualizacionFolio();">CANCELAR ACTUALIZACI&Oacute;N</button>
+					</div>
+					</panel>
+				</form>
+				 -->
+			</div>
+		</div>
+	</div>
+</div>

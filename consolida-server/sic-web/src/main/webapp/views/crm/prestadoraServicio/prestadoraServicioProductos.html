@@ -1,0 +1,191 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<panel panel-class="panel-sky" heading="Lista de Productos">
+			<div class="row" align="right">
+				<button class="btn-orange btn " type="submit"
+					ng-click=mostrarPanelAgregarProducto();>Agregar producto</button>
+			</div>
+			<br />
+			<div class="row">
+
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>C&oacute;digo SAT</th>
+								<th>Descripci&oacute;n SAT</th>
+								<th>Producto (consolida)</th>
+								<th>Acciones</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							<tr
+								ng-repeat="producto in prestadoraServicioDto.prestadoraServicioProducto">
+								<td>{{producto.clave}}</td>
+								<td>{{producto.descripcion}}</td>
+								<td>{{producto.descripcionProductoConsolida}}</td>
+								<td align="center">
+									<button data-toggle="modal" ng-click="editarProducto(producto)"
+										tooltip="Editar producto" class="btn btn-success">
+										<span class="glyphicon glyphicon-pencil"></span>
+									</button>
+
+									<button data-toggle="modal"
+										ng-click="eliminarProducto(producto)"
+										tooltip="Eliminar producto" class="btn  btn-midnightblue">
+										<span class="fa fa-trash"></span>
+									</button>
+								</td>
+
+
+
+
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			</panel>
+
+
+			<panel panel-class="panel-sky" heading="Agregar Productos" ng-show="panelAgregarProducto" id="panelAgregarProducto" name="panelAgregarProducto">
+			<form id="productoForm" name="productoForm" novalidate>
+				<!-- <div class="row">
+									<div class="col-xs-12" align="right">
+									<button class="btn-orange btn " type="submit" 
+										ng-click=mostrarModalCatSat();>Ver/Agregar cat&aacute;logo SAT</button>
+									</div>
+									</div> 
+								<br/>-->
+				<div class="row">
+					<div class="col-xs-10">
+						<input type="hidden" class="form-control"
+							ng-model="prestadoraServicioProductoDto.idCatGeneral"
+							name="idCodigoSat" /> <label class="control-label">C&oacute;digo
+							SAT*:</label> <select class="form-control" name="entidad_federativa"
+							id="idEntidadFederativa"
+							ng-model="prestadoraServicioProductoDto.clave"
+							ng-change="obtenerCatProductoSat(prestadoraServicioProductoDto.clave)">
+							<option value="">{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+							<option
+								ng-repeat="catSat in prestadoraServicioProductoCatSatDto.catSat"
+								ng-selected="catSat.idCatGeneral == prestadoraServicioProductoDto.clave"
+								value="{{catSat.clave}}">{{catSat.clave}} -
+								{{catSat.descripcion | uppercase}}</option>
+						</select> <span class="messages"
+							ng-show="productoForm.clave.$submitted || productoForm.clave.$touched">
+							<span ng-show="productoForm.clave.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-xs-9">
+						<label class="control-label">Producto (consolida)*:</label> <input
+							type="text" class="form-control"
+							ng-model="prestadoraServicioProductoDto.descripcionProductoConsolida"
+							placeholder="Producto (consolida)" name="productoConsolida"
+							required="required" maxlength="99" />
+					</div>
+				</div>
+			</form>
+			<br />
+			<!-- Inicia codigo para boton agregar descripcion --> <br />
+			<div class="row " align="right">
+				<a class="btn-danger btn " type="submit"
+					ng-click=limpiarFormProducto(productoForm);>Cancelar</a>
+
+				<button class="btn-orange btn " type="submit"
+					ng-disabled="productoForm.$invalid"
+					ng-show="prestadoraServicioProductoDto.idPrestadoraServicioProducto != null"
+					ng-click=guardarProducto(productoForm);>Actualizar</button>
+
+				<button class="btn-green btn " type="submit"
+					ng-disabled="productoForm.$invalid"
+					ng-show="prestadoraServicioProductoDto.idPrestadoraServicioProducto == null"
+					ng-click=guardarProducto(productoForm);>Agregar</button>
+			</div>
+
+
+
+			<!-- <div class="modal fade" id="agregarCodigoSat" role="dialog"  data-backdrop="static" data-keyboard="false" tabindex="-1">
+                            <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document" >
+                                <div class="modal-content" >
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">C&Oacute;DIGOS SAT</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                    <form id="modalCatSatForm" name="modalCatSatForm" novalidate>
+                                    <div class="col-xs-12" align="right">
+                                    <button class="btn-orange btn"
+										ng-click=mostrarAgregarCatSat();>Agregar c&oacute;digo SAT</button>
+                                    </div>
+                                    
+                                   <div class="col-xs-12" ng-show="agregarCatSat">
+									<div class="row">
+									<div class="col-xs-3">
+									<label class="control-label">C&oacute;digo de Producto SAT*:</label>
+										<input type="text" class="form-control" ng-model="productoSat.clave"
+											placeholder="Ingrese c&oacute;digo SAT" maxlength="8" name ="codigoSat" id="codigoSat" required
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" min="8"/>
+									<span class="messages" ng-show="modalCatSatForm.codigoSat.$submitted || modalCatSatForm.codigoSat.$touched">
+                                            <span ng-show="modalCatSatForm.codigoSat.$error.required">El campo es obligatorio.</span>
+                                    </span>   
+									</div>
+
+									<div class="col-xs-9">
+										<label class="control-label">Descripci&oacute;n producto SAT*:</label>
+										<input type="text" class="form-control" ng-model="productoSat.descripcion" id="catSatDescripcion" name="catSatDescripcion"
+											placeholder="Descripci&oacute;n producto SAT" name ="catSatDescripcion" required="required" maxlength="90" />
+									<span class="messages" ng-show="modalCatSatForm.catSatDescripcion.$submitted || modalCatSatForm.catSatDescripcion.$touched">
+                                            <span ng-show="modalCatSatForm.catSatDescripcion.$error.required">El campo es obligatorio.</span>
+                                    </span>   
+									</div>
+									</div>
+									<br/>
+								<div class="row " align="right">
+										<button class="btn-danger btn " type="submit"
+										ng-click=cancelarAgregarCodigoSat();>Cancelar</button>
+										
+										<button class="btn-green btn " type="submit" ng-disabled="modalCatSatForm.$invalid"
+										ng-click=guardarProductoSat(productoSat);>Agregar</button>
+								</div>
+								</form>
+									</div>
+									
+									<br/>
+                                    
+                                    <div class="col-xs-12" style="height: 900px;overflow-y: auto;">
+                                            <div class="table-responsive">
+											<table class="table">
+												<thead>
+													<tr>
+														<th>C&oacute;digo SAT</th>
+														<th>Descripci&oacute;n SAT</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat="producto in prestadoraServicioProductoCatSatDto.catSat">
+														<td>{{producto.clave}}</td>
+														<td>{{producto.descripcion}}</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+                                   </div>
+									
+                                    </div>
+                                    <div class="modal-footer">
+                                       <button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>
+                                       <button type="submit" class="btn-green btn" ng-click="guardarNuevoGrupo()">GUARDAR GRUPO</button>
+                                    </div>
+                                </div>
+                            </div> --> </panel>
+		</div>
+	</div>
+</div>

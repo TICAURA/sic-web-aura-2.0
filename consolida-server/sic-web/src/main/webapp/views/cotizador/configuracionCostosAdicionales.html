@@ -1,0 +1,58 @@
+<div class="container-fluid">
+	<div ng-controller="costosAdicionalesController">
+	    <div id="page-heading">
+		    <ol class="breadcrumb">
+		    	<li><a href="#/">Menu principal</a></li>
+		        <li class="active">Costos adicionales</li>
+		    </ol>
+		</div>
+        <div class="row">
+            <div class="col-md-12">
+                <panel panel-class="panel-info" heading="Costos adicionales">
+                <panel-controls> <panel-control-collapse></panel-control-collapse> </panel-controls>
+                    <form id="costosAdicionalesForm" name="costosAdicionalesForm">
+                        <div class="row pad-b">
+                            <div class="col-xs-4">
+								<label class="control-label" for="valorTimbre">Valor timbre: </label> 
+								<input type="text" id="valorTimbre" name="valorTimbre" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15"
+									placeholder="Valor timbre" ng-model="catalogosCostosAdicionalesDTO.catValorTimbrado.valor" />
+									<span ng-show="costosAdicionalesForm.valorTimbre.$error.pattern">Formato moneda 00.00</span>
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label" for="valorSpei">Valor SPEI: </label> 
+								<input type="text" id="valorSpei" name="valorSpei" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15"
+									placeholder="valor SPEI" ng-model="catalogosCostosAdicionalesDTO.catValorSpei.valor" />
+									<span ng-show="costosAdicionalesForm.valorSpei.$error.pattern">Formato moneda 00.00</span>
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label" for="costoEstrategia">% Costo estrategia: </label> 
+								<input type="text" id="costoEstrategia" name="costoEstrategia" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,15})?$/" maxlength="15"
+									placeholder="% Costo estrategia" ng-model="catalogosCostosAdicionalesDTO.catPorcEstrategia.valor" />
+									<span ng-show="costosAdicionalesForm.costoEstrategia.$error.pattern">Formato porcentaje</span>
+							</div>
+						</div>
+						<div class="row pad-b">
+							<div class="col-xs-4">
+								<label class="control-label" for="costoIndirecto">% Costo indirecto: </label> 
+								<input type="text" id="costoIndirecto" name="costoIndirecto" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,15})?$/" maxlength="15"
+									placeholder="% Costo indirecto" ng-model="catalogosCostosAdicionalesDTO.catPorcIndirectos.valor" />
+									<span ng-show="costosAdicionalesForm.costoIndirecto.$error.pattern">Formato porcentaje</span>
+								
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label" for="catPorcPromotorImss">% Promotor IMSS: </label> 
+								<input type="text" id="catPorcPromotorImss" name="catPorcPromotorImss" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,15})?$/" maxlength="15"
+									placeholder="% Costo indirecto" ng-model="catalogosCostosAdicionalesDTO.catPorcPromotorImss.valor" />
+									<span ng-show="costosAdicionalesForm.catPorcPromotorImss.$error.pattern">Formato porcentaje</span>
+								
+							</div>
+                        </div>
+                        <div class="row" align="center" style="padding-top: 25px;">
+                            <button type="submit" class="btn-green btn " ng-click="guardarCostosAdicionales()" > <span class="fa fa-gears"/> Editar valores</button>
+                        </div>
+                    </form>
+                </panel>        	
+    		</div>
+        </div>
+</div>
+</div>

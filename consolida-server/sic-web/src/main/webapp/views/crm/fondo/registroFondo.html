@@ -1,0 +1,320 @@
+<div class="container-fluid" ng-controller="registroFondoController">
+    <div id="page-heading">
+        <ol class="breadcrumb">
+            <li><a href="#/">CRM</a></li>
+            <li><a href="#/crm/clientes">Fondos</a></li>
+            <li class="active">Creaci&oacute;n fondos</li>
+        </ol>
+
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <panel panel-class="panel-primary" heading="Fondo">
+                    <panel-controls>
+                        <panel-control-collapse></panel-control-collapse>
+                    </panel-controls>
+                    <form id="clieneTempForm">
+                        <div class="row">
+                            <b><H5>Datos Generales del Fondo</H5></b>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <label class="control-label">Nombre o Raz&oacute;n social*: </label>
+                                <input type="text" class="form-control" placeholder="Raz&oacute;n social" ng-model="celulaDto.nombreCelula" required="required">
+                            </div>
+
+                            <div class="col-xs-2">
+                                <label class="control-label">RFC*: </label>
+                                <input type="text" class="form-control" placeholder="RFC" ng-model="celulaDto.rfcCelula" required="required" maxlength="15" min="15" required="required" ng-pattern="/^([A-Z�&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label class="control-label">Domicilio fiscal*: </label>
+                                <input type="text" class="form-control" placeholder="Domicilio fiscal" ng-model="celulaDto.domicilioFiscal" required="required" maxlength="1000" min="15" required="required">
+                            </div>
+
+                        </div>
+
+                        <br>
+                        <br>
+
+                        <div class="row">
+                            <b></b>
+                            <H5>Datos Apoderado Legal del Fondo</H5>
+                            </b>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <label class="control-label">Nombre del apoderado legal*:
+                                </label>
+                                <input type="text" class="form-control" placeholder="Nombre del apoderado" ng-model="celulaDto.nombreApoderado" required="required">
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label">Primer apellido apoderado legal*: </label>
+                                <input type="text" class="form-control" placeholder="Primer apellido apoderado" ng-model="celulaDto.apellidoPaternoApoderado" required="required">
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label">Segundo apellido del apoderado legal: </label>
+                                <input type="text" class="form-control" placeholder="Segundo apellido del apoderado" ng-model="celulaDto.apellidoMaternoApoderado">
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xs-3">
+                                <label class="control-label">RFC de apoderado legal: </label>
+                                <input type="text" class="form-control" placeholder="RFC" ng-model="celulaDto.rfcApoderado" required="required" maxlength="15" min="15" ng-pattern="/^([A-Z�&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/">
+                            </div>
+
+                            <div class="col-xs-3">
+                                <label class="control-label">Correo electr&oacute;nico del apoderado legal: </label>
+                                <input placeholder="ejemplo@correo.com" name="correo_field" ng-model="celulaDto.correoApoderado" ng-pattern="/^[a-zA-z0-9_]*(\.[_a-zA-Z0-9-]+)*[a-zA-Z0-9]@[a-zA-Z0-9]+[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})$/" ng-model="celulaDto.correoElectronico" class="ns_ form-control" type="text">
+                            </div>
+                        </div>
+
+                        <br>
+                        <br>
+
+                        <div class="row">
+                            <b><H5>Datos Responsable Legal del Fondo</H5></b>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <label class="control-label">Nombre del responsable legal*:
+                                </label>
+                                <input type="text" class="form-control" placeholder="Nombre del responsable" ng-model="celulaDto.nombreResponsable" required="required">
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label">Primer apellido responsable legal*: </label>
+                                <input type="text" class="form-control" placeholder="Primer apellido responsable" ng-model="celulaDto.apellidoPaternoResponsable" required="required">
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label">Segundo apellido del responsable legal: </label>
+                                <input type="text" class="form-control" placeholder="Segundo apellido del responsable" ng-model="celulaDto.apellidoMaternoResponsable">
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xs-3">
+                                <label class="control-label">RFC de responsable legal: </label>
+                                <input type="text" class="form-control" placeholder="RFC" ng-model="celulaDto.rfcResponsable" required="required" maxlength="15" min="15" ng-pattern="/^([A-Z�&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/">
+                            </div>
+
+                            <div class="col-xs-3">
+                                <label class="control-label">Correo electronico del responsable legal: </label>
+                                <input placeholder="ejemplo@correo.com" name="correo_field" ng-model="celulaDto.correoResponsable" ng-pattern="/^[a-zA-z0-9_]*(\.[_a-zA-Z0-9-]+)*[a-zA-Z0-9]@[a-zA-Z0-9]+[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})$/" ng-model="celulaDto.correoElectronico" class="ns_ form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <label class="control-label">Certificado .cer*: </label>
+                                <div>
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <span class="btn btn-default btn-file" style="background: #e6e9ee"> <span
+											class="fileinput-new">Select file</span> <span class="fileinput-exists">Change</span>
+                                        <input type="file" name="...">
+                                        </span> <span class="fileinput-filename"></span> <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">&times;</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-3">
+                                <label class="control-label">Llave privada .key*: </label>
+                                <div>
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <span class="btn btn-default btn-file" style="background: #e6e9ee"> <span
+											class="fileinput-new">Select file</span> <span class="fileinput-exists">Change</span>
+                                        <input type="file" name="...">
+                                        </span> <span class="fileinput-filename"></span> <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">&times;</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-3">
+                                <label class="control-label">Contrase&ntilde;a certificado*: </label>
+                                <input type="password" class="form-control" placeholder="Contrase&ntilde;a certificado">
+                            </div>
+
+                        </div>
+                    </form>
+                    <div class="row" align="right">
+                        <br />
+                        <button align="right" class="btn-danger btn" ng-click="cancelar();" ng-show= desaparaceCancelar>Cancelar</button>
+                        <button class="btn-primary btn" ng-click="muestraPatrona()" ng-show= desaparaceRegistrarPatr>Registrar patrona</button>
+                        <button class="btn-primary btn" ng-disabled="celulaForm.$invalid" type="submit" ng-click=guardarCelula(); ng-show= desaparaceGuardar>Guardar</button>
+                    </div>
+
+                </panel>
+            </div>
+        </div>
+
+    </div>
+    <!------------------------------------------------------------------------------------------->
+    							<!-- REGISTRO DE PATRONA -->
+     <!------------------------------------------------------------------------------------------->
+    		<div class="container-fluid"  ng-show = regPatronas>
+		<div class="row">
+	        <div class="col-md-12">
+	            <panel panel-class="panel-info" heading="Registro de colaboradores">
+	           		<panel-controls>
+	                    <panel-control-collapse>
+	                    </panel-control-collapse>         
+	                </panel-controls>
+	                
+	                
+                    <form id="clieneTempForm">
+                        <div class="row">
+                            <b><H5>Datos Generales del Fondo</H5></b>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <label class="control-label">Nombre o Raz&oacute;n social*: </label>
+                                <input type="text" class="form-control" placeholder="Raz&oacute;n social" ng-model="celulaDto.nombreCelula" required="required">
+                            </div>
+
+                            <div class="col-xs-2">
+                                <label class="control-label">RFC*: </label>
+                                <input type="text" class="form-control" placeholder="RFC" ng-model="celulaDto.rfcCelula" required="required" maxlength="15" min="15" required="required" ng-pattern="/^([A-Z�&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label class="control-label">Domicilio fiscal*: </label>
+                                <input type="text" class="form-control" placeholder="Domicilio fiscal" ng-model="celulaDto.domicilioFiscal" required="required" maxlength="1000" min="15" required="required">
+                            </div>
+
+                        </div>
+
+                        <br>
+                        <br>
+
+                        <div class="row">
+                            <b></b>
+                            <H5>Datos Apoderado Legal del Fondo</H5>
+                            </b>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <label class="control-label">Nombre del apoderado legal*:
+                                </label>
+                                <input type="text" class="form-control" placeholder="Nombre del apoderado" ng-model="celulaDto.nombreApoderado" required="required">
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label">Primer apellido apoderado legal*: </label>
+                                <input type="text" class="form-control" placeholder="Primer apellido apoderado" ng-model="celulaDto.apellidoPaternoApoderado" required="required">
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label">Segundo apellido del apoderado legal: </label>
+                                <input type="text" class="form-control" placeholder="Segundo apellido del apoderado" ng-model="celulaDto.apellidoMaternoApoderado">
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xs-3">
+                                <label class="control-label">RFC de apoderado legal: </label>
+                                <input type="text" class="form-control" placeholder="RFC" ng-model="celulaDto.rfcApoderado" required="required" maxlength="15" min="15" ng-pattern="/^([A-Z�&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/">
+                            </div>
+
+                            <div class="col-xs-3">
+                                <label class="control-label">Correo electr&oacute;nico del apoderado legal: </label>
+                                <input placeholder="ejemplo@correo.com" name="correo_field" ng-model="celulaDto.correoApoderado" ng-pattern="/^[a-zA-z0-9_]*(\.[_a-zA-Z0-9-]+)*[a-zA-Z0-9]@[a-zA-Z0-9]+[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})$/" ng-model="celulaDto.correoElectronico" class="ns_ form-control" type="text">
+                            </div>
+                        </div>
+
+                        <br>
+                        <br>
+
+                        <div class="row">
+                            <b><H5>Datos Responsable Legal del Fondo</H5></b>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <label class="control-label">Nombre del responsable legal*:
+                                </label>
+                                <input type="text" class="form-control" placeholder="Nombre del responsable" ng-model="celulaDto.nombreResponsable" required="required">
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label">Primer apellido responsable legal*: </label>
+                                <input type="text" class="form-control" placeholder="Primer apellido responsable" ng-model="celulaDto.apellidoPaternoResponsable" required="required">
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label">Segundo apellido del responsable legal: </label>
+                                <input type="text" class="form-control" placeholder="Segundo apellido del responsable" ng-model="celulaDto.apellidoMaternoResponsable">
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xs-3">
+                                <label class="control-label">RFC de responsable legal: </label>
+                                <input type="text" class="form-control" placeholder="RFC" ng-model="celulaDto.rfcResponsable" required="required" maxlength="15" min="15" ng-pattern="/^([A-Z�&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/">
+                            </div>
+
+                            <div class="col-xs-3">
+                                <label class="control-label">Correo electronico del responsable legal: </label>
+                                <input placeholder="ejemplo@correo.com" name="correo_field" ng-model="celulaDto.correoResponsable" ng-pattern="/^[a-zA-z0-9_]*(\.[_a-zA-Z0-9-]+)*[a-zA-Z0-9]@[a-zA-Z0-9]+[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})$/" ng-model="celulaDto.correoElectronico" class="ns_ form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <label class="control-label">Certificado .cer*: </label>
+                                <div>
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <span class="btn btn-default btn-file" style="background: #e6e9ee"> <span
+											class="fileinput-new">Select file</span> <span class="fileinput-exists">Change</span>
+                                        <input type="file" name="...">
+                                        </span> <span class="fileinput-filename"></span> <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">&times;</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-3">
+                                <label class="control-label">Llave privada .key*: </label>
+                                <div>
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <span class="btn btn-default btn-file" style="background: #e6e9ee"> <span
+											class="fileinput-new">Select file</span> <span class="fileinput-exists">Change</span>
+                                        <input type="file" name="...">
+                                        </span> <span class="fileinput-filename"></span> <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">&times;</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-3">
+                                <label class="control-label">Contrase&ntilde;a certificado*: </label>
+                                <input type="password" class="form-control" placeholder="Contrase&ntilde;a certificado">
+                            </div>
+
+                        </div>
+                    </form>
+	            <div class="row">
+				 <br/>
+			      	<div class="col-sm-6 col-sm-offset-9">
+			      		<div class="btn-toolbar btn-lg ">
+				      	<button align="right" class="btn-danger btn" ng-click="hidePatrona();">Cancelar</button>
+                        <button class="btn-primary btn" ng-disabled="celulaForm.$invalid" type="submit" ng-click=guardarCelula();>Guardar</button>
+				      	</div>
+			      	</div>
+			     </div>
+	            </panel>
+
+	        </div>
+	     </div>
+	</div>
+    
+
+</div>
+
+
+
+
+
+
+<!-- container-fluid -->

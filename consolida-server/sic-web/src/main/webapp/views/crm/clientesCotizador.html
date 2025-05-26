@@ -1,0 +1,97 @@
+
+<div id="page-heading">
+	<ol class="breadcrumb">
+		<li><a href="#/">CRM</a></li>
+		<li>Home</li>
+		<li class="active">Clientes Cotizador</li>
+	</ol>
+
+</div>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<panel panel-class="panel-primary" heading="Busqueda de clientes Cotizador">
+			<panel-controls>
+                    <panel-control-collapse></panel-control-collapse>
+                </panel-controls>
+			
+			<form>
+				<div class="row">
+					<div class="col-xs-5">
+						<label class="control-label">Nombre/Razon Social: </label> <input
+							type="text" class="form-control"
+							placeholder="Nombre o razón social">
+					</div>
+					
+					
+					
+					<div class="col-xs-3">
+						<label class="control-label">RFC: </label> <input type="text"
+							class="form-control" placeholder="RFC" >
+					</div>
+
+					
+
+					<div class="col-xs-1">
+						<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+						<button class="btn-primary btn btn-lg">
+							<span class="fa fa-search"></span> Buscar
+						</button>
+					</div>
+					
+					
+
+				</div>
+			</form>
+			
+			</panel>
+			
+			<panel panel-class="panel-sky" heading="Resultado de clientes">
+                <panel-controls>
+                    <panel-control-collapse></panel-control-collapse>
+                             
+                </panel-controls>
+            
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="padding-right:100px">Cliente</th>
+                                <th>RFC</th>
+                                <th>Nomina</th>
+                                <th>Tipo</th>
+                                <th>Estado</th>
+                                <th>Contrato</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td align="left">Empresa Uno S.A de C.V</td>
+                                <td>LOSH48580H</td>
+                                <td> <a href="#/crm/nominas">120</a> </td>
+                                <td>Persona Moral</td>
+                                <td>CDMX</td>
+                                <td>Sin contrato</td>
+                            </tr>
+                           
+                            <tr>
+                                <td align="left">Miguel Luis Perez</td>
+                                <td>PRML29041967H3D</td>
+                                <td> <a href="#/crm/nominas">110</a> </td>
+                                <td>Persona Fisica</td>
+                                <td>Estado de México</td>
+                                <td><a href="cotizador">Descargar <span class="fa fa-file-pdf-o"></span></a></td>
+                            </tr> 
+
+                        </tbody>
+                        
+                    </table>
+                </div>
+            </panel>
+		</div>
+	</div>
+
+</div>
+
+<!-- container-fluid -->

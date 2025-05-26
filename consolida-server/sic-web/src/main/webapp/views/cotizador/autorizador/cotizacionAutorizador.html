@@ -1,0 +1,1171 @@
+<div class="container-fluid" ng-controller="nuevaCotizacionController">
+
+<!--  
+<style>
+td {
+    	text-transform: uppercase;
+    }
+</style>
+--> 
+    <div >
+    	<div id="page-heading">
+		    <ol class="breadcrumb">
+		        <li><a href="#/">Menu principal</a></li>
+		        <li><a href="#/cotizador/solicitudAutorizaciones">Solicitud Autorizaciones</a></li>
+		        <li class="active">Detalle Cotizaci&oacute;n</li>
+		    </ol>
+		</div>
+<div class="row">
+            <div class="col-md-12">
+                <panel panel-class="panel-info" heading="Cotizador">
+                <panel-controls>
+                        <panel-control-collapse></panel-control-collapse>
+                         </panel-controls>
+
+                    <form id="cotizacionForm" name="cotizacionForm">
+                    <div class="row">
+                    	<div class="col-xs-4">
+                                <label class="control-label">Tipo de producto*: </label>
+                                <select class="form-control" name="idImss" id="idImss" ng-model="cotizacion.idImss.idCatGeneral"  ng-change="seleccionaTipoProducto()"
+                                        required ng-class="(cotizacionForm.idImss.$invalid || cotizacionForm.idImss.$dirty)" disabled="disabled">
+                                    <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                    <option ng-repeat="imss in catalogosCotizadorDTO.catTipoImss"  ng-selected="imss.idCatGeneral == cotizacion.idImss.idCatGeneral"
+                                            value="{{imss.idCatGeneral}}">{{imss.descripcion | uppercase}}</option>
+                                </select>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.idImss.$touched">
+                                    <span ng-show="cotizacionForm.idImss.$error.required">El campo es obligatorio.</span>
+                            </div>
+                    </div> 
+                        <div class="row">
+                            <div class="col-xs-12" >
+                                <span style="color: #a2acb3; height: 100%; width: auto; float: left; font-size: 14px; font-weight: 700; padding: 14px 0 14px; position: relative; margin: 0; line-height: 20px; cursor: text; text-transform: uppercase;">Condiciones Actuales</span>
+                            </div>
+                        </div>
+                        <div class="row pad-b">
+                        	<div class="col-xs-4">
+                                <label class="control-label">Prestaciones*: </label>
+                                <select class="form-control" name="idVacaciones" id="idVacaciones" ng-model="cotizacion.idVacaciones.idCatGeneral"  disabled="disabled"
+                                        required ng-class="(cotizacionForm.idVacaciones.$invalid || cotizacionForm.idVacaciones.$dirty)">
+                                    <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                    <option ng-repeat="vacaciones in catalogosCotizadorDTO.catVacaciones" ng-selected="vacaciones.idCatGeneral == cotizacion.idVacaciones.idCatGeneral"
+                                            value="{{vacaciones.idCatGeneral}}">{{vacaciones.descripcion | uppercase}}</option>
+                                </select>
+                                   	<span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.idVacaciones.$touched">
+                                	<span ng-show="cotizacionForm.idVacaciones.$error.required">El campo es obligatorio.</span>  
+                            </div>
+                            <div class="col-xs-4" ng-hide="cotizacion.idVacaciones.idCatGeneral != 2">
+                                <label class="control-label">Vacaciones (D&iacute;as)*: </label> 
+                                <input
+                                    name="vacaciones" type="text" class="form-control" disabled="disabled"
+                                    placeholder="D&iacute;as Vacaciones" ng-model="cotizacion.diasVacaciones" ng-required="cotizacion.idVacaciones.idCatGeneral == 2"
+                                    ng-pattern="/^[0-9]+$/" maxlength="3"/>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.vacaciones.$touched">
+                                    <span ng-show="cotizacionForm.vacaciones.$error.required">El campo es obligatorio.</span>
+                                    <span ng-show="cotizacionForm.vacaciones.$error.required === true ?false:!cotizacionForm.vacaciones.$valid">
+                                        Ingresar D&iacute;as Vacaciones.</span>
+                                </span> 
+                            </div>
+                            <div class="col-xs-4" ng-hide="cotizacion.idVacaciones.idCatGeneral != 2">
+                                <label class="control-label">Aguinaldo (D&iacute;as)*: </label> 
+                                <input
+                                    name="aguinaldo" type="text" class="form-control" disabled="disabled"
+                                    placeholder="Aguinaldo" ng-model="cotizacion.aguinaldo" ng-required="cotizacion.idVacaciones.idCatGeneral == 2"
+                                    ng-pattern="/^[0-9]+(\.[0-9]{1,15})?$/" maxlength="15"/>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.aguinaldo.$touched">
+                                    <span ng-show="cotizacionForm.aguinaldo.$error.required">El campo es obligatorio.</span>
+                                    <span ng-show="cotizacionForm.aguinaldo.$error.required === true ?false:!cotizacionForm.aguinaldo.$valid">
+                                        Ingresar Aguinaldo.</span>
+                                </span> 
+                            </div>
+                       </div>
+                       <div class="row pad-b" ng-hide="cotizacion.idVacaciones.idCatGeneral != 2">
+                            <div class="col-xs-4">
+                                <label class="control-label">% Prima Vacacional*: </label> 
+                                <input
+                                    name="primaVacacional" type="text" class="form-control" disabled="disabled"
+                                    placeholder="Prima Vacacional" ng-model="cotizacion.primaVacacional" ng-required="cotizacion.idVacaciones.idCatGeneral == 2"
+                                    ng-pattern="/^[0-9]+(\.[0-9]{1,15})?$/" maxlength="15"/>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.primaVacacional.$touched">
+                                    <span ng-show="cotizacionForm.primaVacacional.$error.required">El campo es obligatorio.</span>
+                                    <span ng-show="cotizacionForm.primaVacacional.$error.required === true ?false:!cotizacionForm.primaVacacional.$valid">
+                                        Ingresar Prima Vacacional.</span>
+                                </span> 
+                            </div>
+                        </div>
+						<div class="row ">
+                            <div class="col-xs-4">
+                                <label class="control-label">Tiene proveedor*: </label>
+                                <select class="form-control" name="idTieneProveedor" id="idTieneProveedor" ng-model="cotizacion.tieneProvedor"  disabled="disabled"
+                                        required ng-class="(cotizacionForm.idTieneProveedor.$invalid || cotizacionForm.idTieneProveedor.$dirty)">
+                                    <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                    <option ng-repeat="proveedor in catalogosCotizadorDTO.catProveedor" ng-selected="proveedor.idCatGeneral == cotizacion.tieneProvedor"
+                                            value="{{proveedor.idCatGeneral}}">{{proveedor.descripcion | uppercase}}</option>
+                                </select>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.idTieneProveedor.$touched">
+                                    <span ng-show="cotizacionForm.idTieneProveedor.$error.required">El campo es obligatorio.</span>     
+                            </div>
+
+                            <div class="col-xs-4" ng-hide="cotizacion.tieneProvedor != 1">
+                                <label class="control-label">% Fee Actual*: </label> 
+                                <input
+                                    name="freeActual" type="text" class="form-control" disabled="disabled"
+                                    placeholder="Free Actual" ng-model="cotizacion.feeActual" ng-required="cotizacion.tieneProvedor==1"
+                                    ng-pattern="/^[0-9]+(\.[0-9]{1,15})?$/" maxlength="15"/>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.freeActual.$touched">
+                                    <span ng-show="cotizacionForm.freeActual.$error.required">El campo es obligatorio.</span>
+                                    <span ng-show="cotizacionForm.freeActual.$error.required === true ?false:!cotizacionForm.freeActual.$valid">
+                                        Ingresar Free Actual.</span>
+                                </span> 
+                            </div>
+
+                            <div class="col-xs-4" ng-hide="cotizacion.tieneProvedor != 1">
+                                <label class="control-label">Tipo*: </label> 	
+                                <select class="form-control" name="idTipo" id="idTipo" ng-model="cotizacion.idTipo.idCatGeneral"  disabled="disabled"
+                                        ng-required="cotizacion.tieneProvedor==1" ng-class="(cotizacionForm.idTipo.$invalid || cotizacionForm.idTipo.$dirty)">
+                                    <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                    <option ng-repeat="tipo in catalogosCotizadorDTO.catTipoNomina"  ng-selected="tipo.idCatGeneral == cotizacion.idTipo.idCatGeneral"
+                                            value="{{tipo.idCatGeneral}}">{{tipo.descripcion | uppercase}}</option>
+                                </select>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.idTipo.$touched">
+                                    <span ng-show="cotizacionForm.idTipo.$error.required">El campo es obligatorio.</span>    
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12" >
+                                <span style="color: #a2acb3; height: 100%; width: auto; float: left; font-size: 14px; font-weight: 700; padding: 14px 0 14px; position: relative; margin: 0; line-height: 20px; cursor: text; text-transform: uppercase;">Generales</span>
+                            </div>
+                        </div>
+
+                        <div class="row pad-b">
+                            <div class="col-xs-4">
+                                <label class="control-label">Zona*: </label>
+                                <select class="form-control" name="idZona" id="idZona" ng-model="cotizacion.idZona.idCatGeneral"  disabled="disabled"
+                                        required ng-class="(cotizacionForm.idZona.$invalid || cotizacionForm.idZona.$dirty)">
+                                    <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                    <option ng-repeat="zona in catalogosCotizadorDTO.catZona" ng-selected="zona.idCatGeneral == cotizacion.idZona.idCatGeneral"
+                                            value="{{zona.idCatGeneral}}">{{zona.descripcion | uppercase}}</option>
+                                </select>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.idZona.$touched">
+                                    <span ng-show="cotizacionForm.idZona.$error.required">El campo es obligatorio.</span>
+                            </div>
+
+                            <div class="col-xs-4">
+                                <label class="control-label">Periodicidad*: </label>
+                                <select class="form-control" name="idPeriodicidad" id="idPeriodicidad" ng-model="cotizacion.idPeriodicidad.idTipoPago"  disabled="disabled"
+                                        required ng-class="(cotizacionForm.idPeriodicidad.$invalid || cotizacionForm.idPeriodicidad.$dirty)">
+                                    <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                    <option ng-repeat="tipoPeriodicidad in catalogosCotizadorDTO.catTipoPeriodicidad" ng-selected="tipoPeriodicidad.idTipoPago == cotizacion.idPeriodicidad.idTipoPago"
+                                            value="{{tipoPeriodicidad.idTipoPago}}">{{tipoPeriodicidad.descripcionTipoPago | uppercase}}</option>
+                                </select>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.idPeriodicidad.$touched">
+                                    <span ng-show="cotizacionForm.idPeriodicidad.$error.required">El campo es obligatorio.</span>
+                            </div>
+
+                            <div class="col-xs-4">
+                                <label class="control-label">D&iacute;as*: </label>
+                                <select class="form-control" name="idDias" id="idDias" ng-model="cotizacion.idDias.idCatGeneral"  disabled="disabled"
+                                        required ng-class="(cotizacionForm.idDias.$invalid || cotizacionForm.idDias.$dirty)">
+                                    <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                    <option ng-repeat="dias in catalogosCotizadorDTO.catDias" ng-selected="dias.idCatGeneral == cotizacion.idDias.idCatGeneral"
+                                            value="{{dias.idCatGeneral}}">{{dias.descripcion | uppercase}}</option>
+                                </select>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.idDias.$touched">
+                                    <span ng-show="cotizacionForm.idDias.$error.required">El campo es obligatorio.</span>
+                            </div>
+                        </div>
+
+                        <div class="row pad-b">
+                            <div class="col-xs-4">
+                                <label class="control-label">Prestaciones*: </label> 
+                                <select class="form-control" name="idPrestaciones" id="idPrestaciones" ng-model="cotizacion.idPrestaciones.idCatGeneral"  disabled="disabled"
+                                        required ng-class="(cotizacionForm.idPrestaciones.$invalid || cotizacionForm.idPrestaciones.$dirty)">
+                                    <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                    <option ng-repeat="prestaciones in catalogosCotizadorDTO.catTipoPrestaciones" ng-selected="prestaciones.idCatGeneral == cotizacion.idPrestaciones.idCatGeneral"
+                                            value="{{prestaciones.idCatGeneral}}">{{prestaciones.descripcion | uppercase}}</option>
+                                </select>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.idPrestaciones.$touched">
+                                    <span ng-show="cotizacionForm.idPrestaciones.$error.required">El campo es obligatorio.</span>
+                            </div>
+
+                            <div class="col-xs-4">
+                                <label class="control-label">Tipo de Cotizaci&oacute;n*: </label>	
+                                <select class="form-control" name="idTipoCotizacion" id="idTipoCotizacion" ng-model="cotizacion.idTipoCotizacion.idCatGeneral" ng-change="actualizaTipoCot()"  disabled="disabled"
+                                        required ng-class="(cotizacionForm.idTipoCotizacion.$invalid || cotizacionForm.idTipoCotizacion.$dirty)">
+                                    <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                    <option ng-repeat="tipoCotizacion in catalogosCotizadorDTO.catTipoCotizacion"  ng-selected="tipoCotizacion.idCatGeneral == cotizacion.idTipoCotizacion.idCatGeneral"
+                                            value="{{tipoCotizacion.idCatGeneral}}">{{tipoCotizacion.descripcion | uppercase}}</option>
+                                </select>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.idTipoCotizacion.$touched">
+                                    <span ng-show="cotizacionForm.idTipoCotizacion.$error.required">El campo es obligatorio.</span>
+                            </div>
+                       </div>
+                       <div class="row">
+                            <div class="col-xs-4" ng-show="cotizacion.idTipoCotizacion.idCatGeneral == 15">
+                                <label class="control-label">Monto*: </label>	
+                                <input type="text"  class="form-control" name="idTipoCotizacionM" id="idTipoCotizacionM" ng-model="cotizacion.dgMontoBrutoMensual" 
+                                    placeholder="Monto" ng-required="cotizacion.idTipoCotizacion.idCatGeneral == 15" disabled="disabled"
+                                     ng-pattern="/^[0-9]+(\.[0-9]{1,15})?$/" maxlength="15"/>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.idTipoCotizacionM.$touched">
+                                    <span ng-show="cotizacionForm.idTipoCotizacionM.$error.required">El campo es obligatorio.</span>
+                            </div>
+                            <div class="col-xs-4" ng-show="cotizacion.idTipoCotizacion.idCatGeneral == 16">
+                                <label class="control-label">VSM*: </label>	
+                                <input type="text" class="form-control" name="idTipoCotizacionVSM" id="idTipoCotizacionVSM" ng-model="cotizacion.dgVSM" 
+                                    placeholder="VSM" ng-required="cotizacion.idTipoCotizacion.idCatGeneral == 16" disabled="disabled"
+                                     ng-pattern="/^[0-9]+(\.[0-9]{1,15})?$/" maxlength="15"/>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.idTipoCotizacionVSM.$touched">
+                                    <span ng-show="cotizacionForm.idTipoCotizacionVSM.$error.required">El campo es obligatorio.</span>
+                            </div>
+                            <div class="col-xs-4" ng-show="cotizacion.idTipoCotizacion.idCatGeneral == 25">
+                                <label class="control-label">Porcentaje PPP*: </label>
+                                <select 
+                                    class="form-control" name="porcentajePpp" id="exampleFormControlSelect2" ng-change="actualizaNomFis()"ng-model="cotizacion.porcentajePpp"  disabled="disabled"
+                                    required ng-class="(cotizacionForm.porcentajePpp.$invalid || cotizacionForm.porcentajePpp.$dirty)">
+                                    <option value="{{}}">----Seleccione una opcion----</option>
+                                    <option value="{{0}}" ng-hide="cotizacion.idImss.idCatGeneral == 53">0%</option>
+                                    <option value="{{10}}">10%</option>
+                                    <option value="{{20}}">20%</option>
+                                    <option value="{{30}}">30%</option>
+                                    <option value="{{40}}">40%</option>
+                                    <option value="{{50}}">50%</option>
+                                    <option value="{{60}}">60%</option>
+                                    <option value="{{70}}">70%</option>
+                                    <option value="{{80}}">80%</option>
+                                    <option value="{{90}}">90%</option>
+                                    <option value="{{100}}" ng-hide="cotizacion.idImss.idCatGeneral == 53">100%</option>
+                                </select>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.porcentajePpp.$touched">
+                                <span ng-show="cotizacionForm.porcentajePpp.$error.required">El campo es obligatorio.</span>
+                            </div>
+                            <div class="col-xs-4" ng-show="cotizacion.idTipoCotizacion.idCatGeneral == 25">
+                                <label class="control-label">N&oacute;mina fiscal*: </label> 
+                                
+                                <select disabled class="form-control" id="exampleFormControlSelect2"  disabled="disabled"
+                                ng-model="cotizacion.porcentajeNomFis">
+                                    <!-- 						<option>----Seleccione una opcion----</option> -->
+                                    <option value="{{0}}">0%</option>
+                                    <option value="{{10}}">10%</option>
+                                    <option value="{{20}}">20%</option>
+                                    <option value="{{30}}">30%</option>
+                                    <option value="{{40}}">40%</option>
+                                    <option value="{{50}}">50%</option>
+                                    <option value="{{60}}">60%</option>
+                                    <option value="{{70}}">70%</option>
+                                    <option value="{{80}}">80%</option>
+                                    <option value="{{90}}">90%</option>
+                                    <option value="{{100}}">100%</option> 
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-xs-12" >
+                                <span style="color: #a2acb3; height: 100%; width: auto; float: left; font-size: 14px; font-weight: 700; padding: 14px 0 14px; position: relative; margin: 0; line-height: 20px; cursor: text; text-transform: uppercase;">Honorarios</span>
+                            </div>
+                        </div>
+                        
+                        <div class="row pad-b">
+                            <div class="col-xs-4">
+                                <label class="control-label">% Honorarios IMSS*: </label> 
+                                <input
+                                    name="honorarioImss" type="text" class="form-control"
+                                    placeholder="Honorarios IMSS" ng-model="cotizacion.comisionImss" ng-required="variable.habilitaRequired"
+                                    required ng-pattern="/^[0-9]+(\.[0-9]{1,15})?$/" maxlength="15"  disabled="disabled"/>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.honorarioImss.$touched">
+                                    <span ng-show="cotizacionForm.honorarioImss.$error.required">El campo es obligatorio.</span>
+                                </span> 
+                            </div>
+                            <div class="col-xs-4">
+                                <label class="control-label">% Honorarios PPP*: </label> 
+                                <input
+                                    name="honorariosPpp" type="text" class="form-control"
+                                    placeholder="Honorarios PPP" ng-model="cotizacion.comisionPpp" ng-required="true" disabled="disabled"
+                                    required ng-pattern="/^[0-9]+(\.[0-9]{1,15})?$/" maxlength="15"/>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.honorariosPpp.$touched">
+                                    <span ng-show="cotizacionForm.honorariosPpp.$error.required">El campo es obligatorio.</span>
+                                </span> 
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-xs-12" >
+                                <span style="color: #a2acb3; height: 100%; width: auto; float: left; font-size: 14px; font-weight: 700; padding: 14px 0 14px; position: relative; margin: 0; line-height: 20px; cursor: text; text-transform: uppercase;">Costos adicionales</span>
+                            </div>
+                        </div>
+                        <div class="row pad-b">
+                            <div class="col-xs-4">
+                            	<label class="control-label">Valor timbre: </label> 
+								<input type="text" class="form-control"  ng-model="cotizacion.costoAdicional.idValoSpei.valor" ng-disabled="true"/>
+								
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">Valor SPEI: </label> 
+								<input type="text" class="form-control"  ng-model="cotizacion.costoAdicional.idValorTimbre.valor" ng-disabled="true"/>
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">% Costo estrategia: </label> 
+								<input type="text" class="form-control"  ng-model="cotizacion.costoAdicional.idPorcentajeCostoEstrategia.valor" ng-disabled="true"/>
+							</div>
+						</div>
+						<div class="row pad-b"> 
+							<div class="col-xs-4">
+								<label class="control-label">% Costo indirecto: </label> 
+								<input type="text" class="form-control"  ng-model="cotizacion.costoAdicional.idPorcentajeCostosIndirectos.valor" ng-disabled="true"/>
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">% Promotor: </label> 
+								<input type="text" class="form-control"  ng-model="cotizacion.costoAdicional.idPorcentajePromotor.valor" ng-disabled="true"/>
+							</div>
+							<div class="col-xs-4">
+							 	<label class="control-label">% Promotor IMSS: </label> 
+								<input type="text" class="form-control" ng-model="cotizacion.costoAdicional.idPorcentajePromotorImss.valor" ng-disabled="true"/>
+							</div>
+                        </div> 
+                        
+                        <div class="row">
+                            <div class="col-xs-12" >
+                                <span style="color: #a2acb3; height: 100%; width: auto; float: left; font-size: 14px; font-weight: 700; padding: 14px 0 14px; position: relative; margin: 0; line-height: 20px; cursor: text; text-transform: uppercase;"></span>
+                            </div>
+                        </div>
+                        <div class="row pad-b">
+                            <div class="col-xs-4">
+                                <label class="control-label">Tiene costos adicionales: </label> 
+                                <input name="tieneCostosAdicionales" type="checkbox" class="form-control js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}"
+                                   ng-model="cotizacion.tieneCostosAdicionales" disabled="disabled"/>
+                            </div>
+                        </div>
+                         
+                        
+                        <!-- judnisf -->
+                        
+                        <div class="row pad-b" ng-show="cotizacion.tieneCostosAdicionales">
+                            <div class="col-xs-12" >
+                                <span style="color: #a2acb3; height: 100%; width: auto; float: left; font-size: 14px; font-weight: 700; padding: 14px 0 14px; position: relative; margin: 0; line-height: 20px; cursor: text; text-transform: uppercase;">SGMM % {{sumarSGMM()}}</span>
+                            </div>
+                        </div>
+                        <div class="row pad-b" ng-show="cotizacion.tieneCostosAdicionales">
+                            <div class="col-xs-12" >
+                            	<span class="messages" ng-show="cotizacion.costoAdicional.montoSgmm > 0 && sumarSGMM() != 100">
+									El valor al sumar Cliente, Promotor y Corporativo es mayor del 100%
+								</span>
+                            </div>
+                        </div>
+						<div class="row pad-b" ng-show="cotizacion.tieneCostosAdicionales">
+							<div class="col-xs-3">
+								<label class="control-label" for="montoSGMM">Monto*: </label> 
+								<input type="text" id="montoSGMM" name="montoSGMM" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15"
+									placeholder="Monto SGMM" ng-model="cotizacion.costoAdicional.montoSgmm" ng-change="validaMontoSGMM()" disabled="disabled"/>
+									<span class="messages" ng-show="cotizacionForm.montoSGMM.$error.pattern">El campo es valor moneda 999.99.</span>
+							</div>
+							<div class="col-xs-3">
+								<label class="control-label" for="porcentajeClSGMM"  ng-show="cotizacion.costoAdicional.montoSgmm > 0 ">% Cliente*: </label> 
+								<input type="text" id="porcentajeClSGMM" name="porcentajeClSGMM" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15" ng-show="cotizacion.costoAdicional.montoSgmm > 0 "
+									placeholder="porcentaje Cliente" ng-model="cotizacion.costoAdicional.porcentajeClienteSgmm" ng-required="validaSGMM" onclick="this.select()" disabled="disabled"/>
+								<span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.porcentajeClSGMM.$touched || cotizacionForm.porcentajeClSGMM.$error.pattern">
+									<span class="messages" ng-show="cotizacionForm.porcentajeClSGMM.$error.pattern">El campo es valor moneda 999.99.</span>
+									<span class="messages" ng-show="cotizacionForm.porcentajeClSGMM.$error.required">El campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-xs-3">
+								<label class="control-label" for="porcentajePrSGMM"  ng-show="cotizacion.costoAdicional.montoSgmm > 0 ">% Promotor*: </label> 
+								<input type="text" id="porcentajePrSGMM" name="porcentajePrSGMM" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15" ng-show="cotizacion.costoAdicional.montoSgmm > 0 "
+									placeholder="porcentaje Promotor" ng-model="cotizacion.costoAdicional.porcentajePromotorSgmm" ng-required="validaSGMM" onclick="this.select()" disabled="disabled"/>
+								<span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.porcentajePrSGMM.$touched || cotizacionForm.porcentajePrSGMM.$error.pattern">
+									<span class="messages" ng-show="cotizacionForm.porcentajePrSGMM.$error.pattern">El campo es valor moneda 999.99.</span>
+									<span class="messages" ng-show="cotizacionForm.porcentajePrSGMM.$error.required">El campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-xs-3">
+								<label class="control-label" for="porcentajeCoSGMM"  ng-show="cotizacion.costoAdicional.montoSgmm > 0 ">% Corporativo*: </label> 
+								<input type="text" id="porcentajeCoSGMM" name="porcentajeCoSGMM" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15" ng-show="cotizacion.costoAdicional.montoSgmm > 0 "
+									placeholder="porcentaje Promotor" ng-model="cotizacion.costoAdicional.porcentajeCorporativoSgmm" ng-required="validaSGMM" onclick="this.select()" disabled="disabled"/>
+								<span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.porcentajeCoSGMM.$touched || cotizacionForm.porcentajeCoSGMM.$error.pattern">
+									<span class="messages" ng-show="cotizacionForm.porcentajeCoSGMM.$error.pattern">El campo es valor moneda 999.99.</span>
+									<span class="messages" ng-show="cotizacionForm.porcentajeCoSGMM.$error.required">El campo es obligatorio.</span>
+								</span>
+							</div>
+						</div>
+						<div class="row pad-b" ng-show="cotizacion.tieneCostosAdicionales">
+                            <div class="col-xs-12" >
+                                <span style="color: #a2acb3; height: 100%; width: auto; float: left; font-size: 14px; font-weight: 700; padding: 14px 0 14px; position: relative; margin: 0; line-height: 20px; cursor: text; text-transform: uppercase;">IMPLANT % {{sumarIMPLANT()}}</span>
+                            </div>
+                        </div>
+                        <div class="row pad-b" ng-show="cotizacion.tieneCostosAdicionales">
+                            <div class="col-xs-12" >
+                            	<span class="messages" ng-show="cotizacion.costoAdicional.montoImplant > 0 && sumarIMPLANT() != 100">
+									El valor al sumar Cliente, Promotor y Corporativo es mayor del 100%
+								</span>
+                            </div>
+                        </div>
+						<div class="row pad-b" ng-show="cotizacion.tieneCostosAdicionales">
+							<div class="col-xs-3">
+								<label class="control-label" for="montoIMPLANT">Monto*: </label> 
+								<input type="text" id="montoIMPLANT" name="montoIMPLANT" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15"
+									placeholder="Monto IMPLANT" ng-model="cotizacion.costoAdicional.montoImplant" ng-change="validaMontoImplant()" disabled="disabled"/>
+								<span class="messages" ng-show="cotizacionForm.montoIMPLANT.$error.pattern">El campo es valor moneda 999.99.</span>
+							</div>
+							<div class="col-xs-3">
+								<label class="control-label" for="porcentajeClIMPLANT" ng-show="cotizacion.costoAdicional.montoImplant > 0">% Cliente*: </label> 
+								<input type="text" id="porcentajeClIMPLANT" name="porcentajeClIMPLANT" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15" ng-show="cotizacion.costoAdicional.montoImplant > 0"
+									placeholder="porcentaje Cliente" ng-model="cotizacion.costoAdicional.porcentajeClienteImplant" ng-required="validaImplant" onclick="this.select()" disabled="disabled"/>
+								<span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.porcentajeClIMPLANT.$touched || cotizacionForm.porcentajeClIMPLANT.$error.pattern">
+									<span class="messages" ng-show="cotizacionForm.porcentajeClIMPLANT.$error.pattern">El campo es valor moneda 999.99.</span>
+									<span class="messages" ng-show="cotizacionForm.porcentajeClIMPLANT.$error.required">El campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-xs-3">
+								<label class="control-label" for="porcentajePrIMPLANT" ng-show="cotizacion.costoAdicional.montoImplant > 0">% Promotor*: </label> 
+								<input type="text" id="porcentajePrIMPLANT" name="porcentajePrIMPLANT" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15" ng-show="cotizacion.costoAdicional.montoImplant > 0"
+									placeholder="porcentaje Promotor" ng-model="cotizacion.costoAdicional.porcentajePromotorImplant" ng-required="validaImplant" onclick="this.select()" disabled="disabled"/>
+								<span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.porcentajePrIMPLANT.$touched || cotizacionForm.porcentajePrIMPLANT.$error.pattern">
+									<span class="messages" ng-show="cotizacionForm.porcentajePrIMPLANT.$error.pattern">El campo es valor moneda 999.99.</span>
+									<span class="messages" ng-show="cotizacionForm.porcentajePrIMPLANT.$error.required ">El campo es obligatorio.</span>
+								</span>
+							</div>
+							<div class="col-xs-3">
+								<label class="control-label" for="porcentajeCoIMPLANT" ng-show="cotizacion.costoAdicional.montoImplant > 0">% Corporativo*: </label> 
+								<input type="text" id="porcentajeCoIMPLANT" name="porcentajeCoIMPLANT" class="form-control" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" maxlength="15" ng-show="cotizacion.costoAdicional.montoImplant > 0" 
+									placeholder="porcentaje Promotor" ng-model="cotizacion.costoAdicional.porcentajeCorporativoImplant" ng-required="validaImplant" onclick="this.select()" disabled="disabled"/>
+								<span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.porcentajeCoIMPLANT.$touched || cotizacionForm.porcentajeCoIMPLANT.$error.pattern">
+									<span class="messages" ng-show="cotizacionForm.porcentajeCoIMPLANT.$error.pattern">El campo es valor moneda 999.99.</span>
+									<span class="messages" ng-show="cotizacionForm.porcentajeCoIMPLANT.$error.required ">El campo es obligatorio.</span>
+								</span>
+							</div>
+						</div>
+                        
+                        <div class="row" align="center" style="padding-top: 25px;">
+                        	<button class="btn-brown btn" ng-click="cancelar();">{{idCotizacion!=null?'Regresar':'Cancelar'}}</button>	
+                        </div>
+                    </form>
+                </panel>
+		        <panel id="idPanelCotizacion" panel-class="panel-info" heading="SERVICIOS ESPECIALIZADOS + PLAN PRIVADO DE PENSIONES"  ng-show="cotizacionRealiada && (cotizacion.idImss.idCatGeneral===10)">
+		            <panel-controls>
+		                <panel-control-collapse></panel-control-collapse>
+		                <a ng-click="descargar()" class="btn btn-midnightblue pull-right " style="margin-top:15px;"><span class="fa fa-print"></span> DESCARGAR REPORTE</a>
+<!-- 		                <a ng-click="printDiv()" class="fa fa-print "> Descargar Reporte</a> -->
+		            </panel-controls>
+		                <form >
+		                <div id="idPrint" class="table-responsive">
+		                <div class="col-md-8 col-md-offset-2">
+		                <table class="table">
+		                        <thead>
+		                            <tr>
+		                                <th style="padding-right:100px"></th>
+		                                <th style="text-align:right;" >Actual</th>
+		                                <th style="text-align:right;" >Nomina + PPP</th>
+		                                <th style="text-align:right;" >Costo actual VS propuesto</th>
+		                            </tr>
+		                        </thead>
+		                        <tbody>
+		                            <tr>
+		                                <td>+ Neto IMSS</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoImmsActual) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoImmsPPP) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoImmsCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                            	<td>+ Neto Estrategia</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoEstrategiaActual) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoEstrategiaPPP) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoEstrategiaCAP) | number }}</td> 
+		                            </tr>
+		                            <tr>
+		                                <td>= Total a Dispersar a Colaborador</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.totalDispColActual) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.totalDispColPPP) | number }}</td>  
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.totalDispColCAP) | number }} </td> 
+		                            </tr>
+		                            <tr>
+		                                <td>+ Total de Deducciones</td> 
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalDeduccionActual) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalDeduccionPPP) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalDeduccionCAP) | number }}</td> 
+		                                
+		                            </tr>
+		                            <tr>
+		                                <td>= Total De Percepciones</td> 
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalPercepcionesActual) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalPercepcionesPPP) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalPercepcionesCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>+ Carga Social</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.cargaSocialActual) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.cargaSocialPPP) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.cargaSocialCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>= Subtotal N&oacute;mina</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.subtotalNominaActual) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.subtotalNominaPPP) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.subtotalNominaCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>+ Honorarios</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.comisionActual) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.comisionPPP) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.comisionCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>= Costo Total</td> 								
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.costoTotalActual) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.costoTotalPPP) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.costoTotalCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>+ IVA</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaActual) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaPPP) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaCAP) | number }}</td>
+									</tr>
+		                            <tr>
+		                                <td>IVA Trasladado</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaTrasladoActual) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaTrasladoPPP) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaTrasladoCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>= Total Flujo</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.totalFlujoActual) | number }}</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.totalFlujoPPP) | number }}</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.totalFlujoCAP) | number }}</td> 
+		                            </tr>
+		                            <tr>
+		                                <td style="padding-left: 20px;">Diferencia VS Actual Costo</td>
+		                                <td style="text-align:right;" ></td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.diferenciaActualCostoPPP) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.diferenciaActualCostoCAP) | number }} </td> 
+		                            </tr>
+		                            <tr>
+		                                <td style="padding-left: 20px;">Diferencia VS Actual Flujo</td>
+		                                <td style="text-align:right;" ></td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.diferenciaActualFlujoPPP) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.diferenciaActualFlujoCAP) | number }} </td> 
+		                            </tr>
+		                        </tbody>
+		                    </table>
+		                </div>
+		                
+		                <div class="row">
+                            <div class="col-xs-12" >
+                                <h2 class="ng-binding" style="color: #353a4d !important;height: 100%;width: auto;float: left;font-size: 20px;font-weight: 700;padding: 14px 0 14px;position: relative;margin: 0;line-height: 20px;cursor: text;text-transform: uppercase;">Rentabilidad</h2>
+                            </div>
+                        </div>
+		                <div class="table-responsive">
+			                <div class="col-md-4" ng-hide="cotizacion.idImss.idCatGeneral == 53">
+			                <table class="table">
+			                        <thead>
+			                            <tr>
+			                                <th style="text-align:center;">Rentabilidad IMSS</th>
+			                            </tr>
+			                        </thead>
+			                        <tbody>
+<!-- 			                        <tr> -->
+<!-- 			                        	<td>Periodicidad de n&oacute;mina</td> -->
+<!-- 			                        	<td>{{formatoDecimal(total.rentabilidadImss.periodicidad) | number }}</td> -->
+<!-- 			                        </tr> -->
+<!-- 			                        <tr> -->
+<!-- 			                        	<td>Esquema contratado</td> -->
+<!-- 			                        	<td>{{formatoDecimal(total.rentabilidadImss.tipoProducto.descripcion) | number }}</td> -->
+<!-- 			                        </tr> -->
+			                        <tr>
+			                        	<td>Numero de colaboradores</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadImss.numColaboradores) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Percepci&oacute;n</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadImss.dispersion) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Carga social</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadImss.cargaSocial) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Honorarios</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadImss.comisionServicios) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Subtotal factura</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadImss.subtotalFactura) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>IVA</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadImss.iva) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Total Factura</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadImss.totalFactura) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Pricing</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadImss.pircing) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td> Comision estimada promotor</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadImss.comisionEstimadaPromotor) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Costos directos</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadImss.costosDirectos) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>SGMM</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadImss.sgmm) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Timbrado</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadImss.timbrado) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Spei</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadImss.spei) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Costo estrategia</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadImss.costoEstrategia) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Implant</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadImss.implant) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Costos indirectos</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadImss.costosIndirectos) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Utilidad</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadImss.utilidades) | number }}</td>
+			                        </tr>
+			                        <tr style="background:{{ formatoDecimal(total.rentabilidadImss.rentabilidad) <=2.5 ? 'red':formatoDecimal(total.rentabilidadImss.rentabilidad)>2.5 && formatoDecimal(total.rentabilidadImss.rentabilidad)<3.5 ? 'yellow' :'greenyellow'}}">
+			                        	<td>Rentabilidad</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadImss.rentabilidad) | number }}</td>
+			                        </tr>
+			                        
+			                        </tbody>
+			                    </table>
+			                </div>
+			                <div class="col-md-4" ng-hide="cotizacion.idImss.idCatGeneral == 53">
+			                <table class="table">
+			                        <thead>
+			                            <tr>
+			                                <th style="text-align:center;">Rentabilidad PPP</th>
+			                            </tr>
+			                        </thead>
+			                        <tbody>
+<!-- 			                        <tr> -->
+<!-- 			                        	<td>Periodicidad de n&oacute;mina</td> -->
+<!-- 			                        	<td>{{formatoDecimal(total.rentabilidadPpp.periodicidad) | number }}</td> -->
+<!-- 			                        </tr> -->
+<!-- 			                        <tr> -->
+<!-- 			                        	<td>Esquema contratado</td> -->
+<!-- 			                        	<td>{{formatoDecimal(total.rentabilidadPPP.tipoProducto.descripcion) | number }}</td> -->
+<!-- 			                        </tr> -->
+			                        <tr>
+			                        	<td>Numero de colaboradores</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.numColaboradores) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Percepci&oacute;n</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.dispersion) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Carga social</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.cargaSocial) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Honorarios</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.comisionServicios) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Subtotal factura</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.subtotalFactura) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>IVA</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.iva) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Total Factura</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.totalFactura) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Pricing</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.pircing) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td> Comision estimada promotor</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.comisionEstimadaPromotor) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Costos directos</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.costosDirectos) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>SGMM</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.sgmm) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Timbrado</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.timbrado) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Spei</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.spei) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Costo estrategia</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.costoEstrategia) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Implant</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.implant) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Costos indirectos</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.costosIndirectos) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Utilidad</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.utilidades) | number }}</td>
+			                        </tr>
+			                        <tr style="background:{{ formatoDecimal(total.rentabilidadPPP.rentabilidad) <=2.5 ? 'red':formatoDecimal(total.rentabilidadPPP.rentabilidad)>2.5 && formatoDecimal(total.rentabilidadPPP.rentabilidad)<3.5 ? 'yellow' :'greenyellow'}}">
+			                        	<td>Rentabilidad</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.rentabilidad) | number }}</td>
+			                        </tr>
+			                        
+			                        </tbody>
+			                    </table>
+			                </div>
+			                <div class="col-md-4 {{cotizacion.idImss.idCatGeneral == 53?'col-md-offset-4':''}}">
+			                <table class="table">
+			                        <thead>
+			                            <tr>
+			                                <th style="text-align:center;">Rentabilidad total</th>
+			                            </tr>
+			                        </thead>
+			                        <tbody>
+<!-- 			                        <tr> -->
+<!-- 			                        	<td>Periodicidad de n&oacute;mina</td> -->
+<!-- 			                        	<td>{{formatoDecimal(total.rentabilidadTotal.periodicidad) | number }}</td> -->
+<!-- 			                        </tr> -->
+<!-- 			                        <tr> -->
+<!-- 			                        	<td>Esquema contratado</td> -->
+<!-- 			                        	<td>{{formatoDecimal(total.rentabilidadTotal.tipoProducto.descripcion) | number }}</td> -->
+<!-- 			                        </tr> -->
+			                        <tr>
+			                        	<td>Numero de colaboradores</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadTotal.numColaboradores) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Percepci&oacute;n</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadTotal.dispersion) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Carga social</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadTotal.cargaSocial) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Honorarios</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadTotal.comisionServicios) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Subtotal factura</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadTotal.subtotalFactura) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>IVA</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadTotal.iva) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Total Factura</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadTotal.totalFactura) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Pricing</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadTotal.pircing) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td> Comision estimada promotor</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadTotal.comisionEstimadaPromotor) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Costos directos</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadTotal.costosDirectos) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>SGMM</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadTotal.sgmm) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Timbrado</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadTotal.timbrado) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Spei</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadTotal.spei) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Costo estrategia</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadTotal.costoEstrategia) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Implant</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadTotal.implant) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Costos indirectos</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadTotal.costosIndirectos) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Utilidad</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadTotal.utilidades) | number }}</td>
+			                        </tr>
+			                        <tr style="background:{{formatoDecimal(total.rentabilidadTotal.rentabilidad)<=2.5 ? 'red':formatoDecimal(total.rentabilidadTotal.rentabilidad)>2.5 && formatoDecimal(total.rentabilidadTotal.rentabilidad)<3.5? 'yellow':'greenyellow'}}">
+			                        	<td>Rentabilidad</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadTotal.rentabilidad) | number }}</td>
+			                        </tr>
+			                        
+			                        </tbody>
+			                    </table>
+			                </div>
+		                </div>
+		                
+		                </div>
+		                    <div class="row" align="center">
+		                    <button class="btn-brown btn" ng-click="cancelar();">{{idCotizacion!=null?'Regresar':'Cancelar'}}</button>	
+		                       <button  type="button" class="btn btn-brown" data-toggle="modal" data-target="#noAutorizar" ng-click="limpiarObservacion()" >Rechazar</button>
+                        		<button ng-click="autorizarCotizacion();" type="button" class="btn btn-green">Autorizar</button>
+		                    </div>
+		                </form>
+		            
+		        </panel>
+
+		         <panel id="idPanelCotizacion2" panel-class="panel-info" heading="Plan privado de pensiones {{ cotizacion.idImss.idCatGeneral=== 53 ? ' + IMSS Cliente':''}}"  ng-show="cotizacionRealiada && (cotizacion.idImss.idCatGeneral=== 9 || cotizacion.idImss.idCatGeneral=== 53)">
+		            <panel-controls>
+		                <panel-control-collapse></panel-control-collapse>
+		                <a ng-click="descargar()" class="btn btn-midnightblue pull-right " style="margin-top:15px;"><span class="fa fa-print"></span> DESCARGAR REPORTE</a>
+<!-- 		                <a ng-click="printDiv2()" class="fa fa-print "> Descargar Reporte</a> -->
+		            </panel-controls>
+		                <form >
+		                <div id="idPrint2" class="table-responsive">
+		                <div class="col-md-8 col-md-offset-2">
+		                <table class="table">
+		                        <thead>
+		                            <tr>
+		                                <th style="padding-right:100px"></th>
+		                                <th style="text-align:right;" >Actual</th>
+		                                <th style="text-align:right;" >N&oacute;mina cliente</th>
+		                                <th style="text-align:right;" >PPP</th>
+		                                <th style="text-align:right;" >Total</th>
+		                                <th style="text-align:right;" >Costo actual VS propuesto</th>
+		                            </tr>
+		                        </thead>
+		                        <tbody>
+		                            <tr>
+		                                <td>+ Neto IMSS</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoImmsActual) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoImmsNomCliente) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoImmsNomPPP) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoImmsTotal) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoImmsCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                            	<td>+ Neto Estrategia</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoEstrategiaActual) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.varCot.netoEstrategiaNomCliente) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoEstrategiaTotal) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoEstrategiaPPP) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoEstrategiaCAP) | number }}</td> 
+		                            </tr>
+		                            <tr>
+		                                <td>= Total a Dispersar a Colaborador</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.totalDispColActual) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.totalDispColNomCliente) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.totalDispColPPP) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.totalDispColTotal) | number }} </td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.totalDispColCAP) | number }} </td> 
+		                            </tr>
+		                            <tr>
+		                                <td>+ Total de Deducciones</td> 
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalDeduccionActual) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalDeduccionNomCliente) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalDeduccionPPP) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalDeduccionTotal) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalDeduccionCAP) | number }}</td> 
+		                                
+		                            </tr>
+		                            <tr>
+		                                <td>= Total De Percepciones</td> 
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalPercepcionesActual) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalPercepcionesNomCliente) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalPercepcionesPPP) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalPercepcionesTotal) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalPercepcionesCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>+ Carga Social</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.cargaSocialActual) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.cargaSocialNomCliente) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.cargaSocialPPP) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.cargaSocialTotal) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.cargaSocialCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>= Subtotal N&oacute;mina</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.subtotalNominaActual) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.subtotalNominaNomCliente) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.subtotalNominaPPP) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.subtotalNominaTotal) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.subtotalNominaCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>+ Honorarios</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.comisionActual) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.comisionNomCliente) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.comisionPPP) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.comisionTotal) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.comisionCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>= Costo Total</td> 								
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.costoTotalActual) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.costoTotalNomCliente) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.costoTotalPPP) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.costoTotalTotal) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.costoTotalCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>+ IVA</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaActual) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaNomCliente) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaPPP) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaTotal) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaCAP) | number }}</td>
+									</tr>
+		                            <tr>
+		                                <td>IVA Trasladado</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaTrasladoActual) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaTrasladoNomCliente) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaTrasladoPPP) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaTrasladoTotal) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaTrasladoCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>= Total Flujo</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.totalFlujoActual) | number }}</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.totalFlujoNomCliente) | number }}</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.totalFlujoPPP) | number }}</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.totalFlujoTotal) | number }}</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.totalFlujoCAP) | number }}</td> 
+		                            </tr>
+		                            <tr>
+		                                <td style="padding-left: 20px;">Diferencia VS Actual Costo</td>
+										<td style="text-align:right;" ></td>
+										<td style="text-align:right;" ></td>
+										<td style="text-align:right;" ></td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.diferenciaActualCostoTotal) | number }} </td>
+		                                <td style="text-align:right;" ></td>
+		                            </tr>
+		                            <tr>
+		                                <td style="padding-left: 20px;">Diferencia VS Actual Flujo</td>
+										<td style="text-align:right;" ></td> 
+										<td style="text-align:right;" ></td>
+										<td style="text-align:right;" ></td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.diferenciaActualFlujoTotal) | number }} </td>
+		                                <td style="text-align:right;" ></td>
+		                            </tr>
+		                        </tbody>
+		                    </table>
+		                </div>
+		                </div>
+		                <div class="row">
+                            <div class="col-xs-12" >
+                                <h2 class="ng-binding" style="color: #353a4d !important;height: 100%;width: auto;float: left;font-size: 20px;font-weight: 700;padding: 14px 0 14px;position: relative;margin: 0;line-height: 20px;cursor: text;text-transform: uppercase;">Rentabilidad</h2>
+                            </div>
+                        </div>
+		                <div class="table-responsive">
+			                
+			                <div class="col-md-4 col-md-offset-4">
+			                <table class="table">
+			                        <thead>
+			                            <tr>
+			                                <th style="text-align:center;">Rentabilidad Total</th>
+			                            </tr>
+			                        </thead>
+			                        <tbody>
+<!-- 			                        <tr> -->
+<!-- 			                        	<td>Periodicidad de n&oacute;mina</td> -->
+<!-- 			                        	<td>{{formatoDecimal(total.rentabilidadPpp.periodicidad) | number }}</td> -->
+<!-- 			                        </tr> -->
+<!-- 			                        <tr> -->
+<!-- 			                        	<td>Esquema contratado</td> -->
+<!-- 			                        	<td>{{formatoDecimal(total.rentabilidadPPP.tipoProducto.descripcion) | number }}</td> -->
+<!-- 			                        </tr> -->
+			                        <tr>
+			                        	<td>Numero de colaboradores</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.numColaboradores) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Percepci&oacute;n</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.dispersion) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Carga social</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.cargaSocial) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Honorarios</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.comisionServicios) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Subtotal factura</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.subtotalFactura) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>IVA</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.iva) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Total Factura</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.totalFactura) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Pricing</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.pircing) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td> Comision estimada promotor</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.comisionEstimadaPromotor) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Costos directos</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.costosDirectos) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>SGMM</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.sgmm) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Timbrado</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.timbrado) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Spei</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.spei) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Costo estrategia</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.costoEstrategia) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Implant</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.implant) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Costos indirectos</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.costosIndirectos) | number }}</td>
+			                        </tr>
+			                        <tr>
+			                        	<td>Utilidad</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.utilidades) | number }}</td>
+			                        </tr>
+			                        <tr style = "background : {{formatoDecimal(total.rentabilidadPPP.rentabilidad)<=2.5 ? 'red':formatoDecimal(total.rentabilidadPPP.rentabilidad)>2.5 && formatoDecimal(total.rentabilidadPPP.rentabilidad)<3.5?'yellow':'green'}}">
+			                        	<td>Rentabilidad</td>
+			                        	<td>{{formatoDecimal(total.rentabilidadPPP.rentabilidad) | number }}</td>
+			                        </tr>
+			                        
+			                        </tbody>
+			                    </table>
+			                </div>
+		                </div>
+		                
+		                    <div class="row" align="center">
+		                    <button class="btn-brown btn" ng-click="cancelar();">{{idCotizacion!=null?'Regresar':'Cancelar'}}</button>	
+		                       <button  type="button" class="btn btn-brown" data-toggle="modal" data-target="#noAutorizar" ng-click="limpiarObservacion()">Rechazar</button>
+                        		<button ng-click="autorizarCotizacion();" type="button" class="btn btn-green">Autorizar</button>
+		                    </div>
+		                </form>
+		            
+		        </panel>
+		        <panel id="idPanelColaboradores" panel-class="panel-info" heading="Cargar colaboradores">
+                    <panel-controls>
+                        <panel-control-collapse></panel-control-collapse>
+                    </panel-controls>
+                    <form>
+                        <div class="row" ng-show="false">
+                            <div class="panel panel-default">
+                                <div class="panel-body">{{dataExcel| json}}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="row" ng-show="dataExcel != undefined">
+                            <table style="width:100%">
+                                <thead>
+                                <th style="text-align: center;" class="pad-l">Salario diario</th>
+                                <th style="text-align: center;" class="pad-l">Gravados</th>
+                                <th style="text-align: center;" class="pad-l">Exentos</th>
+                                <th style="text-align: center;" class="pad-l">Fecha de antiguedad</th>
+                                <th style="text-align: center;" class="pad-l">Neto nomina</th>
+                                <th style="text-align: center;" class="pad-l">Asimilados</th>
+                                <th style="text-align: center;" class="pad-l">Otros</th>
+                                <th style="text-align: center;" class="pad-l">Prima de riesgo</th>
+                                </thead>
+                                <tr ng-repeat="x in dataExcel.contentRows">
+                                    <td align="right" class="pad-r">{{ x.salarioDiario | number}}</td>
+                                    <td align="right" class="pad-r">{{ x.gravados | number}}</td>
+                                    <td align="right" class="pad-r">{{ x.exentos | number}}</td>
+                                    <td align="center">{{ x.fechaAntiguedad | date:'dd/MM/yyyy' }}</td>
+                                    <td align="right" class="pad-r">{{ x.netoNomina | number}}</td>
+                                    <td align="right" class="pad-r">{{ x.asimilados | number}}</td>
+                                    <td align="right" class="pad-r">{{ x.aOtros | number}}</td>
+                                    <td align="center">{{ x.dgPrimaDeRiesgo}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <br/>
+                        <div class="row" align="center">
+                            <!-- <button class="btn-orange btn" ng-click="mostrarDialogo();" ng-show="idCotizacion!=null"><span class="glyphicon glyphicon-open"></span> subir layout colaboradores</button>
+                            <button class="btn-success btn" ng-click="ejecutarCotizacion();" ng-show="dataExcel != undefined"><span class="glyphicon glyphicon-cog"></span> Realizar cotizaci&oacute;n</button> -->
+                        </div>
+                    </form>
+                </panel>
+    		</div>
+        </div>
+    <div class="modal fade" id="noAutorizar" role="dialog" data-backdrop="static" data-keyboard="false" >
+            <div class="modal-dialog" style="width: 50%;">
+                <div class="modal-content">
+	                <form id="formNoAutorizar" name="formNoAutorizar">
+	                    <div class="modal-header">
+	                        <h4 class="modal-title">No Autorizar</h4>
+	                    </div>
+	                    <div class="modal-body">
+	                        <div class="row">
+	                            <div class="col-md-12">
+	                                    <div class="row">
+	                                        <div class="col-xs-8">
+	                                            <label class="control-label">Observaci&oacute;n*:</label> 
+	                                            <textarea placeholder="Observaci&oacute;n" name="observacion" maxlength="500" minlength="3" ng-model="cotizacion.observacionAutorizador"
+	                                                class="form-control" required
+	                                                onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"
+	                                                onblur="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+	                                                <span class="messages" ng-show="formNoAutorizar.$submitted || formNoAutorizar.observacion.$touched">
+                                    					<span ng-show="formNoAutorizar.observacion.$error.required">El campo es obligatorio.</span>
+                                    				</span>
+	                                        </div>
+	                                    </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <div class="modal-footer">
+	                    	<button type="button" class="btn-brown btn" data-dismiss="modal" ng-click="cerrarModalAutorizador()">Cancelar</button>
+	                        <button type="submit" class="btn-green btn" data-dismiss="modal" ng-disabled="formNoAutorizar.$invalid" ng-click="guardarObservacionAutorizador(cotizacion)">Rechazar</button>
+	                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+</div>
+</div>
+<script src="scripts/print.js"></script>

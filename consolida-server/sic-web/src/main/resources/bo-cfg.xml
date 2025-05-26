@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans profile="default" xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		                     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		                     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+	<context:component-scan base-package="mx.com.consolida.service" />
+	<context:component-scan base-package="mx.com.consolida.crm.service" />
+	<context:component-scan base-package="mx.com.consolida.ppp.service" />
+	
+		<!-- Load properties so we can easily change them -->
+	<context:property-placeholder  properties-ref="prod" />
+	
+	 <util:properties id="prod">
+        <prop key="ambiente">PRODUCCION</prop>
+        <prop key="urlReportes">/opt/jboss/wildfly/jasper/</prop>
+        <prop key="urlJks">/opt/jboss/wildfly/jks/</prop>
+        <prop key="nombreJks">freyxenet.jks</prop>
+        <prop key="passwordJKS">Fr3yX3n3t.2020</prop>
+        <prop key="aliasKeyJks">freyxenet</prop>
+        <prop key="passwordKeyJks">sTp_Fr3yX3n3t</prop>
+        <prop key="urlXLS">/opt/jboss/wildfly/xls/</prop>
+
+		<prop key="url.ms.base">http://traefik</prop>
+		<prop key="url.factura.service">/api/factura</prop>
+		<prop key="url.nomina.service">/api/facturanomina</prop>
+		<prop key="url.documento.service">/api/documento</prop>
+        <prop key="urlStp">https://prod.stpmex.com:7002/speiws/rest/ordenPago/</prop>
+        <prop key="auth.cookie.hmac-key">y.E@EA!FbtCwXYB-2v_n.!*xgzRqgtbq2d2_A_U!W2hubL@URHRzNP96WNPxEcXK</prop>
+     </util:properties>
+<!--         <prop key="urlZuul">http://172.16.69.2:8090</prop> -->     
+</beans>

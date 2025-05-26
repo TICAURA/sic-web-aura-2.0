@@ -1,0 +1,485 @@
+<div class="container-fluid" ng-controller="cotizacionBasicaController">
+	<div >
+		<div id="page-heading"> 
+			<ol class="breadcrumb">
+				<li><a href="#/">COTIZADOR</a></li>
+				<li class="active">NUEVA PRE COTIZACI&Oacute;N</li>
+			</ol>
+		</div>
+		<div class="row">
+			<!--  <style>
+				td {
+					text-transform: uppercase;
+				}
+			</style>-->
+			<div class="col-md-12">
+				<panel panel-class="panel-sky" heading="Pre cotizaci&oacute;n"> 
+				<panel-controls><panel-control-collapse></panel-control-collapse></panel-controls>
+				<form id="cotizacionForm" name="cotizacionForm">
+					<div class="row">
+						<div class="col-xs-12">
+							<span style="color: #a2acb3; height: 100%; width: auto; float: left; font-size: 14px; font-weight: 700; padding: 14px 0 14px; position: relative; margin: 0; line-height: 20px; cursor: text; text-transform: uppercase;">GENERALES</span>
+						</div>
+					</div>
+					<div class="row pad-b">
+						<div class="col-xs-6">
+                                <label class="control-label">Tipo de monto n&oacute;mina*: </label>
+                                <select class="form-control" name="idTipoDeMonto" id="idTipoDeMonto" ng-model="objAux.tipoDeMonto"  ng-disabled="soloLectura"
+                                        required>
+                                    <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                    <option ng-repeat="tipoMonto in catalogosCotizadorDTO.catTipoMonto"
+                                            value="{{tipoMonto.idCatGeneral}}">{{tipoMonto.descripcion | uppercase}}</option>
+                                </select>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.idTipoDeMonto.$touched">
+									<span ng-show="cotizacionForm.idTipoDeMonto.$error.required">El campo es obligatorio.</span>
+								</span>    
+                            </div>
+						<div class="col-xs-6" ng-show="objAux.tipoDeMonto == 1 || objAux.tipoDeMonto == 2">
+							<label class="col-sm-6 control-label">Monto {{objAux.tipoDeMonto == 1 ? 'neto ':'bruto'}} n&oacute;mina:*</label> 
+							<input name="monto" type="text" class="form-control" placeholder="Monto {{objAux.tipoDeMonto == 1 ? 'neto ':'bruto'}} n&oacute;mina" ng-disabled="soloLectura"
+							ng-model="objAux.valorTipoDeMonto" id="monto" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,15})?$/" maxlength="15" /> 
+							<span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.monto.$touched">
+								<span ng-show="cotizacionForm.monto.$error.required">El campo es obligatorio.</span> 
+								<span ng-show="cotizacionForm.monto.$error.required"> Ingresar monto n&oacute;mina.</span>
+							</span>
+						</div>
+					</div>
+					<div class="row" style="padding-top: 15px;">
+						<div class="col-xs-4">
+							<label class="control-label">Tipo de pre cotizaci&oacute;n*: </label> 
+							<select class="form-control" name="idTipoCotizacion" id="idTipoCotizacion" ng-model="cotizacion.idTipoCotizacion.idCatGeneral" ng-disabled="soloLectura"
+							ng-change="actualizaTipoCot()" required>
+								<option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+								<option ng-repeat="tipoCotizacion in catalogosCotizadorDTO.catTipoCotizacion"
+									ng-selected="tipoCotizacion.idCatGeneral == cotizacion.idTipoCotizacion.idCatGeneral"
+									value="{{tipoCotizacion.idCatGeneral}}">{{tipoCotizacion.descripcion | uppercase}}</option>
+							</select> 
+							<span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.idTipoCotizacion.$touched">
+								<span ng-show="cotizacionForm.idTipoCotizacion.$error.required">El campo es obligatorio.</span>
+							</span>
+						</div>
+						<div class="col-xs-4" ng-show="cotizacion.idTipoCotizacion.idCatGeneral == 15">
+							<label class="control-label">Monto*: </label> 
+							<input type="text" class="form-control" name="idTipoCotizacionM"
+								id="idTipoCotizacionM" ng-model="cotizacion.dgMontoBrutoMensual"
+								placeholder="Monto" ng-disabled="soloLectura"
+								ng-required="cotizacion.idTipoCotizacion.idCatGeneral == 15"
+								ng-pattern="/^[0-9]+(\.[0-9]{1,15})?$/" maxlength="15" /> 
+								<span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.idTipoCotizacionM.$touched">
+									<span ng-show="cotizacionForm.idTipoCotizacionM.$error.required">El campo es obligatorio.</span>
+								</span>
+						</div>
+						<div class="col-xs-4" ng-show="cotizacion.idTipoCotizacion.idCatGeneral == 16">
+							<label class="control-label">VSM*: </label> 
+							<input type="text" class="form-control" name="idTipoCotizacionVSM"
+								id="idTipoCotizacionVSM" ng-model="cotizacion.dgVSM" ng-disabled="soloLectura"
+								placeholder="VSM" ng-required="cotizacion.idTipoCotizacion.idCatGeneral == 16"
+								ng-pattern="/^[0-9]+(\.[0-9]{1,15})?$/" maxlength="15" /> 
+								<span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.idTipoCotizacionVSM.$touched">
+									<span ng-show="cotizacionForm.idTipoCotizacionVSM.$error.required">El campo es obligatorio.</span>
+								</span>
+						</div>
+						<div class="col-xs-4" ng-show="cotizacion.idTipoCotizacion.idCatGeneral == 25">
+                                <label class="control-label">Porcentaje PPP*: </label>
+                                <select 
+                                    class="form-control" name="porcentajePpp" id="exampleFormControlSelect2" ng-change="actualizaNomFis()" ng-model="cotizacion.porcentajePpp"  ng-disabled="soloLectura"
+                                    ng-required="cotizacion.idTipoCotizacion.idCatGeneral == 22">
+                                    <option value="{{}}">----Seleccione una opcion----</option>
+                                    <option value="{{0}}">0%</option>
+                                    <option value="{{10}}">10%</option>
+                                    <option value="{{20}}">20%</option>
+                                    <option value="{{30}}">30%</option>
+                                    <option value="{{40}}">40%</option>
+                                    <option value="{{50}}">50%</option>
+                                    <option value="{{60}}">60%</option>
+                                    <option value="{{70}}">70%</option>
+                                    <option value="{{80}}">80%</option>
+                                    <option value="{{90}}">90%</option>
+                                    <option value="{{100}}">100%</option>
+                                </select>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.porcentajePpp.$touched">
+                                	<span ng-show="cotizacionForm.porcentajePpp.$error.required">El campo es obligatorio.</span>
+                                </span>
+                            </div>
+                            <div class="col-xs-4" ng-show="cotizacion.idTipoCotizacion.idCatGeneral == 25">
+                                <label class="control-label">N&oacute;mina fiscal*: </label> 
+                                <select disabled class="form-control" id="exampleFormControlSelect2" 
+                                ng-model="cotizacion.porcentajeNomFis">
+                                    <option value="{{0}}">0%</option>
+                                    <option value="{{10}}">10%</option>
+                                    <option value="{{20}}">20%</option>
+                                    <option value="{{30}}">30%</option>
+                                    <option value="{{40}}">40%</option>
+                                    <option value="{{50}}">50%</option>
+                                    <option value="{{60}}">60%</option>
+                                    <option value="{{70}}">70%</option>
+                                    <option value="{{80}}">80%</option>
+                                    <option value="{{90}}">90%</option>
+                                    <option value="{{100}}">100%</option> 
+                                </select>
+                            </div>
+						</div>
+
+					<div class="row">
+                            <div class="col-xs-12" >
+                                <span style="color: #a2acb3; height: 100%; width: auto; float: left; font-size: 14px; font-weight: 700; padding: 14px 0 14px; position: relative; margin: 0; line-height: 20px; cursor: text; text-transform: uppercase;">HONORARIOS</span>
+                            </div>
+                        </div>
+                        
+                        <div class="row pad-b">
+                            <div class="col-xs-4">
+                                <label class="control-label">% Honorarios IMSS*: </label>
+                                <select name="honorarioIMSS" class="form-control" id="honorarioIMSS"  ng-disabled="soloLectura"
+                                	ng-model="cotizacion.comisionImss" ng-required="true">
+                                    <option value="{{6}}">6%</option>
+                                    <option value="{{7}}">7%</option>
+                                    <option value="{{8}}">8%</option>
+                                    <option value="{{9}}">9%</option>
+                                    <option value="{{10}}">10%</option>
+                                </select>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.honorarioIMSS.$touched">
+                                    <span ng-show="cotizacionForm.honorarioIMSS.$error.required">El campo es obligatorio.</span>
+                                </span> 
+                            </div>
+                            <div class="col-xs-4">
+                                <label class="control-label">% Honorarios PPP*: </label>
+                                <select name="honorariosPpp" class="form-control" id="honorariosPpp"  ng-disabled="soloLectura"
+                                	ng-model="cotizacion.comisionPpp" ng-required="true">
+                                    <option value="{{6}}">6%</option>
+                                    <option value="{{7}}">7%</option>
+                                    <option value="{{8}}">8%</option>
+                                    <option value="{{9}}">9%</option>
+                                    <option value="{{10}}">10%</option>
+                                </select>
+                                <span class="messages" ng-show="cotizacionForm.$submitted || cotizacionForm.honorariosPpp.$touched">
+                                    <span ng-show="cotizacionForm.honorariosPpp.$error.required">El campo es obligatorio.</span>
+                                </span> 
+                            </div>
+                        </div>
+					<div class="row" align="center" style="padding-top: 25px;">
+						<button class="btn-brown btn" ng-click="cancelar();">{{idCotizacion!=null?'REGRESAR':'CANCELAR'}}</button>
+						<button type="submit" class="btn-green btn" ng-click="ejecutarCotizacion()"  ng-hide="soloLectura"
+							ng-disabled="cotizacionForm.$invalid">REALIZAR PRE COTIZACI&Oacute;N</button>
+					</div>
+				</form>
+				</panel>
+			</div>
+		</div>
+		<panel id="idPanelCotizacion" panel-class="panel-info" heading="SERVICIOS ESPECIALIZADOS + PLAN PRIVADO DE PENSIONES"  ng-show="cotizacionRealiada && (cotizacion.idImss.idCatGeneral===10 || cotizacion.idImss.idCatGeneral===34)">
+		            <panel-controls>
+		                <panel-control-collapse></panel-control-collapse>
+		                <a ng-click="descargar()" class="btn btn-midnightblue pull-right " style="margin-top:15px;"><span class="fa fa-print"></span> DESCARGAR REPORTE</a>
+<!-- 		                <a ng-click="printDiv()" class="fa fa-print "> Descargar Reporte</a> -->
+		            </panel-controls>
+		                <form >
+		                <div id="idPrint" class="table-responsive">
+		                <div class="col-md-8 col-md-offset-2">
+		                <table class="table">
+		                        <thead>
+		                            <tr>
+		                                <th style="padding-right:100px"></th>
+		                                <th style="text-align:right;" >Actual</th>
+		                                <th style="text-align:right;" >N&oacute;mina + PPP</th>
+		                                <th style="text-align:right;" >Costo actual vs Propuesto</th>
+		                            </tr>
+		                        </thead>
+		                        <tbody>
+		                            <tr>
+		                                <td>+ Neto IMSS</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoImmsActual) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoImmsPPP) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoImmsCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                            	<td>+ Neto Estrategia</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoEstrategiaActual) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoEstrategiaPPP) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoEstrategiaCAP) | number }}</td> 
+		                            </tr>
+		                            <tr>
+		                                <td>= Total a dispersar a colaborador</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.totalDispColActual) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.totalDispColPPP) | number }}</td>  
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.totalDispColCAP) | number }} </td> 
+		                            </tr>
+		                            <tr>
+		                                <td>+ Total de deducciones</td> 
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalDeduccionActual) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalDeduccionPPP) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalDeduccionCAP) | number }}</td> 
+		                                
+		                            </tr>
+		                            <tr>
+		                                <td>= Total de percepciones</td> 
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalPercepcionesActual) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalPercepcionesPPP) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalPercepcionesCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>+ Carga social</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.cargaSocialActual) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.cargaSocialPPP) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.cargaSocialCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>= Subtotal n&oacute;mina</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.subtotalNominaActual) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.subtotalNominaPPP) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.subtotalNominaCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>+ Honorarios</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.comisionActual) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.comisionPPP) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.comisionCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>= Costo total</td> 								
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.costoTotalActual) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.costoTotalPPP) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.costoTotalCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>+ IVA</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaActual) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaPPP) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaCAP) | number }}</td>
+									</tr>
+		                            <!-- tr>
+		                                <td>IVA Trasladado</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaTrasladoActual) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaTrasladoPPP) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaTrasladoCAP) | number }}</td>
+		                            </tr -->
+		                            <tr>
+		                                <td>= Total flujo</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.totalFlujoActual) | number }}</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.totalFlujoPPP) | number }}</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.totalFlujoCAP) | number }}</td> 
+		                            </tr>
+		                            <tr>
+		                                <td style="padding-left: 20px;">Diferencia vs actual costo</td>
+		                                <td style="text-align:right;" ></td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.diferenciaActualCostoPPP) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.diferenciaActualCostoCAP) | number }} </td> 
+		                            </tr>
+		                            <tr>
+		                                <td style="padding-left: 20px;">Diferencia vs actual flujo</td>
+		                                <td style="text-align:right;" ></td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.diferenciaActualFlujoPPP) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.diferenciaActualFlujoCAP) | number }} </td> 
+		                            </tr>
+		                        </tbody>
+		                    </table>
+		                </div>
+		                </div>
+		                    <div class="row" align="center">
+		                        <button data-toggle="modal" data-target="#solicitarCotizacion"  class="btn-orange btn pull-center">Solicitar Cotizaci&oacute;n</button>
+		                        <button class="btn-brown btn" ng-click="cancelar();">REGRESAR</button>
+		                    </div>
+		                </form>
+		            
+		        </panel>
+		        
+		        
+		        
+		         <panel id="idPanelCotizacion2" panel-class="panel-info" heading="Plan privado de pensiones"  ng-show="cotizacionRealiada && cotizacion.idImss.idCatGeneral===9">
+		            <panel-controls>
+		                <panel-control-collapse></panel-control-collapse>
+		                <a ng-click="descargar()" class="btn btn-midnightblue pull-right " style="margin-top:15px;"><span class="fa fa-print"></span> DESCARGAR REPORTE</a>
+<!-- 		                <a ng-click="printDiv2()" class="fa fa-print "> Descargar Reporte</a> -->
+		            </panel-controls>
+		                <form >
+		                <div id="idPrint2" class="table-responsive">
+		                <div class="col-md-8 col-md-offset-2">
+		                <table class="table">
+		                        <thead>
+		                            <tr>
+		                                <th style="padding-right:100px"></th>
+		                                <th style="text-align:right;" >Actual</th>
+		                                <th style="text-align:right;" >N&oacute;mina cliente</th>
+		                                <th style="text-align:right;" >PPP</th>
+		                                <th style="text-align:right;" >Total</th>
+		                                <th style="text-align:right;" >Costo actual vs propuesto</th>
+		                            </tr>
+		                        </thead>
+		                        <tbody>
+		                            <tr>
+		                                <td>+ Neto IMSS</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoImmsActual) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoImmsNomCliente) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoImmsNomPPP) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoImmsTotal) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoImmsCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                            	<td>+ Neto ESTRATEGIA</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoEstrategiaActual) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.varCot.netoEstrategiaNomCliente) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoEstrategiaTotal) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoEstrategiaPPP) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.netoEstrategiaCAP) | number }}</td> 
+		                            </tr>
+		                            <tr>
+		                                <td>= Total a dispersar a colaborador</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.totalDispColActual) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.totalDispColNomCliente) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.totalDispColPPP) | number }}</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.totalDispColTotal) | number }} </td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.totalDispColCAP) | number }} </td> 
+		                            </tr>
+		                            <tr>
+		                                <td>+ Total de deducciones</td> 
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalDeduccionActual) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalDeduccionNomCliente) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalDeduccionPPP) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalDeduccionTotal) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalDeduccionCAP) | number }}</td> 
+		                                
+		                            </tr>
+		                            <tr>
+		                                <td>= Total de percepciones</td> 
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalPercepcionesActual) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalPercepcionesNomCliente) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalPercepcionesPPP) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalPercepcionesTotal) | number }}</td>
+		                                <td style="text-align:right;" > {{formatoDecimal(varCot.totalPercepcionesCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>+ Carga social</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.cargaSocialActual) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.cargaSocialNomCliente) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.cargaSocialPPP) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.cargaSocialTotal) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.cargaSocialCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>= Subtotal n&oacute;mina</td> 
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.subtotalNominaActual) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.subtotalNominaNomCliente) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.subtotalNominaPPP) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.subtotalNominaTotal) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.subtotalNominaCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>+ Honorarios</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.comisionActual) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.comisionNomCliente) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.comisionPPP) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.comisionTotal) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.comisionCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>= Costo total</td> 								
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.costoTotalActual) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.costoTotalNomCliente) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.costoTotalPPP) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.costoTotalTotal) | number }}</td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.costoTotalCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>+ IVA</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaActual) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaNomCliente) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaPPP) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaTotal) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaCAP) | number }}</td>
+									</tr>
+		                            <tr>
+		                                <td>IVA Trasladado</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaTrasladoActual) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaTrasladoNomCliente) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaTrasladoPPP) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaTrasladoTotal) | number }}</td>
+										<td style="text-align:right;" >{{formatoDecimal(varCot.ivaTrasladoCAP) | number }}</td>
+		                            </tr>
+		                            <tr>
+		                                <td>= Total flujo</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.totalFlujoActual) | number }}</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.totalFlujoNomCliente) | number }}</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.totalFlujoPPP) | number }}</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.totalFlujoTotal) | number }}</td> 
+										<td style="text-align:right;" >{{formatoDecimal(varCot.totalFlujoCAP) | number }}</td> 
+		                            </tr>
+		                            <tr>
+		                                <td style="padding-left: 20px;">Diferencia vs actual costo</td>
+										<td style="text-align:right;" ></td>
+										<td style="text-align:right;" ></td>
+										<td style="text-align:right;" ></td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.diferenciaActualCostoTotal) | number }} </td>
+		                                <td style="text-align:right;" ></td>
+		                            </tr>
+		                            <tr>
+		                                <td style="padding-left: 20px;">Diferencia vs actual flujo</td>
+										<td style="text-align:right;" ></td> 
+										<td style="text-align:right;" ></td>
+										<td style="text-align:right;" ></td>
+		                                <td style="text-align:right;" >{{formatoDecimal(varCot.diferenciaActualFlujoTotal) | number }} </td>
+		                                <td style="text-align:right;" ></td>
+		                            </tr>
+		                        </tbody>
+		                    </table>
+		                </div>
+		                </div>
+		                    <div class="row" align="center">
+		                    	<button data-toggle="modal" data-target="#solicitarCotizacion"  class="btn-orange btn pull-center" >Solicitar Cotizaci&oacute;n</button>
+		                        <button class="btn-brown btn" ng-click="cancelar();">REGRESAR</button>
+		                    </div>
+		                </form>
+		            
+		        </panel>
+		        
+		        <div class="modal fade" id="solicitarCotizacion" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" style="width: 50%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">SOLICITAR COTIZACI&Oacute;N</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-xs-8">
+                                            <label class="control-label">Observaci&oacute;n </label> 
+                                            <textarea placeholder="Observacion" ng-model="clienteTempBitacoraSolicitud.observacion" name="observacion" maxlength="500" minlength="3"
+                                                class="form-control"  required="required" 
+                                                onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"
+                                                onblur="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"
+                                                > </textarea>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <h3>Anexar documento: </h3>
+                                            <input id="inputFile"
+                                                   type="file"
+                                                   accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                   onchange="angular.element(this).scope().fileChanged(this)"
+                                                   class="filestyle">
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding-top: 25px;">
+										<div class="col-md-12">
+											<a href="./LayoutCotizadorDetallado.xlsx" class="btn btn-midnightblue pull-right" download="LayoutCotizadorDetallado.xlsx" tooltip="Descargar layout"> 
+											<span class="glyphicon glyphicon-download-alt"/> DESCARGAR LAYOUT
+											</a>
+										</div>
+									</div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn-green btn" data-dismiss="modal" ng-click="solicitarCotizacion()" >ENVIAR SOLICITUD</button>
+                        <button type="button" class="btn-brown btn" data-dismiss="modal" ng-click="cancelar()">CANCELAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+	</div>
+</div>
+<script src="scripts/print.js"></script>
+<br />
+<br />
+
+<!-- container-fluid -->

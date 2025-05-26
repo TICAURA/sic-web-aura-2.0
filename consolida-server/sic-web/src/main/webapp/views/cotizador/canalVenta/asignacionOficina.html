@@ -1,0 +1,87 @@
+<div class="container-fluid" ng-controller="asignacionOficinaController">
+	<div id="page-heading">
+		<ol class="breadcrumb">
+			<li><a href="#/">Cotizador</a></li>
+			<li class="active">Asignaci&oacute;n de oficina</li>
+		</ol>
+
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<panel panel-class="panel-sky" heading="B&uacute;squeda de oficina">
+				<panel-controls> <panel-control-collapse></panel-control-collapse>
+				<a class="btn btn-orange" href="#/cotizador/canalVenta/oficina">
+					Agregar oficina <i class="fa fa-plus-square"></i>
+				</a> </panel-controls>
+				<form>
+					<div class="row">
+						<div class="col-xs-5">
+							<label class="control-label">Razon Social: </label> 
+							<input
+								type="text" class="form-control" ng-model="rowFilter.razonSocial"
+								placeholder="Raz&oacute;n social">
+						</div>
+						<div class="col-xs-3">
+							<label class="control-label">RFC: </label> 
+							<input type="text" ng-model="rowFilter.rfc"
+								class="form-control" placeholder="RFC">
+						</div>
+						
+					</div>
+				</form>
+
+				</panel>
+
+				<panel panel-class="panel-sky" heading="Resultado y asignaci&oacute;n de oficinas a canal de venta"> <panel-controls>
+				<panel-control-collapse></panel-control-collapse> </panel-controls>
+				
+
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th align="center">Clave</th>
+								<th align="center">Raz&oacute;n Social</th>
+								<th align="center">RFC</th>
+								<th align="center">Entidad Sede</th>
+								<th align="center">Ciudad Sede</th>
+								<th>Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							<tr  ng-repeat="x in oficinas | filter : rowFilter">
+							
+								<td align="left">{{x.clave}}</td>
+								<td align="left">{{x.razonSocial}}</td>
+								<td align="left">{{x.rfc}}</td>
+								<td align="left">{{x.entidadFederativaSede.descripcion}}</td>
+								<td align="left">{{x.ciudadSede}}</td>
+								<td align="left">
+
+									<a class="glyphicon glyphicon-pencil"
+										title="Editar canal de venta" ng-click="editarOficinaCanalVenta(x.idOficina)"></a>
+								<td>							
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+				<div class="row" align="right">
+					<button class="btn-brown btn" type="submit" ng-click="regresar()">
+						<span class="fa fa-return"></span> Regresar
+					</button>
+				</div>
+				
+				</panel>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- container-fluid -->

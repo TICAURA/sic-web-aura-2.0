@@ -1,0 +1,836 @@
+<div class="container-fluid" ng-controller="nominasCtrl">
+    <div id="page-heading">
+        <ol class="breadcrumb">
+            <li><a href="#/">CRM</a></li>
+            <li><a href="#/crm/clientes">Clientes</a></li>
+            <li><a href="#/crm/actualiza-cliente/1">Cliente Seleccionado</a></li>
+            <li class="active">Nominas</li>
+        </ol>
+    </div>
+<script>
+$(document).ready(function(){
+	$('html, body').animate({scrollTop: 0}, 1500);
+});
+</script>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <panel panel-class="panel-info" heading="Cliente Seleccionado ">
+                    <panel-controls><panel-control-collapse></panel-control-collapse></panel-controls>
+                    <div class="row">
+                        <div class="col-xs-4" ng-show="cliente.nombreComercial!=null">
+                            <label class="control-label" ><b>Nombre comercial:</b> {{cliente.nombreComercial}}</label> 
+                        </div>
+                        <div class="col-xs-4">
+                            <label class="control-label" ><b>Nombre/Raz&oacute;n Social:</b> {{cliente.razonSocial}} {{cliente.nombre}} {{cliente.apellidoPaterno}} {{cliente.apellidoMaterno}}</label> 
+                        </div>
+                        <div class="col-xs-4">
+                            <label class="control-label"><b>RFC:</b> {{cliente.rfc}}</label> 
+                        </div>
+                    </div>
+                </panel>
+                <div id="colaboradores" class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <panel panel-class="panel-sky" heading="Nomina: {{nominaCliente.nombreNomina}}" >
+                                <panel-controls></panel-controls>
+                                <ul class="nav nav-tabs">
+                                    <li ng-class="{'active' : tabSeleccionado === 'generales'}">
+                                        <a data-toggle="tab" ng-click="seleccionarTab('generales')">Datos Generales</a>
+                                    </li>
+                                    <li ng-class="{'active' : tabSeleccionado === 'colaboradores'}">
+                                        <a data-toggle="tab" ng-click="seleccionarTab('colaboradores')">Colaboradores</a>
+                                    </li>
+                                    <li ng-class="{active : tabSeleccionado == 'periodicidad'}">
+                                        <a data-toggle="tab" ng-click="seleccionarTab('periodicidad')">Periodicidad</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="generales" class="tab-pane fade" ng-class="{'in active' : tabSeleccionado === 'generales'}">
+                                        <form >
+                                            <panel panel-class="panel-primary" heading="Datos generales">
+                                                <div class="row"></div>
+                                                <div class="row">
+                                                    <div class="col-xs-3">
+                                                        <label class="control-label">Nombre n&oacute;mina*: </label> 
+                                                        <input type="text" class="form-control" ng-disabled="true"
+                                                               ng-model="nominaCliente.nombreNomina">
+                                                    </div>
+                                                    <div class="col-xs-3">
+                                                        <label class="control-label">Clave n&oacute;mina*: </label> 
+                                                        <input type="text" class="form-control"  ng-disabled="true"
+                                                               ng-model="nominaCliente.claveNomina">
+                                                    </div>
+
+                                                    <div class="col-xs-3">
+                                                        <label class="control-label ">Producto*: </label> 
+                                                        <input type="text" class="form-control" ng-disabled="true"
+                                                               ng-model="nominaCliente.catProductoNomina.descripcion">
+                                                    </div>
+
+                                                </div>
+                                                <br>
+
+                                            </panel>
+                                        </form>	
+                                    </div>	
+                                    <div id="periodicidad" class="tab-pane fade" ng-class="{'in active' : tabSeleccionado === 'periodicidad'}">
+                                        <form id="formPeriodicidad" name="formPeriodicidad">
+                                            <panel panel-class="panel-primary"
+                                                   heading="Periodos de la n&oacute;mina"> <panel-controls>
+                                                    <panel-control-collapse></panel-control-collapse> </panel-controls>
+                                                <div class="row">
+                                                    <div class="col-xs-3">
+                                                        <label class="control-label">Periodicidad*: </label>
+                                                        <select ng-model="nominaPeriodicidad.idCatPeriodicidad" class="form-control" name="periodicidad" ng-disabled="inHabilitaEscritura">
+			                                                <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+			                                                <option ng-repeat="cat in tipoPago" ng-selected="nominaPeriodicidad!=null ? cat.idTipoPago == nominaPeriodicidad.idCatPeriodicidad :''"
+			                                            	value="{{cat.idTipoPago}}" >{{cat.descripcionTipoPago | uppercase}}</option>
+			                                            </select> 
+                                                        <span class="messages" ng-show="formPeriodicidad.$submitted || formPeriodicidad.periodicidad.$touched">
+						                                	<span ng-show="formPeriodicidad.periodicidad.$error.required">El campo es obligatorio.</span>
+						                                </span>	
+                                                    </div>
+                                                    <div class="col-xs-3">
+                                                        <label class="control-label">Fecha inicio del periodo*: </label>
+<!-- 												<div class="input-group">													 -->
+<!-- 												<input type="text" class="form-control datepicker" datepicker-popup="{{format}}"  -->
+<!-- 													ng-model="nominaPeriodicidad.fechaInicio" is-open="opened" datepicker-options="dateOptions"  ng-required="true" -->
+<!-- 														close-text="Cerrar" /> -->
+<!-- 													<div class="input-group-btn"> -->
+<!-- 														<button type="button" class="btn btn-default" -->
+<!-- 															ng-click="open($event)"> -->
+<!-- 															<i class="glyphicon glyphicon-calendar"></i> -->
+<!-- 														</button> -->
+<!-- 													</div> -->
+<!-- 												</div> -->
+												<input type="date" name="fechaInicioPeriodo" class="form-control" placeholder="Fecha inicio periodo" 
+                                                            ng-model="nominaPeriodicidad.fechaInicio"  ng-required="true" ng-disabled="inHabilitaEscritura">
+                                                            <span class="messages" ng-show="formPeriodicidad.$submitted || formPeriodicidad.fechaInicioPeriodo.$touched">
+						                                    	<span ng-show="formPeriodicidad.fechaInicioPeriodo.$error.required">El campo es obligatorio.</span>
+						                                    </span>	
+                                                    </div>
+
+                                                    <div class="col-xs-3">
+                                                        <button class="btn-green btn" ng-click="calcularPeriodo()" style="margin-top: 30px;"  ng-if="!inHabilitaEscritura"> Calcular y guardar </button>
+                                                    </div>
+                                                </div>
+                                                <br/><br/>
+                                                <div class="row">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                            	<th>A&ntilde;o</th>
+                                                            	<th>Mes</th>
+                                                                <th>Fecha inicio periodo</th>
+                                                                <th>Fecha Fin periodo</th>
+                                                                <th>Fecha tentativa de pago</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="periodo in listPeriodos">
+                                                            	<td>{{periodo.fechaTentativaPago | date: 'yyyy'}}</td>
+                                                            	<td>{{obtenerFechaMes((periodo.fechaTentativaPago | date: 'MMM'))}}</td>
+                                                                <td>{{periodo.fechaInicioPeriodo | date: 'dd-MM-yyyy'}}</td>
+                                                                <td>{{periodo.fechaFinPeriodo | date: 'dd-MM-yyyy'}}</td>
+                                                                <td>{{periodo.fechaTentativaPago | date: 'dd-MM-yyyy'}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </panel>
+                                        </form>
+                                    </div>
+                                <div id="colaboradores" class="tab-pane fade " ng-class="{'in active' : tabSeleccionado === 'colaboradores'}">
+                                        <form id="clieneTempForm" name="clieneTempForm">
+                                            <panel panel-class="panel-primary"
+                                                   heading="Colaboradores"> <panel-controls>
+                                                    <panel-control-collapse></panel-control-collapse> 
+                                                    <a href="" class="btn btn-orange" ng-click="showVisibleRegistroColaborador()"  ng-if="!inHabilitaEscritura"> 
+                                                        <span class="fa fa-plus"></span> Agregar colaborador
+                                                    </a>
+<!--                                                     <a href="" class="btn btn-green" ng-click="showIsVisibleCargarColaboradores()">  -->
+<!--                                                         <span class="fa fa-plus"></span> Cargar archivo colaboradores -->
+<!--                                                     </a> -->
+                                                </panel-controls>
+                                                <div class="row"></div>
+
+                                                <div class="table-responsive ">
+                                                    <table class="table ">
+                                                        <thead>
+                                                            <tr>
+<!--                                                                 <th style="padding-right: 100px">Clave</th> -->
+                                                                <th>Nombre </th>
+                                                                <th>RFC</th>
+                                                                <th>Correo electr&oacute;nico</th>
+                                                                <th>Num. seguro solcial</th>
+                                                                <th>Salario diario</th>
+                                                                <th>N&uacute;m. cuenta deposito</th>
+                                                                <th>Acciones</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="col in listColaboradores">
+<!--                                                                 <td>{{col.claveTrabajador}}</td> -->
+                                                                <td>{{col.nombre}}{{col.apellidoPaterno}}{{col.apellidoMaterno}}</td>
+                                                                <td>{{col.rfc}}</td>
+                                                                <td>{{col.correoElectronico}}</td>
+                                                                <td>{{col.numeroSeguroSocialImss}}</td>
+                                                                <td>{{col.salarioDiario}}</td>
+                                                                <td>{{col.esClabe1Principal}}</td>
+                                                                <td align="center">
+                                                                    <a ng-click="showEditarColaborador(col.idColaborador)"
+                                                                       class="fa fa-edit"
+                                                                       tooltip="Editar colaborador" ></a> 
+                                                                    <a ng-click="showDocColaborador(col.idColaborador)"
+                                                                       class="fa fa-upload"
+                                                                       tooltip="Cargar documentos "></a>
+
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </panel>                                        
+                                        </form>
+                                    </div>
+                                </div>
+                                <panel id="idPanelColaborador" panel-class="panel-sky" heading="Colaborador" ng-show="IsVisibleRegistroColaborador && tabSeleccionado === 'colaboradores'"> 
+                                    <panel-controls>
+                                        <panel-control-collapse></panel-control-collapse>
+                                    </panel-controls>
+                                    <div>
+                                        <h4><strong> N&Oacute;MINA: {{nominaCliente.nombreNomina}}</strong></h4>
+                                        <h4><strong> DATOS GENERALES</strong></h4>
+                                    </div>
+                                    <form id="formColaborador" name="formColaborador">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Nombre*: </label> 
+                                            <input type="text" class="form-control" placeholder="Nonmbre" name="nombre"
+                                            	ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"  minlength="3" maxlength="50"
+                                                ng-model="colaborador.nombre" ng-required="true" ng-disabled="inHabilitaEscritura">
+                                            <span class="messages" ng-show="formColaborador.$submitted || formColaborador.nombre.$touched">
+		                                    	<span ng-show="formColaborador.nombre.$error.required">El campo es obligatorio.</span>
+		                                    </span>
+                                        </div>
+
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Apellido paterno*: </label> 
+                                            <input type="text" class="form-control" placeholder="Apellido paterno" name="aPaterno"
+                                            ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"  minlength="3" maxlength="50" 
+                                                ng-model="colaborador.apellidoPaterno" ng-required="true" ng-disabled="inHabilitaEscritura">
+                                            <span class="messages" ng-show="formColaborador.$submitted || formColaborador.aPaterno.$touched">
+		                                    	<span ng-show="formColaborador.aPaterno.$error.required">El campo es obligatorio.</span>
+		                                    </span>
+                                        </div>
+
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Apellido materno: </label> 
+                                            <input type="text" class="form-control" placeholder="Apellido materno" name="aMaterno"
+                                            ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"  minlength="3" maxlength="50"
+                                                ng-model="colaborador.apellidoMaterno" ng-disabled="inHabilitaEscritura" >
+                                           <!--  <span class="messages" ng-show="formColaborador.$submitted || formColaborador.aMaterno.$touched">
+		                                    	<span ng-show="formColaborador.aMaterno.$error.required">El campo es obligatorio.</span>
+		                                    </span> -->
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-xs-3 ">
+                                            <label class="control-label ">Nacionalidad: </label>
+                                            <select ng-model="colaborador.idNacionalidad" class="form-control" name="nacionalidad" ng-change="cargaNacionaidad(colaborador.idNacionalidad)"
+                                            ng-disabled="inHabilitaEscritura">
+                                                <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                                <option ng-repeat="cat in nacionalidad" ng-selected="cat.idCatGeneral == colaborador.idNacionalidad"
+                                            value="{{cat.idCatGeneral}}" >{{cat.descripcion | uppercase}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-3" ng-show="colaborador.idNacionalidad == 2895">
+                                            <label class="control-label">Pa&iacute;s*: </label> 
+                                            <input type="text" class="form-control" placeholder="Pa&iacute;s" name="pais"
+                                                ng-model="colaborador.pais"  
+                                                maxlength="10" min="10"  ng-required="true" ng-disabled="inHabilitaEscritura">
+                                            <span class="messages" ng-show="formColaborador.$submitted || formColaborador.pais.$touched">
+		                                    	<span ng-show="formColaborador.pais.$error.required">El campo es obligatorio.</span>
+		                                    </span>
+                                        </div>
+
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Fecha de nacimiento*: </label> 
+                                            <input  ng-required="true" type="DATE" class="form-control" name="fechaNacimiento" placeholder="Fecha de nacimiento" 
+                                            ng-model="colaborador.fechaNacimiento" ng-disabled="inHabilitaEscritura">
+                                            <span class="messages" ng-show="formColaborador.$submitted || formColaborador.fechaNacimiento.$touched">
+		                                    	<span ng-show="formColaborador.fechaNacimiento.$error.required">El campo es obligatorio.</span>
+		                                    </span>
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="row">								
+                                        <div class="col-xs-3">
+                                            <label class="control-label">RFC*: </label> 
+                                            <input type="text" class="form-control" placeholder="RFC" name="rfc"
+                                                ng-model="colaborador.rfc" maxlength="13" minlength="13"
+                                                ng-pattern="/^([A-ZÑ\x26]{4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})$/"  ng-required="true"
+                                                ng-disabled="inHabilitaEscritura">
+                                            <span class="messages" ng-show="formColaborador.$submitted || formColaborador.rfc.$touched">
+		                                    	<span ng-show="formColaborador.rfc.$error.required">El campo es obligatorio.</span>
+		                                    </span>
+                                        </div>
+
+                                        <div class="col-xs-3">
+                                            <label class="control-label">CURP*: </label> 
+                                            <input type="text" class="form-control" placeholder="RFC"
+                                                ng-model="colaborador.curp" name="curp" ng-disabled="inHabilitaEscritura"
+                                                maxlength="18" min="18" 
+                                                ng-pattern="/^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/"  ng-required="true">
+                                            <span class="messages" ng-show="formColaborador.$submitted || formColaborador.curp.$touched">
+		                                    	<span ng-show="formColaborador.curp.$error.required">El campo es obligatorio.</span>
+		                                    </span>
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Estado civil: </label> 
+                                            <select ng-model="colaborador.idEstadoCivil" class="form-control" name="estadoCivil" ng-disabled="inHabilitaEscritura">
+                                                <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                                <option ng-repeat="cat in estadoCivil" ng-selected="cat.idCatGeneral == colaborador.idEstadoCivil"
+                                            value="{{cat.idCatGeneral}}" >{{cat.descripcion | uppercase}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-3 ">
+                                            <label class="control-label ">G&eacute;nero: </label>
+                                            <select ng-model="colaborador.idGenero" class="form-control" name="genero" ng-disabled="inHabilitaEscritura">
+                                                <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                                <option ng-repeat="cat in genero" ng-selected="cat.idCatGeneral == colaborador.idGenero"
+                                            value="{{cat.idCatGeneral}}" >{{cat.descripcion | uppercase}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Celular*: </label> 
+                                            <input type="text" class="form-control" placeholder="Celular" name="cel"
+                                                ng-model="colaborador.numeroCelular"  ng-pattern="/^[0-9]{1,10}$/" ng-disabled="inHabilitaEscritura"
+                                                maxlength="10" min="10"  ng-required="true">
+                                            <span class="messages" ng-show="formColaborador.$submitted || formColaborador.cel.$touched">
+		                                    	<span ng-show="formColaborador.cel.$error.required">El campo es obligatorio.</span>
+		                                    </span>
+                                        </div>
+
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Tel&eacute;fono*: </label> 
+                                            <input type="text" class="form-control" placeholder="Tel&eacute;fono" name="tel" ng-disabled="inHabilitaEscritura"
+                                                ng-model="colaborador.numeroTelefono" ng-pattern="/^[0-9]{1,10}$/"
+                                                maxlength="10" min="10"  ng-required="true">
+                                            <span class="messages" ng-show="formColaborador.$submitted || formColaborador.tel.$touched">
+		                                    	<span ng-show="formColaborador.tel.$error.required">El campo es obligatorio.</span>
+		                                    </span>
+                                        </div>
+
+										<div class="col-sm-4">
+                                        <label class="control-label">Correo electr&oacute;nico*: </label> <input ng-disabled="inHabilitaEscritura"
+                                            placeholder="ejemplo@correo.com" name="correo_field"
+                                            ng-pattern="/^[a-zA-z0-9_]*(\.[_a-zA-Z0-9-]+)*[a-zA-Z0-9]@[a-zA-Z0-9]+[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,3})$/"
+                                            ng-model="colaborador.correoElectronico"
+                                            class="ns_ form-control" type="email" ng-required="true">
+                                        <span class="messages" ng-show="formColaborador.$submitted || formColaborador.correo_field.$touched">
+                                            <span ng-show="formColaborador.correo_field.$error.required">El campo es obligatorio.</span>
+                                            <span ng-show="formColaborador.correo_field.$error.required === true ?false:!formColaborador.correo_field.$valid">
+                                                Formato de Correo Electronico incorrecto.
+                                            </span>
+                                        </span> 	
+                                    </div>
+                                    </div>
+                                    <br>
+
+                                    <h4><strong>DOMICILIO</strong></h4>
+                                    <!-- <form id="domicilioFiscal" name="domicilioFiscal"> -->
+									<div class="row">
+										<div class="col-xs-2">
+											<label class="control-label">C&oacute;digo Postal*: </label>
+											<input type="text" name="codigoPostal" class="form-control"
+												placeholder="C&oacute;digo postal"
+												ng-model="colaborador.codigoPostal"
+												required="required" ng-pattern="/^[_0-9-]{5}$/"
+												maxlength="5" id="codigoPostal"
+												ng-blur="obtenerEntidadFederativaXCP(colaborador.codigoPostal);"
+												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+												ng-disabled="inHabilitaEscritura" />
+											<span class="messages"
+												ng-show="formColaborador.$submitted || formColaborador.codigoPostal.$touched">
+												<span ng-show="formColaborador.codigoPostal.$error.required">El
+													campo es obligatorio.</span> <span
+												ng-show="domicilioFiscal.codigoPostal.$error.pattern">Debe
+													ingresar 5 digitos.</span>
+											</span>
+										</div>
+										<div class="col-xs-4">
+											<label class="control-label">Calle: </label> <input
+												type="text" class="form-control" placeholder="Calle"
+												ng-model="colaborador.calle"
+												maxlength="99" ng-disabled="inHabilitaEscritura">
+										</div>
+
+										<div class="col-xs-2">
+											<label class="control-label">N&uacute;mero Ext: </label> <input
+												type="text" class="form-control"
+												placeholder="N&uacute;mero exterior"
+												ng-model="colaborador.numeroExterior"
+												maxlength="9" ng-disabled="inHabilitaEscritura">
+										</div>
+
+										<div class="col-xs-2">
+											<label class="control-label">N&uacute;mero Int.: </label> <input
+												type="text" class="form-control"
+												placeholder="N&uacute;mero interior."
+												ng-model="colaborador.numeroInterior"
+												maxlength="9" ng-disabled="inHabilitaEscritura">
+										</div>
+									</div>
+									<br>
+
+									<div class="row">
+										<div class="col-xs-6">
+											<label class="control-label">Entidad federativa*: </label> <select
+												required disabled class="form-control"
+												name="idEntidadFederativa" id="idEntidadFederativa"
+												ng-model="colaborador.idEntidadFederativa"
+												ng-change="obtenerEntidadFederativaXCP(colaborador.idEntidadFederativa);">
+												<option value="">Entidad federativa</option>
+												<option
+													ng-repeat="entidad in entidadFederativa"
+													ng-selected="entidad.idCatGeneral == colaborador.idEntidadFederativa"
+													value="{{entidad.clave}}">{{entidad.descripcion}}</option>
+											</select> <span class="messages"
+												ng-show="formColaboradorl.idEntidadFederativa.$submitted || formColaborador.idEntidadFederativa.$touched">
+												<span
+												ng-show="formColaborador.idEntidadFederativa.$error.required">El
+													campo es obligatorio.</span>
+											</span>
+										</div>
+										<div class="col-xs-6">
+											<label class="control-label">Alcald&iacute;a*: </label> <select
+												required disabled class="form-control" name="municipio"
+												id="municipio"
+												ng-model="colaborador.catMunicipios.idCatGeneral">
+												<option value="">Alcald&iacute;a</option>
+												<option
+													ng-repeat="municipio in colaborador.municipios"
+													ng-selected="municipio.idCatGeneral == colaborador.catMunicipios.idCatGeneral"
+													value="{{municipio.idCatGeneral}}">{{municipio.descripcion}}</option>
+											</select> <span class="messages"
+												ng-show="formColaborador.municipio.$submitted || formColaborador.municipio.$touched">
+												<span ng-show="formColaborador.municipio.$error.required">El
+													campo es obligatorio.</span>
+											</span>
+										</div>
+									</div>
+									<br>
+									<div class="row">
+										<div class="col-xs-4">
+											<label class="control-label">Colonia: </label> <input
+												type="text" class="form-control" placeholder="Colonia"
+												ng-model="colaborador.colonia"
+												maxlength="99" ng-disabled="inHabilitaEscritura">
+										</div>
+									</div>
+								<!-- </form> -->
+								<br/>
+                                    <h4><strong>DATOS N&Oacute;MINA</strong></h4>
+
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Salario diario: </label> 
+                                            <input type="text" class="form-control" placeholder="Salario diario"
+                                                 ng-model="colaborador.salarioDiario" ng-pattern="/^[0-9]+(\.[0-9]{1,15})?$/"
+                                                maxlength="15" min="15"  ng-disabled="inHabilitaEscritura" >
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Salario diario integrado: </label> 
+                                            <input type="text" class="form-control" placeholder="Diario"
+                                                  ng-model="colaborador.salarioDiarioIntegrado" ng-pattern="/^[0-9]+(\.[0-9]{1,15})?$/"
+                                                maxlength="15" min="15" ng-disabled="inHabilitaEscritura"  >
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Fecha de alta (firma contrato)*: </label> 
+                                            <input ng-model="colaborador.fechaFirmaContrato" type="DATE" class="form-control" placeholder="Fecha de alta (firma contrato)"
+                                            ng-disabled="inHabilitaEscritura">
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Antig&uuml;edad: </label> 
+                                            <input ng-model="colaborador.antiguedadImss" type="date" class="form-control" placeholder="Antig&uuml;edad"
+                                            ng-disabled="inHabilitaEscritura">
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <label class="control-label">N&uacute;mero seguro social*: </label> 
+                                            <input ng-model="colaborador.numeroSeguroSocialImss" name="seguroSocialNum" type="text" class="form-control" placeholder="IMSS"
+                                            maxlength="11" min="11" ng-pattern="/^[_0-9-]{11}$/"  ng-required="true" tooltip="NSS debe contener 11 d&iacute;gitos" ng-disabled="inHabilitaEscritura">
+                                            <span class="messages" ng-show="formColaborador.$submitted || formColaborador.seguroSocialNum.$touched">
+		                                    	<span ng-show="formColaborador.seguroSocialNum.$error.required">El campo es obligatorio.</span>
+		                                    </span>
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <label class="control-label ">Nivel de estudios: </label>
+                                            <select ng-model="colaborador.idNivelEstudios" class="form-control" name="nivelEstudio" ng-disabled="inHabilitaEscritura">
+                                                <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                                <option ng-repeat="cat in nivelEstudio" ng-selected="cat.idCatGeneral == colaborador.idNivelEstudios"
+                                            value="{{cat.idCatGeneral}}" >{{cat.descripcion | uppercase}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Profesi&oacute;n: </label> 
+                                            <input type="text" class="form-control" placeholder="Profesi&oacute;n"  ng-model="colaborador.profesion" maxlength="100" min="100"
+                                            ng-disabled="inHabilitaEscritura">
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Tipo de sangre: </label> 
+                                            <input type="text" class="form-control" placeholder="Tipo de sangre" ng-model="colaborador.tipoSangre"  maxlength="3" min="3"
+                                            ng-disabled="inHabilitaEscritura">
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <label class="control-label ">Forma de pago*: </label>
+                                            <select ng-model="colaborador.idFormaPago" class="form-control" name="formaPago"  ng-required="true" ng-disabled="inHabilitaEscritura">
+                                                <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                                <option ng-repeat="cat in formaPago" ng-selected="cat.idCatGeneral == colaborador.idFormaPago"
+                                            value="{{cat.idCatGeneral}}" >{{cat.descripcion | uppercase}}</option>
+                                            </select>
+                                            <span class="messages" ng-show="formColaborador.$submitted || formColaborador.formaPago.$touched">
+		                                    	<span ng-show="formColaborador.formaPago.$error.required">El campo es obligatorio.</span>
+		                                    </span>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <label class="control-label ">Banco operador: </label>
+                                            <select ng-model="colaborador.idBancoOperador" class="form-control" name="bancoOperador" ng-disabled="inHabilitaEscritura">
+                                                <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                                <option ng-repeat="cat in bancoOperador" ng-selected="cat.idCatGeneral == colaborador.idBancoOperador"
+                                            value="{{cat.idCatGeneral}}" >{{cat.descripcion | uppercase}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Llave de banco operador: </label> 
+                                            <input type="text" class="form-control" placeholder="Control de banco"  ng-model="colaborador.llaveBancoOperador" maxlength="3" min="3"
+                                            ng-disabled="inHabilitaEscritura">
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Cuenta clabe deposito 1*: </label> 
+                                            <input type="text" class="form-control" name="cuentaClabe1" placeholder="Cuenta clabe deposito" ng-model="colaborador.cuentaClabe1" 
+                                            ng-pattern="/^[0-9]{16}$/" maxlength="16"  ng-required="true" tooltip="Debe contener 16 d&iacute;gitos" ng-disabled="inHabilitaEscritura">
+                                            <span class="messages" ng-show="formColaborador.$submitted || formColaborador.cuentaClabe1.$touched">
+		                                    	<span ng-show="formColaborador.cuentaClabe1.$error.required">El campo es obligatorio.</span>
+		                                    </span>
+		                                    
+                                            <span ng-show="usuarioForm.cuentaBancaria.$error.pattern">El N&uacute;mero de cuenta debe contener 16 n&uacute;meros.</span>
+                                            <input type="radio" ng-model="colaborador.esClabe1Principal" value="1" ng-change="selectClavePrincipal(true)" ng-disabled="inHabilitaEscritura"/> <label class="control-label">&#191;Es cuenta principal?</label>
+                                        </div>
+
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Cuenta clabe deposito 2: </label> 
+                                            <input type="text" class="form-control" placeholder="Cuenta clabe deposito" ng-model="colaborador.cuentaClabe2" 
+                                            ng-pattern="/^[0-9]{16}$/" maxlength="16" tooltip="Debe contener 16 d&iacute;gitos" ng-disabled="inHabilitaEscritura">
+                                            <span ng-show="usuarioForm.cuentaBancaria.$error.pattern">El N&uacute;mero de cuenta debe contener 16 n&uacute;meros.</span>
+                                            <input type="radio" ng-disabled="colaborador.cuentaClabe2==null" ng-model="colaborador.esClabe2Principal" value="1" 
+                                            ng-change="selectClavePrincipal(false)" ng-disabled="inHabilitaEscritura"/> <label class="control-label">&#191;Es cuenta principal?</label>
+                                        </div>										
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Tipo de empleado: </label> 
+                                            <input type="text" class="form-control" placeholder="Tipo de empleado" ng-model="colaborador.tipoEmpleado" maxlength="45" ng-disabled="inHabilitaEscritura">
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Tipo de jornada: </label>
+                                            <select ng-model="colaborador.idTipoJornada" class="form-control" name="tipoJornada" ng-disabled="inHabilitaEscritura">
+                                                <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                                <option ng-repeat="cat in tipoJornada" ng-selected="cat.idCatGeneral == colaborador.idTipoJornada"
+                                            value="{{cat.idCatGeneral}}" >{{cat.descripcion | uppercase}}</option>
+                                            </select> 
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Turno: </label>
+                                            <select ng-model="colaborador.idTurno" class="form-control" name="turno" ng-disabled="inHabilitaEscritura">
+                                                <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                                <option ng-repeat="cat in turno" ng-selected="cat.idCatGeneral == colaborador.idTurno"
+                                            value="{{cat.idCatGeneral}}" >{{cat.descripcion | uppercase}}</option>
+                                            </select>
+                                        </div>									
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Unidad m&eacute;dica familiar: </label> 
+                                            <input type="text" class="form-control" placeholder="Unidad m&eacute;dica familiar" ng-model="colaborador.unidadMedicaFamiliar" maxlength="50"
+                                            ng-disabled="inHabilitaEscritura">
+                                        </div>
+
+                                        <div class="col-xs-3">
+	                                        <label class="control-label">&#191;Tiene descuento pensi&oacute;n alimenticia?</label><br/>
+	                                        <center><input id="pensionAliCheck" type="checkbox" ng-model="variables.isPencionAlimenticia" ng-change="selectPensionAlimenticia()"
+	                                        		ng-disabled="inHabilitaEscritura"/>
+	                                        </center> 
+                                        </div>
+
+                                        <div ng-if="colaborador.esPensionAlimenticia == 1">
+                                            <div class="col-xs-3" >
+                                                <label class="control-label">Factor o monto de descuento: </label> 
+                                                <input type="text" class="form-control" placeholder="Unidad m&eacute;dica familiar" ng-model="colaborador.factorOMontoDescuento" 
+                                                maxlength="45" ng-disabled="inHabilitaEscritura">
+                                            </div>
+                                        </div>								
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Registro patronal: </label> 
+                                            <input type="text" class="form-control" placeholder="Registro patronal" ng-model="colaborador.registroPatronal" maxlength="45"
+                                            ng-disabled="inHabilitaEscritura">
+                                        </div>
+
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Riesgo: </label> 
+                                            <input type="text" class="form-control" placeholder="Clasificaci&oacute;n" ng-model="colaborador.riesgo" maxlength="45"
+                                            ng-disabled="inHabilitaEscritura">
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Departamento: </label> 
+                                            <input type="text" class="form-control" placeholder="Departamento" ng-model="colaborador.departamento" maxlength="45"
+                                            ng-disabled="inHabilitaEscritura">
+                                        </div>								
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Puesto: </label> 
+                                            <input type="text" class="form-control" placeholder="Puesto" ng-model="colaborador.puesto"  maxlength="45"
+                                            ng-disabled="inHabilitaEscritura">
+                                        </div>
+
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Tipo Contrato: </label>
+                                            <select ng-model="colaborador.idTipoContrato" class="form-control" name="tipoContrato"
+                                            ng-disabled="inHabilitaEscritura">
+                                                <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                                <option ng-repeat="cat in tipoContrato" ng-selected="cat.idCatGeneral == colaborador.idTipoContrato"
+                                            value="{{cat.idCatGeneral}}" >{{cat.descripcion | uppercase}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Tipo de ingresos: </label>
+                                            <select ng-model="colaborador.idTipoIngreso" class="form-control" name="tipoIngreso"
+                                            ng-disabled="inHabilitaEscritura">
+                                                <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                                <option ng-repeat="cat in tipoIngreso" ng-selected="cat.idCatGeneral == colaborador.idTipoIngreso"
+                                            value="{{cat.idCatGeneral}}" >{{cat.descripcion | uppercase}}</option>
+                                            </select>
+                                        </div>								
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Clave de regimen de contrataci&oacute;n: </label> 
+                                            <input type="text" class="form-control" maxlength="15" ng-disabled="inHabilitaEscritura"
+                                            placeholder="Clave de regimen de contrataci&oacute;n" ng-model="colaborador.claveRegimenContratacion">
+                                        </div>
+
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Base de cotizaci&oacute;n*: </label> 
+                                            <input type="text" class="form-control" placeholder="Base de cotizaci&oacute;n" ng-model="colaborador.baseCotizacion" 
+                                            maxlength="45" ng-disabled="inHabilitaEscritura">
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Clave de tipo de contrato: </label> 
+                                            <input type="text" class="form-control" placeholder="Clave de tipo de contrato" ng-model="colaborador.claveTipoContrato" 
+                                            maxlength="15" ng-disabled="inHabilitaEscritura">
+                                        </div>								
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Clave de tipo de jornada: </label> <input
+                                                type="text" class="form-control" placeholder="Clave de tipo de jornada" ng-model="colaborador.claveTipoJornada" 
+                                                maxlength="15" ng-disabled="inHabilitaEscritura">
+                                        </div>
+
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Clave de tipo de entidad federativa: </label> <input
+                                                type="text" class="form-control"  placeholder="Clave de tipo de entidad federativa" ng-model="colaborador.claveEntidadFederativa" 
+                                                maxlength="45" ng-disabled="inHabilitaEscritura">
+                                        </div>
+<!--                                         <div class="col-xs-3"> -->
+<!--                                             <label class="control-label">Ruta plantilla: </label>  -->
+<!--                                             <input type="text" class="form-control" placeholder="Clave de tipo de contrato" ng-model="colaborador.claveEntidadFederativa"> -->
+<!--                                         </div> -->
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <label class="control-label">Clave regimen contrato: </label>
+                                            <input type="text" class="form-control" placeholder="Clave regimen contrato" ng-model="colaborador.claveRegimenContrato" 
+                                            maxlength="45" ng-disabled="inHabilitaEscritura">
+                                        </div>
+                                        
+                                        <div class="col-xs-3">
+                                            <label class="control-label">D&iacute;as de duraci&oacute;n: </label>
+                                            <input type="text" class="form-control" placeholder="D&iacute;s de duraci&oacute;n" ng-model="colaborador.diasDuracion" 
+                                            ng-pattern="/^[0-9]*$/" ng-disabled="inHabilitaEscritura">
+                                        </div>								
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <label class="control-label ">Beneficios adicionales: </label> 
+                                            <select ng-model="colaborador.idBeneficioAdicional" class="form-control" name="beneficioAdicional" ng-disabled="inHabilitaEscritura">
+                                                <option value="null">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                                <option ng-repeat="cat in beneficioAdicional" 
+                                            			value="{{cat.idCatGeneral}}">{{cat.descripcion | uppercase}} </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-"><button id="idAgregarBeneficio" class="btn-green btn" ng-click="agregarBeneficio();" style="margin-top: 30px;"  ng-if="!inHabilitaEscritura"><span class="glyphicon glyphicon-plus"></span></button></div>
+                                        <div class="col-xs-6 alert alert-primary" ng-show="colaborador.idColaborador != null"  ng-if="!inHabilitaEscritura">Si agrega beneficios adicionales es importante que presione el bot&oacute;n editar para conservar los cambios realizados.</div>							
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                    <table class="table table-trip" >
+                                    	<tr><td>Beneficio adicional</td><td ng-if="!inHabilitaEscritura">Acciones</td></tr>
+                                    	<tr ng-repeat="data in colaborador.listBeneficioAdicColab">
+	                                    	<td>{{data.general.descripcion}}</td>
+	                                    	<td ng-if="!inHabilitaEscritura"><button id="idAgregarBeneficio" class="btn-danger btn btn-sm" ng-click="removerBeneficio(data);"  ><span class="glyphicon glyphicon-trash"></span> </button></td>
+                                    	</tr>
+                                    </table>
+                                    </div>
+                                    <br>
+
+                                    <div class="row" align="right">
+                                        <br/>
+                                        <button type="submit" class="btn-green btn " ng-disabled="formColaborador.$invalid" ng-show="colaborador.idColaborador != null && !inHabilitaEscritura" ng-click=editarColaborador();>Editar</button>
+                                        <button type="submit" class="btn-green btn " ng-disabled="formColaborador.$invalid" ng-show="colaborador.idColaborador == null && !inHabilitaEscritura" ng-click=guardarColaborador(formColaborador);>Guardar</button>
+                                    </div>	
+                                    </form>
+                                </panel>
+
+                                <panel panel-class="panel-sky" heading="Documentos colaborador" ng-show="IsVisibleDocColaborador && tabSeleccionado === 'colaboradores'"> 
+                                    <panel-controls><panel-control-collapse></panel-control-collapse></panel-controls>
+                                    <div>
+                                        <h4><strong> N&Oacute;MINA: {{nominaCliente.nombreNomina}}</strong></h4>
+                                        <h4><strong> COLABORADOR: {{colaborador.nombre}} {{colaborador.apellidoPaterno}} {{colaborador.apellidoMaterno}}</strong></h4>
+                                    </div>
+
+                                    <div class="table-responsive">
+										<table class="table">
+											<thead>
+												<tr>
+													<th>Documento</th>
+													<th>Estatus</th>
+													<th>Nombre del archivo</th>
+													<th>Acci&oacute;n</th>
+						
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="documento in colaborador.documentos">
+													<td>{{documento.definicion.nombreDocumento}}</td>
+													<td>{{documento.idCMS >= 1?'Documento cargado': 'Documento no cargado'}}
+														<span class="glyphicon glyphicon-ok" style="color:green" ng-show="documento.idCMS >= 1"></span>
+														<span class="glyphicon glyphicon-remove" style="color:brown" ng-show="documento.idCMS == 0"></span>
+													</td>
+													<td>{{documento.nombreArchivo}}</td>
+													<td align="center">
+														<button data-toggle="modal"  ng-click="subirDocumento(documento)" ng-show="documento.idCMS == 0" tooltip="Guardar documento" class="btn btn-sm btn-indigo"  ng-if="!inHabilitaEscritura">
+															<span class="glyphicon glyphicon-floppy-open"></span>
+														</button>
+												    	<button data-toggle="modal"  ng-click="descargaDocumento(documento.idCMS)" ng-show="documento.idCMS >= 1" tooltip="Descargar documento" class="btn btn-sm btn-alizarin" >
+												    		<span class="glyphicon glyphicon-cloud-download"></span>
+												    	</button>
+												    	
+												    	<button data-toggle="modal"  ng-click="eliminarDocumento(documento)" ng-show="documento.idCMS >= 1"tooltip="Eliminar documento" class="btn btn-sm btn-midnightblue"  ng-if="!inHabilitaEscritura">
+												    		<span class="glyphicon glyphicon-trash"></span>
+												    	</button>
+												    	<button data-toggle="modal"  ng-click="verDocumento(documento.idCMS)" ng-show="documento.idCMS >= 1" tooltip="Ver documento" class="visualizadorDocumento btn btn-sm btn-alizarin" >
+												    		<span class="glyphicon glyphicon-eye-open"></span>
+												    	</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+                                </panel>
+                                <div class="modal fade" id="agregarDocumento" role="dialog"  data-backdrop="static" data-keyboard="false" tabindex="-1">
+							         <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document" >
+							             <div class="modal-content" >
+							                 <div class="modal-header">
+							                     <h5 class="modal-title">Documento</h5>
+							                 </div>
+							                 <form id="modalDoc" name="modalDoc" novalidate>
+							                 <div class="modal-body">
+							                 
+							                 	<div class="row">
+							                 		<div class="col-md-12">
+							                 		
+							                 		<input class="btn btn-info-alt form-control" required name="filePorSubir"
+														id="file" type="file" 
+														onchange="angular.element(this).scope().fileChangedDoc(this)"
+														class="filestyle"
+														data-buttonText="archivoPrestadora.nombreArchivo" />
+														
+													<span class="messages" ng-show="modalDoc.$submitted || modalDoc.filePorSubir.$touched">
+														<span ng-show="modalDoc.filePorSubir.$error.required">
+															El campo es obligatorio.
+														</span> 
+													</span>	
+							                 		</div>
+							                 	</div>
+											</div>
+											
+											<br/>
+									                    
+							                 <div class="modal-footer">
+							                    <button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>
+							                    <button type="button" class="btn-green btn" ng-click="guardarDocumento()"  ng-if="!inHabilitaEscritura">GUARDAR</button>
+							                </div>
+							                </form>
+							                
+							              </div>
+							         </div>
+							     </div>
+                                <div align="right">
+                                    <a class="btn-brown btn" href="#/crm/actualiza-cliente/nominaCliente" title="Regresar">regresar</a>				
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!-- container-fluid -->
+</div>

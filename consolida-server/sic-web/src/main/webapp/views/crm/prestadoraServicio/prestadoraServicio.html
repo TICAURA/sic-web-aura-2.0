@@ -1,0 +1,250 @@
+
+
+<div class="container-fluid" ng-controller="prestadoraServicioController">
+
+<div id="page-heading">
+    <ol class="breadcrumb">
+        <li><a href="#/">CRM</a></li>
+        <li>Home</li>
+        <li class="active">Prestadora de Servicio</li>
+    </ol>
+
+</div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <panel panel-class="panel-sky" heading="Busqueda de prestadoras de servicio">
+                <panel-controls>
+                    <panel-control-collapse></panel-control-collapse>
+
+                    <a class="btn btn-orange" ng-show="inHabilitaAgregar"  ng-click="limpiarSession();">Agregar prestadora de servicios <i class="fa fa-plus-square"></i></a>
+
+                </panel-controls>
+                <form id="buscarPrestadoraForm" name="buscarPrestadoraForm">
+                    <div class="row">
+                        <div class="col-xs-5">
+                            <label class="control-label">Nombre/Raz&oacute;n social: </label>
+                            <input type="text" class="form-control" placeholder="Nombre corto" ng-model="buscarPrestadoraServicioDto.nombreRazonSocial">
+                        </div>
+
+                        <div class="col-xs-3">
+                            <label class="control-label">RFC: </label>
+                            <input type="text" class="form-control" placeholder="RFC" ng-model="buscarPrestadoraServicioDto.rfc">
+                        </div>
+
+                        <div class="col-xs-1">
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <button class="btn-primary btn btn-lg" type="submit"  ng-click="buscar();">
+                                <span class="fa fa-search"></span> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+            </panel>
+
+            <panel panel-class="panel-sky" heading="Resultado de prestadoras de servicio">
+                <panel-controls>
+                    <panel-control-collapse></panel-control-collapse>
+                </panel-controls>
+                <div class="table-responsive">
+               
+					<table ng-table="tableParams"  class="table table-striped" show-filter="true">
+						<tbody>
+				          <tr ng-repeat="prestadora in $data">
+                                <!-- <td align="left">{{prestadora.rfc}}</td> -->
+                                <td data-title="'Nombre corto'" filter="{nombreCorto: 'text'}" sortable="'nombreCorto'" align="left">{{prestadora.nombreCorto}}</td>
+                                <td data-title="'Raz&oacute;n social'" filter="{nombreCorto: 'text'}" sortable="'nombreCorto'" align="left">{{prestadora.razonSocial}}</td>
+                                <!-- <td>Armando Alberto Hernandez Gonzalez</td>
+                                <td>Celula 1</td> -->
+                                <td data-title="'&#191;Es fondo?'" sortable="'nombreCorto'" align="center">{{prestadora.esFondo==true ? 'Si':'No'}}</td>
+                                <!-- <td align="right">{{prestadora.totalProductosRegistrados}}</td> -->
+                                <!-- <td>3</td> -->
+                                <td data-title="'Acciones'"  align="center">
+                                    <!--  a ng-click="actualizaCliente(cliente.idClienteTemp)" class="glyphicon glyphicon-pencil" title="Editar"></a-->                                			
+                               		<button ng-click="fichaTecnica(prestadora.idPrestadoraServicio)" tooltip="Formato de datos de la empresa" class="btn btn-success"><span class="fa fa-search"></span></button>
+								    <button data-toggle="modal" ng-show="inHabilitaEscritura" ng-click="editarPrestadoraServicio(prestadora.idPrestadoraServicio)" tooltip="Editar datos de prestadora" class="btn btn-info" ><span class="glyphicon glyphicon-pencil"></span></button>
+								    <button data-toggle="modal" ng-show="inHabilitaEscritura" ng-click="eliminarPrestadoraServicio(prestadora.idPrestadoraServicio)"  tooltip="Eliminar prestadora " class="btn  btn-midnightblue"><span class="fa fa-trash"></span></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </panel>
+        </div>
+    </div>
+	<div class="modal fade" id="fichaTecnica" role="dialog"  data-backdrop="static" data-keyboard="false" tabindex="-1">
+							         <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document" style="width: 90%; margin: 0px auto; ">
+							             <div class="modal-content" >
+							                 <div class="modal-header">
+							                     <h5 class="modal-title">Ficha tecnica</h5>
+							                     <div class="row" style="background: #ADB0B7; color: #ffffff; padding-top: 10px;">
+								                 	<div class="col-md-1">
+								                 		<img style="display:block; width:100px;height:100px;" id="logoBase64" src="{{fichaTecnicaDto.logotipo}}" ng-show="fichaTecnicaDto.logotipo != ''"/>
+								                 	</div>
+								                 	<div class="col-md-5" style="padding-top: 10px;">
+								                 	<p >Centro de Costos: {{fichaTecnicaDto.nombreCelula}}</p>
+								                 	<p ng-show="!fichaTecnicaDto.isFondo==1">Raz&oacute;n social: {{fichaTecnicaDto.razonSocial}}</p>
+								                 	<p ng-show="!fichaTecnicaDto.isFondo==1">Nombre corto: {{fichaTecnicaDto.nombreCorto}}</p>
+								                 	<p ng-show="fichaTecnicaDto.isFondo==1">Fondo: {{fichaTecnicaDto.nombreCorto}}</p>
+								                 	</div>
+								                 	<div class="col-md-5" style="padding-top: 10px;">
+								                 		<div ng-show="fichaTecnicaDto.isFondo==1" class="row"><p class="pull-right">Id consar: {{fichaTecnicaDto.idConsar}}</p></div>
+								                 		<div class="row"><p class="pull-right">Nombre cento de costos: {{nombreCentroCostos}}</p></div>
+								                 		<div class="row"><p class="pull-right">Nivel de riesgo: {{fichaTecnicaDto.descripcionRiesgo}}</p></div>
+								                 	</div>
+							                 	</div>
+							                 </div>
+							                 <form id="modalDoc" name="modalDoc" novalidate>
+							                 <div class="modal-body">
+							                 	<div class="row">
+							                 		<div class="col-md-4" style="background: #DEF7FF; padding: 10px; font-weight: bold;">Actividad econ&oacute;mica</div>
+							                 	</div>
+							                 	<div class="row" >
+							                 		<div class="col-md-12"> 
+								                 		<table class="table table-striped">
+									                 		<thead>
+									                 			<tr>
+																	<th>Grupo</th>
+																	<th>Subgrupo</th>
+																</tr>
+									                 		</thead>
+									                 		<tbody>
+										                 		<tr ng-repeat="act in fichaTecnicaDto.actividadEconomica">
+										                 			<td>{{act.grupo}}</td>
+										                 			<td>{{act.subgrupo}}</td>
+										                 		</tr>
+									                 		</tbody> 
+								                 		</table>
+								                 	</div>
+							                 	</div>
+							                 	<br/><br/>
+							                 	<div class="row">
+							                 		<div class="col-md-4" style="background: #DEF7FF; padding: 10px; font-weight: bold;">Representante legal</div>
+							                 	</div>
+							                 	<div class="row" >
+							                 		<div class="col-md-6"> 
+								                 		<table class="table table-striped">
+									                 		<thead>
+									                 			<tr>
+																	<th>nombre</th>
+																</tr>
+									                 		</thead>
+									                 		<tbody>
+										                 		<tr ng-repeat="act in fichaTecnicaDto.representantesLegales">
+										                 			<td>{{act.nombreOdescripcion}}</td>
+										                 		</tr>
+									                 		</tbody> 
+								                 		</table>
+								                 	</div>
+							                 	</div>
+							                 	<br/><br/>
+							                 	<div class="row">
+							                 		<div class="col-md-4" style="background: #DEF7FF; padding: 10px; font-weight: bold;">Domicilio</div>
+							                 	</div>
+							                 	<div class="row" style="padding-top: 20px;">
+							                 		<div class="col-md-6">Fiscal: {{fichaTecnicaDto.descEntidad}} {{fichaTecnicaDto.descMunicipio}}</div>
+							                 	</div>
+							                 	<br/><br/>
+							                 	<div class="row" ng-show="!fichaTecnicaDto.isFondo==1">
+							                 		<div class="col-md-6" style="background: #DEF7FF; padding: 10px; font-weight: bold;"> <span>Registro patronal</span></div>
+							                 		<div class="col-md-6" style="background: #DEF7FF; padding: 10px; font-weight: bold;"> <span style="text-align:center;">Accionistas</span></div>
+							                 	</div>
+							                 	<div class="row" ng-show="!fichaTecnicaDto.isFondo==1">
+							                 	<div class="col-md-6">
+							                 			<table class="table table-striped">
+									                 		<thead>
+									                 			<tr>
+																	<th>Patronal</th>
+																</tr>
+									                 		</thead>
+									                 		<tbody>
+										                 		<tr ng-repeat="act in fichaTecnicaDto.registroPatronales">
+										                 			<td>{{act.nombreOdescripcion}}</td>
+										                 		</tr>
+									                 		</tbody> 
+								                 		</table>
+								                 	</div>
+							                 		<div class="col-md-6">
+							                 			<table class="table table-striped">
+									                 		<thead>
+									                 			<tr>
+																	<th>Nombre</th>
+																	<th>Porcentaje</th>
+																</tr>
+									                 		</thead>
+									                 		<tbody>
+										                 		<tr ng-repeat="act in fichaTecnicaDto.accionistas">
+										                 			<td>{{act.accionista}}</td>
+										                 			<td align="center">{{act.porcentaje}}%</td>
+										                 		</tr>
+									                 		</tbody> 
+								                 		</table>
+								                 	</div>
+							                 	</div>
+							                 	<br/><br/>
+							                 	<div class="row" ng-show="!fichaTecnicaDto.isFondo==1">
+							                 		<div class="col-md-6" style="background: #DEF7FF; padding: 10px; font-weight: bold;"> <span>Documentos</span></div>
+							                 	</div>
+							                 	<div class="row" ng-show="!fichaTecnicaDto.isFondo==1">
+							                 		<div class="col-md-12">
+								                 		<div class="col-md-6"  ng-repeat="act in fichaTecnicaDto.documentos" style="padding: 10px 10px;">
+								                 			{{act.descripcionDefinicion}} 
+									                 		<button data-toggle="modal"  ng-click="descargarDocumentoByIdCMS(act.idCMS)" ng-show="act.idCMS >= 1" tooltip="Descargar documento" class="btn btn-sm btn-alizarin pull-right" >
+													    		<span class="glyphicon glyphicon-cloud-download"></span>
+													    	</button>
+								                 		</div>
+							                 		</div>
+							                 	</div>
+							                 	<br/><br/>
+							                 	<div class="row" ng-show="fichaTecnicaDto.isFondo==1"  style=" background: #DEF7FF; padding: 10px; font-weight: bold; margin-top:20px;">
+							                 		Prestadoras de servicios asociadas:
+							                 	</div>
+							                 	<div class="row" ng-show="fichaTecnicaDto.isFondo==1">
+							                 		<div class="col-sm-12">
+							                 			<table class="table table-striped">
+									                 		<thead>
+									                 			<tr>
+																	<th>Nombre</th>
+																	<th>Clientes (Razones sociales)</th>
+																	<th>Colaboradores</th>
+																</tr>
+									                 		</thead>
+									                 		<tbody>
+										                 		<tr ng-repeat="act in fichaTecnicaDto.prestadorasAsociadas">
+										                 			<td>{{act.nombreCorto}}</td>
+										                 			<td align="center"># {{act.totalClienteByGrupo}}</td>
+										                 			<td align="center"># {{act.totalColaboradores}}</td>
+										                 		</tr>
+									                 		</tbody> 
+								                 		</table>
+							                 		</div>
+							                 	</div>
+							                 	<br/><br/>
+							                 	<div class="row" ng-show="!fichaTecnicaDto.isFondo==1" style=" background: #DEF7FF; padding: 10px; font-weight: bold;">
+							                 		Datos de operaci&oacute;n:
+							                 	</div>
+							                 	<div class="row" ng-show="!fichaTecnicaDto.isFondo==1">
+							                 		<div class="col-sm-6">
+							                 			<p>Clientes: # {{fichaTecnicaDto.totalClienteByGrupo}}</p>
+							                 			<p>Razones sociales: # {{fichaTecnicaDto.totalClienteRozonSocial}}</p>
+							                 		</div>
+							                 		<div class="row">
+							                 			<p>Numero de colaboradores: # {{fichaTecnicaDto.totalColaboradores}}</p>
+							                 		</div>
+							                 	</div>
+											</div>
+											<br/>     
+							                 <div class="modal-footer">
+							                    <button type="button" class="btn-brown btn" data-dismiss="modal">CERRAR</button>
+							                </div>
+							                </form>
+							              </div>
+							         </div>
+							     </div>
+
+
+</div>
+
+<!-- container-fluid -->

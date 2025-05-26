@@ -1,0 +1,86 @@
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<panel panel-class="panel-sky" heading="Documentos">
+
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Documento</th>
+							<th>Estatus</th>
+							<th>Nombre del archivo</th>
+							<th>Acci&oacute;n</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="documento in documentosCliente">
+							<td>{{documento.definicion.nombreDocumento}}</td>
+							<td>{{documento.idCMS >= 1?'Documento cargado': 'Documento no cargado'}}
+								<span class="glyphicon glyphicon-ok" style="color:green" ng-show="documento.idCMS >= 1"></span>
+								<span class="glyphicon glyphicon-remove" style="color:brown" ng-show="documento.idCMS == 0"></span>
+							</td>
+							<td>{{documento.nombreArchivo}}</td>
+							<td align="center">
+								<button data-toggle="modal"  ng-click="mostrarModalDocumentoCliente(documento)" ng-show="documento.idCMS == 0" tooltip="Guardar documento" class="btn btn-sm btn-indigo" ng-if="!inHabilitaEscritura">
+									<span class="glyphicon glyphicon-floppy-open"></span>
+								</button>
+						    	<button data-toggle="modal"  ng-click="descargarDocumentoByIdCMS(documento.idCMS)" ng-show="documento.idCMS >= 1" tooltip="Descargar documento" class="btn btn-sm btn-alizarin" >
+						    		<span class="glyphicon glyphicon-cloud-download"></span>
+						    	</button>
+						    	
+						    	<button data-toggle="modal"  ng-click="eliminarDocumentoCliente(documento)" ng-show="documento.idCMS >= 1"tooltip="Eliminar documento" class="btn btn-sm btn-midnightblue" ng-if="!inHabilitaEscritura">
+						    		<span class="glyphicon glyphicon-trash"></span>
+						    	</button>
+						    	<button data-toggle="modal"  ng-click="verDocumento(documento.idCMS)" ng-show="documento.idCMS >= 1" tooltip="Ver documento" class="visualizadorDocumento btn btn-sm btn-alizarin" >
+									<span class="glyphicon glyphicon-eye-open"></span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			</panel>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="agregarDocumentoCliente" role="dialog"  data-backdrop="static" data-keyboard="false" tabindex="-1">
+         <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document" >
+             <div class="modal-content" >
+                 <div class="modal-header">
+                     <h5 class="modal-title">Documento cliente</h5>
+                 </div>
+                 <form id="modalCatSatForm" name="modalDocCliente" novalidate>
+                 <div class="modal-body">
+                 
+                 	<div class="row">
+                 		<div class="col-md-12">
+                 		
+                 		<input class="btn btn-info-alt form-control" required name="filePorSubir"
+							id="file_prestadora" type="file" 
+							onchange="angular.element(this).scope().fileChangedDocPrestadora(this)"
+							class="filestyle"
+							data-buttonText="archivoPrestadora.nombreArchivo" />
+							
+						<span class="messages" ng-show="modalDocCliente.$submitted || modalDocCliente.filePorSubir.$touched">
+							<span ng-show="modalDocCliente.filePorSubir.$error.required">
+								El campo es obligatorio.
+							</span> 
+						</span>	
+                 		</div>
+                 	</div>
+				</div>
+				
+				<br/>
+		                    
+                 <div class="modal-footer">
+                    <button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>
+                    <button type="button" class="btn-green btn" ng-click="guardarDocumentoCliente()">GUARDAR</button>
+                </div>
+                </form>
+              </div>
+         </div>
+     </div>
+</div>

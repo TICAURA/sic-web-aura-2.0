@@ -1,0 +1,92 @@
+<div class="container-fluid" ng-controller="rolController">
+
+<div id="page-heading">
+	<ol class="breadcrumb">
+		<li><a href="#/">Admin</a></li>
+		<li class="active">Roles</li>
+	</ol>
+</div>
+
+
+	<div class="row">
+		<div class="col-md-12">
+		
+			<panel panel-class="panel-sky" heading="Resultado de roles">
+				<panel-controls> 
+					<panel-control-collapse></panel-control-collapse>
+					<a  class="btn btn-orange" ng-click="nuevorol()"><span class="fa fa-plus"></span> Nuevo rol</a>
+				</panel-controls>
+				<div class="table-responsive ">
+					<table ng-table="tableParams"  class="table table-striped" show-filter="true">
+                        <tbody>
+                            <tr ng-repeat="row in $data">
+                                 <td data-title="'Nombre'" filter="{nombre: 'text'}"  sortable="'usuario'">{{ row.nombre }}</td>
+                                <td data-title="'Descripcion'" filter="{descripcion: 'text'}"  sortable="'usuario'">{{ row.descripcion }}</td>
+                                <td data-title="'Estatus'">{{row.indEstatus =='1'? 'Activo':'Inactivo'}}</td>
+                                <td data-title="'Acciones'"><button class="btn btn-success" ng-click="editarRol(row)" ><span class="fa fa-edit" ></span> Editar</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</panel>
+			
+			
+			<panel panel-class="panel-primary" heading="{{agregarEditarTitulo}}"> 
+				<panel-controls>
+					<panel-control-collapse></panel-control-collapse>  
+				</panel-controls>
+				
+				<form id="rolForm" name="rolForm" novalidate>
+					<div class="row">
+						<div class="col-xs-3">
+							<label class="control-label">Nombre Rol: </label> 
+							<input
+								type="text" name ="nombrerol" class="form-control"
+								placeholder="nombre rol"
+								ng-model="rol.nombre" ng-required="true"/>	
+								
+							<span class="messages" ng-show="rolForm.$submitted || rolForm.nombrerol.$touched">
+       				        <span ng-show="rolForm.nombrerol.$error.required">El campo es obligatorio.</span>
+                            </span> 
+						</div>
+						
+						<div class="col-xs-3">
+							<label class="control-label">Descripci&oacute;n : </label> 
+							<input
+									placeholder="descripcion" name="descripcion"
+									ng-model="rol.descripcion"
+									class="form-control" type="text" required="required"> 
+							
+							<span class="messages" ng-show="rolForm.$submitted || rolForm.descripcion.$touched">
+       				        <span ng-show="rolForm.descripcion.$error.required">El campo es obligatorio.</span>
+                           
+						</div> 
+						
+						<div class="col-xs-3">
+							<label class="control-label">Estatus: </label> 
+							<div class="form-group">
+							<label class="col-sm-3 control-label">&nbsp;&nbsp;&nbsp;</label>
+							<div class="col-sm-6"><input type="checkbox" ng-model="rol.indEstatus" name="estatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></div>
+						</div>
+							
+							<span class="messages" ng-show="rolForm.$submitted || rolForm.estatus.$touched">
+       				        <span ng-show="rolForm.estatus.$error.required">El campo es obligatorio.</span>
+       				        
+						</div>
+						
+						<div class="col-xs-1">
+							<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							<button class="btn-primary btn btn-lg" ng-click="guardar(rolForm)">
+								<span class="fa fa-save"></span> Guardar
+							</button>
+						</div>
+					</div>
+				</form>
+			</panel>
+			
+		</div>
+	</div>
+	
+	
+	
+</div>

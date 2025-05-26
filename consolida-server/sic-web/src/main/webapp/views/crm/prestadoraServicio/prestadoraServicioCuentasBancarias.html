@@ -1,0 +1,161 @@
+<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-12">
+									<panel panel-class="panel-primary"
+										heading="Bancos registrados para la prestadora de servicio">
+									<panel-controls> <a href="" ng-show="!inHabilitaEscritura" 
+										class="btn btn-orange" ng-click="nuevaCuenta()"> <span
+										class="fa fa-plus"></span> Nueva cuenta bancaria
+									</a></panel-controls>
+									<div class="table-responsive">
+										<table class="table">
+											<thead>
+												<tr>
+													<th style="padding-right: 100px">Banco</th>
+													<th>N&uacute;mero cuenta bancaria</th>
+													<th>Clabe interbancaria</th>
+													<th>Funci&oacute;n de la cuenta</th>
+													<th>N&uacute;mero de referencia</th>
+													<th>&#191;Es principal?</th>
+													<th ng-show="!inHabilitaEscritura">Acciones</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr
+													ng-repeat="cuenta in prestadoraServicioDto.prestadoraServicioCuentaBancaria">
+													<td>{{cuenta.catBanco.descripcion}}</td>
+													<td align="right">{{cuenta.numeroCuenta}}</td>
+													<td align="right">{{cuenta.clabeInterbancaria}}</td>
+													<td>{{cuenta.catTipoCuenta.descripcion}}</td>
+													<td align="right">{{cuenta.numeroReferencia}}</td>
+													<td align="left">{{cuenta.esPrincipal==true ?
+														'Si':'No'}}</td>
+													<td align="center" ng-show="!inHabilitaEscritura">
+														<button data-toggle="modal"
+															ng-click="editarCuentaBancaria(cuenta)"
+															tooltip="Editar cuenta bancaria" class="btn btn-success">
+															<span class="glyphicon glyphicon-pencil"></span>
+														</button>
+														
+														<button data-toggle="modal"
+																ng-click="eliminarCuentaBancaria(cuenta)"
+																tooltip="Eliminar cuenta bancaria" class="btn  btn-midnightblue">
+														<span class="fa fa-trash"></span>
+														</button>														
+														</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									</panel>
+
+									<panel panel-class="panel-sky" heading="Cuentas bancarias" ng-show="isPanelAgregarCuentaBancaria">
+									<form id="formCuentaBancaria" name="formCuentaBancaria">
+										<div class="row">
+											<div class="col-xs-2">
+												<label class="control-label">Banco*: </label> <select
+													required class="form-control" name="catBanco" id="catBanco"
+													ng-model="prestadoraServicioCuentaBancaria.catBanco.idCatGeneral">
+													<option value='null'>-- Selecciona una opci&oacute;n
+														--</option>
+													<option ng-repeat="banco in prestadoraServicioDto.catBanco"
+														ng-selected="banco.idCatGeneral == prestadoraServicioCuentaBancaria.catBanco.idCatGeneral"
+														value="{{banco.idCatGeneral}}">{{banco.descripcion}}</option>
+												</select> <span class="messages"
+													ng-show="formCuentaBancaria.$submitted || formCuentaBancaria.catBanco.$touched">
+													<span ng-show="formCuentaBancaria.catBanco.$error.required">El
+														campo es obligatorio.</span>
+												</span>
+											</div>
+
+											<div class="col-xs-5">
+												<label class="control-label">N&uacute;mero cuenta
+													bancaria: </label> <input type="text" class="form-control"
+													ng-model="prestadoraServicioCuentaBancaria.numeroCuenta"
+													name="numeroCuenta"
+													placeholder="N&uacute;mero cuenta bancaria"
+													ng-pattern="/^[0-9]{10,11}$/" min="10" maxlength="11"
+													oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+													tooltip="Debe contener minimo 10 d&iacute;gitos y m&aacute;ximo 11 d&iacute;gitos">
+												<span class="messages"
+													ng-show="formCuentaBancaria.numeroCuenta.$submitted || formCuentaBancaria.numeroCuenta.$touched">
+													<span
+													ng-show="formCuentaBancaria.numeroCuenta.$error.pattern">Debe
+														ingresar 10/11 d&iacute;gitos.</span>
+												</span>
+											</div>
+											<div class="col-xs-2" style="padding-top: 50px">
+												<label class="control-label ">¿Es Principal?: </label> <input
+													type="checkbox" name="cbCuenta"
+													value="prestadoraServicioCuentaBancaria.esPrincipal"
+													ng-model="prestadoraServicioCuentaBancaria.esPrincipal">
+											</div>
+										</div>
+										<br>
+
+										<div class="row">
+											<div class="col-xs-2">
+												<label class="control-label">Clabe interbancaria: </label> <input
+													type="text" class="form-control" name="clabeInterbancaria"
+													placeholder="Clabe interbancaria"
+													ng-model="prestadoraServicioCuentaBancaria.clabeInterbancaria"
+													ng-pattern="/^[0-9]{18,18}$/" min="18" maxlength="18"
+													oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+													tooltip="Debe contener 18 d&iacute;gitos">
+												<span class="messages"
+													ng-show="formCuentaBancaria.clabeInterbancaria.$submitted || formCuentaBancaria.clabeInterbancaria.$touched">
+													<span
+													ng-show="formCuentaBancaria.clabeInterbancaria.$error.pattern">Debe
+														ingresar 18 d&iacute;gitos.</span>
+												</span>
+											</div>
+											<div class="col-xs-2">
+												<label class="control-label">Funci&oacute;n de la
+													cuenta*: </label> <select required class="form-control"
+													name="idTipoCuenta" id="idTipoCuenta"
+													ng-model="prestadoraServicioCuentaBancaria.catTipoCuenta.idCatGeneral">
+													<option value='null'>-- Selecciona una opci&oacute;n
+														--</option>
+													<option
+														ng-repeat="tipoCuenta in prestadoraServicioDto.catTipoCuenta"
+														ng-selected="tipoCuenta.idCatGeneral == prestadoraServicioCuentaBancaria.catTipoCuenta.idCatGeneral"
+														value="{{tipoCuenta.idCatGeneral}}">{{tipoCuenta.descripcion}}</option>
+												</select> <span class="messages"
+													ng-show="formCuentaBancaria.$submitted || formCuentaBancaria.idTipoCuenta.$touched">
+													<span
+													ng-show="formCuentaBancaria.idTipoCuenta.$error.required">El
+														campo es obligatorio.</span>
+												</span>
+											</div>
+											<div class="col-xs-5" ng-show="prestadoraServicioCuentaBancaria.catTipoCuenta.idCatGeneral == 55">
+												<label class="control-label">N&uacute;mero de
+													referencia de dep&oacute;sito: </label> <input type="text"
+													class="form-control" name="numeroReferencia" id="numeroReferencia"
+													placeholder="N&uacute;mero de referencia de dep&oacute;sito"
+													ng-model="prestadoraServicioCuentaBancaria.numeroReferencia"
+													maxlength="30" ng-pattern="/^[a-zA-Z0-9]*$/" />�
+							<span class="messages"
+							ng-show="formCuentaBancaria.numeroReferencia.$submitted || formCuentaBancaria.numeroReferencia.$touched">
+							<span ng-show="formCuentaBancaria.numeroReferencia.$error.pattern">No se permite ingresar caracteres especiales</span>
+						</span>
+											</div>
+											
+
+										</div>
+										<br>
+
+										<div class="row " align="right">
+											<br />
+											<button class="btn-danger btn " type="submit"
+												ng-click=cancelarAgregarCuenta();>Cancelar</button>
+											<button class="btn-green btn " type="submit"
+												ng-disabled="formCuentaBancaria.$invalid"
+												ng-click=guardarCuentaPrestadoraServicio(prestadoraServicioCuentaBancaria);>Agregar</button>
+										</div>
+									</form>
+									</panel>
+
+
+								</div>
+							</div>
+						</div>

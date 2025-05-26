@@ -1,0 +1,584 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<panel panel-class="panel-sky" heading="Honorarios"> <panel-controls>
+			<panel-control-collapse></panel-control-collapse> </panel-controls>
+
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>N&oacute;mina</th>
+							<th>Producto N&oacute;mina</th>
+							<th>Nominista</th>
+							<th>Acciones</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="nomCliente in gridNominaCliente">
+							<td>{{nomCliente.nombreNomina}}</td>
+							<td>{{nomCliente.catProductoNomina.descripcion}}</td>
+							<td>{{nomCliente.usuarioNominista.nombre}}
+								{{nomCliente.usuarioNominista.apellidoPaterno}}
+								{{nomCliente.usuarioNominista.apellidoMaterno}}</td>
+							<td align="center" >
+								<!-- <a href="#/crm/actualiza-nomina" class="btn btn-success" tooltip="Ver detalle de la n&oacute;mina"><span class="glyphicon glyphicon-eye-open"></span></a>  -->
+								<button data-toggle="modal"
+									ng-click="seleccionarNominaHonorarios(nomCliente)"
+									tooltip="Seleccionar n&oacute;mina " class="btn btn-info">
+									<span class="glyphicon glyphicon-pencil"></span>
+								</button> <!-- <button data-toggle="modal"  ng-click="eliminarNominaCliente(nomCliente.idNominaCliente)" tooltip="Eliminar n&oacute;mina " class="btn  btn-midnightblue"><span class="fa fa-trash"></span></button> -->
+
+
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			</panel>
+
+			<panel panel-class="panel-sky" heading="Lista de honorarios"
+				ng-show="mostrarPanelHonorarios"> <panel-controls>
+			<panel-control-collapse></panel-control-collapse> </panel-controls>
+			<div class="row" align="right">
+				<a href="" class="btn btn-orange" ng-click="agregarHonorario()"
+					ng-show="gridNominaHonorarios.gridNominaHonorarios.length < 1">
+					<span class="fa fa-plus"></span> Agregar honorario
+				</a>
+			</div>
+			<br>
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>N&oacute;mina</th>
+							<th>% Honorario PPP</th>
+							<th>% IVA comercial</th>
+							<th>Formula PPP</th>
+							<th>Formula Factura</th>
+							<th>Formula IVA</th>
+							<th>Formula Sueldos y salarios</th>
+							<th>% Sueldos y salarios</th>
+							<th>Formula esquema mixto</th>
+							<th>% Esquema mixto(PPP+IMSS)</th>
+							<th>Formula maquila</th>
+							<th ng-if="!inHabilitaEscritura">Acciones</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							ng-repeat="honorario in gridNominaHonorarios.gridNominaHonorarios">
+							<td>{{honorario.nominaCliente.nombreNomina}}</td>
+							<td align="right">{{honorario.honorarioPPP}}</td>
+							<td align="right">{{honorario.ivaComercial}}</td>
+							<td>{{honorario.formulaPPP.descripcion}}</td>
+							<td>{{honorario.formulaFactura.descripcion}}</td>
+							<td>{{honorario.formulaTipoIva.descripcion}}</td>
+							<td>{{honorario.formulaPPPSs.descripcion}}</td>
+							<td align="right">{{honorario.honorarioPPPSs}}</td>
+							<td>{{honorario.formulaPPPMixto.descripcion}}</td>
+							<td align="right">{{honorario.honorarioPPPMixto}}</td>
+							<td>{{honorario.formulaPPPMaquila.descripcion}}</td>
+							<td align="center" ng-if="!inHabilitaEscritura">
+								<button data-toggle="modal"
+									ng-click="editarHonorario(honorario);"
+									tooltip="Modificar datos de honorario" class="btn btn-info">
+									<span class="glyphicon glyphicon-pencil"></span>
+								</button>
+								<button data-toggle="modal"
+									ng-click="eliminarHonorario(honorario);"
+									tooltip="Eliminar honorario" class="btn  btn-midnightblue">
+									<span class="fa fa-trash"></span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			</panel>
+
+
+			<panel panel-class="panel-sky" heading="Agregar honorario PPP"
+				ng-show="mostrarPanelAgregarHonorarios"> <panel-controls>
+			<panel-control-collapse></panel-control-collapse> </panel-controls>
+			<form id="honorarioForm" name="honorarioForm">
+				<div class="row">
+					<div class="col-xs-3">
+						<input type="hidden" class="form-control" name="nTelefono"
+							ng-model="honorario.idNominaClienteHonorario" /> <label
+							class="control-label">Nombre de n&oacute;mina*: </label> <input
+							type="text" class="form-control"
+							placeholder="Nombre de n&oacute;mina"
+							name="honorarioNombreNomina" id="honorarioNombreNomina"
+							ng-model="nominaClienteHonorariosDto.nombreNomina"
+							required="required" disabled
+							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+						<span class="messages"
+							ng-show="honorarioForm.honorarioNombreNomina.$submitted || honorarioForm.honorarioNombreNomina.$touched">
+							<span
+							ng-show="honorarioForm.honorarioNombreNomina.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+					<div class="col-xs-2">
+						<label class="control-label">% Honorario PPP*: </label> <input
+							type="text" class="form-control" placeholder="Honorario PPP"
+							name="honorarioPPP" id="honorarioPPP"
+							ng-model="honorario.honorarioPPP"  maxlength="3"
+							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+						<span class="messages"
+							ng-show="honorarioForm.honorarioPPP.$submitted || honorarioForm.honorarioPPP.$touched">
+							<span ng-show="honorarioForm.honorarioPPP.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+					<div class="col-xs-2">
+						<label class="control-label">% IVA comercial*: </label> <input
+							type="text" class="form-control" placeholder="Honorario PPP"
+							name="ivaComercial" id="ivaComercial"
+							ng-model="honorario.ivaComercial" required maxlength="3"
+							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+						<span class="messages"
+							ng-show="honorarioForm.ivaComercial.$submitted || honorarioForm.ivaComercial.$touched">
+							<span ng-show="honorarioForm.ivaComercial.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-xs-4">
+						<label class="control-label">Formula Honorario PPP*: </label> <select
+							class="form-control" name="formulaPPP" id="formulaPPP"
+							ng-model="honorario.formulaPPP"
+							ng-options="(item.descripcion) for item in catFormulaHonorario | orderBy:'item.descripcion' track by item.idCatGeneral">
+							<option value="">{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+							<!--      <option ng-repeat="formulaPPP in catFormulaHonorario" ng-selected="formulaPPP.idCatGeneral == honorario.formulaPPP.idCatGeneral"
+                                            value="{{formulaPPP.idCatGeneral}}">{{formulaPPP.descripcion | uppercase}}</option>  -->
+						</select> <span class="messages"
+							ng-show="honorarioForm.$submitted || honorarioForm.formulaPPP.$touched">
+							<span ng-show="honorarioForm.formulaPPP.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+					<div class="col-xs-4">
+						<label class="control-label">Tipo de IVA*: </label> <select
+							 class="form-control" name="formulaIVA" id="formulaIVA"
+							ng-model="honorario.formulaTipoIva"
+							ng-options="(item.descripcion) for item in catTipoIVA | orderBy:'item.descripcion' track by item.idCatGeneral"
+							ng-change="obtenerCatTipoIVAHonorario(honorario.formulaTipoIva.idCatGeneral);">
+							<option value="">{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+							<!-- <option ng-repeat="formulaIVA in catTipoIVA" ng-selected="formulaIVA.idCatGeneral == honorario.formulaTipoIva.idCatGeneral"
+                                            value="{{formulaIVA.idCatGeneral}}">{{formulaIVA.descripcion | uppercase}}</option> -->
+						</select> <span class="messages"
+							ng-show="honorarioForm.formulaIVA.$submitted || honorarioForm.formulaIVA.$touched">
+							<span ng-show="honorarioForm.formulaIVA.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+					<div class="col-xs-4">
+						<label class="control-label">Formula Factura*: </label> <select
+							class="form-control" name="formulaFactura" id="formulaFactura"
+							ng-model="honorario.formulaFactura"
+							ng-options="(item.descripcion) for item in catFormulaFactura | orderBy:'item.descripcion' track by item.idCatGeneral">
+							<option value="">{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+							<!--  <option ng-repeat="formulaFactura in catFormulaFactura" ng-selected="formulaFactura.idCatGeneral == honorario.formulaFactura.idCatGeneral"
+                                            value="{{formulaFactura.idCatGeneral}}">{{formulaFactura.descripcion | uppercase}}</option> -->
+						</select> <span class="messages"
+							ng-show="honorarioForm.formulaFactura.$submitted || honorarioForm.formulaFactura.$touched">
+							<span ng-show="honorarioForm.formulaFactura.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+				</div>
+				<br />
+				<!-- <div class="row">
+
+
+										<div class="col-xs-3"
+											ng-show="nominaClienteHonorariosDto.catProductoNomina.idCatGeneral == 306">
+											<label class="control-label">% Honorarios de sueldos
+												y salario*: </label> <input type="text" class="form-control"
+												placeholder="% Honorarios de sueldos y salario"
+												name="porcentajeSueldos"
+												ng-model="honorario.honorarioSueldosSalarios"
+												maxlength="3"
+												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+											<span class="messages"
+												ng-show="medioContactoCEO.nTelefono.$submitted || medioContactoCEO.nTelefono.$touched">
+												<span ng-show="medioContactoCEO.nTelefono.$error.required">El
+													campo es obligatorio.</span> <span
+												ng-show="medioContactoCEO.nTelefono.$error.required === true ?false:!medioContactoCEO.nTelefono.$valid">
+													<span ng-show="medioContactoCEO.nTelefono.$error.pattern">El
+														tel&eacute;fono debe contener 10 n&uacute;meros.</span>
+													N&uacute;mero Telefonico incorrecto.
+											</span>
+											</span>
+										</div>
+
+										<div class="col-xs-6"
+											ng-show="nominaClienteHonorariosDto.catProductoNomina.idCatGeneral == 306">
+											<label class="control-label">Formula de sueldos y
+												salario*: </label> 
+												<select class="form-control" name="canalVenta" id="canalVenta" ng-model="honorario.formulaSueldosSalarios.idCatGeneral">
+                                               <option value="">{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
+                                               <option ng-repeat="formulaSS in catFormulaSS" ng-selected="formulaSS.idCatGeneral == honorario.formulaSueldosSalarios.idCatGeneral"
+                                            value="{{formulaSS.idCatGeneral}}">{{formulaSS.descripcion | uppercase}}</option>
+                                            </select> 
+										</div>
+									</div>
+									<br /> -->
+				<div class="row" align="right">
+					<br /> <a class="btn-danger btn " type="submit"
+						ng-click="cancelarActualizarHonorario();">Cancelar</a>
+
+					<button class="btn-orange btn " type="submit"
+						ng-disabled="honorarioForm.$invalid"
+						ng-show="honorario.idNominaClienteHonorario != null"
+						ng-click="guardarHonorario(honorario);">Actualizar</button>
+
+					<button class="btn-green btn " type="submit"
+						ng-disabled="honorarioForm.$invalid"
+						ng-click="guardarHonorario(honorario);"
+						ng-show="honorario.idNominaClienteHonorario == null">Agregar</button>
+				</div>
+
+			</form>
+
+			<br />
+
+
+			<hr style="border: 2px solid 76C4ED; border-radius: 2px;">
+			<form id="ejemploFacturaPPP" name="ejemploFacturaPPP">
+				<h4>EJEMPLO DE CALCULO DE FACTURA</h4>
+				<div class="row">
+					<div class="col-xs-3">
+						<label class="control-label">Monto de PPP *: </label> <input
+							type="number" class="form-control"
+							placeholder="Nombre de n&oacute;mina" name="montoPPP"
+							id="montoPPP" ng-model="ejemploPPP.montoPPP" required="required" />
+					</div>
+					<div class="col-xs-1">
+						<label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+						<button class="btn btn-outline-secondary" type="button"
+							ng-click="calculaConceptoYFactura()">Calcular demo
+							factura</button>
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-xs-2">
+						<span><strong>Honorarios: </strong>
+							{{montosFactura.honorario | currency }}</span>
+					</div>
+					<div class="col-xs-2">
+						<span><strong>Iva Comercial: </strong> {{montosFactura.iva
+							| currency }}</span>
+					</div>
+
+					<div class="col-xs-3">
+						<span><strong>Sub total: </strong> {{montosFactura.subtotal
+							| currency }}</span>
+					</div>
+					<div class="col-xs-2">
+						<span><strong>Iva: </strong>
+							{{concepto.ivaTrasladado16Monto | currency }}</span>
+					</div>
+					<div class="col-xs-3">
+						<span><strong>Total: </strong> {{montosFactura.montoFactura
+							| currency }}</span>
+					</div>
+				</div>
+			</form>
+
+			</panel>
+
+
+			<panel panel-class="panel-sky"
+				heading="Agregar honorario Sueldos y Salarios"
+				ng-show="mostrarPanelAgregarHonorariosSS"> <panel-controls>
+			<panel-control-collapse></panel-control-collapse> </panel-controls>
+			<form id="honorarioFormSS" name="honorarioFormSS">
+				<div class="row">
+					<div class="col-xs-3">
+						<input type="hidden" class="form-control" name="nTelefono"
+							ng-model="honorario.idNominaClienteHonorario" /> <label
+							class="control-label">Nombre de n&oacute;mina*: </label> <input
+							type="text" class="form-control"
+							placeholder="Nombre de n&oacute;mina"
+							name="honorarioNombreNomina" id="honorarioNombreNomina"
+							ng-model="nominaClienteHonorariosDto.nombreNomina"
+							required="required" disabled
+							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+						<span class="messages"
+							ng-show="honorarioForm.honorarioNombreNomina.$submitted || honorarioForm.honorarioNombreNomina.$touched">
+							<span
+							ng-show="honorarioForm.honorarioNombreNomina.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+
+					<div class="col-xs-2">
+						<label class="control-label">% Sueldos y salarios*: </label> <input
+							type="text" class="form-control" placeholder="Honorario PPP"
+							name="honorarioPPPSs" id="honorarioPPPSs"
+							ng-model="honorario.honorarioPPPSs" required maxlength="3"
+							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+						<span class="messages"
+							ng-show="honorarioFormSS.honorarioPPPSs.$submitted || honorarioFormSS.honorarioPPPSs.$touched">
+							<span ng-show="honorarioFormSS.honorarioPPPSs.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+
+
+					<div class="col-xs-4">
+						<label class="control-label">Formula sueldos y salarios*:
+						</label> <select required="required" class="form-control"
+							name="formulaPPPSs" id="formulaPPPSs"
+							ng-model="honorario.formulaPPPSs.idCatGeneral">
+							<option value=''>{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+							<option ng-repeat="formulaPPPSS in catFormulaHonorarioSS"
+								ng-selected="formulaPPPSS.idCatGeneral == honorario.formulaPPPSs.idCatGeneral"
+								value="{{formulaPPPSS.idCatGeneral}}">{{formulaPPPSS.descripcion
+								| uppercase}}</option>
+						</select> <span class="messages"
+							ng-show="honorarioFormSS.$submitted || honorarioFormSS.formulaPPPSs.$touched">
+							<span ng-show="honorarioFormSS.formulaPPPSs.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-xs-4">
+						<label class="control-label">Tipo de IVA*: </label> <select
+							required class="form-control" name="formulaIVA" id="formulaIVA"
+							ng-model="honorario.formulaTipoIva"
+							ng-options="(item.descripcion) for item in catTipoIVASs | orderBy:'item.descripcion' track by item.idCatGeneral">
+							<option value="">{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+						</select> <span class="messages"
+							ng-show="honorarioFormSS.formulaIVA.$submitted || honorarioFormSS.formulaIVA.$touched">
+							<span ng-show="honorarioFormSS.formulaIVA.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+					<div class="col-xs-4">
+						<label class="control-label">Formula Factura*: </label> <select
+							class="form-control" name="formulaFactura" id="formulaFactura"
+							ng-model="honorario.formulaFactura"
+							ng-options="(item.descripcion) for item in catFormulaFacturaSs | orderBy:'item.descripcion' track by item.idCatGeneral">
+							<option value="">{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+						</select> <span class="messages"
+							ng-show="honorarioFormSS.formulaFactura.$submitted || honorarioFormSS.formulaFactura.$touched">
+							<span ng-show="honorarioFormSS.formulaFactura.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+				</div>
+				<br />
+
+				<div class="row" align="right">
+					<br /> <a class="btn-danger btn " type="submit"
+						ng-click="cancelarActualizarHonorario();">Cancelar</a>
+
+					<button class="btn-orange btn " type="submit"
+						ng-disabled="honorarioFormSS.$invalid"
+						ng-show="honorario.idNominaClienteHonorario != null"
+						ng-click="guardarHonorario(honorario);">Actualizar</button>
+
+					<button class="btn-green btn " type="submit"
+						ng-disabled="honorarioFormSS.$invalid"
+						ng-click="guardarHonorario(honorario);"
+						ng-show="honorario.idNominaClienteHonorario == null">Agregar</button>
+				</div>
+
+			</form>
+			</panel>
+
+
+			<panel panel-class="panel-sky"
+				heading="Agregar honorario Esquema Mixto(PPP+IMSS)"
+				ng-show="mostrarPanelAgregarHonorariosMixto"> <panel-controls>
+			<panel-control-collapse></panel-control-collapse> </panel-controls>
+			<form id="honorarioFormMixto" name="honorarioFormMixto">
+				<div class="row">
+					<div class="col-xs-3">
+						<input type="hidden" class="form-control" name="nTelefono"
+							ng-model="honorario.idNominaClienteHonorario" /> <label
+							class="control-label">Nombre de n&oacute;mina*: </label> <input
+							type="text" class="form-control"
+							placeholder="Nombre de n&oacute;mina"
+							name="honorarioNombreNomina" id="honorarioNombreNomina"
+							ng-model="nominaClienteHonorariosDto.nombreNomina"
+							required="required" disabled
+							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+						<span class="messages"
+							ng-show="honorarioFormMixto.honorarioNombreNomina.$submitted || honorarioFormMixto.honorarioNombreNomina.$touched">
+							<span
+							ng-show="honorarioFormMixto.honorarioNombreNomina.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+
+					<div class="col-xs-3">
+						<label class="control-label">% Esquema mixto(PPP+IMSS)*: </label>
+						<input type="text" class="form-control"
+							placeholder="Honorario PPP" name="honorarioPPPMixto"
+							id="honorarioPPPMixto" ng-model="honorario.honorarioPPPMixto"
+							required maxlength="3"
+							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+						<span class="messages"
+							ng-show="honorarioFormMixto.honorarioPPPMixto.$submitted || honorarioFormMixto.honorarioPPPMixto.$touched">
+							<span
+							ng-show="honorarioFormMixto.honorarioPPPMixto.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+
+
+					<div class="col-xs-4">
+						<label class="control-label">Formula esquema
+							mixto(PPP+IMSS)*: </label> <select required="required"
+							class="form-control" name="formulaPPPMixto" id="formulaPPPMixto"
+							ng-model="honorario.formulaPPPMixto.idCatGeneral">
+							<option value=''>{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+							<option ng-repeat="formulaPPPMixto in catFormulaHonorarioMixto"
+								ng-selected="formulaPPPMixto.idCatGeneral == honorario.formulaPPPMixto.idCatGeneral"
+								value="{{formulaPPPMixto.idCatGeneral}}">{{formulaPPPMixto.descripcion
+								| uppercase}}</option>
+						</select> <span class="messages"
+							ng-show="honorarioFormMixto.$submitted || honorarioFormMixto.formulaPPPMixto.$touched">
+							<span
+							ng-show="honorarioFormMixto.formulaPPPMixto.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-xs-4">
+						<label class="control-label">Tipo de IVA*: </label> <select
+							required class="form-control" name="formulaIVA" id="formulaIVA"
+							ng-model="honorario.formulaTipoIva"
+							ng-options="(item.descripcion) for item in catTipoIVAMixto | orderBy:'item.descripcion' track by item.idCatGeneral">
+							<option value="">{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+						</select> <span class="messages"
+							ng-show="honorarioFormMixto.formulaIVA.$submitted || honorarioFormMixto.formulaIVA.$touched">
+							<span ng-show="honorarioFormMixto.formulaIVA.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+					<div class="col-xs-4">
+						<label class="control-label">Formula Factura*: </label> <select
+							class="form-control" name="formulaFactura" id="formulaFactura"
+							ng-model="honorario.formulaFactura"
+							ng-options="(item.descripcion) for item in catFormulaFacturaMixto | orderBy:'item.descripcion' track by item.idCatGeneral">
+							<option value="">{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+						</select> <span class="messages"
+							ng-show="honorarioFormMixto.formulaFactura.$submitted || honorarioFormMixto.formulaFactura.$touched">
+							<span ng-show="honorarioFormMixto.formulaFactura.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+				</div>
+				<br />
+
+				<div class="row" align="right">
+					<br /> <a class="btn-danger btn " type="submit"
+						ng-click="cancelarActualizarHonorario();">Cancelar</a>
+
+					<button class="btn-orange btn " type="submit"
+						ng-disabled="honorarioFormMixto.$invalid"
+						ng-show="honorario.idNominaClienteHonorario != null"
+						ng-click="guardarHonorario(honorario);">Actualizar</button>
+
+					<button class="btn-green btn " type="submit"
+						ng-disabled="honorarioFormMixto.$invalid"
+						ng-click="guardarHonorario(honorario);"
+						ng-show="honorario.idNominaClienteHonorario == null">Agregar</button>
+				</div>
+
+			</form>
+			</panel>
+
+
+			<panel panel-class="panel-sky" heading="Agregar honorario Maquila"
+				ng-show="mostrarPanelAgregarHonorariosMaquila"> <panel-controls>
+			<panel-control-collapse></panel-control-collapse> </panel-controls>
+			<form id="honorarioFormMaquila" name="honorarioFormMaquila">
+				<div class="row">
+					<div class="col-xs-3">
+						<input type="hidden" class="form-control" name="nTelefono"
+							ng-model="honorario.idNominaClienteHonorario" /> <label
+							class="control-label">Nombre de n&oacute;mina*: </label> <input
+							type="text" class="form-control"
+							placeholder="Nombre de n&oacute;mina"
+							name="honorarioNombreNomina" id="honorarioNombreNomina"
+							ng-model="nominaClienteHonorariosDto.nombreNomina"
+							required="required" disabled
+							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+						<span class="messages"
+							ng-show="honorarioFormMaquila.honorarioNombreNomina.$submitted || honorarioFormMaquila.honorarioNombreNomina.$touched">
+							<span
+							ng-show="honorarioFormMaquila.honorarioNombreNomina.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+
+					<div class="col-xs-4">
+						<label class="control-label">Formula maquila*: </label> <select
+							required="required" class="form-control" name="formulaPPPMaquila"
+							id="formulaPPPMaquila"
+							ng-model="honorario.formulaPPPMaquila.idCatGeneral">
+							<option value=''>{{'-- Selecciona una opci&oacute;n --'
+								| uppercase}}</option>
+							<option
+								ng-repeat="formulaPPPMaquila in catFormulaHonorarioMaquila"
+								ng-selected="formulaPPPMaquila.idCatGeneral == honorario.formulaPPPMaquila.idCatGeneral"
+								value="{{formulaPPPMaquila.idCatGeneral}}">{{formulaPPPMaquila.descripcion
+								| uppercase}}</option>
+						</select> <span class="messages"
+							ng-show="honorarioFormMaquila.$submitted || honorarioFormMaquila.formulaPPPMaquila.$touched">
+							<span
+							ng-show="honorarioFormMaquila.formulaPPPMaquila.$error.required">El
+								campo es obligatorio.</span>
+						</span>
+					</div>
+
+				</div>
+				<br />
+
+				<div class="row" align="right">
+					<br /> <a class="btn-danger btn " type="submit"
+						ng-click="cancelarActualizarHonorario();">Cancelar</a>
+
+					<button class="btn-orange btn " type="submit"
+						ng-disabled="honorarioFormMaquila.$invalid"
+						ng-show="honorario.idNominaClienteHonorario != null"
+						ng-click="guardarHonorario(honorario);">Actualizar</button>
+
+					<button class="btn-green btn " type="submit"
+						ng-disabled="honorarioFormMaquila.$invalid"
+						ng-click="guardarHonorario(honorario);"
+						ng-show="honorario.idNominaClienteHonorario == null">Agregar</button>
+				</div>
+
+			</form>
+			</panel>
+
+		</div>
+	</div>
+</div>

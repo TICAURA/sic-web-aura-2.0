@@ -1,0 +1,136 @@
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-12">
+					<panel panel-class="panel-sky" heading="Centro de costos"> <panel-controls>
+					<panel-control-collapse></panel-control-collapse> </panel-controls>
+					
+					
+					<div class="row">
+						<H4><strong>DATOS FONDO</strong></H4>
+					</div>
+					<div class="row">
+						<strong>RAZ&Oacute;N SOCIAL:</strong>   {{listaClientesPrestadoras[0].prestadoraServicioFondo.razonSocial}}
+					</div>
+					<div class="row">
+						<strong>RFC:</strong>   {{listaClientesPrestadoras[0].prestadoraServicioFondo.rfc}}
+					</div>
+					<div class="row">
+						<strong>ID CONSAR:</strong>   {{listaClientesPrestadoras[0].prestadoraServicioFondo.idConsar}}
+					</div>
+					</br>
+					
+					<div class="row">
+						<div class="table-responsive">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<!--<th>RFC fondo</th>
+										<th>Raz&oacute;n social fondo</th>
+										<th>Id consar</th>-->
+										<th>RFC prestadora</th>
+										<th>Raz&oacute;n social prestadora</th>
+										<th ng-if="!inHabilitaEscritura">Acciones</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="prestadora in listaClientesPrestadoras" ng-if="prestadora.prestadoraServicio.rfc !=null">
+									<!--  
+										<td>{{prestadora.prestadoraServicioFondo.rfc}}</td>
+										<td>{{prestadora.prestadoraServicioFondo.razonSocial}}</td>
+										<td>{{prestadora.prestadoraServicioFondo.idConsar}}</td>-->
+										<td>{{prestadora.prestadoraServicio.rfc}}</td>
+										<td>{{prestadora.prestadoraServicio.razonSocial}}</td>
+										<td align="center" ng-if="!inHabilitaEscritura"><button data-toggle="modal" 
+												ng-click="eliminarClientePrestadora(prestadora.idClientePrestadoraServicio)"
+												class="btn  btn-midnightblue" tooltip="Eliminar">
+												<span class="glyphicon glyphicon-trash"></span>
+											</button></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+
+					</div>
+					</panel>
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-md-12">
+					<panel panel-class="panel-sky" heading="Agregar centro de costos">
+					<panel-controls> <panel-control-collapse></panel-control-collapse>
+					</panel-controls>
+					<div class="row">
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="control-label">Centro de costos*:</label> <select
+										class="form-control" name="celula" id="celula"
+										ng-model="clienteDto.celula"
+										ng-options="celula.nombre for celula in listaCelulas | orderBy:'celula.nombre' track by celula.idCelula"
+										ng-change="getPrestadoras(clienteDto.celula.idCelula)"
+										ng-required="true" disabled="true" placeholder="Celula">
+										<option value="" class="">-- SELECCIONA UNA
+											OPCI&Oacute;N --</option>
+									</select> <span class="messages"
+										ng-show="celulaForm.$submitted || celulaForm.celula.$touched">
+										<span ng-show="celulaForm.celula.$error.required">El
+											campo es obligatorio.</span>
+									</span>
+								</div>
+							</div>
+
+							<div class="col-xs-3">
+								<label class="control-label">Prestadora de servicio
+									(fondo)*: </label> <select class="form-control" name="prestadoraFondo"
+									id="prestadoraFondo"
+									ng-model="clienteDto.prestadoraServicioFondo"
+									ng-options="prestadoraFondo.razonSocial for prestadoraFondo in listaPrestadorasFondo | orderBy:'prestadoraFondo.razonSocial' track by prestadoraFondo.idPrestadoraServicio"
+									ng-required="true" placeholder="Prestadora Fondo"
+									disabled="true">
+									<option value="" class="">-- SELECCIONA UNA
+										OPCI&Oacute;N --</option>
+								</select>
+								<div ng-messages="nominaClienteForm.tipoPago.$error"
+									ng-show="nominaClienteForm.tipoPago.$dirty && nominaClienteForm.tipoPago.$invalid">
+									<small class="form-text-error" ng-message="required">Este
+										campo es obligatorio</small>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row" ng-show="isVisibleComboPrestadora">
+							<div class="col-xs-3">
+								<label class="control-label">Prestadora de servicio: </label> <select  ng-disabled="inHabilitaEscritura" 
+									class="form-control" name="prestadora" id="prestadora"
+									ng-model="clienteDto.prestadoraServicio"
+									ng-options="prestadora.razonSocial for prestadora in listaPrestadoras | orderBy:'prestadora.razonSocial' track by prestadora.idPrestadoraServicio"
+									ng-required="true" placeholder="Prestadora">
+									<option value="" class="">-- SELECCIONA UNA
+										OPCI&Oacute;N --</option>
+								</select>
+							</div>
+						</div>
+
+
+					</div>
+					</panel>
+					<div class="row" align="right">
+						<button type="submit" class="btn-green btn" name="guardar" ng-if="!inHabilitaEscritura"
+							ng-disabled="celulaForm.$invalid"
+							ng-click="guardarDatosCelula();">AGREGAR</button>
+					</div>
+				</div>
+			</div>
+
+
+
+		</div>
+	</div>
+</div>

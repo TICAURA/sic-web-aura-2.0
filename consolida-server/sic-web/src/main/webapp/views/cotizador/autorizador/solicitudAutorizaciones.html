@@ -1,0 +1,156 @@
+<div class="container-fluid" > 
+    <div id="page-heading">
+        <ol class="breadcrumb">
+            <li><a href="#/">Menu principal</a></li>
+            <li class="active">Solicitud Autorizaciones</li>
+        </ol>
+    </div> 
+    <div ng-controller="cotizacionesAutorizadorClienteController">
+        <div class="row" >
+            <div class="col-md-12">
+                 <panel panel-class="panel-primary" heading="Cotizaciones por autorizar">
+                    <panel-controls>
+                        <panel-control-collapse></panel-control-collapse> 
+                    </panel-controls>
+                <!-- <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="padding-right:78px" align="center">Nombre/Raz&oacute;n social</th>
+                                <th align="center">RFC</th>
+                                <th align="center">Fecha de &uacute;ltima cotizaci&oacute;n </th>
+                                <th align="center">Tipo persona</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="cliente in gridClientes">
+                                 <td align="left" ng-if="cliente.razonSocial != undefined">{{cliente.razonSocial}} </td>
+                                <td align="left" ng-if="cliente.razonSocial == undefined">{{cliente.nombre}} {{cliente.apellidoPaterno}} {{cliente.apellidoMaterno}}</td>
+                                <td align="left">{{cliente.rfc}}</td>
+                                <td align="left">{{cliente.fechaUltimaCotizacion | date:'dd/MM/yyyy'}}</td>
+                                <td align="left">{{cliente.idTipoPersona.descripcion}}</td>
+                                <td>
+                                    <a ng-click="verCotizacion(cliente)" style="cursor: pointer; margin-left: 5px;" tooltip-append-to-body="true" tooltip-placement="right" data-tooltip="Revisar cotizaci&oacute;n" class="glyphicon glyphicon-search"></a>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                    
+                    -->
+                    
+                    
+                    
+                    
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="text-alaign: center; padding-right:100px">Nombre/Raz&oacute;n social</th>
+                                    <th style="text-alaign: center; padding-right:100px">Periodicidad</th>
+                                    
+                                    <th style="text-alaign: center; ">Tipo de producto</th>
+                                    <th style="text-alaign: center; ">N&uacute;mero de colaboradores</th>
+                                    <th style="text-alaign: center; ">Observaci&oacute;n</th>
+                                    <th style="text-alaign: center; ">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               <tr ng-repeat="cliente in cliente">
+                               <td visibility= "hidden" style="display:none;">{{cliente.idClienteTempBitacoraSolicitudes}}</td>
+                                    <td ng-if="cliente.razonSocial == undefined">{{cliente.nombre}}  {{cliente.apellidoPaterno}}  {{cliente.apellidoMaterno}}</td>
+                                    <td ng-if="cliente.razonSocial != undefined">{{cliente.razonSocial}}</td>
+                                    <td align="left">{{cliente.cotizacionDto.idPeriodicidad.descripcionTipoPago}}</td>
+                                    <td align="left">{{cliente.cotizacionDto.idImss.descripcion}}</td>
+                                    <td align="center">{{cliente.cotizacionDto.totalColaboradores | number}}</td>
+                                    <td align="left">{{cliente.clienteTempBitacoraSolicitudesDto.observacion}}</td>
+                                    <td>
+                                    	<a ng-click="verCotizacion(cliente)" style="cursor: pointer; margin-left: 5px;" tooltip-append-to-body="true" tooltip-placement="right" data-tooltip="Revisar cotizaci&oacute;n" class="glyphicon glyphicon-search"></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                     
+                </panel>
+            </div>
+        </div>
+        <div class="modal fade" id="modalBitacora" role="dialog">
+            <div class="modal-dialog" style="width: 50%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Bitacora</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <label class="control-label">Fecha: </label> 
+                                            <input type="date" id="exampleInput" class="form-control" name="input" ng-model="bitacora.fecha"
+                                                   placeholder="MM-dd-yyyy" ng-disabled="!modalBitNuevo"/>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <label class="control-label">Tipo Bitacora: </label> 
+                                            <select class="form-control" name="Tipo Bitacora" id="idTipoBitacora" 
+                                                    ng-model="bitacora.tipoBitacora.id" ng-disabled="!modalBitNuevo">
+                                                <option value="{{}}">----Seleccione una opcion----</option>
+                                                <option value="{{1}}">Telefonica</option>
+                                                <option value="{{2}}">Correo</option>
+                                                <option value="{{3}}">Visita</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-xs-8">
+                                            <label class="control-label">Observaci&oacute;n </label> 
+                                            <textarea placeholder="Observación" name="observacion"  ng-disabled="!modalBitNuevo"
+                                                ng-model="bitacora.observacion" maxlength="500" minlength="3"
+                                                class="form-control"  required="required"> </textarea>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-primary btn pull-right" data-dismiss="modal" ng-click="guardarBitacora()" ng-hide="!modalBitNuevo">Guardar</button>
+                        <button type="button" class="btn-danger btn pull-right" data-dismiss="modal" ng-click="cancelar()">{{modalBitNuevo?'Cerrar':'Cancelar'}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="verObservacion" role="dialog">
+            <div class="modal-dialog" style="width: 50%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Observaci&oacute;n Cotizador</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-xs-8">
+                                            <label class="control-label">Observacion: </label> 
+                                            <textarea placeholder="Observación" name="observacion" maxlength="500" minlength="3"
+                                                      class="form-control"  disabled="disabled" >Se requiere ajuste a la comisi&oacute; ya que no es rentable 
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-danger btn pull-right" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

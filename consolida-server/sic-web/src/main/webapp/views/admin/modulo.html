@@ -1,0 +1,127 @@
+<div class="container-fluid" ng-controller="moduloController">
+
+	<div id="page-heading">
+		<ol class="breadcrumb">
+			<li><a href="#/">Admin</a></li>
+			<li class="active">Modulo</li>
+		</ol>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+		
+			<panel panel-class="panel-sky" heading="Modulos">
+				<panel-controls> 
+					<panel-control-collapse></panel-control-collapse>
+					<a href="" class="btn btn-orange" ng-click="nuevoModulo()"><span class="fa fa-plus"></span> Nueva modulo</a>
+				</panel-controls>
+				<div class="table-responsive">
+					<table ng-table="tableParams"  class="table table-striped" show-filter="true">
+                        <tbody>
+                            <tr ng-repeat="row in $data">
+                                 <td data-title="'Nombre'" filter="{nombre: 'text'}"  sortable="'usuario'">{{ row.nombre }}</td>
+                                <td data-title="'Descripcion'" filter="{descripcion: 'text'}"  sortable="'usuario'">{{ row.descripcion }}</td>
+                                <td data-title="'Estatus'">{{row.indEstatus =='1'? 'Activo':'Inactivo'}}</td>
+                                <td data-title="'Acciones'"><button class="btn btn-success" ng-click="editarModulo(row)" ><span class="fa fa-edit" ></span>Editar</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</panel>
+			
+			
+			<panel panel-class="panel-primary" heading="{{agregarEditarTitulo}}">
+				<panel-controls>
+					<panel-control-collapse></panel-control-collapse>  
+				</panel-controls>
+				
+				<form id="moduloForm" name="moduloForm" novalidate>
+					<div class="row">
+						<div class="col-xs-3">
+							<label class="control-label">Nombre modulo: </label> 
+							<input
+								type="text" name ="nombremodulo" class="form-control"
+								placeholder="nombre modulo"
+								ng-model="modulo.nombre" ng-required="true"/>	
+								
+							<span class="messages" ng-show="moduloForm.$submitted || moduloForm.nombremodulo.$touched">
+       				        <span ng-show="moduloForm.nombremodulo.$error.required">El campo es obligatorio.</span>
+                            </span> 
+						</div>
+						
+						<div class="col-xs-3">
+							<label class="control-label">Descripci&oacute;n: </label> 
+							<input
+									placeholder="Descripcion del modulo" name="descripcion"
+									ng-model="modulo.descripcion" 
+									class="form-control" type="text" required="required"> 
+							
+							<span class="messages" ng-show="moduloForm.$submitted || moduloForm.descripcion.$touched">
+       				        <span ng-show="moduloForm.descripcion.$error.required">El campo es obligatorio.</span>
+                           
+							
+						</div> 
+								
+						<div class="col-xs-3">
+							<label class="control-label">Estatus: </label> 
+							<div class="form-group">
+							<label class="col-sm-3 control-label">&nbsp;&nbsp;&nbsp;</label>
+							<div class="col-sm-6"><input type="checkbox" ng-model="modulo.indEstatus" name="estatus" class="js-switch" ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}" /></div>
+						</div>
+							
+							<span class="messages" ng-show="moduloForm.$submitted || moduloForm.estatus.$touched">
+       				        <span ng-show="moduloForm.estatus.$error.required">El campo es obligatorio.</span>
+       				        
+						</div>
+						
+						<div class="col-xs-1">
+							<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							<button class="btn-primary btn btn-lg" ng-click="guardar(moduloForm)">
+								<span class="fa fa-search"></span> Guardar
+							</button>
+						</div>
+					</div>
+				</form>
+			</panel>
+			
+			
+		<panel panel-class="panel-sky" heading="Pantallas Modulo" ng-show="editar">
+				<panel-controls> 
+					<panel-control-collapse></panel-control-collapse>
+				</panel-controls>
+				
+				<div class="table-responsive tablaconscroll" >
+					<table class="table table-striped " >
+						<thead>
+							 <tr>
+                               <th class="nombre" custom-sort order="'nombre'" sort="sort">Pantalla</th>
+                                <th>ruta</th>
+                                <th>icono</th>
+                                <th>Estatus</th>
+                                <th>Asignado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="x in pantallasModulo | orderBy: 'nombre' ">
+                                 <td>{{x.nombre}}</td>
+                                <td>{{x.rutaPantalla}}</td>
+                                <td>{{x.icono}}</td>
+                                <td>{{x.indEstatus =='1'? 'Activo':'Inactivo'}}</td>
+                                <td><div class="col-sm-6"><input type="checkbox" 
+                                	ng-model="x.asignado" name="estatus" class="js-switch" 
+                                	ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}"
+                                	ng-change="guardarModuloPantalla(x)" />
+                                </td>
+								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</panel>
+			
+		</div>
+	</div>
+	
+	
+	
+</div>

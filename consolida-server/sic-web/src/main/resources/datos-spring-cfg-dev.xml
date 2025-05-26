@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans profile="dev" xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		                     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		                     http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+		                     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<context:component-scan base-package="mx.com.consolida.dao" />
+	<context:component-scan base-package="mx.com.consolida.crm.dao" />
+	<context:component-scan base-package="mx.com.consolida.ppp.dao" />
+	<context:component-scan base-package="mx.com.consolida.security" />
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+     <bean id="dataSource" class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
+      <property name="targetDataSource">
+<!--          <jee:jndi-lookup jndi-name="java:/jdbc/datasources/sinDS" /> -->
+		<jee:jndi-lookup jndi-name="java:/comp/env/jdbc/datasources/sinDS" />
+      </property>
+   	</bean>
+   	
+	
+	 <bean id="jdbcTempCatalog" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+
+	<bean id="sessionFactory"
+		  class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="packagesToScan">
+			<list>
+				<value>mx.com.consolida.entity</value>
+				<value>mx.com.consolida.crm.entity</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<!--<prop key="hibernate.show_sql">false</prop>
+				<prop key="showSql">false</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.default_schema">sin</prop>-->
+			</props>
+		</property>
+
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+</beans>

@@ -1,0 +1,150 @@
+<link rel='stylesheet' type='text/css'
+	href='assets/css/finanzas/style.css' />
+<div class="container-fluid" ng-controller="resumenSaldosController "
+	style="background: #d5d6da;">
+	<div id="page-heading">
+		<ol class="breadcrumb">
+			<li><a href="#/">Menu principal</a></li>
+			<li class="active">Resumen</li>
+		</ol>
+	</div>
+
+	<div class="row">
+
+		<div class="col-xs-12 col-md-12 resumen">
+			<div class="container">
+				<!-- fecha y titulos -->
+				<div class="row text-center">
+					<div class="col-xs-12 col-md-12 col-lg-3 ">
+						<h2>Resumen</h2>
+					</div>
+					<div class="col-xs-12 col-md-12 col-lg-6 ">
+						<p class="fecha">
+							<strong>Fecha de consulta: {{fechaSaldo|date:'dd/MM/yyyy HH:mm:ss'}}</strong>
+						</p>
+
+					</div>
+					<div class="col-xs-12 col-md-12 col-lg-3 actualizar">
+						<button id="actualizar" class="btn btn-primary" ng-click="resumenSaldo();">
+							<i class="fa fa-refresh" aria-hidden="true"></i> Actualizar
+						</button>
+						
+					</div>
+				</div>
+				<!-- cuadros de datos -->
+				<div class="row">
+					<div class="col-xs-12 col-md-12">
+						<ul>
+							<li>
+								<div class="saldo">
+									<p>
+										<strong>Saldo</strong>
+									</p>
+									<p>{{totalSaldo|currency}}</p>
+								</div>
+							</li>
+							<li>
+								<div class="ingreso_bruto">
+									<p>
+										<strong>Ingreso Bruto</strong>
+									</p>
+									<p>{{totalSaldoIB|currency}}</p>
+								</div>
+							</li>
+							<li>
+								<div class="cargo_social">
+									<p>
+										<strong>Cargo Social</strong>
+									</p>
+									<p>{{totalSaldoCS|currency}}</p>
+								</div>
+							</li>
+							<li>
+								<div class="impuesto_federal">
+									<p>
+										<strong>Impuesto Federal</strong>
+									</p>
+									<p>{{totalSaldoIF|currency}}</p>
+								</div>
+							</li>
+							<li>
+								<div class="comisiones">
+									<p>
+										<strong>Comisiones</strong>
+									</p>
+									<p>{{totalSaldoCM|currency}}</p>
+								</div>
+							</li>
+							<li>
+								<div class="socios">
+									<p>
+										<strong>Socios</strong>
+									</p>
+									<p>{{totalSaldoSC|currency}}</p>
+								</div>
+							</li>
+						</ul>
+						<h3 class="text-center">Total: {{saldoTotal|currency}}</h3>
+					</div>
+					
+					
+					
+				</div>
+				
+					<!-- fecha y titulos -->
+				<div class="row text-center">
+					<div class="col-xs-12 col-md-12 col-lg-3 ">
+						
+					</div>
+					<div class="col-xs-12 col-md-12 col-lg-6 "> 
+						
+
+					</div>
+					<div class="col-xs-12 col-md-12 col-lg-3 "  >
+						<button id="descarga" ng-json-export-excel data="resumen" 
+							report-fields="{'concepto': 'CONCEPTO', 'monto':'MONTO' }"
+							,
+								filename=" 'resumenSaldos' " separator=","
+							class="css-class btn btn-sky" tooltip="Exportar resumen">
+							<span class="fa fa-download"></span>
+						</button>
+
+					</div>
+				</div>
+
+				
+
+				<panel panel-class="panel-sky" heading="RESUMEN"
+				ng-show="false">
+			<div class="table-responsive">
+				<table class="table" ng-table="tableSaldoParams">
+					<thead style="color: white; background: #353a4d">
+						<tr>
+							<th align="left">CONCEPTO</th>
+							<th align="center">MONTO</th>
+						</tr>
+
+					</thead>
+					<tbody>
+						<tr ng-repeat="p in $data">
+							<td align="left">{{p.concepto}}</td>
+							<td align="right">{{p.monto | currency }}</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+			
+			</panel>
+			
+
+			</div>
+		</div>
+	</div>
+
+
+
+
+</div>
+
+
