@@ -28,115 +28,119 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "ppp_nomima_factura")
 @NamedQueries({ @NamedQuery(name = "PppNominaFactura.findAll", query = "SELECT c FROM PppNominaFactura c") })
 public class PppNominaFactura implements Serializable {
-
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_ppp_nomina_factura", nullable = false)
 	private Long idPppNominaFactura;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_ppp_nomina")
 	private PppNomina nominaCliente;
-
+	
+	@Column(name = "idcliente")
+	private Long idcliente;
+	
+	
 //	@ManyToOne(fetch = FetchType.LAZY)
 //	@JoinColumn(name = "id_cliente")
 //	private Cliente cliente;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestadora_servicio")
 	private PrestadoraServicio prestadoraServicio;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_serie")
 	private CatSerie catSerie;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_folio")
 	private CatFolio catFolio;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_metodo_pago")
 	private CatGeneral catMetodoPago;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_forma_pago")
 	private CatGeneral catFormaPago;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_tipo_cfdi")
 	private CatGeneral catTipoCfdi;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_regimen_fiscal")
 	private CatGeneral catRegimenFiscal;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_moneda")
 	private CatGeneral catMoneda;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_uso_cfdi")
 	private CatGeneral catUsoCfdi;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_proveedor")
 	private CatGeneral catProveedor;
-
+	
 	@Column(name = "sub_total")
 	private BigDecimal subTotal;
-
+	
 	@Column(name = "total_iva_trasladado_16")
 	private BigDecimal totalIvaTrasladado16;
-
+	
 	@Column(name = "total_iva_retenido_6")
 	private BigDecimal totalIvaRetenido6;
-
+	
 	@Column(name = "total")
 	private BigDecimal total;
-
+	
 	@Column(name = "iva_comercial")
 	private BigDecimal ivaComercial;
 
 	@Column(name = "honorario")
 	private BigDecimal honorario;
-
+	
 	@Column(name = "monto_total_honorario")
 	private BigDecimal montoTotalHonorario;
-
+	
 	@Column(name = "monto_total_colaboradores_ppp")
 	private BigDecimal montoTotalColaboradoresPPP;
-
+	
 	@Column(name = "uuid")
 	private String uuid;
-
+	
 	@Column(name = "monto_comprobante_pago")
 	private BigDecimal montoComprobantePago;
-
+	
 //	@Column(name = "metodo_pago")
 //	private String medtodoPago;
-
+	
 //	@Column(name = "forma_pago")
 //	private String formaPago;
-
+	
 //	@Column(name = "tipo_cfdi")
 //	private String tipoCfdi;
-
+	
 	@Column(name = "certificado_emisor")
 	private String certificadoEmisor;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_hora_emision", length = 19)
 	private Date fechaHoraEmision;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_hora_certificacion", length = 19)
 	private Date fechaHoraCertificacion;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
@@ -155,14 +159,14 @@ public class PppNominaFactura implements Serializable {
 
 	@Column(name = "ind_estatus", nullable = false)
 	private String indEstatus;
-
-	@Column(name = "folio", nullable = false )
+	
+	@Column(name = "folio" )
 	private Long folio;
-
+	
 	public PppNominaFactura() {
-
+		
 	}
-
+	
 	public PppNominaFactura(Long idPppNominaFactura) {
 		this.idPppNominaFactura= idPppNominaFactura;
 	}
@@ -447,8 +451,16 @@ public class PppNominaFactura implements Serializable {
 		this.folio = folio;
 	}
 
+	public Long getIdcliente() {
+		return idcliente;
+	}
+
+	public void setIdcliente(Long idcliente) {
+		this.idcliente = idcliente;
+	}
+	
+	
 
 
-
-
+	
 }

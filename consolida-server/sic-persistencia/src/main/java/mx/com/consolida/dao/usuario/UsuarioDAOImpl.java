@@ -17,6 +17,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import mx.com.consolida.crm.dto.CelulaDto;
 import mx.com.consolida.dao.GenericDAO;
 import mx.com.consolida.dto.admin.RolDTO;
 import mx.com.consolida.entity.seguridad.Usuario;
@@ -104,6 +105,8 @@ public class UsuarioDAOImpl extends GenericDAO<Usuario, Long>  implements Usuari
 		sb.append(" left join persona du on du.id_persona = u.id_persona ");
 		sb.append(" left join usuario_rol ur on ur.id_usuario  = u.id_usuario  ");
 		sb.append(" left join  rol r on r.id_rol = ur.id_rol  ");
+		
+		
 		sb.append(" order by u.id_usuario, du.nombre,du.apellido_paterno ");
 		
 		return jdbcTemplate.query(
@@ -135,11 +138,15 @@ public class UsuarioDAOImpl extends GenericDAO<Usuario, Long>  implements Usuari
 			
 			StringBuilder sb = new StringBuilder();			
 			sb.append(" select per.id_persona, per.nombre, per.apellido_paterno, per.apellido_paterno, per.rfc,per.curp, ");
-			sb.append(" usu.id_usuario, usu.usuario, rol.id_rol, rol.descripcion  ");
-			sb.append(" from sin.persona per, sin.usuario usu, usuario_rol usuRol, sin.rol rol ");
+			sb.append(" usu.id_usuario, usu.usuario, rol.id_rol, rol.descripcion, uc.id_celula, c.nombre ");
+			sb.append(" from sin.persona per, sin.usuario usu, usuario_rol usuRol, sin.rol rol,  ");	
+			sb.append(" usuario_celula uc, celula c  ");	
 			sb.append(" where usu.id_persona = per.id_persona ");
 			sb.append(" and usuRol.id_usuario = usu.id_usuario ");
 			sb.append(" and rol.id_rol = usuRol.id_rol ");
+			sb.append(" and usu.id_usuario= uc.id_usuario ");
+			sb.append(" and uc.id_celula =c.id_celula  ");
+					
 			sb.append(" and rol.id_rol = ? ");
 			sb.append(" and usu.ind_estatus = 1 ");
 			
@@ -163,7 +170,10 @@ public class UsuarioDAOImpl extends GenericDAO<Usuario, Long>  implements Usuari
 					rol.setDescripcion(rs.getString("descripcion"));
 					usuario.setRol(rol);
 					
-					
+					CelulaDto  cel =new CelulaDto();
+					cel.setIdCelula(rs.getLong("id_celula"));
+					cel.setNombre(rs.getString("nombre"));
+					usuario.setCelula(cel);
 					return usuario;
 					
 					
@@ -173,7 +183,38 @@ public class UsuarioDAOImpl extends GenericDAO<Usuario, Long>  implements Usuari
 			LOGGER.error("Ocurrio un error en getUsuariosByRol ", e);
 			return Collections.emptyList();
 		}
+			
 
 	}
 	
+	
+	@Transactional(readOnly = true)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<CelulaDto> getCelula(Long idUsuario) {
+		
+		try {	
+			
+			StringBuilder sb = new StringBuilder();		
+			sb.append(" select  uc.id_celula, ce.nombre  from usuario usu   ");
+			sb.append(" left join usuario_celula uc on usu.id_usuario =uc.id_usuario ");
+			sb.append(" left join celula ce on uc.id_celula=ce.id_celula ");
+			sb.append(" where usu.id_usuario =? and usu.ind_estatus=1 ");
+			return jdbcTemplate.query(sb.toString(), new Object[] {idUsuario}, new RowMapper() {
+				public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+					CelulaDto cel =new CelulaDto();
+					cel.setIdCelula(rs.getLong("id_celula"));
+					cel.setNombre(rs.getString("nombre"));
+					return cel;
+				}
+				});
+			}catch (Exception e) {
+				LOGGER.error("Ocurrio un error en getCelula ", e);
+				return Collections.emptyList();
+			}
+				
+
+		
+	
+	
+}
 }

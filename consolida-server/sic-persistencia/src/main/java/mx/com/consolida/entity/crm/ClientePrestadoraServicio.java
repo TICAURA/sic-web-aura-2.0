@@ -23,42 +23,42 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "cliente_prestadora_servicio")
 @NamedQueries({ @NamedQuery(name = "ClientePrestadoraServicio.findAll", query = "SELECT c FROM ClientePrestadoraServicio c") })
 public class ClientePrestadoraServicio implements java.io.Serializable{
-
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cliente_prestadora_servicio")
 	private Long idClientePrestadoraServicio;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cliente", nullable = false)
 	private Cliente cliente;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestadora_servicio")
 	private PrestadoraServicio prestadoraServicio;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestadora_servicio_fondo")
 	private PrestadoraServicio prestadoraServicioFondo;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
 
@@ -133,7 +133,7 @@ public class ClientePrestadoraServicio implements java.io.Serializable{
 	public void setIndEstatus(Long indEstatus) {
 		this.indEstatus = indEstatus;
 	}
-
-
+	
+	
 
 }

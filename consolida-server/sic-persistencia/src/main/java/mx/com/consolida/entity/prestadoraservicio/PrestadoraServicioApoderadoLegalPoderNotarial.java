@@ -31,39 +31,39 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class PrestadoraServicioApoderadoLegalPoderNotarial implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_prestadora_servicio_apoderado_legal_poder_notarial")
 	private Long idPrestadoraServicioApoderadoLegalPoderNotarial;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_poder_notarial", nullable = false)
 	private CatGeneral catPoderNotarial;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestadora_servicio_apoderado_legal", nullable = false)
 	private PrestadoraServicioApoderadoLegal prestadoraServicioApoderadoLegal;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
 
@@ -101,7 +101,7 @@ public class PrestadoraServicioApoderadoLegalPoderNotarial implements java.io.Se
 		this.idPrestadoraServicioApoderadoLegalPoderNotarial = idPrestadoraServicioApoderadoLegalPoderNotarial;
 	}
 
-
+	
 	public PrestadoraServicioApoderadoLegal getPrestadoraServicioApoderadoLegal() {
 		return this.prestadoraServicioApoderadoLegal;
 	}
@@ -110,7 +110,7 @@ public class PrestadoraServicioApoderadoLegalPoderNotarial implements java.io.Se
 		this.prestadoraServicioApoderadoLegal = prestadoraServicioApoderadoLegal;
 	}
 
-
+	
 	public CatGeneral getCatPoderNotarial() {
 		return catPoderNotarial;
 	}
@@ -135,7 +135,7 @@ public class PrestadoraServicioApoderadoLegalPoderNotarial implements java.io.Se
 		this.usuarioModificacion = usuarioModificacion;
 	}
 
-
+	
 	public Date getFechaAlta() {
 		return this.fechaAlta;
 	}
@@ -144,7 +144,7 @@ public class PrestadoraServicioApoderadoLegalPoderNotarial implements java.io.Se
 		this.fechaAlta = fechaAlta;
 	}
 
-
+	
 	public Date getFechaModificacion() {
 		return this.fechaModificacion;
 	}
@@ -153,7 +153,7 @@ public class PrestadoraServicioApoderadoLegalPoderNotarial implements java.io.Se
 		this.fechaModificacion = fechaModificacion;
 	}
 
-
+	
 	public Long getIndEstatus() {
 		return this.indEstatus;
 	}

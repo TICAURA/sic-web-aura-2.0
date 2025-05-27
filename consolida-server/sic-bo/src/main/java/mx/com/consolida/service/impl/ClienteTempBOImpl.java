@@ -81,7 +81,7 @@ public class ClienteTempBOImpl implements ClienteTempBO {
 	public void guardar(ClienteTempDto cliente, UsuarioAplicativo usuarioAplicativo) {
 		try {
 			ClienteTemp entity = new ClienteTemp();
-			ModelMapper mapper = new ModelMapper();
+			//ModelMapper mapper = new ModelMapper();
 			if(cliente.getIdCanalVenta()==null ) {
 				boolean banderaFilter = false;
 				banderaFilter = usuarioAplicativo.getUsuarioRols().stream().anyMatch(rol -> rol.getRol().getNombre().equals(RolUsuarioENUM.PROMOTOR_VENTAS.getClave()));
@@ -93,7 +93,7 @@ public class ClienteTempBOImpl implements ClienteTempBO {
 			if(cliente.getIdClienteTemp() != null) {
 				cliente.setEstatusCliente(new ArrayList<ClienteTempEstatusDto>());
 			}
-			entity = mapper.map(cliente, ClienteTemp.class);
+			//entity = mapper.map(cliente, ClienteTemp.class);
 			
 			if (cliente.getGrupo() != null) {
 				CatGrupo catGrupo = catGrupoDao.read(cliente.getGrupo().getIdCatGrupo());

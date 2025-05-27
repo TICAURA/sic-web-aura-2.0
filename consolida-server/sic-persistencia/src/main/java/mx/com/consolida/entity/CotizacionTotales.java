@@ -32,7 +32,7 @@ public class CotizacionTotales implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cotizacion_totales")
 	private Long idCotizacionTotales;
 	@Column(name = "TotaldDiferenciaNeto")
@@ -140,8 +140,8 @@ public class CotizacionTotales implements Serializable {
 
 	public CotizacionTotales() {
 	}
-
-
+	
+	
 
 	public CotizacionTotales(CotizacionTotalesDto dto) {
 		super();
@@ -593,8 +593,8 @@ public class CotizacionTotales implements Serializable {
 	public void setFechaModificacion(Date fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
 	}
-
-
+	
+	
 	public Long getIdUsuarioModificacion() {
 		return idUsuarioModificacion;
 	}
@@ -602,8 +602,8 @@ public class CotizacionTotales implements Serializable {
 	public void setIdUsuarioModificacion(Long idUsuarioModificacion) {
 		this.idUsuarioModificacion = idUsuarioModificacion;
 	}
-
-
+	
+	
 	@Override
 	public int hashCode() {
 		int hash = 0;

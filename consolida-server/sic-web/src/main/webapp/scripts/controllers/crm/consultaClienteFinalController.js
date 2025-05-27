@@ -10,24 +10,24 @@ angular.module('theme.core.templates').controller('consultaClienteFinalControlle
 			 $scope.busqueda={};
 			 $scope.gridProspectosAut= {};
 			 $scope.seleccionEditarBorrar=['SUPERVISOR_CELULA'];
-
+			 
 			  $scope.cargaInicialRol = function(){
-
+				  
 				  $scope.inHabilitaEscritura = true;
-
+				  
 				  $http.get(CONFIG.APIURL +"/usuarioAplicativo.json").then(function(data){
 			            $scope.rolSeleccionado = data.data.usuarioRols[0].rol.nombre.toUpperCase();
-
+			            
 						  if($scope.seleccionEditarBorrar.includes($scope.rolSeleccionado)){
 							  $scope.inHabilitaEscritura = false;
 						  }
 
-
+			            
 				  },function(data){
 			            console.log("error --> " + data);
 			          });
 			  }
-
+			  
 			  $scope.cargaInicialRol();
 
 			 $scope.cargaInicial = function(){
@@ -35,7 +35,7 @@ angular.module('theme.core.templates').controller('consultaClienteFinalControlle
 				 consultaClienteFinalService.initProspectosAutMesaControl(function(data) {
 					 $scope.gridProspectosAut = data.data;
 					 $scope.tableParams = new NgTableParams({page: 1, count: 25}, {data: $scope.gridProspectosAut});
-
+					 
 						},
 							function(data) {
 								$log.error("error --> " + data);
@@ -46,11 +46,11 @@ angular.module('theme.core.templates').controller('consultaClienteFinalControlle
 							      });
 
 							});
-
-
-
+				 
+				 
+				 
 				 var datos = angular.copy($scope.gridProspectosAut);
-
+				 
 				  $scope.search = function (datos) {
 		                if ($scope.searchText == undefined) {
 		                    return true;
@@ -69,14 +69,14 @@ angular.module('theme.core.templates').controller('consultaClienteFinalControlle
 
 		                return false;
 		            };
-
+				 
 			  };
-
-
+			
+			  
 			$scope.cargaInicial();
-
+ 
 			$scope.actualizaDatosGeneralesCliente = function(cliente) {
-
+				
 				consultaClienteFinalService.obtieneClienteDtoParaEditar(cliente, function(data) {
 						$scope.esAgregarCliente = 'true';
 						  consultaClienteFinalService.esAgregarCliente($scope.esAgregarCliente, function(data) {
@@ -85,14 +85,14 @@ angular.module('theme.core.templates').controller('consultaClienteFinalControlle
 							function(data) {
 								 console.log("error --> " + data);
 							});
-
+					
 				},
 				function(data) {
 					console.log("error --> " + data);
 				});
 			};
-
-
+			
+			  
 			  $scope.agregarCliente = function() {
 				  $scope.esAgregarCliente = 'true';
 				  consultaClienteFinalService.esAgregarCliente($scope.esAgregarCliente, function(data) {
@@ -104,14 +104,14 @@ angular.module('theme.core.templates').controller('consultaClienteFinalControlle
 						 console.log("error --> " + data);
 					});
 			  };
-
+			  
 			  $scope.limpiaCamposDatosGeneralesCliente = function() {
 				  	$scope.cliente = {}
 					consultaClienteFinalService.obtieneClienteDtoParaEditar($scope.cliente, function(data) {},
 					function(response) {});
 				};
-
-
+			  
+			  
 			  $scope.autorizarProspecto = function() {
 				  $scope.esAgregarCliente = 'false';
 				  consultaClienteFinalService.esAgregarCliente($scope.esAgregarCliente,function(data) {
@@ -121,7 +121,7 @@ angular.module('theme.core.templates').controller('consultaClienteFinalControlle
 						 console.log("error --> " + data);
 					});
 			  };
-
+			  
 			  $scope.buscarCliente = function(){
 				  var rfc = $scope.gridProspectosAut.rfc;
 				  $http.post(CONFIG.APIURL + "/clienteCrm/buscarCliente.json", rfc).then(
@@ -134,9 +134,9 @@ angular.module('theme.core.templates').controller('consultaClienteFinalControlle
 		                  }
 		          );
 			  };
-
+			  
 			  $scope.enviarSeccionesCliente = function(cliente) {
-
+				  
 				  consultaClienteFinalService.enviarClienteSeccciones(cliente, function(data) {
 					  $location.path("/crm/actualiza-cliente");
 					},
@@ -144,10 +144,10 @@ angular.module('theme.core.templates').controller('consultaClienteFinalControlle
 						console.log("error --> " + data);
 					});
 			  };
-
-
+			  
+			  
 			  $scope.eliminarCliente = function(idCliente) {
-
+		          
 				  bootbox.confirm({
 		              title : "Mensaje confirmaci&oacute;n",
 		              message : "\u00bfEst&aacute; seguro que desea eliminar al cliente?",
@@ -162,10 +162,10 @@ angular.module('theme.core.templates').controller('consultaClienteFinalControlle
 		                 }
 		              },
 					callback : function(result) {
-
+						
 					  if(result){
 						  consultaClienteFinalService.eliminarCliente(idCliente, function(response) {
-
+							  
 							  if(response.data){
 								  bootbox.dialog({
 		                              message : "La operaci\u00f3n se completo con \u00e9xito",
@@ -177,9 +177,9 @@ angular.module('theme.core.templates').controller('consultaClienteFinalControlle
 		                                  }
 		                              }
 		                          });
-
-								  $scope.cargaInicial();
-
+								  
+								  $scope.cargaInicial(); 
+								  
 							  }else{
 									bootbox.alert({
 										title : "Error",
@@ -193,15 +193,15 @@ angular.module('theme.core.templates').controller('consultaClienteFinalControlle
 										callback : function() {
 											$scope.cargaInicial();
 										}
-									});
+									});	
 							  }
 							});
-						}
-					  }
+						} 
+					  }	
 		      	});
 			  };
-
-
+			  			  
+			  	     
 //				$scope.verCotizaciones = function(idCliente) {
 //					$http.post(CONFIG.APIURL + "/cliente/verCotizaciones.json",
 //							idCliente);
@@ -222,5 +222,5 @@ angular.module('theme.core.templates').controller('consultaClienteFinalControlle
 //				};
 
 
-
+			  
 		});

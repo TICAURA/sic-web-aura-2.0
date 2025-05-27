@@ -2,7 +2,8 @@ package mx.com.consolida.catalogos;
 
 public enum TipoProductoEnum {
 	
-	PPP( 304L,"PPP",	"PLAN PRIVADO DE PENSIONES (PPP)"),                     
+	PPP( 304L,"PPP",	"PLAN PRIVADO DE PENSIONES (PPP)"), 
+	IPRL( 9058L ,"IRLAB",	"INDEMNIZACIÓN POR RIESGO LABORAL"), 
 	IMMS(306L,"IMSS","PROD_MIX	SUELDOS Y SALARIOS (IMSS)"),
 	MAQUILA(9949L,"MAQUILA","MAQUILA"),
 	MIXTO(9950L,"IMSS","MIXTO (PPP + IMSS)");

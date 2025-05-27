@@ -13,9 +13,9 @@ import mx.com.consolida.crm.dto.PrestadoraServicioDto;
 import mx.com.consolida.usuario.UsuarioDTO;
 
 public class NominaDto implements Serializable{
-
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -23,46 +23,46 @@ public class NominaDto implements Serializable{
 	private Long idNominaPPP;
 	private Long idNominaPPPComplementaria;
 	private Long idNominaPPPPadre;
-
+	
 	private ClienteDto clienteDto;
-
+	
 	private PrestadoraServicioDto prestadoraServicioDto;
-
+	
 	private NominaClienteDto nominaClienteDto;
-
+	
 	private NominaComplementoDto nominaComplementoDto;
-
+	
 	private CatGeneralDto catEstatusNomina;
-
+	
 	private CatGeneralDto periodicidadNomina;
-
+	
 	private CatGeneralDto catPacTimbrado;
-
+	
 	private String claveNomina;
-
-	private String codigoSat;
-
+	
+	private String codigoSat; 
+	
 	private String descripcionSat;
-
+	
 	private String descripcionConcepto;
-
+	
 	private Date fechaInicioNomina;
-
+	
 	private Date fechaFinNomina;
-
+	
     private Date sinformatofechaInicioNomina;
-
+	
 	private Date sinformatofechaFinNomina;
-
+	
 	private String fechaInicioNominaFormato;
-
+	
 	private String fechaFinNominaFormato;
-
+	
 	private int totalDocumentosRegistrados;
-
+	
 	private int totalNominas;
 	private int totalNominasEnProcesoNominista;
-
+	
 	private Date fechaAlta;
 
 	private Date fechaModificacion;
@@ -70,30 +70,53 @@ public class NominaDto implements Serializable{
 	private UsuarioDTO usuarioAlta;
 
 	private UsuarioDTO usuarioModificacion;
-
+	
 	private String motivoRechazo;
-
+	
 	private Boolean necesitaFactura;
-
+	private Boolean necesitaTimbre;
+	
+	
 	private String idCmsFactura;
-
-	//Data Grid a primer nivel
+	
+	//Data Grid a primer nivel 
 	private String clienteNombreComercial;
 	private String clienteRazonSocialONombre;
 	private String clienteRFC;
 
-
-
+	
+	
 	private Boolean esNominaComplementaria =false;
 	private Double montoTotalPpp;
-
+	
 	private Double montoAComplementarPpp;
 
 	private String colorNomina;
 	private List<EmpleadoDTO> listColaboradores;
-
+	
+	private Boolean aFacturar =false;
+	private Long idDeposito;
+	private Long idFactura;
+	private String rfcPrestadora;
+	
 	public NominaDto() {
+		
+	}
+	
+	public Long getIdDeposito() {
+		return idDeposito;
+	}
 
+	public void setIdDeposito(Long idDeposito) {
+		this.idDeposito = idDeposito;
+	}
+
+	public Long getIdFactura() {
+		return idFactura;
+	}
+
+	public void setIdFactura(Long idFactura) {
+		this.idFactura = idFactura;
 	}
 
 	public NominaDto(Long idNomina) {
@@ -395,7 +418,7 @@ public class NominaDto implements Serializable{
 	public void setSinformatofechaFinNomina(Date sinformatofechaFinNomina) {
 		this.sinformatofechaFinNomina = sinformatofechaFinNomina;
 	}
-
+	
 	public String getColorNomina() {
 		return colorNomina;
 	}
@@ -412,7 +435,34 @@ public class NominaDto implements Serializable{
 		this.listColaboradores = listColaboradores;
 	}
 
+	public Boolean getNecesitaTimbre() {
+		return necesitaTimbre;
+	}
 
+	public void setNecesitaTimbre(Boolean necesitaTimbre) {
+		this.necesitaTimbre = necesitaTimbre;
+	}
 
+	public String getRfcPrestadora() {
+		return rfcPrestadora;
+	}
 
+	public void setRfcPrestadora(String rfcPrestadora) {
+		this.rfcPrestadora = rfcPrestadora;
+	}
+
+	public Boolean getaFacturar() {
+		return aFacturar;
+	}
+
+	public void setaFacturar(Boolean aFacturar) {
+		this.aFacturar = aFacturar;
+	}
+
+	
+	
+	
+	
+
+	
 }

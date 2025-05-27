@@ -52,6 +52,50 @@ public class ReportesBOImpl implements ReportesBO{
 		}
 		
 	}
+	
+	@Transactional(readOnly = true)
+	public List<ReporteDTO> reporteConsar(Date fechaInicioPeriodo, Date fechaFinPeriodo,String  listaCentro) {
+		
+		try {
+			
+			
+			return reporteDAO.reporteConsar(fechaInicioPeriodo, fechaFinPeriodo, listaCentro);
+			
+		}catch (Exception e) {
+			LOGGER.error("Ocurrio un error en reporteConsar ", e);
+			return Collections.emptyList();
+		}
+		
+	}
+	
+	@Transactional(readOnly = true)
+	public List<ReporteDTO> reporteTesoOpera(Date fechaInicioPeriodo, Date fechaFinPeriodo,String  listaCentro) {
+		
+		try {
+			
+			
+			return reporteDAO.reporteTesoOpera(fechaInicioPeriodo, fechaFinPeriodo, listaCentro);
+			
+		}catch (Exception e) {
+			LOGGER.error("Ocurrio un error en reporteTesoOpera ", e);
+			return Collections.emptyList();
+		}
+		
+	}
+	@Transactional(readOnly = true)
+	public List<ReporteDTO> reporteProductos(String idProducto, String  listaCentro) {
+		
+		try {
+			
+			
+			return reporteDAO.reporteProductos(idProducto, listaCentro);
+			
+		}catch (Exception e) {
+			LOGGER.error("Ocurrio un error en reporteProductos ", e);
+			return Collections.emptyList();
+		}
+		
+	}
 
 	@Transactional(readOnly = true)
 	public List<ReporteDTO> reporteVariaciones(Date fechaInicioPeriodo, Date fechaFinPeriodo, String  listaCentro, String cveQuincena) {
@@ -77,7 +121,7 @@ public class ReportesBOImpl implements ReportesBO{
 			return Collections.emptyList();
 		}
 	}
-
+	
 	@Override
 	public List<ReporteDTO> reporteFacturacionMensual(String listaCentro, String mes) {
 		try {
@@ -89,5 +133,44 @@ public class ReportesBOImpl implements ReportesBO{
 			return Collections.emptyList();
 		}
 	}
+	
+	@Override
+	public List<ReporteDTO> reporteFacturacion(Date fechaInicioPeriodo, Date fechaFinPeriodo, String  listaCentro) {
+		try {
+
+			return reporteDAO.reporteFacturacion(fechaInicioPeriodo,fechaFinPeriodo,listaCentro);
+			
+		}catch (Exception e) {
+			LOGGER.error("Ocurrio un error en reporteColabFaltCrm ", e);
+			return Collections.emptyList();
+		}
+	}
+	
+	@Override
+	public List<ReporteDTO> reporteDispersion(Date fechaInicioPeriodo, Date fechaFinPeriodo, String  listaCentro) {
+		try {
+
+			return reporteDAO.reporteDispersion(fechaInicioPeriodo,fechaFinPeriodo,listaCentro);
+			
+		}catch (Exception e) {
+			LOGGER.error("Ocurrio un error en reporteColabFaltCrm ", e);
+			return Collections.emptyList();
+		}
+	}
+
+	@Override
+	public List<ReporteDTO> reporteColaboradores(String listaCentro) {
+		List<ReporteDTO> reporte =  reporteDAO.reporteColaboradores(listaCentro);
+		return reporte;
+	}
+
+	@Override
+	public List<ReporteDTO> reporteClientes(String listaCentro) {
+		
+		List<ReporteDTO> reporte = reporteDAO.reporteClientes(listaCentro);
+		return reporte;
+		
+	}
+
 
 }

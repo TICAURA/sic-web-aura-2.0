@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * The persistent class for the modulo database table.
- *
+ * 
  */
 @Entity
 @NamedQuery(name="Modulo.findAll", query="SELECT m FROM Modulo m")
@@ -16,7 +16,7 @@ public class Modulo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_modulo")
 	private Long idModulo;
 

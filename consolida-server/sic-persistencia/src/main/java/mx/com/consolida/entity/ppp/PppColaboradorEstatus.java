@@ -25,7 +25,7 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class PppColaboradorEstatus implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_ppp_colaborador_estatus")
 	private Long idPppColaboradorEstatus;
 
@@ -36,7 +36,7 @@ public class PppColaboradorEstatus implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_estatus_colaborador", nullable = false)
 	private CatEstatusColaborador catEstatusColaborador;
-
+	
 	@Column(name = "observacion")
 	private String observacion;
 

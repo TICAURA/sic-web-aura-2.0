@@ -32,12 +32,12 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class ClienteApoderadoLegal implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cliente_apoderado_legal")
 	private Long idClienteApoderadoLegal;
 
@@ -48,11 +48,11 @@ public class ClienteApoderadoLegal implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_persona", nullable = false)
 	private Persona persona;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_facultad", nullable = false)
 	private CatGeneral catFacultad;
-
+	
 	@Column(name = "poder_notarial", nullable = false)
 	private String poderNotarial;
 
@@ -82,7 +82,7 @@ public class ClienteApoderadoLegal implements java.io.Serializable {
 	public ClienteApoderadoLegal(Long idClienteApoderadoLegal) {
 		this.idClienteApoderadoLegal= idClienteApoderadoLegal;
 	}
-
+	
 	public Long getIdClienteApoderadoLegal() {
 		return idClienteApoderadoLegal;
 	}

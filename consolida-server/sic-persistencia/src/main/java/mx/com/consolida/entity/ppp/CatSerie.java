@@ -24,31 +24,31 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "cat_serie")
 @NamedQueries({ @NamedQuery(name = "CatSerie.findAll", query = "SELECT c FROM CatSerie c") })
 public class CatSerie implements Serializable{
-
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cat_serie")
 	private Long idCatSerie;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_tipo_comprobante", nullable = false)
 	private CatGeneral catTipoComprobante;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_celula", nullable = false)
 	private CatGeneral catCelula;
-
+	
 	@Column(name = "nombre_serie")
 	private String nombreSerie;
-
+	
 	@Column(name = "folio_inicial")
 	private Long folioInicial;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
@@ -56,31 +56,31 @@ public class CatSerie implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+	
 	@Column(name ="fecha_inicio_vigencia")
 	private Date fechaIncioVigencia;
-
+	
 	@Column(name="fecha_fin_vigencia" )
 	private Date fechaFinVigencia;
 
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
-
+	
 	@Column(name = "id_estatus")
 	private Long idEstatusSerie;
-
+	
 	public CatSerie () {
-
+		
 	}
-
+	
 	public CatSerie (Long idCatSerie) {
 		this.idCatSerie = idCatSerie;
 	}
@@ -188,7 +188,7 @@ public class CatSerie implements Serializable{
 	public void setIdEstatusSerie(Long idEstatusSerie) {
 		this.idEstatusSerie = idEstatusSerie;
 	}
-
-
+	
+	
 
 }

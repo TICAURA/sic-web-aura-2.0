@@ -15,7 +15,7 @@ import javax.persistence.TemporalType;
 
 /**
  * The persistent class for the pantalla database table.
- *
+ * 
  */
 @Entity
 @NamedQuery(name="Pantalla.findAll", query="SELECT p FROM Pantalla p")
@@ -23,7 +23,7 @@ public class Pantalla implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_pantalla")
 	private Long idPantalla;
 
@@ -44,7 +44,7 @@ public class Pantalla implements Serializable {
 	private String rutaPantalla;
 
 	private String icono;
-
+	
 	//bi-directional many-to-one association to ModuloPantalla
 //	@OneToMany(mappedBy="pantalla")
 //	private List<ModuloPantalla> moduloPantallas;
@@ -129,7 +129,7 @@ public class Pantalla implements Serializable {
 	public void setIcono(String icono) {
 		this.icono = icono;
 	}
-
-
+	
+	
 
 }

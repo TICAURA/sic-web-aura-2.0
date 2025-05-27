@@ -132,6 +132,48 @@ public class ClienteDto implements java.io.Serializable {
 	 private String descripcionRazonSocial;
 	 private String descripcionTipoPersona;
 	 
+	 //sindicato
+	 private String titulo;
+	 private Long percepciones;
+	 private String clavePercepcion;
+	 private String descripcion;
+	 private Long estimbreSindicato;
+
+	 
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public Long getPercepciones() {
+		return percepciones;
+	}
+
+	public void setPercepciones(Long percepciones) {
+		this.percepciones = percepciones;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+
+
+	public Long getEstimbreSindicato() {
+		return estimbreSindicato;
+	}
+
+	public void setEstimbreSindicato(Long estimbreSindicato) {
+		this.estimbreSindicato = estimbreSindicato;
+	}
+
 	public ClienteDto() {
 	}
 	
@@ -611,6 +653,14 @@ public class ClienteDto implements java.io.Serializable {
 
 	public void setDescripcionTipoPersona(String descripcionTipoPersona) {
 		this.descripcionTipoPersona = descripcionTipoPersona;
+	}
+
+	public String getClavePercepcion() {
+		return clavePercepcion;
+	}
+
+	public void setClavePercepcion(String clavePercepcion) {
+		this.clavePercepcion = clavePercepcion;
 	}
 
 	

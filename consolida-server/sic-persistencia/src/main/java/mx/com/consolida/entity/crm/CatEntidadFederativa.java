@@ -26,38 +26,38 @@ import javax.persistence.TemporalType;
 public class CatEntidadFederativa implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_entidad_federativa")
 	private Long idEntidadFederativa;
-
+	
 	@Column(name = "cve_cat_general", length = 45)
 	private String cveCatGeneral;
-
+	
 	@Column(name = "cve_entidad_federativa", nullable = false, length = 20)
 	private String cveEntidadFederativa;
-
+	
 	@Column(name = "descripcion_entidad_federativa", nullable = false, length = 60)
 	private String descripcionEntidadFederativa;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "usuario_alta", nullable = false, length = 45)
 	private Long usuarioAlta;
-
+	
 	@Column(name = "usuario_modificacion", length = 45)
 	private Long usuarioModificacion;
-
+	
 	@Column(name = "ind_estatus")
 	private Long indEstatus;
 //	private Set medioContactoTemps = new HashSet(0);
@@ -97,7 +97,7 @@ public class CatEntidadFederativa implements java.io.Serializable {
 		this.idEntidadFederativa = idEntidadFederativa;
 	}
 
-
+	
 	public String getCveCatGeneral() {
 		return this.cveCatGeneral;
 	}
@@ -106,7 +106,7 @@ public class CatEntidadFederativa implements java.io.Serializable {
 		this.cveCatGeneral = cveCatGeneral;
 	}
 
-
+	
 	public String getCveEntidadFederativa() {
 		return this.cveEntidadFederativa;
 	}
@@ -115,7 +115,7 @@ public class CatEntidadFederativa implements java.io.Serializable {
 		this.cveEntidadFederativa = cveEntidadFederativa;
 	}
 
-
+	
 	public String getDescripcionEntidadFederativa() {
 		return this.descripcionEntidadFederativa;
 	}
@@ -142,7 +142,7 @@ public class CatEntidadFederativa implements java.io.Serializable {
 		this.fechaModificacion = fechaModificacion;
 	}
 
-
+	
 	public Long getUsuarioAlta() {
 		return this.usuarioAlta;
 	}
@@ -151,7 +151,7 @@ public class CatEntidadFederativa implements java.io.Serializable {
 		this.usuarioAlta = usuarioAlta;
 	}
 
-
+	
 	public Long getIndEstatus() {
 		return this.indEstatus;
 	}
@@ -167,8 +167,8 @@ public class CatEntidadFederativa implements java.io.Serializable {
 	public void setUsuarioModificacion(Long usuarioModificacion) {
 		this.usuarioModificacion = usuarioModificacion;
 	}
-
-
+	
+	
 
 //	@OneToMany(fetch = FetchType.LAZY, mappedBy = "catEntidadFederativa")
 //	public Set getMedioContactoTemps() {

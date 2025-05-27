@@ -3,7 +3,7 @@
 	<div class="container-fluid">
 		<div id="page-heading">
 			<ol class="breadcrumb">
-				<li><a href="#/">PPP</a></li>
+				<li><a href="#/">INICIO</a></li>
 				<li class="active">Finanzas</li>
 			</ol>
 		</div>
@@ -16,7 +16,7 @@
 					<div class="table-responsive">
 					<div class="col-md-3">
 											<strong>Estatus de n&oacute;mina: </strong> <p/>
-											<select class="form-control" name="catEstatus" id="idCatEstatus" ng-model="idCatEstatusSelected"
+											<select class="form-control" name="catEstatus" id="idCatEstatus" ng-model="idCatEstatusSelected" 
                                      ng-change="cargaInicialXEstatus(idCatEstatusSelected);">
                                                <option value=null>{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
                                                <option ng-repeat="catEstatus in catEstatusNomina" ng-selected="catEstatus.idCatGeneral == idCatEstatusSelected"
@@ -37,11 +37,11 @@
 					<panel panel-class="panel-sky"
 						heading="N&oacute;minas para dispersar"> <panel-controls>
 					<panel-control-collapse></panel-control-collapse> </panel-controls>
-
+					
 					<div class="col-md-12">
 					<div class="col-xs-3">
 					<strong>Estatus de n&oacute;mina: </strong><p/>
-					<select class="form-control" name="catEstatus" id="idCatEstatus" ng-model="idCatEstatusSelected"
+					<select class="form-control" name="catEstatus" id="idCatEstatus" ng-model="idCatEstatusSelected" 
                                      ng-change="cargaInicialXEstatus(idCatEstatusSelected);">
                                                <option value=null>{{'-- Selecciona una opci&oacute;n --' | uppercase}}</option>
                                                <option ng-repeat="catEstatus in catEstatusNomina" ng-selected="catEstatus.idCatGeneral == idCatEstatusSelected"
@@ -62,7 +62,7 @@
 									<th>Tipo de n&oacute;mina</th>
 									<th>Periodicidad</th>
 									<th>Total Colaboradores</th>
-									<th>Monto PPP</th>
+									<th>Monto</th>
 									<th>Periodo actual</th>
 									<th>Estatus</th>
 									<th>Acciones</th>
@@ -71,7 +71,7 @@
 							<tbody>
 								<tr
 									ng-repeat="proceso in gridNominasParaDispersion">
-										<td> <img src={{proceso.colorNomina}}  tooltip="semaforo" width="30"></td>
+										<td> <img src={{proceso.colorNomina}}  tooltip="semaforo" width="30"></td>	
 									<td>{{proceso.nominaClienteDto.clienteDto.razonSocial}}{{proceso.nominaClienteDto.clienteDto.nombreCompleto}}</td>
 									<td>{{proceso.claveNomina}}</td>
 									<td>{{proceso.nominaClienteDto.catProductoNomina.descripcion}}</td>
@@ -79,7 +79,7 @@
 									<td align="right">
 										<button data-toggle="modal" ng-click="modalColaboradores(proceso)" tooltip="Ver colaboradores" class="btn  btn-green" >
 											<span class="fa fa-users"></span><strong>{{proceso.nominaClienteDto.totalColaboradores}}</strong>
-										</button>
+										</button>										
 									</td>
 									<td align="right"><strong>{{proceso.nominaClienteDto.montoTotalColaboradores
 											| currency}}</strong></td>
@@ -108,12 +108,15 @@
 
 
 				<div ng-show="isVisibleSecciones">
-
+				
 					<panel panel-class="panel-sky" ng-show="isVisibleSeccionesNomina"
 						heading="Detalle N&oacute;mina - {{nominaDto.claveNomina}} ">
 					<panel-controls> </panel-controls>
 
-					<panel panel-class="panel-sky"	heading="Datos Generales N&oacute;mina - {{nominaDto.claveNomina}} ">
+
+				
+					<panel panel-class="panel-sky"
+						heading="Datos Generales N&oacute;mina - {{nominaDto.claveNomina}} ">
 					<panel-controls> <span class="btn btn-info-alt">
 										<strong>Paso 1 <span class="glyphicon glyphicon-ok" style="color:green"></span>
 										</strong>
@@ -163,12 +166,13 @@
 
 
 					</panel>
-
+				</div>
+				<div ng-show="isVisibleSecciones">
 					<panel panel-class="panel-sky"
 						heading="Datos adicionales (N&oacute;mina - {{nominaDto.claveNomina}}) ">
 					<panel-controls> <span class="btn btn-info-alt" ><strong>Paso 2 </strong>
-						<span class="glyphicon glyphicon-ok" style="colorccon:green" ng-show="nominaComplementoDto.idNominaComplemento != undefined"></span>
-						<span class="glyphicon glyphicon-remove" style="color:red" ng-show="nominaComplementoDto.idNominaComplemento === undefined || nominaComplementoDto.idNominaComplemento === '' "></span>
+						<span class="glyphicon glyphicon-ok" style="colorccon:green" ng-show="nominaComplementoDto.traeComplemento"></span>
+						<span class="glyphicon glyphicon-remove" style="color:red" ng-show="!nominaComplementoDto.traeComplemento "></span>
 						</span> <panel-control-collapse></panel-control-collapse>
 					</panel-controls>
 					<form id="complementoNominaForm" name="complementoNominaForm"
@@ -220,13 +224,13 @@
 						<br />
 						<div class="row">
 							<div class="col-xs-3">
-								<label class="control-label">Monto total PPP </label> <span
+								<label class="control-label">Monto total  </label> <span
 									class="form-control" type="text" disabled>{{totalNominaPPPColaboradores
 									| currency}}</span>
 							</div>
 
 							<div class="col-xs-3">
-								<label class="control-label">Total de colaboradores PPP
+								<label class="control-label">Total de colaboradores 
 								</label> <span class="form-control" type="text" disabled>{{totalPPPColaboradores}}</span>
 							</div>
 						</div>
@@ -273,36 +277,36 @@
                  				<label class="control-label">Documento sustento (financiamiento): </label> <BR>
 		                 		<button data-toggle="modal" ng-click="descargarDocumentoByIdCMS(nominaComplementoDto.idCMS)" class="btn btn-dark">
 		                 			<span class="fa fa-file-o"></span> {{nombreArchivo}}
-		                 		</button>
+		                 		</button>	                 		
 	                 		</div>
 						</div>
 					</form>
 					</panel>
-
-				 <div ng-show="isVisibleSecciones && nominaDto.idNominaPPPPadre ===0">
+				</div>	
+				<div ng-show="isVisibleSecciones && nominaDto.idNominaPPPPadre ===0"> 
 					<panel panel-class="panel-sky"
-						heading="Comprobante de pago, factura (n&oacute;mina {{nominaDto.claveNomina}})" ng-show="isVisibleSecciones && nominaDto.idNominaPPPPadre ===0">
+						heading="Comprobante de pago, factura (n&oacute;mina {{nominaDto.claveNomina}})"> 
 						<panel-controls>
-							<span class="btn btn-info-alt" ><strong>Paso 3 </strong>
+							<span class="btn btn-info-alt" ><strong>Paso 3 </strong> 
 									<span class="glyphicon glyphicon-ok" style="color:green" ng-show="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7
 									                                                                ||nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 25
 																									|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17
 																									|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18
 																									|| nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19"></span>
-
-									<span class="glyphicon glyphicon-remove" style="color:red" ng-show="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 7
+																									
+									<span class="glyphicon glyphicon-remove" style="color:red" ng-show="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 7                                                              
 																									&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 17
 																									&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 25
 																									&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 18
 																									&& nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral !== 19"></span>
-
-
+									
+									
 								</span>
-							<panel-control-collapse></panel-control-collapse>
+							<panel-control-collapse></panel-control-collapse> 
 						</panel-controls>
 						<form id="generarFacturaForm" name="generarFacturaForm">
-
-						<div class="row">
+	
+						<div class="row">                 		
 	                 		<div class="col-xs-3">
 								<label class="control-label">Monto total de la factura: </label> <span
 									class="form-control" type="text" disabled>{{totales.total
@@ -313,10 +317,10 @@
 								<label class="control-label">Monto del comprobante de pago:
 								</label> <span class="form-control" type="text" disabled>{{factura.montoComprobantePago | currency}}</span>
 							</div>
-
+	                					                 		
 	                 		</div>
 						<br>
-
+						
 						<!-- carga y descarga del archivo de complemento de pago -->
 						<div class="row">
 							<div class="col-md-9" >
@@ -329,12 +333,12 @@
 								</a>
 								<a class="btn-orange btn" tooltip="Descargar factura (PDF)" ng-click="descargarDocumentoByIdCMS(factura.idCmsPdfFactura)" ng-show="factura.idCmsPdfFactura > 0">
 									<span class="fa fa-file-pdf-o"></span> Descargar PDF
-								</a>
+								</a>		                 		
 	                 		</div>
-						</div>
+						</div>	
 								<br>
-
-						<div class="row" ng-show="usuarioDTO.rol.idRol===28 && (nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7 || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17)">
+								
+						<div class="row" ng-show="(usuarioDTO.rol.idRol===28 || usuarioDTO.rol.idRol===29 || usuarioDTO.rol.idRol===11  || usuarioDTO.rol.idRol===11 || usuarioDTO.rol.idRol===9) && (nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 7 || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17)">
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Conciliar pago</label>
 								<div class="col-sm-6">
@@ -343,87 +347,127 @@
 										ng-model="nominaComplementoDto.validaComprobante"
 										class="js-switch"
 										ui-switch="{color: '#7dcc93', secondaryColor: '#c5cbd1'}"
-
+									
 										 />
 								</div>
 							</div>
-						</div>
+						</div>		
 						<div class="row" ng-show="nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 25">
 							<div class="form-group">
 								<label class="control-label">Cuenta consolidada</label>
-
+							
 							</div>
-						</div>
+						</div>	
 						</br>
 					</form>
 					</panel>
-
 				</div>
-				<panel panel-class="panel-sky" heading="Colaboradores N&oacute;mina - {{nominaDto.claveNomina}} ">
-					<panel-controls>
+				
+				<div ng-show="isVisibleSecciones">
+					<panel panel-class="panel-sky" heading="Colaboradores N&oacute;mina - {{nominaDto.claveNomina}} "> 
+						
+						<panel-controls> 
+						  
+							<span class="btn btn-info-alt">
+								<strong>Paso 4 
+									<span class="glyphicon glyphicon-ok"	style="color: green"ng-show="dataExcel.contentRows[0] != undefined"></span> 
+									<span class="glyphicon glyphicon-remove" style="color: red" ng-show="dataExcel.contentRows[0] === undefined"></span>
+								</strong>
+							</span>
+					<panel-control-collapse>
+					</panel-control-collapse> </panel-controls>
 
-					<span class="btn btn-info-alt" >
-					<strong>Paso 4
-						<span class="glyphicon glyphicon-ok" style="color:green" ng-show="dataExcel.contentRows[0] != undefined"></span>
-						<span class="glyphicon glyphicon-remove" style="color:red" ng-show="dataExcel.contentRows[0] === undefined"></span>
-					</strong></span><panel-control-collapse></panel-control-collapse>
-					</panel-controls>
-					{{nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral}}
+					<div class="col-md-12">
+						<div class="col-xs-4"></div>
+						<div class="col-xs-4"></div>
+						 <div class="col-xs-4">
+						 
+						
+									<label class="control-label" ng-show="dataExcel.contentRows[0].totalMontoPPP>saldo"><img src="circulorojo.png" tooltip="semaforo" width="30" > Saldo Cliente: {{saldo|currency}}</label>
+									<label class="control-label" ng-show="dataExcel.contentRows[0].totalMontoPPP<=saldo"><img src="circuloverde.png"  tooltip="semaforo" width="30"> Saldo Cliente: {{saldo|currency}}</label>
+						</div>
+					</div>
 
-					{{usuarioDTO.rol.idRol}}
 
-					<div style="margin-right:50px; float: right;" ng-show="(nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 25 && usuarioDTO.rol.idRol===15) || (nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19 && usuarioDTO.rol.idRol===15)
-						                 || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 17">
-						<button data-toggle="modal"
+					<div  style="margin-right:50px;float: left;" ng-show="(nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 25 && (usuarioDTO.rol.idRol===15 
+					|| usuarioDTO.rol.idRol===12 || usuarioDTO.rol.idRol===29 || usuarioDTO.rol.idRol===11 || usuarioDTO.rol.idRol===9)) || (nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19 && (usuarioDTO.rol.idRol===15 || usuarioDTO.rol.idRol===12 || usuarioDTO.rol.idRol===9))">
+						
+						
+						<button data-toggle="modal" 
+						ng-show="datosDispersion.claveTipoDispersor=='STP' && dataExcel.contentRows[0].totalMontoPPP<=saldo"
 								ng-click="generaRegistroSTP(dataExcel.contentRows);"
 								tooltip="Dispersi&oacute;n STP" class="btn  btn-orange">
 								<span class="fa fa-usd"></span>  DISPERSI&Oacute;N STP
 						</button>
-						<button data-toggle="modal" style="margin-right:50px;  float: right;"
-								ng-click="modalRechazarDispersionStp(nominaDto.idNomina);"
-								tooltip="Cancelar dispersi&oacute;n STP" class="btn  btn-danger">
-								<span class="fa fa-ban"></span>  CANCELAR DISPERSI&Oacute;N STP
+						
+						<button data-toggle="modal" 
+						ng-show="datosDispersion.claveTipoDispersor=='ALQ'"
+								ng-click="generaRegistroAlquimia(dataExcel.contentRows);"
+								tooltip="Dispersi&oacute;n Alquimia" class="btn  btn-orange">
+								<span class="fa fa-usd"></span>  DISPERSI&Oacute;N ALQUMIA
 						</button>
+						
+						<button data-toggle="modal" ng-show="false";
+								onclick="$('#modalDecodificador').modal('show');"
+								tooltip="Decodificador" class="btn  btn-orange">
+								<span class="fa fa-usd"></span>   Decodificador
+						</button>
+						<button data-toggle="modal" 
+									
+								ng-click="modalRechazarDispersionStp(nominaDto.idNomina);"
+								tooltip="Cancelar dispersi&oacute;n " class="btn  btn-danger">
+								<span class="fa fa-ban"></span>  CANCELAR DISPERSI&Oacute;N 
+						</button>
+							
 						</div>
-							<div style="margin-right:50px;float: right;" ng-show="(nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 25 && usuarioDTO.rol.idRol===15)  ||
+					
+						<div style="margin-right:50px;    margin-bottom: 20px; float: left;" ng-show="(nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 25 && (usuarioDTO.rol.idRol===15  || usuarioDTO.rol.idRol===12 || usuarioDTO.rol.idRol===11 || usuarioDTO.rol.idRol===9))  ||
 						nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 11 ||nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 13
-							||nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 22 || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18 || (nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19 && usuarioDTO.rol.idRol===15)">
-						<button data-toggle="modal"
-								ng-click="cargaInicialColaboradores(nominaProcesoSeleccionada.idNomina);"
+							||nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 22 || nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 18 || (nominaProcesoSeleccionada.catEstatusNomina.idCatGeneral === 19 && (usuarioDTO.rol.idRol===15 || usuarioDTO.rol.idRol===12 || usuarioDTO.rol.idRol===11 || usuarioDTO.rol.idRol===9))">
+						<button data-toggle="modal" 
+								ng-click="cargaInicialColaboradores(nominaProcesoSeleccionada.idNomina);rastreoAlquimia(dataExcel.contentRows)"
 								tooltip="Actualiza secci&oacute;n de paso 4" class="btn  btn-orange">
 								<span class="fa fa-refresh"></span> ACTUALIZAR GRID DE COLABORADORES
 						</button>
 					</div>
-
-
-
-					<div class="col-md-12">
-						<div class="col-xs-4">
-							<label class="control-label">Prefijo STP*:</label> <input
-								placeholder="Prefijo STP" name="apellidoPaterno"
-								ng-model="nominaProcesoSeleccionada.nominaClienteDto.clienteDto.prefijoSTP;"
-								class="form-control" type="text" disabled="disabled">
-						</div>
-						<div class="col-xs-4">
-							<label class="control-label">Clabe de cuenta ordenante*:</label>
-							<input placeholder="Clabe de cuenta ordenante"
-								name="apellidoPaterno"
-								ng-model="nominaProcesoSeleccionada.prestadoraServicioDto.prestadoraServicioStpDto.clabeCuentaOrdenante"
-								maxlength="18" minlength="16" class="form-control" type="text"
-								disabled="disabled">
-						</div>
-						<div class="col-xs-4">
-							<label class="control-label">Nombre centro de costos*:</label> <input
-								placeholder="Nombre centro de costos" name="apellidoPaterno"
-								ng-model="nominaProcesoSeleccionada.prestadoraServicioDto.prestadoraServicioStpDto.nombreCentroCostos"
-								maxlength="18" minlength="16" class="form-control" type="text"
-								disabled="disabled">
-						</div>
-					</div>
-
-					<div class="col-md-12">
-						<br/>
+				
+					
+					<div class="col-md-12" >
+					<div class="col-xs-4">
+											<label class="control-label">Prefijo STP*:</label> <input
+												placeholder="Prefijo STP" name="apellidoPaterno"
+												ng-model="nominaProcesoSeleccionada.nominaClienteDto.clienteDto.prefijoSTP;" 
+												class="form-control" type="text" disabled="disabled">
+										</div>
+					<div class="col-xs-4">
+											<label class="control-label">Clabe de cuenta ordenante*:</label> <input
+												placeholder="Clabe de cuenta ordenante" name="apellidoPaterno"
+												ng-model="nominaProcesoSeleccionada.prestadoraServicioDto.prestadoraServicioStpDto.clabeCuentaOrdenante" maxlength="18" minlength="16"
+												class="form-control" type="text" disabled="disabled">
+										</div>
+					<div class="col-xs-4">
+											<label class="control-label">Nombre centro de costos*:</label> <input
+												placeholder="Nombre centro de costos" name="apellidoPaterno"
+												ng-model="nominaProcesoSeleccionada.prestadoraServicioDto.prestadoraServicioStpDto.nombreCentroCostos" maxlength="18" minlength="16"
+												class="form-control" type="text" disabled="disabled">
+										</div>
+										</div>
+										
+						<div class="col-md-12">	
+						<br/>			
 					<form id="colaboradoresForm" name="colaboradoresForm" novalidate>
+					<table class="table"
+								ng-if="dataExcel.contentRows[0] != undefined">
+								<thead></thead>
+								<tr>
+									<th>Total Colaboradores :
+										{{dataExcel.contentRows[0].totalColaboradores}}</th>
+									<th>Total Monto :
+										{{dataExcel.contentRows[0].totalMontoPPP | currency}}</th>
+								</tr>
+								</tbody>
+							</table>
+					
 						<div class="table-responsive">
 							<table class="table">
 								<thead>
@@ -432,7 +476,7 @@
 										<th>Apellido paterno</th>
 										<th>Apellido materno</th>
 										<th>RFC</th>
-										<th>Monto PPP</th>
+										<th>Monto </th>
 										<th>Clabe interbancaria</th>
 										<th>CURP</th>
 										<th>N&uacute;mero seguro social</th>
@@ -465,7 +509,7 @@
 										<span
 											class="fa fa-exclamation-circle" style="color: yellow;"
 											tooltip="Sin dispersi&oacute;n realizada en el sistema STP"></span></td>
-
+										
 										<td align="center" ng-if="data.idEstatus === 8"><span
 											class="fa fa-history" style="color: green;"
 											tooltip="En espera de respuesta STP"></span></td>
@@ -473,15 +517,18 @@
 										<td align="center" ng-if="data.idEstatus === 9"><span
 											class="fa fa-exclamation-triangle" style="color: #EB5352;"
 											tooltip="{{data.descripcionErrorStp}}"></span></td>
-
+											
 											<td align="center" ng-if="data.idEstatus === 3"><span
 											class="fa fa-check" style="color: green;"
 											tooltip="TIMBRADO EXITOSO"></span></td>
-
-											<td align="center" ng-if="data.idEstatus === 12"><span
+											
+											<td align="center" ng-if="data.idEstatus === 12 && datosDispersion.claveTipoDispersor==='STP'"><span
 											class="fa fa-money" style="color: green;"
 											tooltip="LIQUIDADA STP"></span></td>
-
+											<td align="center" ng-if="data.idEstatus === 12 && datosDispersion.claveTipoDispersor==='ALQ'"><span
+											class="fa fa-money" style="color: green;"
+											tooltip="LIQUIDADA ALQUIMIA"></span></td>
+											
 											<td align="center" ng-if="data.idEstatus === 13"><span
 											class="fa fa-exclamation-triangle" style="color: #EB5352;"
 											tooltip="CANCELADA STP"></span></td>
@@ -504,47 +551,35 @@
 												class="btn btn-danger">
 												<span class="fa fa-binoculars"></span> {{data.descEstatus}}
 											</button>
-
-
-
+											
 										</td>
-											<td>
-
-											<button
+										<td>
+											
+											<button 
 												ng-click="consulta(data);" ng-show="false"
 												class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Rastrear movimiento">
 												<span class="fa fa-location-arrow"></span>
 											</button>
-
-											<button
-												ng-click="rastreoStpColaborador(data);"
-												ng-show="data.idEstatus === 9 || data.idEstatus === 4 ||
+							
+											<button 
+												ng-click="rastreoStpColaborador(data);" 
+												ng-show="((data.idEstatus === 9 || data.idEstatus === 4 || 
 														data.idEstatus === 15 || data.idEstatus === 14 ||
-														data.idEstatus === 13 "
+														data.idEstatus === 13) &&(data.idStp!=null && data.idStp>0)&&(datosDispersion.claveTipoDispersor=='STP'))"
 												class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Rastrear movimiento">
 												<span class="fa fa-location-arrow"></span>
 											</button>
-
-
+											
+											
 										</td>
-										<!-- <td><button
+										<!-- <td><button 
 								data-toggle="modal" href="#modalColaborador" class="btn  btn-midnightblue"><span class="fa fa-check-square-o"></span>  Detalle colaborador</button></td> -->
 									</tr>
 								</tbody>
 							</table>
-							<table class="table"
-								ng-if="dataExcel.contentRows[0] != undefined">
-								<thead></thead>
-								<tr>
-									<th>Total Colaboradores :
-										{{dataExcel.contentRows[0].totalColaboradores}}</th>
-									<th>Total Monto PPP:
-										{{dataExcel.contentRows[0].totalMontoPPP | currency}}</th>
-								</tr>
-								</tbody>
-							</table>
+							
 						</div>
-
+						
 					</form>
 					</div>
 					<div class="modal fade" id="cargarDocumento" role="dialog">
@@ -590,9 +625,7 @@
 						</div>
 					</div>
 
-
-				</div>
-
+					</panel>
 				</div>
 
 
@@ -1048,7 +1081,7 @@
 									<br />
 									<div class="row">
 										<div class="col-xs-3">
-											<label class="control-label">Monto nómina PPP: </label> <input
+											<label class="control-label">Monto nómina : </label> <input
 												placeholder="100,000" name="montoNomina"
 												ng-model="autororizar.montonominappp" class="form-control"
 												type="text" required="required">
@@ -1167,9 +1200,9 @@
 											<tr>
 												<th>Nombre</th>
 												<th>RFC</th>
-												<th>Monto PPP</th>
+												<th>Monto</th>
 												<th>Clabe interbancaria</th>
-
+			
 											</tr>
 										</thead>
 										<tbody>
@@ -1182,7 +1215,7 @@
 										</tbody>
 									</table>
 								</div>
-
+								
 								<div class="modal-footer">
 										<button type="button" class="btn btn-danger"
 											data-dismiss="modal">Cerrar</button>
@@ -1212,7 +1245,7 @@
 												<th align="center">Apellido paterno:&nbsp; {{estatusColaborador[0].pppColaboradorDto.apellidoPaterno}}</th>
 												<th align="center">Apellido materno:&nbsp; {{estatusColaborador[0].pppColaboradorDto.apellidoMaterno}}</th>
 												<th align="center">RFC:&nbsp; {{estatusColaborador[0].pppColaboradorDto.rfc}}</th>
-												<th align="center">Monto PPP:&nbsp; {{estatusColaborador[0].pppColaboradorDto.montoPPP}}</th>
+												<th align="center">Monto:&nbsp; {{estatusColaborador[0].pppColaboradorDto.montoPPP}}</th>
 												<th align="center">Clabe interbancaria:&nbsp; {{estatusColaborador[0].pppColaboradorDto.clabe}}</th>
 											</tr>
 										</thead>
@@ -1288,7 +1321,7 @@
 												<tr>
 													<th align="center">Clave n&oacute;mina</th>
 													<th align="center">Producto n&oacute;mina</th>
-													<th align="center">% Honorario ppp</th>
+													<th align="center">% Honorario</th>
 													<th align="center">% Honorario s y s</th>
 													<th align="center">Fondo prestadora de servicio</th>
 													<th align="center">Prestadora de servicio</th>
@@ -1324,7 +1357,7 @@
 
 
 	</div>
-
+	
 		<div class="modal fade" id="modalHistoricoMovimiento" role="dialog"  data-backdrop="static" >
 			<div class="modal-dialog" style="width: 40%;">
 				<div class="modal-content">
@@ -1346,17 +1379,17 @@
 											</tr>
 										</thead>
 										<tbody>
-
+										
 											<tr ng-repeat="historico in gridHistorico">
-												<td align="left">{{historico.nombreUsuarioMovimiento}}</td>
+												<td align="left">{{historico.nombreUsuarioMovimiento}}</td>	
 												<td align="left">{{historico.descEstatusNomina}}</td>
 												<td align="left">{{historico.observacion}}</td>
-												<td align="left">{{historico.fechaMovimientoFormato}}</td>
+												<td align="left">{{historico.fechaMovimientoFormato}}</td>										
 											</tr>
 										</tbody>
 									</table>
 								</div>
-
+								
 								<div class="modal-footer">
 										<button type="button" class="btn btn-danger"
 											data-dismiss="modal">Cerrar</button>
@@ -1368,7 +1401,7 @@
 				</div>
 			</div>
 		</div>
-
+		
 		<div class="modal fade" tabindex="-1" role="dialog"
 			data-backdrop="static" id="modalRechazarDispersionStp"
 			aria-labelledby="myModalLabel">
@@ -1396,13 +1429,57 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>
-						<button type="button" class="btn-green btn" ng-click="cancelarDispersionStp(idPppNomina);"ng-disabled="!motivoCancelacion" id="idRechazarDispersion" data-dismiss="modal">ACEPTAR</button>
+						<button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>							
+						<button type="button" class="btn-green btn" ng-click="cancelarDispersionStp(idPppNomina);"ng-disabled="!motivoCancelacion" id="idRechazarDispersion" data-dismiss="modal">ACEPTAR</button>					
 					</div>
 				</div>
 			</div>
 		</div>
-
-
+		
+	 	<div class="modal fade" tabindex="-1" role="dialog"	data-backdrop="static" id="modalDecodificador"
+		aria-labelledby="decodificador">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Decodificador</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<label class="control-label">Texto encriptado<span
+								class="ng-scope">*</span></label>
+							<div class="form-group">
+								<textarea type="text" class="form-control"
+									ng-model="textoDecodificar" ng-required="true"
+									required="required"
+									> </textarea>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-12">
+							<label class="control-label">Texto desencriptado:<span
+								class="ng-scope"></span></label>
+							<div class="form-group">
+								<textarea type="text" class="form-control"
+									ng-model="textoDecodificado" ng-required="true"
+									
+									> </textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>							
+					<button type="button" class="btn-green btn" ng-click="decodificar(textoDecodificar);" ng-disabled="!textoDecodificar" >ACEPTAR</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 </div>

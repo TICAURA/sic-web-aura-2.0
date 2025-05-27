@@ -37,6 +37,7 @@ import mx.com.consolida.crm.dto.ClienteCuentasBancariasDto;
 import mx.com.consolida.crm.dto.ClienteDto;
 import mx.com.consolida.crm.dto.ClienteMedioContactoDto;
 import mx.com.consolida.crm.dto.ClientePrestadoraServicioDto;
+import mx.com.consolida.crm.dto.ClienteProductoDto;
 import mx.com.consolida.crm.dto.ClienteServicioDto;
 import mx.com.consolida.crm.dto.DomicilioComunDto;
 import mx.com.consolida.crm.dto.NominaClienteDto;
@@ -46,6 +47,7 @@ import mx.com.consolida.crm.dto.PrestadoraServicioProductoDto;
 import mx.com.consolida.crm.service.interfaz.CelulaBO;
 import mx.com.consolida.crm.service.interfaz.ClienteBO;
 import mx.com.consolida.crm.service.interfaz.ClientePrestadoraServicioBO;
+import mx.com.consolida.crm.service.interfaz.ClienteProductoBo;
 import mx.com.consolida.crm.service.interfaz.ClienteSeccionesBO;
 import mx.com.consolida.crm.service.interfaz.NominaClienteBO;
 import mx.com.consolida.crm.service.interfaz.PrestadoraServicioBO;
@@ -74,6 +76,9 @@ public class ClienteSeccionesController  extends BaseController{
 
 	@Autowired
 	private CatalogoBO catBo;
+	
+	@Autowired
+	private ClienteProductoBo productoBo;
 	
 	@Autowired
 	private CelulaBO celulaBO;
@@ -278,8 +283,8 @@ public class ClienteSeccionesController  extends BaseController{
 				return mensajeDTO;
 			}
 			
-			if (clienteDto.getCveRegistroPatronal() == null 
-					|| (clienteDto.getCveRegistroPatronal()!=null && "".equals(clienteDto.getCveRegistroPatronal().trim()))) {
+			if ((clienteDto.getCveRegistroPatronal() == null 
+					|| (clienteDto.getCveRegistroPatronal()!=null && "".equals(clienteDto.getCveRegistroPatronal().trim())))  &&  clienteDto.getCatTipoPersona().getIdCatGeneral()!=21)  {
 				mensajeDTO.setCorrecto(false);
 				mensajeDTO.setMensajeError("Debe ingresar 'Clave registro patronal'");
 				return mensajeDTO;
@@ -510,7 +515,7 @@ public class ClienteSeccionesController  extends BaseController{
 				dataReturn.put("clienteDto", clienteDto);
 				dataReturn.put("listaPrestadorasFondo", prestadoraServicioBO.listaPrestdorasFondoYSinFondoByIdCelula(celula.getIdCelula(), ConstantesComunes.ES_FONDO));
 				dataReturn.put("listaPrestadoras", prestadoraServicioBO.listaPrestdorasFondoYSinFondoByIdCelula(celula.getIdCelula(), ConstantesComunes.NO_ES_FONDO));
-				dataReturn.put("listaCelulasDto", celulaBO.listarTodasLasCelulas());
+				dataReturn.put("listaCelulasDto", celulaBO.listarTodasLasCelulasCliente());
 				dataReturn.put("listaClientesPrestadoras", clientePrestadoraServicioBO.listaClientesPrestadoras(clienteDto.getIdCliente()));
 				
 //				dataReturn.put("listaNoministasDto", listaNoministasByidCelula(clienteDto));
@@ -738,6 +743,7 @@ public class ClienteSeccionesController  extends BaseController{
 	@ResponseBody
 	public Map<String, Object> getNominaClienteById(@RequestBody NominaClienteDto nominaClienteDto, Model model) throws BusinessException {
 		
+		
 		Map<String, Object> dataReturn = new HashMap<>();
 		
 		try {
@@ -792,7 +798,8 @@ public class ClienteSeccionesController  extends BaseController{
 			
 			if(nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 306
 					|| nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 9949
-					|| nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 9950){
+					|| nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 9950
+					){
 				
 				List<PrestadoraServicioDto> listPrestadora = prestadoraServicioBO.listPrestadoraServicioByIdCelulaAndIdCliente(
 						nominaClienteDto.getClienteDto().getCelula().getIdCelula(),
@@ -806,7 +813,7 @@ public class ClienteSeccionesController  extends BaseController{
 					 }
 				}
 
-			}if(nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 304) {// 304 es PPP
+			}if(nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 304 || nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 9958) {// 304 es PPP
 				
 				if(nominaClienteDto.getRequiereFactura() == null) {
 					throw new BusinessException("", "");
@@ -818,13 +825,14 @@ public class ClienteSeccionesController  extends BaseController{
 			}
 			
 			// 304 es PPP
-			if(nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 304) {
+			if(nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 304 || nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 9958) {
 				
 				nominaClienteDto.setPrestadoraServicio(null);
 				
 			}else if(nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 306
 					|| nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 9949
-					|| nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 9950){
+					|| nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 9950
+					){
 				
 				nominaClienteDto.setPrestadoraServicioFondo(null);
 			}
@@ -862,7 +870,8 @@ public class ClienteSeccionesController  extends BaseController{
 				
 			}else if(nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 306
 					|| nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 9949
-					|| nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 9950){
+					|| nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 9950
+					|| nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 9958){
 				
 				List<PrestadoraServicioDto> listPrestadora = prestadoraServicioBO.listPrestadoraServicioByIdCelulaAndIdCliente(
 						nominaClienteDto.getClienteDto().getCelula().getIdCelula(),
@@ -878,13 +887,18 @@ public class ClienteSeccionesController  extends BaseController{
 					 }
 				}
 
-			}if(nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 304) {// 304 es PPP
+			}if(nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 304 || nominaClienteDto.getCatProductoNomina().getIdCatGeneral() == 9958) {// 304 es PPP
 				
 				if(nominaClienteDto.getRequiereFactura() == null) {
 					mensajeDTO.setCorrecto(false);
 					mensajeDTO.setMensajeError("Debe seleccionar una opci\u00f3n para  '¿Generar factura?'");
 					return mensajeDTO;
-				}else if((nominaClienteDto.getPrestadoraServicioFondo() == null
+				}else if(nominaClienteDto.getRequiereTimbre() == null) {
+					mensajeDTO.setCorrecto(false);
+					mensajeDTO.setMensajeError("Debe seleccionar una opci\u00f3n para  '¿Generar Timbre?'");
+					return mensajeDTO;
+				}
+				else if((nominaClienteDto.getPrestadoraServicioFondo() == null
 						|| (nominaClienteDto.getPrestadoraServicioFondo() != null && nominaClienteDto.getPrestadoraServicioFondo().getIdPrestadoraServicio() == null))) {
 					mensajeDTO.setCorrecto(false);
 					mensajeDTO.setMensajeError("Debe seleccionar 'Prestadora de servicio'");
@@ -2367,5 +2381,35 @@ public class ClienteSeccionesController  extends BaseController{
 			return new ResponseEntity<String>(HttpStatus.OK);
 		 
 	    }
+		
+	@RequestMapping(value = "/productos/listaClienteProductos.json")
+	@ResponseBody
+	public Map<String, Object> getProductos(@RequestBody Long idcliente) throws BusinessException {
+		Map<String, Object> dataReturn = new HashMap<>();
+		try {
+			List<ClienteProductoDto> listProductos = new ArrayList<ClienteProductoDto>();
+			listProductos = productoBo.getProductosByIdCliente(idcliente);
+			dataReturn.put("productos", listProductos);
+			return dataReturn;
+		} catch (Exception e) {
+			LOGGER.error("Ocurrio un error en cargaProductos ", e);
+			throw new BusinessException("Ocurrio un error en el sistema");
+		}
+	}
+	
+	@RequestMapping(value = "/productos/guardarProductoGral.json")
+	@ResponseBody
+	public void guardarProducto(@RequestBody ClienteProductoDto producto, UsuarioAplicativo usuarioAplicativo) throws BusinessException {
+		Map<String, Object> dataReturn = new HashMap<>();
+		try {
+			
+			productoBo.guardarProducto(producto, usuarioAplicativo);
+			
+			
+		} catch (Exception e) {
+			LOGGER.error("Ocurrio un error en guardarProductos ", e);
+			throw new BusinessException("Ocurrio un error en el sistema");
+		}
+	}
 
 }

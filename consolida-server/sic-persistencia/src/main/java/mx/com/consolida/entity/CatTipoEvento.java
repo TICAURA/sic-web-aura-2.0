@@ -18,12 +18,12 @@ import javax.persistence.Table;
 public class CatTipoEvento implements Serializable {
 
 	/**
-	*
+	* 
 	*/
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_Cat_Tipo_Evento")
 	private Long idCatTipoEvento;
 
@@ -37,23 +37,23 @@ public class CatTipoEvento implements Serializable {
 	@Basic(optional = false)
 	@Column(name = "fecha_alta")
 	private Date fechaAlta;
-
-
+	
+	
 	@Column(name = "fecha_modificacion")
 	private Date fechaModificacion;
 
 	@Basic(optional = false)
 	@Column(name = "usuario_alta")
 	private Long usuarioAlta;
-
+	
 	@Column(name = "usuario_modificacion")
 	private Long usuarioModificacion;
 
 	@Basic(optional = false)
 	@Column(name = "ind_estatus")
 	private Long indEstatus;
-
-
+	
+	
 
 	public CatTipoEvento() {
 		super();
@@ -127,7 +127,7 @@ public class CatTipoEvento implements Serializable {
 	public void setUsuarioModificacion(Long usuarioModificacion) {
 		this.usuarioModificacion = usuarioModificacion;
 	}
-
-
+	
+	
 
 }

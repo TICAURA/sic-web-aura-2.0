@@ -29,45 +29,45 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class PrestadoraServicioAccionistaDomicilio implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_prestadora_servicio_accionista_domicilio")
 	private Long idPrestadoraServicioAccionistaDomicilio;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestadora_servicio_accionista", nullable = false)
 	private PrestadoraServicioAccionista prestadoraServicioAccionista;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_domicilio", nullable = false)
 	private Domicilio domicilio;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
 
 	public PrestadoraServicioAccionistaDomicilio() {
 	}
-
+	
 	public PrestadoraServicioAccionistaDomicilio(Long idPrestadoraServicioAccionistaDomicilio) {
 		this.idPrestadoraServicioAccionistaDomicilio = idPrestadoraServicioAccionistaDomicilio;
 	}
@@ -135,5 +135,5 @@ public class PrestadoraServicioAccionistaDomicilio implements java.io.Serializab
 	public void setPrestadoraServicioAccionista(PrestadoraServicioAccionista prestadoraServicioAccionista) {
 		this.prestadoraServicioAccionista = prestadoraServicioAccionista;
 	}
-
+	
 }

@@ -23,50 +23,50 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "prestadora_servicio_clase_fraccion_prima")
 @NamedQueries({ @NamedQuery(name = "PrestadoraServicioClaseFraccionPrima.findAll", query = "SELECT c FROM PrestadoraServicioClaseFraccionPrima c") })
 public class PrestadoraServicioClaseFraccionPrima {
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_prestadora_servicio_clase_fraccion_prima")
 	private Long idPrestadoraServicioClaseFraccionPrima;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestadora_servicio", nullable = false)
 	private PrestadoraServicio prestadoraServicio;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_clase", nullable = false)
 	private CatGeneral catClase;
-
+	
 //	@ManyToOne(fetch = FetchType.LAZY)
 //	@JoinColumn(name = "id_cat_riesgo", nullable = false)
 //	private CatGeneral catRiesgo;
-
+	
 	@Column(name = "prima")
 	private String prima;
-
+	
 	@Column(name = "fraccion")
 	private String fraccion;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+		
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion")
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
-
-
+	
+	 
 
 	public Long getIdPrestadoraServicioClaseFraccionPrima() {
 		return idPrestadoraServicioClaseFraccionPrima;

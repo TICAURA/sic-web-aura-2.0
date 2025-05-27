@@ -34,12 +34,12 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class CatDefinicionDocumento implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cat_definicion_documento")
 	private Long idCatDefinicionDocumento;
 
@@ -174,6 +174,6 @@ public class CatDefinicionDocumento implements java.io.Serializable {
 		this.catEntidadDocumento = catEntidadDocumento;
 	}
 
-
-
+	
+	
 }

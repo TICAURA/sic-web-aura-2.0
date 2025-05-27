@@ -20,13 +20,15 @@ public enum RolUsuarioENUM {
 	COORDINADOR_CONTABILIDAD(17L,"cordinador_contabilidad","1"),
 	PROMOTOR_VENTAS(18L,"promotor_ventas","0"),
 	ANALISTA_COMERCIAL(19L,"analista_comercial","0"),
-	TESORERIA(28L,"TESORERIA","1");
+	TESORERIA(28L,"TESORERIA","1"),
+	DIRECTOR_OPERACIONES(29L,"DIRECTOR_OPERACIONES","1");
+	
 
-
+	
 	private Long id;
 	private String clave;
 	private String rolCelula;
-
+	
 	private RolUsuarioENUM(Long id,String clave, String rolCelula) {
 		this.id= id;
 		this.clave = clave;
@@ -40,11 +42,11 @@ public enum RolUsuarioENUM {
 	public String getClave() {
 		return clave;
 	}
-
-
+	
+	
 	public String getRolCelula() {
 		return rolCelula;
 	}
-
-
+	
+	
 }

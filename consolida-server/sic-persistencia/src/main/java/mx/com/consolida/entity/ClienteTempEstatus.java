@@ -21,46 +21,46 @@ import javax.persistence.TemporalType;
 @Table(name="cliente_temp_estatus")
 @NamedQuery(name="ClienteTempEstatus.findAll", query="SELECT c FROM ClienteTempEstatus c")
 public class ClienteTempEstatus implements Serializable{
-
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_cliente_temp_estatus")
 	private Long idClienteTempEstatus;
-
+	
 	@JoinColumn(name="id_cliente_temp", referencedColumnName= "id_cliente_temp")
 	@ManyToOne(targetEntity = ClienteTemp.class, cascade=CascadeType.ALL)
     private ClienteTemp clienteTemp;
-
-
+	
+	
 	@JoinColumn(name="id_estatus", referencedColumnName= "id_estatus")
 	@ManyToOne(targetEntity = CatEstatus.class, cascade=CascadeType.ALL)
     private CatEstatus catEstatus;
-
+	
     @Column(name = "motivo")
 	private String motivo;
-
-
+	
+	
 	@Basic(optional = false)
     @Column(name = "fecha_alta")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaAlta;
-
+	
     @Column(name = "fecha_modificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-
+    
     @Basic(optional = false)
     @Column(name = "usuario_alta")
     private Long usuarioAlta;
-
+    
     @Column(name = "usuario_modificacion")
     private Long usuarioModificacion;
-
+    
     @Basic(optional = false)
     @Column(name = "ind_estatus")
     private Long indEstatus;
@@ -137,8 +137,8 @@ public class ClienteTempEstatus implements Serializable{
 	public void setMotivo(String motivo) {
 		this.motivo = motivo;
 	}
-
-
-
+    
+    
+    
 
 }

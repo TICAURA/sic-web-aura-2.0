@@ -20,7 +20,7 @@ import mx.com.consolida.entity.celula.Celula;
 
 /**
  * The persistent class for the usuario_rol database table.
- *
+ * 
  */
 @Entity
 @Table(name="usuario_celula")
@@ -29,7 +29,7 @@ public class UsuarioCelula implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_usuario_celula")
 	private Long idUsuarioCelula;
 

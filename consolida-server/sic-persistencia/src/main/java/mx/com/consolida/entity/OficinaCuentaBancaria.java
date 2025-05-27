@@ -32,43 +32,43 @@ public class OficinaCuentaBancaria implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_oficina_cuenta_bancaria")
     private Long idOficinaCuentaBancaria;
-
+    
     @Column(name = "numero_cuenta")
     private String numeroCuenta;
-
+    
     @Column(name = "clabe_interbancaria")
     private String clabeInterbancaria;
-
+    
     @Column(name = "fecha_alta")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaAlta;
-
+    
     @Column(name = "fecha_modificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-
+    
     @Column(name = "ind_estatus")
     private Long indEstatus;
-
+    
     @JoinColumn(name = "usuario_modificacion", referencedColumnName = "id_usuario")
     @ManyToOne
     private Usuario usuarioModificacion;
-
+    
     @JoinColumn(name = "id_banco", referencedColumnName = "id_cat_general")
     @ManyToOne(optional = false)
     private CatGeneral idBanco;
-
+    
     @JoinColumn(name = "id_oficina", referencedColumnName = "id_oficina")
     @ManyToOne(optional = false)
     private Oficina idOficina;
-
+    
     @JoinColumn(name = "id_tipo_cuenta", referencedColumnName = "id_cat_general")
     @ManyToOne(optional = false)
     private CatGeneral idTipoCuenta;
-
+    
     @JoinColumn(name = "usuario_alta", referencedColumnName = "id_usuario")
     @ManyToOne(optional = false)
     private Usuario usuarioAlta;
@@ -193,5 +193,5 @@ public class OficinaCuentaBancaria implements Serializable {
     public String toString() {
         return "mx.com.consolida.entity.OficinaCuentaBancaria[ idOficinaCuentaBancaria=" + idOficinaCuentaBancaria + " ]";
     }
-
+    
 }

@@ -21,8 +21,14 @@
 	<div class="container-fluid">
 		<div id="page-heading">
 			<ol class="breadcrumb">
+			 <meta charset="UTF-8">
 				<li class="active">Reportes</li>
+				
+				
+				
+				
 			</ol>
+				
 		</div>
 		<div class="row">
 			<div class="col-md-12">
@@ -43,7 +49,7 @@
 										multiple="multiple">
 										<option value="" class="">-- SELECCIONA UNA
 											OPCI&Oacute;N --</option>
-									</select>
+									</select> 
 									<!--<span class="messages"
 										ng-show="reporteForm.$submitted || reporteForm.centroCostos.$touched">
 										<span ng-show="reporteForm.centroCostos.$error.required">
@@ -52,10 +58,7 @@
 								</div>
 								<div class="col-xs-3" ng-show="!isDiferenteNominista">
 									<label class="control-label">Centro de costos*: </label>
-
-
-
-										<select
+													<select
 											ng-disabled="deshabilitarCelula" class="form-control"
 											name="celula" id="idcentroCostos"
 											ng-model="reporteDto.catCelula"
@@ -64,10 +67,10 @@
 											ng-required="!isDiferenteNominista">
 											<option value="" class="">-- SELECCIONA UNA
 												OPCI&Oacute;N --</option>
-										</select>
+										</select> 
 								</div>
-
-
+	
+	
 								<div class="col-xs-3">
 									<label class="control-label">Tipo reporte*: </label> <select
 										class="form-control" name="catReporte" id="idCatReporte"
@@ -77,7 +80,7 @@
 										 ng-required="true">
 										<option value="" class="">-- SELECCIONA UNA
 											OPCI&Oacute;N --</option>
-									</select>
+									</select> 
 									<!--<span class="messages"
 										ng-show="reporteForm.$submitted || reporteForm.catReporte.$touched">
 										<span ng-show="reporteForm.catReporte.$error.required">
@@ -87,14 +90,14 @@
 							</div>
 						</div>
 						<br />
-
-						<div class="row" ng-show = "isVisibleCamposReporteOperaciones">
-							<div class="col-md-12">
+						
+						<div class="row" ng-show = "isVisibleCamposReporteOperaciones || isVisibleCamposReporteFacturas || isVisibleCamposReporteDispersion">
+							<div class="col-md-12">							
 								<div class="col-xs-3">
 									<label class="control-label">Periodo Inicio:</label> <input
 										type="date" class="form-control" name="fechaInicio_"
 										placeholder="Periodo Inicio" ng-model="reporteDto.fechaInicio"
-										ng-required="true">
+										ng-required="true"> 
 									<!--<span class="messages"
 										ng-show="reporteForm.$submitted || reporteForm.fechaInicio_.$touched">
 										<span ng-show="reporteForm.fechaInicio_.$error.required">
@@ -105,7 +108,7 @@
 									<label class="control-label">Periodo Fin: </label> <input
 										type="date" class="form-control" name="fechaFin_"
 										placeholder="Periodo Fin" ng-model="reporteDto.fechaFin"
-										ng-required="true">
+										ng-required="true"> 
 									<!--<span class="messages"
 										ng-show="reporteForm.$submitted || reporteForm.fechaFin_.$touched">
 										 <span ng-show="reporteForm.fechaFin_.$error.required">
@@ -114,33 +117,46 @@
 								</div>
 							</div>
 						</div>
-
+						
+								<div class="col-xs-3" ng-show="isVisibleCamposReporteProductos" >
+									<label class="control-label">Lista de productos *: </label> <select
+										class="form-control" name="catListaProductos" id="idCatProducto"
+										ng-model="reporteDto.catListaProductos"
+										ng-options="tipoProducto.descripcion for tipoProducto in catListaProductos | orderBy:'tipoProducto.descripcion' track by tipoProducto.idCatGeneral"
+										 placeholder="Tipo producto"
+										 ng-required="true">
+										<option value="" class="">-- SELECCIONA UNA
+											OPCI&Oacute;N --</option>
+									</select> 
+							
+								</div>
+						
 						<div class="row" ng-show = "isVisibleCamposReporteVariaciones_Estimados || isVisibleCamposReporteFacturacion">
-							<div class="col-md-12">
+							<div class="col-md-12">							
 								<div class="col-xs-3">
 									<label class="control-label">Mes*:</label>
-						            <select ng-model="reporteDto.mes"
-						            class="form-control"
+						            <select ng-model="reporteDto.mes" 
+						            class="form-control" 
 						            name="mes_"
-						            ng-options="m for m in months"
+						            ng-options="m for m in months" 
 						            ng-required="true">
 						            <option value="" class="">-- SELECCIONA UNA OPCI&Oacute;N --</option>
-
+						            
 						            </select>
 					            </div>
-
+					            
 					            <div class="col-xs-3">
 						            <label class="control-label">A&ntilde;o*:</label>
 						            <select class="form-control"
 						             name="anio_"
-						            ng-model="reporteDto.anio"
-						            ng-options="y for y in years"
+						            ng-model="reporteDto.anio" 
+						            ng-options="y for y in years" 
 						            ng-required="true">
 						            <option value="" class="">-- SELECCIONA UNA OPCI&Oacute;N --</option>
 						            </select>
 					            </div>
-
-
+								
+								
 								<div class="col-xs-3" ng-show="!isVisibleCamposReporteFacturacion" >
 									<label class="control-label">Quincena*: </label> <select
 										class="form-control" name="catTipoPeriodo" id="idCatTipoPeriodo"
@@ -150,16 +166,18 @@
 										 ng-required="true">
 										<option value="" class="">-- SELECCIONA UNA
 											OPCI&Oacute;N --</option>
-									</select>
+									</select> 
 									<!--<span class="messages"
 										ng-show="reporteForm.$submitted || reporteForm.catTipoPeriodo.$touched">
 										  <span ng-show="reporteForm.catTipoPeriodo.$error.required">
 											El campo es obligatorio.</span>-
 									</span>-->
 								</div>
+								
+								
 							</div>
 						</div>
-
+						
 						<div class="col-md-12"
 							ng-show="gridNominasParaDispersion.length === 0">
 							<h4 align="center">
@@ -193,19 +211,19 @@
 					<div ng-show="gridReporte.length > 0">
 						<panel panel-class="panel-sky" heading="{{nombreReporte}}">
 						<panel-controls> <panel-control-collapse></panel-control-collapse>
-						</panel-controls>
-
+						</panel-controls> 
+							
 						<div ng-show="isVisibleEstimados">
 							<div class="row" align="right">
-								<button ng-json-export-excel data="gridReporte"
-								report-fields="{'descripcionCelula': 'CENTRO DE COSTOS', 'rfc': 'RFC', 'razonSocial': 'RAZON SOCIAL', 'nombreComercialCliente': 'NOMBRE COMERCIAL CLIENTE',
-								'nombreFondo': 'FONDO', 'periodoReporte': 'PERIODO DE ESTIMACION', 'montoTotalFacturaPpp': 'FACTURACION DEL PERIODO ANTERIOR', 'periodoReporteMesAnterior': 'PERIODO DE ESTIMACION (n - 1)',
-								'montoTotalFacturaPppMesAnterior': 'FACTURACION PROMEDIO (n - 1)'}",
-								filename =" 'REPORTE_ESTIMADOS' "
+								<button ng-json-export-excel data="gridReporte" 
+								report-fields="{'descripcionCelula': 'CENTRO DE COSTOS', 'rfc': 'RFC', 'razonSocial': 'RAZON SOCIAL', 'nombreComercialCliente': 'NOMBRE COMERCIAL CLIENTE',  
+								'nombreFondo': 'FONDO', 'periodoReporte': 'PERIODO DE ESTIMACION SELECCIONADO', 'montoTotalFacturaPpp': 'TOTAL FACTURA PPP DEL PERIODO SELECCIONADO', 'periodoReporteMesAnterior': 'PERIODO DE ESTIMACION (n - 3)',
+								'montoTotalFacturaPppMesAnterior': 'FACTURACION PROMEDIO (n - 3)'}",
+								filename =" 'REPORTE_ESTIMADOS' " 
 								separator="," class="css-class btn btn-sky">DESCARGAR REPORTE <span class="fa fa-download"></span></button>
 							</div>
 							<br>
-
+							
 							<div class="table-responsive" id="scrollable-area">
 								<table ng-table="tableReporte" class="table table-striped"
 									show-filter="true">
@@ -229,11 +247,11 @@
 
 						<!-- REPORTE OPERACIONES -->
 						<div ng-show="isVisibleOperaciones">
-
+						
 							<div class="row" align="right">
-								<button ng-json-export-excel data="gridReporte"
-								report-fields="{'descripcionCelula': 'CENTRO DE COSTOS', 'nombreEjecutivoNomina': 'EJECUTIVO NOMINA','rfc': 'RFC', 'razonSocial': 'RAZON SOCIAL', 'nombreComercialCliente': 'NOMBRE COMERCIAL CLIENTE',
-								'porcentaje': 'PORCENTAJE DE HONORARIOS', 'periodoNomina': 'PERIODO DE NOMINA', 'nombreFondo': 'FONDO', 'numeroFacturaPpp': 'NO. FACTURA PPP', 'fecha_factura': 'FECHA FACTURACION','totalColaboradresPagados': 'HEAD COUNT PPP',
+								<button ng-json-export-excel data="gridReporte" 
+								report-fields="{'descripcionCelula': 'CENTRO DE COSTOS', 'nombreEjecutivoNomina': 'EJECUTIVO NOMINA','rfc': 'RFC CLIENTE', 'razonSocial': 'RAZON SOCIAL CLIENTE', 'nombreComercialCliente': 'NOMBRE COMERCIAL CLIENTE',
+								'porcentaje': 'PORCENTAJE DE HONORARIOS', 'periodoNomina': 'PERIODO DE NOMINA', 'nombreFondo': 'FONDO', 'numeroFacturaPpp':'CLAVE NOMINA', 'folio': 'NO. FACTURA PPP', 'tipoNomina': 'ES COMPLEMENTARIA', 'claveNominaPadre': 'CLAVE NOMINA ORIGEN', 'fecha_factura': 'FECHA FACTURACION','totalColaboradores': 'HEAD COUNT PPP','totalColaboradresPagados': 'HEAD COUNT PPP DISPERSADOS',
 								'montoDispersado': 'PPP MONTO DISPERSADO',  'montoHonorario': 'MONTO DEL HONORARIO', 'montoIvaFactura': 'MONTO IVA (FACTURA)', 'montoTotalFacturaPpp': 'TOTAL FACTURA PPP', 'fecha_timbrado': 'FECHA TIMBRADO','fecha_dispersado': 'FECHA DE DISPERSION',
 								'periodoReporte': 'PERIODO DEL REPORTE', 
 								'nominaOperativa': 'NOMINA OPERATIVA'}",
@@ -241,7 +259,7 @@
 								separator="," class="css-class btn btn-sky">DESCARGAR REPORTE <span class="fa fa-download"></span></button>
 							</div>
 							<br>
-
+						
 							<div class="table-responsive" id="scrollable-area">
 								<table ng-table="tableReporte" class="table table-striped"
 									show-filter="true">
@@ -254,9 +272,9 @@
 											<td data-title="'Ejecutivo n&oacute;mina'"
 												filter="{nombreEjecutivoNomina: 'text'}"
 												sortable="'nombreEjecutivoNomina'">{{row.nombreEjecutivoNomina}}</td>
-											<td data-title="'RFC'" filter="{rfc: 'text'}"
+											<td data-title="'RFC Cliente'" filter="{rfc: 'text'}"
 												sortable="'rfc'">{{row.rfc }}</td>
-											<td data-title="'Raz&oacute;n Social'"
+											<td data-title="'Raz&oacute;n Social Cliente'"
 												filter="{razonSocial: 'text'}" sortable="'rfc'">{{row.razonSocial
 												}}</td>
 											<td data-title="'Nombre comercial cliente'"
@@ -266,13 +284,22 @@
 												filter="{periodoNomina: 'text'}" sortable="'periodoNomina'">{{row.periodoNomina}}</td>
 											<td data-title="'Fondo'" filter="{nombreFondo: 'text'}"
 												sortable="'nombreFondo'">{{row.nombreFondo}}</td>
+	                                       <td data-title="'Clave n&oacute;mina'" filter="{numeroFacturaPpp: 'text'}"
+												sortable="'Clave n&oacute;mina'">{{row.numeroFacturaPpp}}</td>
 											<td data-title="'No. factura PPP'"
-												filter="{numeroFacturaPpp: 'text'}"
-												sortable="'numeroFacturaPpp'">{{row.numeroFacturaPpp}}</td>
+												filter="{folio: 'text'}"
+												sortable="'folio'">{{row.folio}}</td>
+												<td data-title="'Es Complementaria'"
+												filter="{tipoNomina: 'text'}"
+												sortable="'tipoNomina'">{{row.tipoNomina}}</td>
+												<td data-title="'Clave n&oacute;mina origen'"
+												filter="{claveNominaPadre: 'text'}"
+												sortable="'claveNominaPadre'">{{row.claveNominaPadre}}</td>
 												<td data-title="'Fecha de Facturaci&oacute;n'"
 												filter="{fecha_factura: 'text'}"
 												sortable="'fecha_factura'">{{row.fecha_factura}}</td>
-											<td data-title="'Head count PPP'" align="right">{{row.totalColaboradresPagados}}</td>
+											<td data-title="'Head count PPP'" align="right">{{row.totalColaboradores}}</td>
+												<td data-title="'Head count PPP Dispersados'" align="right">{{row.totalColaboradresPagados}}</td>
 											<td data-title="'PPP monto dispersado'" align="right">{{row.montoDispersado
 												| currency}}</td>
 											<td data-title="'Monto del honorario'" align="right">{{row.montoHonorario
@@ -283,7 +310,7 @@
 												| currency}}</td>
 												<td data-title="'Fecha de timbrado'" align="right">{{row.fecha_timbrado}}</td>
 												<td data-title="'Fecha de dispersi&oacute;n'" align="right">{{row.fecha_dispersado}}</td>
-
+											
 											<td data-title="'Periodo del reporte'">{{row.periodoReporte}}</td>
 											<td data-title="'N&oacute;mina operativa'"
 												filter="{nominaOperativa: 'text'}"
@@ -294,20 +321,262 @@
 
 							</div>
 						</div>
+						<!-- REPORTE CONSAR -->
+						<div ng-show="isVisisbleConsar">
+						
+							<div class="row" align="right">
+								<button ng-json-export-excel data="gridReporte"  
+								report-fields="{'apellidoPaterno': 'APELLIDO PATERNO', 'apellidoMaterno': 'APELLIDO MATERNO','nombre': 'NOMBRE','rfc': 'RFC', 'curp': 'CURP', 'num_seguro_social': 'NSS',
+								'sexo': 'SEXO', 'fecha_nacimiento': 'FECHA DE NACIMIENTO', 'edad': 'EDAD', 'aniosInscImss':'INSCRITO IMS', 'modalidadImss': 'MODALIDAD IMSS', 'q1': '1 Q-ENERO', 'q2': '2 Q-ENERO', 'q3': '1 Q-FEBRERO','q4': '2 Q-FEBRERO','q5': '1 Q-MARZO',
+								'q6': '2 Q-MARZO', 'q7': '1 Q-ABRIL','q8': '2 Q-ABRIL','q9': '1 Q-MAYO', 'q10': '2 Q-MAYO', 'q11': '1 Q-JUNIO','q12': '2 Q-JUNIO','q13': '1 Q-JULIO', 'q14': '2 Q-JULIO','q15': '1 Q-AGOSTO', 'q16': '2 Q-AGOSTO','q17': '1 Q-SEPTIEMBRE',
+								'q18': '2 Q-SEPTIEMBRE','q19': '1 Q-OCTUBRE', 'q20': '2 Q-OCTUBRE','q21': '1 Q-NOVIEMBRE', 'q22': '2 Q-NOVIEMBRE','q23': '1 Q-DICIEMBRE', 'q24': '2 Q-DICIEMBRE', 'total': 'TOTAL'}",
+								filename =" 'REPORTE_CONSAR' " 
+								separator="," class="css-class btn btn-sky">DESCARGAR REPORTE <span class="fa fa-download"></span></button>
+							</div>
+							<br>
+						
+							<div class="table-responsive" id="scrollable-area">
+								<table ng-table="tableReporte" class="table table-striped"
+									show-filter="true">
+									<tbody>
+										<tr ng-repeat="row in $data">
+											<td data-title="'APELLIDO PATERNO'"
+												filter="{apellidoPaterno: 'text'}"
+												sortable="'apellidoPaterno'">{{row.apellidoPaterno
+												| uppercase }}</td>
+											<td data-title="'APELLIDO MATERNO'"
+												filter="{apellidoMaterno: 'text'}"
+												sortable="'apellidoMaterno'">{{row.apellidoMaterno}}</td>
+											<td data-title="'NOMBRE'" filter="{nombre: 'text'}"
+												sortable="'rfc'">{{row.nombre }}</td>
+											<td data-title="'RFC'"
+												filter="{rfc: 'text'}" sortable="'rfc'">{{row.rfc
+												}}</td>
+											<td data-title="'CURP'"
+												filter="{curp: 'text'}" sortable="'curp'">{{row.curp}}</td>
+											<td data-title="'NSS'" align="right">{{row.num_seguro_social}}</td>
+											<td data-title="'SEXO'"
+												filter="{sexo: 'text'}" sortable="'sexo'">{{row.sexo}}</td>
+											<td data-title="'FECHA DE NACIMIENTO'" filter="{fecha_nacimiento: 'text'}"
+												sortable="'fecha_nacimiento'">{{row.fecha_nacimiento}}</td>
+	                                       <td data-title="'EDAD'" filter="{edad: 'text'}"
+												sortable="'edad'">{{row.edad}}</td>
+											<td data-title="'A&Ntilde;OS EN IMSS'"
+												filter="{aniosInscImss: 'text'}"
+												sortable="'aniosInscImss'">{{row.aniosInscImss}}</td>
+												<td data-title="'MODALIDAD IMSS'"
+												filter="{modalidadImss: 'text'}"
+												sortable="'modalidadImss'">{{row.modalidadImss}}</td>
+												<td data-title="'1 Q-ENERO'"
+												filter="{q1: 'text'}"
+												sortable="'q1'">{{row.q1 | currency}}</td>
+												<td data-title="'2 Q-ENERO'"
+												filter="{q2: 'text'}"
+												sortable="'q2'">{{row.q2 | currency}}</td>
+												<td data-title="'1 Q-FEBRERO'"
+												filter="{q3: 'text'}"
+												sortable="'q3'">{{row.q3 | currency}}</td>
+												<td data-title="'2 Q-FEBRERO'"
+												filter="{q4: 'text'}"
+												sortable="'q4'">{{row.q4 | currency}}</td>
+												<td data-title="'1 Q-MARZO'"
+												filter="{q5: 'text'}"
+												sortable="'q5'">{{row.q5 | currency}}</td>
+												<td data-title="'2 Q-MARZO'"
+												filter="{q6: 'text'}"
+												sortable="'q6'">{{row.q6 | currency}}</td>
+												<td data-title="'1 Q-ABRIL'"
+												filter="{q7: 'text'}"
+												sortable="'q7'">{{row.q7 | currency}}</td>
+												<td data-title="'2 Q-ABRIL'"
+												filter="{q8: 'text'}"
+												sortable="'q8'">{{row.q8 | currency}}</td>
+												<td data-title="'1 Q-MAYO'"
+												filter="{q9: 'text'}"
+												sortable="'q9'">{{row.q9 | currency}}</td>
+												<td data-title="'2 Q-MAYO'"
+												filter="{q10: 'text'}"
+												sortable="'q10'">{{row.q10 | currency}}</td>
+												<td data-title="'1 Q-JUNIO'"
+												filter="{q11: 'text'}"
+												sortable="'q11'">{{row.q11 | currency}}</td>
+												<td data-title="'2 Q-JUNIO'"
+												filter="{q12: 'text'}"
+												sortable="'q12'">{{row.q12 | currency}}</td>
+												<td data-title="'1 Q-JULIO'"
+												filter="{q13: 'text'}"
+												sortable="'q13'">{{row.q13 | currency}}</td>
+												<td data-title="'2 Q-JULIO'"
+												filter="{q14: 'text'}"
+												sortable="'q14'">{{row.q14 | currency}}</td>
+												<td data-title="'1 Q-AGOSTO'"
+												filter="{q15: 'text'}"
+												sortable="'q15'">{{row.q15 | currency}}</td>
+												<td data-title="'2 Q-AGOSTO'"
+												filter="{q16: 'text'}"
+												sortable="'q16'">{{row.q16 | currency}}</td>
+												<td data-title="'1 Q-SEPTIEMBRE'"
+												filter="{q17: 'text'}"
+												sortable="'q17'">{{row.q17 | currency}}</td>
+												<td data-title="'2 Q-SEPTIEMBRE'"
+												filter="{q18: 'text'}"
+												sortable="'q18'">{{row.q18 | currency}}</td>
+												<td data-title="'1 Q-OCTUBRE'"
+												filter="{q19: 'text'}"
+												sortable="'q19'">{{row.q19 | currency}}</td>
+												<td data-title="'2 Q-OCTUBRE'"
+												filter="{q20: 'text'}"
+												sortable="'q20'">{{row.q20 | currency}}</td>
+												<td data-title="'1 Q-NOVIEMBRE'"
+												filter="{q21: 'text'}"
+												sortable="'q21'">{{row.q21 | currency}}</td>
+												<td data-title="'2 Q-NOVIEMBRE'"
+												filter="{q22: 'text'}"
+												sortable="'q22'">{{row.q22 | currency}}</td>
+												<td data-title="'1 Q-DICIEMBRE'"
+												filter="{q23: 'text'}"
+												sortable="'q23'">{{row.q23 | currency}}</td>
+												<td data-title="'2 Q-DICIEMBRE'"
+												filter="{q24: 'text'}"
+												sortable="'q24'">{{row.q24 | currency}}</td>
+												<td data-title="'TOTAL'"
+												filter="{qtotal: 'text'}"
+												sortable="'qtotal'">{{row.total | currency}}</td>
+											
+											
+											
+										</tr>
+									</tbody>
+								</table>
+
+							</div>
+						</div>
+						
+								<!-- REPORTE TESORERIA OPERACIONES -->
+						<div ng-show="isVisisbleTesoOpera">
+						
+							<div class="row" align="right">
+								<button ng-json-export-excel data="gridReporte"  
+								report-fields="{'tipoGeneracion': 'TIPO GENERACION', 'fondo': 'FONDO','razonSocial': 'RAZON SOCIAL','rfc': 'RFC', 'uuid': 'UUID', 'subtotal': 'SUBTOTAL',
+								'iva': 'IVA', 'total': 'TOTAL', 'fechaAlta': 'FECHA ALTA', 'fechaCertificacion':'FECHA CERTIFICACION', 'usuarioFactura': 'USUARIO FACTURA', 'idStp': 'ID_STP', 'beneficiario': 'BENEFICIARIO', 'ctaBeneficiario': 'CTA_BENEFICIARIO','contraparte': 'CONTRAPARTE','monto': 'MONTO',
+								'rastreo': 'RASTREO', 'fechaOperacion': 'FECHA OPERACION','fechaLiquidacion': 'FECHA LIQUIDACION','nomina': 'NOMINA', 'fechaRegistroNomina': 'FECHA_REGISTRO_NOMINA', 'colaboradores': 'COLABORADORES','montoOperacion': 'MONTO OPERACION','montoDispersado': 'MONTO DISPERSADO', 'montoRechazos': 'MONTO RECHAZOS','usuarioDispercion': 'USUARIO DISPERSION', 
+								'fechaDispersion': 'FECHA DISPERSION','timbres': 'TIMBRES', 'fechaTimbrado': 'FECHA TIMBRADO','diferenciaDepositoDispersion': 'DIFERENICIA_DEPOSITO_VS_DISPERSION', 'fechaCierreNomina': 'FECHA_CIERRE_NOMINA'}",
+								filename =" 'REPORTE_TESORERIA_OPERACI&Oacute;N' " 
+								separator="," class="css-class btn btn-sky">DESCARGAR REPORTE <span class="fa fa-download"></span></button>
+							</div>
+							<br>				
+							<div class="table-responsive" id="scrollable-area">
+								<table ng-table="tableReporte" class="table table-striped"
+									show-filter="true">
+									<tbody>
+										<tr ng-repeat="row in $data">
+											<td data-title="'TIPO GENERACI&Oacute;N'"
+												filter="{tipoGeneracion: 'text'}"
+												sortable="'tipoGeneracion'">{{row.tipoGeneracion
+												| uppercase }}</td>
+											<td data-title="'FONDO'"
+												filter="{fondo: 'text'}"
+												sortable="'fondo'">{{row.fondo}}</td>
+											<td data-title="'RAZ&Oacute;N SOCIAL'" filter="{razonSocial: 'text'}"
+												sortable="'razonSocial'">{{row.nombre }}</td>
+											<td data-title="'RFC'"
+												filter="{rfc: 'text'}" sortable="'rfc'">{{row.rfc
+												}}</td>
+											<td data-title="'UUID'"
+												filter="{uuid: 'text'}" sortable="'uuid'">{{row.uuid}}</td>
+											<td data-title="'SUBTOTAL'" align="right">{{row.subtotal | currency}}</td>
+											<td data-title="'IVA'"
+												filter="{iva: 'text'}" sortable="'iva'">{{row.iva | currency}}</td>
+											<td data-title="'TOTAL'" filter="{total: 'text'}"
+												sortable="'total'">{{row.total | currency}}</td>
+	                                       <td data-title="'FECHA ALTA'" filter="{fechaAlta: 'text'}"
+												sortable="'fechaAlta'">{{row.fechaAlta}}</td>
+											<td data-title="'FECHA CERTIFICACI&Oacute;N'"
+												filter="{fechaCertificacion: 'text'}"
+												sortable="'fechaCertificacion'">{{row.fechaCertificacion}}</td>
+												<td data-title="'USUARIO FACTURA'"
+												filter="{usuarioFactura: 'text'}"
+												sortable="'usuarioFactura'">{{row.usuarioFactura}}</td>
+												<td data-title="'ID_STP'"
+												filter="{idStp: 'text'}"
+												sortable="'idStp'">{{row.idStp}}</td>
+												<td data-title="'BENEFICIARIO'"
+												filter="{beneficiario: 'text'}"
+												sortable="'beneficiario'">{{row.beneficiario}}</td>
+												<td data-title="'CTA_BENEFICIARIO'"
+												filter="{ctaBeneficiario: 'text'}"
+												sortable="'q3'">{{row.ctaBeneficiario}}</td>
+												<td data-title="'CONTRAPARTE'"
+												filter="{contraparte: 'text'}"
+												sortable="'contraparte'">{{row.contraparte}}</td>
+												<td data-title="'MONTO'"
+												filter="{monto: 'text'}"
+												sortable="'monto'">{{row.monto | currency}}</td>
+												<td data-title="'RASTREO'"
+												filter="{rastreo: 'text'}"
+												sortable="'rastreo'">{{row.rastreo}}</td>
+												<td data-title="'FECHA OPERACI&Oacute;N'"
+												filter="{fechaOperacion: 'text'}"
+												sortable="'fechaOperacion'">{{row.fechaOperacion}}</td>
+												<td data-title="'FECHA LIQUIDACI&Oacute;N'"
+												filter="{fechaLiquidacion: 'text'}"
+												sortable="'fechaLiquidacion'">{{row.fechaLiquidacion}}</td>
+												<td data-title="'NOMINA'"
+												filter="{nomina: 'text'}"
+												sortable="'nomina'">{{row.nomina}}</td>
+												<td data-title="'FECHA_REGISTRO_NOMINA'"
+												filter="{fechaRegistroNomina: 'text'}"
+												sortable="'fechaRegistroNomina'">{{row.fechaRegistroNomina}}</td>
+												<td data-title="'COLABORADORES'"
+												filter="{colaboradores: 'text'}"
+												sortable="'colaboradores'">{{row.colaboradores}}</td>
+												<td data-title="'MONTO OPERACI&Oacute;N'"
+												filter="{montoOperacion: 'text'}"
+												sortable="'montoOperacion'">{{row.montoOperacion | currency}}</td>
+												<td data-title="'MONTO DISPERSADO'"
+												filter="{montoDispersado: 'text'}"
+												sortable="'montoDispersado'">{{row.montoDispersado | currency}}</td>
+												<td data-title="'MONTO RECHAZOS'"
+												filter="{montoRechazos: 'text'}"
+												sortable="'montoRechazos'">{{row.montoRechazos | currency}}</td>
+												<td data-title="'USUARIO DISPERSI&Oacute;N'"
+												filter="{usuarioDispercion: 'text'}"
+												sortable="'usuarioDispercion'">{{row.usuarioDispercion}}</td>							
+												<td data-title="'FECHA DISPERSI&Oacute;N'"
+												filter="{fechaDispersion: 'text'}"
+												sortable="'fechaDispersion'">{{row.fechaDispersiony}}</td>
+												<td data-title="'TIMBRES'"
+												filter="{timbres: 'text'}"
+												sortable="'timbres'">{{row.timbres}}</td>
+												<td data-title="'FECHA TIMBRADO'"
+												filter="{fechaTimbrado: 'text'}"
+												sortable="'fechaTimbrado'">{{row.fechaTimbrado}}</td>
+												<td data-title="'DIFERENICIA_DEPOSITO_VS_DISPERSI&Oacute;N'"
+												filter="{diferenciaDepositoDispersion: 'text'}"
+												sortable="'diferenciaDepositoDispersion'">{{row.diferenciaDepositoDispersion | currency}}</td>
+												<td data-title="'FECHA_CIERRE_NOMINA'"
+												filter="{fechaCierreNomina: 'text'}"
+												sortable="'fechaCierreNomina'">{{row.fechaCierreNomina}}</td>					
+										</tr>
+									</tbody>
+								</table>
+
+							</div>
+						</div>
 
 						<!-- REPORTE VARIACIONES -->
 						<div ng-show="isVisibleVariaciones">
 							<div class="row" align="right">
-								<button ng-json-export-excel data="gridReporte"
+								<button ng-json-export-excel data="gridReporte" 
 								report-fields="{'descripcionCelula': 'CENTRO DE COSTOS', 'rfc': 'RFC', 'razonSocial': 'RAZON SOCIAL', 'nombreComercialCliente': 'NOMBRE COMERCIAL CLIENTE',
 								'nombreFondo': 'FONDO', 'actividadEconomica': 'ACTIVIDAD ECONOMIA', 'periodoReporte': 'PERIODO DE LA NOMINA', 'totalColaboradresPagados': 'HEAD COUNT PPP',
 								'montoTotalFacturaPpp': 'TOTAL FACTURA PPP', 'periodoReporteMesAnterior': 'PERIODO DE LA NOMINA (n-1)', 'totalColaboradresPagadosMesAnterior': 'HEAD COUNT PPP (n-1)',
 								'montoTotalFacturaPppMesAnterior': 'TOTAL FACTURA PPP (n-1)', 'nombreMesReporteAnterior': 'MES DEL REPORTE (n-1)'}",
-								filename =" 'REPORTE_VARIACIONES' "
+								filename =" 'REPORTE_VARIACIONES' " 
 								separator="," class="css-class btn btn-sky">DESCARGAR REPORTE <span class="fa fa-download"></span></button>
 							</div>
 							<br>
-
+						
 							<div class="table-responsive" id="scrollable-area">
 								<table ng-table="tableReporte" class="table table-striped"
 									show-filter="true">
@@ -332,19 +601,126 @@
 							</div>
 						</div>
 
-
-						<div ng-show="isVisibleColabFaltCrm">
+						<!-- REPORTE PRODUCTOS -->
+						<div ng-show="isVisibleProductos">
+							
+							<div class="row">
+					      <div class="col-md-2" data-clasificacion="TOTAL">
+						     <a class="shortcut-tiles tiles-info"
+							 data="tileDef">
+							<div class="tiles-body">
+								<div class="pull-right" style="line-height: 1">{{totalPPP}}</div>
+							</div>
+							<div class="tiles-footer ng-binding" style="font-size: 12px; height: 70px;">
+								<span class="bold"></br> Total PPP:</span>
+							</div>
+						</a>
+					</div>
+					
+					<div class="col-md-2" data-clasificacion="EN_PROCESO">
+						<a class="shortcut-tiles tiles-magenta"
+							 data="tileDef">
+							<div class="tiles-body">
+								<div class="pull-right" style="line-height: 1" align="right">{{totalSueldosYSalarios}}</div>
+							</div>
+							<div class="tiles-footer ng-binding" style="font-size: 12px; height: 70px;">
+								<span class="bold"></br> Total Sueldos y Salarios</span>
+							</div>
+						</a>
+					</div>
+					<div class="col-md-2" data-clasificacion="COTI">
+						<a class="shortcut-tiles tiles-toyo"
+							 data="tileDef">
+							<div class="tiles-body">
+								<div class="pull-right" style="line-height: 1">{{totalMaquila}} </div>
+							</div>
+							<div class="tiles-footer ng-binding" style="font-size: 12px; height: 70px;">
+								<span class="bold"></br> Total Maquila </span>
+							</div>
+						</a>
+					</div>
+						<div class="col-md-2" data-clasificacion="PROSP_RECHAZADOS">
+						<a class="shortcut-tiles tiles-danger" data="tileDef">
+							<div class="tiles-body">
+								<div class="pull-right" style="line-height: 1">{{totalMixtoPPP}}</div>
+							</div>
+							<div class="tiles-footer ng-binding" style="font-size: 12px; height: 70px;">
+								<span class="bold"></br> Total MIXTO (PPP+IMMS)</span>
+							</div>
+						</a>
+					</div>
+						<div class="col-md-2"
+						data-clasificacion="PROSP_RECHAZADOS_MESA_CTRL">
+						<a class="shortcut-tiles tiles-midnightblue"
+							data="tileDef">
+							<div class="tiles-body">
+								<div class="pull-right" style="line-height: 1;">{{totalIrlab}}</div>
+							</div>
+							<div class="tiles-footer ng-binding" style="font-size: 12px; height: 70px;">
+								<span class="bold"></br>Total IRLAB</span>
+							</div>
+						</a>
+					</div>
+					<div class="col-md-2" data-clasificacion="PROSP_AUTORIZADO">
+						<a class="shortcut-tiles tiles-success"
+							 data="tileDef">
+							<div class="tiles-body">
+								<div class="pull-right" style="line-height: 1">{{totalQamm}}</div>
+							</div>
+							<div class="tiles-footer ng-binding" style="font-size: 12px; height: 70px;">
+								<span class="bold"></br> Total Quincena a mi Manera</span>
+							</div>
+						</a>
+					</div>							
 							<div class="row" align="right">
-								<button ng-json-export-excel data="gridReporte"
-								report-fields="{'descripcionCelula': 'CENTRO DE COSTOS', 'rfc': 'RFC', 'nombre': 'NOMBRE', 'apellidoPaterno': 'APELLIDO PATERNO',
-								'apellidoMaterno': 'APELLIDO MATERNO', 'nomina': 'NOMINA', 'estatusColaborador': 'ESTATUS COLABORADOR',
-								'monto_ppp': 'MONTO PPP', 'clabe_interbancaria': 'CLABE INTERBANCARIA', 'curp': 'CURP', 'num_seguro_social': 'NUM. SEGURO SOCUAL',
-								'institucion_contraparte': 'INSTITUCION CONTRAPARTE', 'correo_electronico':'CORREO ELECTROCICO', 'fecha_operacion': 'FECHA OPERACI�N'}",
-								filename =" 'REPORTE_COLABORADORES_FALTANTES_CRM' "
+									 <meta charset="UTF-8">
+								<button ng-json-export-excel data="gridReporte" 
+								report-fields="{'descripcionCelula': 'CENTRO DE COSTOS', 'rfc': 'RFC', 'razonSocial': 'RAZON SOCIAL', 
+								'ppp': 'PLAN PRIVADO DE PENSIONES (PPP)','prodMix': 'SUELDOS Y SALARIOS (IMSS)', 
+								'prodMaqu': 'MAQUILA', 'prodMixIms': 'MIXTO (PPP + IMSS)', 'prodIrlab': 'INDEMNIZACI&Oacute;N POR RIESGO LABORAL','prodQamm': 'QUINCENA A MI MANERA'}",
+								filename =" 'REPORTE_PRODUCTOS' " 
 								separator="," class="css-class btn btn-sky">DESCARGAR REPORTE <span class="fa fa-download"></span></button>
 							</div>
 							<br>
-
+								
+								
+							
+                   		<div class="table-responsive" id="scrollable-area">
+								<table ng-table="tableReporte" class="table table-striped"
+									show-filter="true">
+							
+									<tbody>		
+										<tr ng-repeat="row in $data" >
+											<td data-title="'Centro de costos'" filter="{descripcionCelula: 'text'}" sortable="'descripcionCelula'">{{row.descripcionCelula}}</td>
+											<td data-title="'RFC'" filter="{rfc: 'text'}" sortable="'rfc'">{{row.rfc }}</td>
+											<td data-title="'Raz&oacute;n Social'" filter="{razonSocial: 'text'}" sortable="'razonSocial'">{{row.razonSocial}}</td>
+											<td data-title="'PLAN PRIVADO DE PENSIONES (PPP) '" filter="{ppp: 'text'}" sortable="'ppp'" align="center" >{{row.ppp}}</td>
+											<td data-title="'SUELDOS Y SALARIOS (IMSS)'" filter="{prodMix: 'text'}" sortable="'prodMix'" align="center" >{{row.prodMix}}</td>
+											<td data-title="'MAQUILA'"  filter="{prodMaqu: 'text'}" sortable="'prodMaqu'" align="right">{{row.prodMaqu}}</td>
+											<td data-title="'MIXTO (PPP + IMSS)'" filter="{prodMixIms: 'text'}" sortable="'prodMixIms'" align="center">{{row.prodMixIms}}</td>
+											<td data-title="'INDEMNIZACI&Oacute;N POR RIESGO LABORAL'" filter="{prodIrlab: 'text'}" sortable="'prodIrlab'" align="center">{{row.prodIrlab}}</td>
+											<td data-title="'QUINCENA A MI MANERA'"  filter="{prodQamm: 'text'}" sortable="'prodQamm'" align="center">{{row.prodQamm}}</td>
+								
+									</tr>		
+									</tbody>	
+								</table>
+							</div>
+						</div>
+						</div>
+						
+						
+						<div ng-show="isVisibleColabFaltCrm">
+							<div class="row" align="right">
+								<button ng-json-export-excel data="gridReporte" 
+								report-fields="{'descripcionCelula': 'CENTRO DE COSTOS', 'rfc': 'RFC', 'nombre': 'NOMBRE', 'apellidoPaterno': 'APELLIDO PATERNO',  
+								'apellidoMaterno': 'APELLIDO MATERNO', 'nomina': 'NOMINA', 'estatusColaborador': 'ESTATUS COLABORADOR',
+								'monto_ppp': 'MONTO PPP', 'clabe_interbancaria': 'CLABE INTERBANCARIA', 'curp': 'CURP', 'num_seguro_social': 'NUM. SEGURO SOCUAL',
+								'institucion_contraparte': 'INSTITUCION CONTRAPARTE', 'correo_electronico':'CORREO ELECTROCICO', 'fecha_operacion': 'FECHA OPERACI�N'}",
+								filename =" 'REPORTE_COLABORADORES_FALTANTES_CRM' " 
+								separator="," class="css-class btn btn-sky">DESCARGAR REPORTE <span class="fa fa-download"></span></button>
+							</div>
+							<br>
+						
 							<div class="table-responsive" id="scrollable-area">
 								<table ng-table="tableReporte" class="table table-striped"
 									show-filter="true">
@@ -364,25 +740,25 @@
 											<td data-title="'Instituci&oacute;n Contraparte'" align="right">{{row.institucion_contraparte }}</td>
 											<td data-title="'Correo Electr&oacute;nico'" align="right">{{row.correo_electronico }}</td>
 											<td data-title="'Fecha operaci&oacute;n'" align="right">{{row.fecha_operacion }}</td>
-
-
+										
+										
 										</tr>
 									</tbody>
 								</table>
 							</div>
 						</div>
-
-						<div ng-show="isVisibleFacturacion">
+						
+					<div ng-show="isVisibleFacturacion">
 							<div class="row" align="right">
-								<button ng-json-export-excel data="gridReporte"
-								report-fields="{'fecha_operacion': 'FECHA', 'uuid': 'UUID', 'serie': 'SERIE', 'folio': 'FOLIO',
+								<button ng-json-export-excel data="gridReporte" 
+								report-fields="{'fecha_operacion': 'FECHA', 'uuid': 'UUID', 'serie': 'SERIE', 'folio': 'FOLIO',  
 								'rfc': 'RFC', 'razonSocial': 'RAZON SOCIAL', 'tipoComprobante': 'TIPO COMPROBANTE', 'metodoPago': 'METODO PAGO',
 								'formaPago': 'FORMA PAGO','montoSubTotalFactura': 'SUBTOTAL', 'montoIvaFactura': 'IVA', 'montoTotalFacturaPpp': 'TOTAL' }",
-								filename =" 'REPORTE_FACTURACION_MENSUAL' "
+								filename =" 'REPORTE_FACTURACION_MENSUAL' " 
 								separator="," class="css-class btn btn-sky">DESCARGAR REPORTE <span class="fa fa-download"></span></button>
 							</div>
 							<br>
-
+						
 							<div class="table-responsive" id="scrollable-area">
 								<table ng-table="tableReporte" class="table table-striped"
 									show-filter="true">
@@ -400,17 +776,208 @@
 										    <td data-title="'SUBTOTAL'" align="right">{{row.montoSubTotalFactura | currency }}</td>
 										    <td data-title="'IVA'" align="right">{{row.montoIvaFactura | currency }}</td>
 										   <td data-title="'TOTAL'" align="right">{{row.montoTotalFacturaPpp | currency }}</td>
-
+										
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						
+						<div ng-show="isVisibleFacturas">
+							<div class="row" align="right">
+								<button ng-json-export-excel data="gridReporte" 
+								report-fields="{'idNomina':'ID_NOMINA','descripcionRazonSocial': 'GRUPO O NOMBRE COMERCIAL', 'claveNomina': 'CLAVE NOMINA', 'uuid': 'UUID', 'certificadoEmisor': 'CERTIFICADO EMISOR', 'fechaHoraCertificacion': 'FECHA HORA CERTIFICACION', 'serie': 'SERIE', 'folio': 'FOLIO',  
+								'rfc': 'RFC', 'razonSocial': 'RAZON SOCIAL', 'tipoComprobante': 'TIPO COMPROBANTE','subTotal': 'SUBTOTAL', 'totalIvaTrasladado': 'IVA TRASLADADO', 'total': 'TOTAL'}",
+								filename =" 'REPORTE_FACTURAS' " 
+								separator="," class="css-class btn btn-sky">DESCARGAR REPORTE <span class="fa fa-download"></span></button>
+							</div>
+							<br>
+						
+							<div class="table-responsive" id="scrollable-area">
+								<table ng-table="tableReporte" class="table table-striped"
+									show-filter="true">
+									<tbody>
+										<tr ng-repeat="row in $data">
+											<td data-title="'ID NOMINA'" filter="{idNomina: 'text'}" sortable="'idNomina'">{{row.idNomina}}</td>
+											<td data-title="'GRUPO O NOMBRE COMERCIAL'" filter="{descripcionRazonSocial: 'text'}" sortable="'descripcionRazonSocial'">{{row.descripcionRazonSocial}}</td>
+											<td data-title="'CLAVE NOMINA'" filter="{claveNomina: 'text'}" sortable="'claveNomina'">{{row.claveNomina}}</td>
+											<td data-title="'UUID'" filter="{uuid: 'text'}" sortable="'uuid'">{{row.uuid}}</td>
+											<td data-title="'CERTIFICADO EMISOR'" filter="{certificadoEmisor: 'text'}" sortable="'certificadoEmisor'">{{row.certificadoEmisor}}</td>
+											<td data-title="'FECHA HORA CERTIFICACI&Oacute;N'" filter="{fechaHoraCertificacion: 'text'}" sortable="'fechaHoraCertificacion'">{{row.fechaHoraCertificacion}}</td>
+											<td data-title="'SERIE'" filter="{serie: 'text'}" sortable="'serie'">{{row.serie}}</td>
+											<td data-title="'FOLIO'" filter="{folio: 'text'}" sortable="'folio'">{{row.folio}}</td>
+											<td data-title="'RFC'" filter="{rfc: 'text'}" sortable="'rfc'">{{row.rfc }}</td>
+											<td data-title="'NOMBRE O RAZ&Oacute;N SOCIAL'" filter="{razonSocial: 'text'}" sortable="'razonSocial'">{{row.razonSocial }}</td>
+											<td data-title="'TIPO COMPROBANTE'"  >{{row.tipoComprobante }}</td>
+											<td data-title="'SUBTOTAL'" align="right">{{row.subTotal| currency }}</td>
+										    <td data-title="'IVA TRASLADADO '" align="right">{{row.totalIvaTrasladado | currency }}</td>
+										   <td data-title="'TOTAL'" align="right">{{row.total | currency }}</td>
+										
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+			
+						<div ng-show="isVisibleDispersion">
+							<div class="row" align="right">
+								<button ng-json-export-excel data="gridReporte" 
+								report-fields="{'idCliente': 'ID CLIENTE','razonSocial': 'CLIENTE','apellidoPaterno':'APELLIDO PATERNO','apellidoMaterno':'APELLIDO MATERNO','nombre':'NOMBRE'
+								, 'rfc': 'RFC','curp':'CURP','monto_ppp': 'MONTO PPP','idStp':'ID STP','fecha_dispersado':'FECHA DISPERSION', 'clabe_interbancaria':'CLABE INTERBANCARIA'
+								, 'uuid': 'UUID', 'certificadoEmisor': 'CERTIFICADO EMISION', 'fechaHoraCertificacion': 'FECHA DE CERTIFICACION'
+								, 'idNomina': 'ID NOMINA', 'claveNomina': 'CLAVE NOMINA'}",
+								filename =" 'REPORTE_DISPERSIONES' " 
+								separator="," class="css-class btn btn-sky">DESCARGAR REPORTE <span class="fa fa-download"></span></button>
+							</div>
+							<br>
+						
+							<div class="table-responsive" id="scrollable-area">
+								<table ng-table="tableReporte" class="table table-striped"
+									show-filter="true">
+									<tbody>
+										<tr ng-repeat="row in $data">
+											<td data-title="'ID CLIENTE'" filter="{idCliente: 'text'}" sortable="'idCliente'">{{row.idCliente}}</td>
+											<td data-title="'CLIENTE'" filter="{razonSocial: 'text'}" sortable="'razonSocial'">{{row.razonSocial}}</td>
+											<td data-title="'APELLIDO PATERNO'" filter="{apellidoPaterno: 'text'}" sortable="'apellidoPaterno'">{{row.apellidoPaterno}}</td>
+											<td data-title="'APELLIDO MATERNO'" filter="{apellidoMaterno: 'text'}" sortable="'apellidoMaterno'">{{row.apellidoMaterno}}</td>
+											<td data-title="'NOMBRE'" filter="{nombre: 'text'}" sortable="'nombre'">{{row.nombre}}</td>
+											<td data-title="'RFC'" filter="{rfc: 'text'}" sortable="'rfc'">{{row.rfc }}</td>
+											<td data-title="'CURP'" filter="{curp: 'text'}" sortable="'curp'">{{row.curp }}</td>
+											<td data-title="'MONTO PPP'" align="right">{{row.monto_ppp | currency }}</td>
+											<td data-title="'ID STP'" filter="{idStp: 'text'}" sortable="'idStp'">{{row.idStp}}</td>
+											<td data-title="'FECHA DISPERSI&Oacute;N'" filter="{fecha_dispersado: 'text'}" sortable="'fecha_dispersado'">{{row.fecha_dispersado}}</td>
+											<td data-title="'CLABE INTERBANCARIA'" filter="{clabe_interbancaria: 'text'}" sortable="'clabe_interbancaria'">{{row.clabe_interbancaria}}</td>
+											<td data-title="'UUID'" filter="{fuuid: 'text'}" sortable="'uuid'">{{row.uuid}}</td>
+											<td data-title="'CERTIFICADO EMISI&Oacute;N'" filter="{certificadoEmisor: 'text'}" sortable="'certificadoEmisor'">{{row.certificadoEmisor}}</td>
+											<td data-title="'FECHA HORA CERTIFICACI&Oacute;N'" filter="{fechaHoraCertificacion: 'text'}" sortable="'fechaHoraCertificacion'">{{row.fechaHoraCertificacion}}</td>
+											<td data-title="'ID N&Oacute;MINA'" filter="{idNomina: 'text'}" sortable="'idNomina">{{row.idNomina }}</td>
+											<td data-title="'N&Oacute;MINA'" filter="{claveNomina: 'text'}" sortable="'claveNomina'">{{row.claveNomina}}</td>
+											
+											
+										   
+										
 										</tr>
 									</tbody>
 								</table>
 							</div>
 						</div>
 
-						</panel>
-					</div>
-
-				</div>
+		
+					<div ng-show="isVisibleColaboradores">
+							<div class="row" align="right">
+							 
+							
+								<button ng-json-export-excel data="gridReporte" 
+								report-fields="{'idColaborador': 'ID COLABORADOR','apellidoPaterno':'APELLIDO PATERNO','apellidoMaterno':'APELLIDO MATERNO','nombre':'NOMBRE'
+								, 'rfc': 'RFC','curp':'CURP','genero':'GENERO','fechaNacimiento':'FECHA NACIMIENTO','anioImss':'AÑO IMSS'
+								,'modalidadImss':'MODALIDAD IMSS', 'domicilio':'DIRECCION', 'codigoPostal':'CP', 'claveNomina': 'CLAVE NOMINA', 'razonSocial': 'CLIENTE', 'idCliente': 'ID CLIENTE'}",
+								filename =" 'REPORTE_COLABORADORES' " 
+								separator="," class="css-class btn btn-sky">DESCARGAR REPORTE <span class="fa fa-download"></span></button>
+							</div>
+							<br>
+						
+							<div class="table-responsive" id="scrollable-area">
+								<table ng-table="tableReporte" class="table table-striped"
+									show-filter="true">
+									<tbody>
+										<tr ng-repeat="row in $data">
+											<td data-title="'ID COLABORADOR'" filter="{idColaborador: 'text'}" sortable="'idColaborador'">{{row.idColaborador}}</td>
+											<td data-title="'APELLIDO PATERNO'" filter="{apellidoPaterno: 'text'}" sortable="'apellidoPaterno'">{{row.apellidoPaterno}}</td>
+											<td data-title="'APELLIDO MATERNO'" filter="{apellidoMaterno: 'text'}" sortable="'apellidoMaterno'">{{row.apellidoMaterno}}</td>
+											<td data-title="'NOMBRE'" filter="{nombre: 'text'}" sortable="'nombre'">{{row.nombre}}</td>
+											<td data-title="'RFC'" filter="{rfc: 'text'}" sortable="'rfc'">{{row.rfc }}</td>
+											<td data-title="'CURP'" filter="{curp: 'text'}" sortable="'curp'">{{row.curp }}</td>
+											<td data-title="'NSS'" filter="{num_seguro_social: 'text'}" sortable="'num_seguro_social'">{{row.num_seguro_social}}</td>
+											<td data-title="'GENERO'" filter="{genero: 'text'}" sortable="'genero'">{{row.genero}}</td>
+											<td data-title="'FECHA NACIMIENTO'" filter="{fechaNacimiento: 'text'}" sortable="'fechaNacimiento'">{{row.fechaNacimiento}}</td>
+											<td data-title="'AÑO IMSS'" filter="{anioImss: 'text'}" sortable="'anioImss'">{{row.anioImss}}</td>
+											<td data-title="'MODALIDAD IMSS'" filter="{modalidadImss: 'text'}" sortable="'modalidadImss'">{{row.modalidadImss}}</td>
+										 	<td data-title="'CLAVE N&Oacute;MINA'" filter="{claveNomina: 'text'}" sortable="'claveNomina'">{{row.claveNomina}}</td>
+										   <td data-title="'RAZ&Oacute;N SOCIAL'" filter="{razonSocial: 'text'}" sortable="'razonSocial'">{{row.razonSocial}}</td>
+											<td data-title="'ID CLIENTE'" filter="{idCliente: 'text'}" sortable="'idCliente'">{{row.idCliente}}</td>
+											
+													   
+										
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>		
+						
+							<div ng-show="isVisibleClientes">
+							<div class="row" align="right">
+							 
+							
+								<button ng-json-export-excel data="gridReporte" 
+								report-fields="{'idCliente': 'ID CLIENTE', 'razonSocial': 'CLIENTE','nombreComercialCliente':'NOMBRE COMERCIAL O GRUPO','tipoPersona':'TIPO PERSONA','rfc': 'RFC CLIENTE', 'dispersor':'DISPERSOR','razonSocialCelula':'PRESTADORA DE SERVICIO (FONDO)','regimenFiscal':'REGIMEN FISCAL','tipoDomicilio':'TIPO DOMICILIO'
+								,'calle':'CALLE', 'numExt':'NUM. EXTERIOR','numInt':'NUM. INTERIOR', 'colonia':'COLONIA','codigoPostal':'CODIGO POSTAL','municipio':'MUNICIPIO O ALCALDIA', 'idEntidadFederativa':'ID ENTIDAD FEDERATIVA'
+								,'nombre':'NOMBRE','apellidoPaterno':'APELLIDO PATERNO','apellidoMaterno':'APELLIDO MATERNO','correo':'CORREO ELECTRONICO', 'telefono':'NUM. TELEFONO'
+								,'producto':'TIPO PRODUCTO', 'nombreNomina':'NOMBRE NOMINA', 'periodicidadNomina':'PERIODICIDAD NOMINA','esquemaNomina':'ESQUEMA NOMINA', 'nominista':'NOMINISTA'
+								, 'factura':'¿GENERA FACTURA?', 'estatusCliente':'ESTATUS CLIENTE', 'comision':'% COMISION','canalVenta':'CANAL VENTA','comisionista':'COMISIONISTA'
+								,'formula':'FORMULA COMISION', 'honorario':'% HONORARIO','formulaHonorario':'FORMULA HONORARIO', 'formulaIva':'FORMULA IVA','formulaFactura':'FORMULA FACTURA'
+								,'banco':'BANCO','noCuentaBanco':'No. CUENTA BANCARIA','clabe':'CLABE INTERBANCARIA','funcionCuenta':'FUNCION CUENTA','noReferencia':'No. REFERENCIA'
+								,'esPrincipal':'¿ES PRINCIPAL?'
+									}",
+								filename =" 'REPORTE_CLIENTES' " 
+								separator="," class="css-class btn btn-sky">DESCARGAR REPORTE <span class="fa fa-download"></span></button>
+							</div>
+							<br>
+						
+							<div class="table-responsive" id="scrollable-area">
+								<table ng-table="tableReporte" class="table table-striped"
+									show-filter="true">
+									<tbody>
+										<tr ng-repeat="row in $data">
+											<td data-title="'ID CLIENTE'" filter="{idCliente: 'text'}" sortable="'idCliente'">{{row.idCliente}}</td>
+											<td data-title="'RAZ&Oacute;N SOCIAL CLIENTE'" filter="{razonSocial: 'text'}" sortable="'razonSocial'">{{row.razonSocial}}</td>
+											<td data-title="'NOMBRE COMERCIAL O GRUPO'" filter="{nombreComercialCliente: 'text'}" sortable="'nombreComercialCliente'">{{row.nombreComercialCliente}}</td>
+											<td data-title="'TIPO PERSONA'" filter="{tipoPersona: 'text'}" sortable="'tipoPersona'">{{row.tipoPersona}}</td>
+											<td data-title="'RFC CLIENTE'" filter="{rfc: 'text'}" sortable="'rfc'">{{row.rfc}}</td>
+										    <td data-title="'PRESTADORA SERVICIO (FONDO)'" filter="{razonSocialCelula: 'text'}" sortable="'razonSocialCelula'">{{row.razonSocialCelula}}</td>
+										    <td data-title="'PROVEEDOR DISPERSI&Oacute;N'" filter="{dispersor: 'text'}" sortable="'dispersor'">{{row.dispersor}}</td>
+										    <td data-title="'REGIMEN FISCAL'" filter="{regimenFiscal: 'text'}" sortable="'regimenFiscal'">{{row.regimenFiscal}}</td>
+											<td data-title="'CALLE'" filter="{calle: 'text'}" sortable="'calle'">{{row.calle}}</td>
+										    <td data-title="'NUM. EXTERIOR'" filter="{numExt: 'text'}" sortable="'numExt'">{{row.numExt}}</td>
+										    <td data-title="'NUM. INTERIOR'" filter="{numInt: 'text'}" sortable="'numInt'">{{row.numInt}}</td>
+										    <td data-title="'COLONIA'" filter="{colonia: 'text'}" sortable="'colonia'">{{row.colonia}}</td>
+										    <td data-title="'MUNICIPIO O ALCALDIA'" filter="{municipio: 'text'}" sortable="'municipio'">{{row.municipio}}</td>
+										    <td data-title="'C&Oacute;DIGO POSTAL'" filter="{codigoPostal: 'text'}" sortable="'codigoPostal'">{{row.codigoPostal}}</td>
+										    <td data-title="'ID ENTIDAD FEDERATIVA'" filter="{idEntidadFederativa: 'text'}" sortable="'idEntidadFederativa'">{{row.idEntidadFederativa}}</td>
+										
+											<td data-title="'NOMBRE'" filter="{nombre: 'text'}" sortable="'nombre'">{{row.nombre}}</td>
+											<td data-title="'APELLIDO PATERNO'" filter="{apellidoPaterno: 'text'}" sortable="'apellidoPaterno'">{{row.apellidoPaterno}}</td>
+											<td data-title="'APELLIDO MATERNO'" filter="{apellidoMaterno: 'text'}" sortable="'apellidoMaterno'">{{row.apellidoMaterno}}</td>
+											<td data-title="'CORREO ELECTRONICO'" filter="{correo: 'text'}" sortable="'correo'">{{row.correo}}</td>
+											<td data-title="'TELEFONO'" filter="{telefono: 'text'}" sortable="'telefono'">{{row.telefono}}</td>
+											<td data-title="'PRODUCTO'" filter="{producto: 'text'}" sortable="'producto'">{{row.producto}}</td>
+											<td data-title="'NOMBRE N&Oacute;MINA'" filter="{nombreNomina: 'text'}" sortable="'nombreNomina'">{{row.nombreNomina}}</td>
+											<td data-title="'PERIODICIDAD N&Oacute;MINA'" filter="{periodicidadNomina:'text'}" sortable="'periodicidadNomina'">{{row.periodicidadNomina}}</td>
+											<td data-title="'ESQUEMA N&Oacute;MINA'" filter="{esquemaNomina: 'text'}" sortable="'esquemaNomina'">{{row.esquemaNomina}}</td>
+											<td data-title="'NOMINISTA'" filter="{nominista: 'text'}" sortable="'nominista'">{{row.nominista}}</td>
+										    <td data-title="'¿GENERA FACTURA?'" filter="{factura: 'text'}" sortable="'factura'">{{row.factura}}</td>
+											<td data-title="'ESTATUS CLIENTE'" filter="{estatusCliente: 'text'}" sortable="'estatusCliente'">{{row.estatusCliente}}</td>
+											<td data-title="'% COMISI&Oacute;N'" filter="{comision: 'text'}" sortable="'comision'">{{row.comision}}</td>
+											<td data-title="'CANAL VENTA'" filter="{canalVenta: 'text'}" sortable="'canalVenta'">{{row.canalVenta}}</td>
+											<td data-title="'COMISIONISTA'" filter="{comisionista: 'text'}" sortable="'comisionista'">{{row.comisionista}}</td>
+											<td data-title="'F&Oacute;RMULA'" filter="{formula: 'text'}" sortable="'formula'">{{row.formula}}</td>
+											<td data-title="'% HONORARIO'" filter="{honorario: 'text'}" sortable="'honorario'">{{row.honorario}}</td>
+											<td data-title="'F&Oacute;RMULA HONORARIO'" filter="{formulaHonorario: 'text'}" sortable="'formulaHonorario'">{{row.formulaHonorario}}</td>
+											<td data-title="'F&Oacute;RMULA IVA'" filter="{formulaIva: 'text'}" sortable="'formulaIva'">{{row.formulaIva}}</td>
+											<td data-title="'F&Oacute;RMULA FACTURA'" filter="{formulaFactura: 'text'}" sortable="'formulaFactura'">{{row.formulaFactura}}</td>
+											<td data-title="'BANCO'" filter="{banco: 'text'}" sortable="'banco'">{{row.banco}}</td>
+											<td data-title="'No. CUENTA BANCARIA'" filter="{noCuentaBanco: 'text'}" sortable="'noCuentaBanco'">{{row.noCuentaBanco}}</td>
+											<td data-title="'CLABE INTERBANCARIA'" filter="{clabe: 'text'}" sortable="'clabe'">{{row.clabe}}</td>
+											<td data-title="'FUNCI&Oacute;N CUENTA'" filter="{funcionCuenta: 'text'}" sortable="'funcionCuenta'">{{row.funcionCuenta}}</td>
+											<td data-title="'No. REFERENCIA'" filter="{noReferencia: 'text'}" sortable="'noReferencia'">{{row.noReferencia}}</td>
+											<td data-title="'¿ES PRINCIPAL?'" filter="{esPrincipal: 'text'}" sortable="'esPrincipal'">{{row.esPrincipal}}</td>
+												   
+										
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>				
+			
 				</panel>
 			</div>
 		</div>

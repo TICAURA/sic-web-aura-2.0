@@ -7,7 +7,7 @@ import java.util.Date;
 
 /**
  * The persistent class for the usuario_rol database table.
- *
+ * 
  */
 @Entity
 @Table(name="usuario_rol")
@@ -16,7 +16,7 @@ public class UsuarioRol implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_usuario_rol")
 	private Long idUsuarioRol;
 

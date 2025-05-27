@@ -1,7 +1,7 @@
 package mx.com.consolida.generico;
 
 public enum NominaEstatusEnum {
-
+	
 	BORRADOR(1, "BORR", "BORRADOR"),
 	NOMINA_CARGADA(2, "NOM_CARG", "NOMINA CARGADA"),
 	REQUIERE_FINANCIAMIENTO(3, "REQ_FINAN", "REQUIERE FINANCIAMIENTO"),
@@ -26,13 +26,14 @@ public enum NominaEstatusEnum {
 	DISPERSADA_STP_CON_ERRORES(22, "DISPER_STP_ERROR", "DISPERSADA STP CON ERRORES"),
 	CIERRE_NOMINA(23, "CIERRE_NOM", "CIERRE NOMINA"),
 	COMPLEMENTO(24, "COMP_NOM", "COMPLEMENTO DE NOMINA"),
-	CTA_CONCILIADA(25, "CTA_CON", "CUENTA CONCILIADA")
+	CTA_CONCILIADA(25, "CTA_CON", "CUENTA CONCILIADA"),
+	COL_CARGADOS(26, "COL_CARG", "COLABORADORES CARGADOS")
 	;
 
 	private int id;
 	private String cve;
 	private String desc;
-
+	
 	private NominaEstatusEnum(int id, String cve, String desc) {
 		this.id = id;
 		this.cve = cve;
@@ -50,5 +51,5 @@ public enum NominaEstatusEnum {
 	public final String getDesc() {
 		return desc;
 	}
-
+	
 }

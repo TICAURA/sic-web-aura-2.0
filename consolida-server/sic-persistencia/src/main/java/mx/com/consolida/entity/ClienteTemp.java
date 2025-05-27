@@ -29,7 +29,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author
+ * @author 
  */
 @Entity
 @Table(name = "cliente_temp")
@@ -40,90 +40,90 @@ public class ClienteTemp implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_cliente_temp")
     private Long idClienteTemp;
-
+    
     @Column(name = "rfc")
     private String rfc;
-
+    
     @Column(name = "razon_social")
     private String razonSocial;
-
+    
     @Column(name = "nombre")
     private String nombre;
-
+    
     @Column(name = "apellido_paterno")
     private String apellidoPaterno;
-
+    
     @Column(name = "apellido_materno")
     private String apellidoMaterno;
-
+        
     @Column(name = "nombre_comercial")
     private String nombreComercial;
-
+    
     @Column(name = "id_giro_comercial")
     private Long idGiroComercial;
-
+    
     @Column(name = "id_cat_sub_giro_comercial")
     private Long idSubGiroComercial;
-
+    
     @Basic(optional = false)
     @Column(name = "fecha_alta")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaAlta;
-
+    
     @Column(name = "fecha_modificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-
+    
     @Basic(optional = false)
     @Column(name = "usuario_alta")
     private Long usuarioAlta;
-
+    
     @Column(name = "usuario_modificacion")
     private Long usuarioModificacion;
-
+    
     @Column(name = "ind_estatus")
     private Long indEstatus;
-
+    
     //@JoinColumn(name = "id_canal_venta", referencedColumnName = "id_canal_venta")
     //@OneToOne
-    @Column(name = "id_canal_venta")
+    @Column(name = "id_canal_venta") 
     private Long idCanalVenta;
-
+    
     @JoinColumn(name = "id_tipo_persona", referencedColumnName = "id_cat_general")
     @OneToOne
     private CatGeneral idTipoPersonaTemp;
-
+    
     @JoinColumn(name="id_medio_contacto", referencedColumnName= "id_medio_contacto_temp")
     @OneToOne(targetEntity = MedioContactoTemp.class, cascade=CascadeType.ALL)
     private MedioContactoTemp idMedioContactoTemp;
-
+    
     @JoinColumn(name="id_persona_contacto_temp", referencedColumnName= "id_persona_contacto_temp")
     @OneToOne(targetEntity = PersonaContactoTemp.class, cascade=CascadeType.ALL)
     private PersonaContactoTemp idPersonaContactoTemp;
-
+    
  // bi-directional many-to-one association to ClienteTempEstatus
     @OneToMany(mappedBy = "clienteTemp")
     @OrderBy("fechaAlta DESC")
     private List<ClienteTempEstatus> clienteTempEstatus;
-
+    
  // bi-directional many-to-one association to ClienteTempBitacora
     @OneToMany(mappedBy = "clienteTemp")
     @OrderBy("fechaAlta DESC")
     private List<ClienteTempBitacora> clienteTempBitacora;
-
+    
  // bi-directional one-to-one association to CatGrupo
     @JoinColumn(name="id_cat_grupo", referencedColumnName= "id_cat_grupo")
     @ManyToOne(targetEntity = CatGrupo.class)
     private CatGrupo catGrupo;
-
+    
     // bi-directional one-to-one association to ClienteTempBitacoraSolicitudes
     @OneToMany(mappedBy = "clienteTemp")
     @OrderBy("fechaAlta DESC")
     private List<ClienteTempBitacoraSolicitudes> clienteTempBitacoraSolicitudes;
-
+    
 
     public ClienteTemp() {
     }
@@ -139,7 +139,7 @@ public class ClienteTemp implements Serializable {
         this.fechaAlta = fechaAlta;
         this.usuarioAlta = usuarioAlta;
     }
-
+    
     public ClienteTemp(ClienteTemp clt) {
         this.idClienteTemp = clt.getIdClienteTemp();
         this.rfc = clt.getRfc();
@@ -151,8 +151,8 @@ public class ClienteTemp implements Serializable {
     public Long getIdClienteTemp() {
         return idClienteTemp;
     }
-
-
+    
+    
 
     public List<ClienteTempEstatus> getClienteTempEstatus() {
 		return clienteTempEstatus;
@@ -162,7 +162,7 @@ public class ClienteTemp implements Serializable {
 		this.clienteTempEstatus = clienteTempEstatus;
 	}
 
-
+	
 	public List<ClienteTempBitacora> getClienteTempBitacora() {
 		return clienteTempBitacora;
 	}
@@ -222,7 +222,7 @@ public class ClienteTemp implements Serializable {
     public void setIdTipoPersonaTemp(CatGeneral idTipoPersonaTemp) {
         this.idTipoPersonaTemp = idTipoPersonaTemp;
     }
-
+    
 	public MedioContactoTemp getIdMedioContactoTemp() {
 		return idMedioContactoTemp;
 	}
@@ -238,8 +238,8 @@ public class ClienteTemp implements Serializable {
 	public void setIdPersonaContactoTemp(PersonaContactoTemp idPersonaContactoTemp) {
 		this.idPersonaContactoTemp = idPersonaContactoTemp;
 	}
-
-
+	
+	
 	public String getNombre() {
 		return nombre;
 	}
@@ -263,7 +263,7 @@ public class ClienteTemp implements Serializable {
 	public void setApellidoMaterno(String apellidoMaterno) {
 		this.apellidoMaterno = apellidoMaterno;
 	}
-
+	
 	public String getNombreComercial() {
 		return nombreComercial;
 	}
@@ -279,7 +279,7 @@ public class ClienteTemp implements Serializable {
 	public void setCatGrupo(CatGrupo catGrupo) {
 		this.catGrupo = catGrupo;
 	}
-
+	
 	public List<ClienteTempBitacoraSolicitudes> getClienteTempBitacoraSolicitudes() {
 		return clienteTempBitacoraSolicitudes;
 	}
@@ -287,7 +287,7 @@ public class ClienteTemp implements Serializable {
 	public void setClienteTempBitacoraSolicitudes(List<ClienteTempBitacoraSolicitudes> clienteTempBitacoraSolicitudes) {
 		this.clienteTempBitacoraSolicitudes = clienteTempBitacoraSolicitudes;
 	}
-
+	
 
 	public Long getIdGiroComercial() {
 		return idGiroComercial;
@@ -296,8 +296,8 @@ public class ClienteTemp implements Serializable {
 	public void setIdGiroComercial(Long idGiroComercial) {
 		this.idGiroComercial = idGiroComercial;
 	}
-
-
+	
+	
 
 	public Long getUsuarioModificacion() {
 		return usuarioModificacion;
@@ -322,7 +322,7 @@ public class ClienteTemp implements Serializable {
 	public void setIdCanalVenta(Long idCanalVenta) {
 		this.idCanalVenta = idCanalVenta;
 	}
-
+	
 	public Long getIdSubGiroComercial() {
 		return idSubGiroComercial;
 	}
@@ -355,5 +355,5 @@ public class ClienteTemp implements Serializable {
     public String toString() {
         return "mx.com.consolida.entity.ClienteTemp[ idClienteTemp=" + idClienteTemp + " ]";
     }
-
+    
 }

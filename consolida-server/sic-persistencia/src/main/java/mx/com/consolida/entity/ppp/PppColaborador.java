@@ -24,52 +24,52 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "ppp_colaborador")
 @NamedQueries({ @NamedQuery(name = "PppColaborador.findAll", query = "SELECT c FROM PppColaborador c") })
 public class PppColaborador implements Serializable{
-
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_ppp_colaborador")
 	private Long idPppColaborador;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_ppp_nomina", nullable = false)
 	private PppNomina pppNomina;
-
+	
 	@Column(name = "rfc", nullable = false)
 	private String rfc;
-
+	
 	@Column(name = "nombre", nullable = false)
 	private String nombre;
-
+	
 	@Column(name = "apellido_paterno", nullable = false)
 	private String apellidoPaterno;
-
+	
 	@Column(name = "apellido_materno")
 	private String apellidoMaterno;
-
+	
 	@Column(name = "monto_ppp", nullable = false)
 	private BigDecimal montoPpp;
-
+	
 	@Column(name = "reintentos_dispersion")
 	private Long reintentosDispersion;
-
+	
 	@Column(name = "curp", nullable = false)
 	private String curp;
-
+	
 	@Column(name = "numero_seguro_social")
 	private String numeroSeguroSocial;
-
+	
 	@Column(name = "correo_electronico")
 	private String correoElectronico;
-
+	
 	@Column(name = "institucion_contraparte")
 	private String institucionContraparte;
-
-
+	
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
@@ -77,17 +77,29 @@ public class PppColaborador implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
 
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
+	
+	@Column(name = "puesto")
+	private String puesto;
+	
+	@Column(name = "codigo_postal")
+	private String codigoPostal;
+	
+	@Column(name = "domicilio")
+	private String domicilio;
+	
+	@Column(name = "numero_afiliacion")
+	private String numeroAfiliacion;
 
 	public Long getIdPppColaborador() {
 		return idPppColaborador;
@@ -225,4 +237,37 @@ public class PppColaborador implements Serializable{
 		this.institucionContraparte = institucionContraparte;
 	}
 
+	public String getPuesto() {
+		return puesto;
+	}
+
+	public void setPuesto(String puesto) {
+		this.puesto = puesto;
+	}
+	public String getCodigoPostal() {
+		return codigoPostal;
+	}
+
+	public void setCodigoPostal(String codigoPostal) {
+		this.codigoPostal = codigoPostal;
+	}
+
+	public String getDomicilio() {
+		return domicilio;
+	}
+
+	public void setDomicilio(String domicilio) {
+		this.domicilio = domicilio;
+	}
+
+	public String getNumeroAfiliacion() {
+		return numeroAfiliacion;
+	}
+
+	public void setNumeroAfiliacion(String numeroAfiliacion) {
+		this.numeroAfiliacion = numeroAfiliacion;
+	}
+	
+	
+	
 }

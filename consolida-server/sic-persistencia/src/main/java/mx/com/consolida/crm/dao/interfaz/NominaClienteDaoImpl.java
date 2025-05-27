@@ -48,7 +48,7 @@ public class NominaClienteDaoImpl extends GenericDAO<NominaCliente, Long> implem
 //			sb.append(" select nc.id_nomina_cliente, nc.id_cliente, nc.nombre_nomina, nc.comision_ppp, nc.comision_ss, nc.clave_nomina, "); 
 			sb.append(" select nc.id_nomina_cliente, nc.id_cliente, nc.nombre_nomina,  nc.clave_nomina, nc.requiere_factura, "); 
 			sb.append(" nc.id_cat_producto_nomina,cg.descripcion as desc_producto_nomina, nc.id_nominista, celcli.id_celula ");
-			sb.append(" ,nc.id_prestadora_servicio ");
+			sb.append(" ,nc.id_prestadora_servicio, nc.genera_timbre ");
 			sb.append(" from sin.nomina_cliente nc, cliente cli, cat_maestro cm, cat_general cg, celula_cliente celcli ");
 			sb.append(" where cli.id_cliente = nc.id_cliente  and cm.id_cat_maestro = cg.id_cat_maestro  ");
 			sb.append(" and cg.id_cat_general = nc.id_cat_producto_nomina  and  nc.ind_estatus = 1 ");
@@ -74,7 +74,7 @@ public class NominaClienteDaoImpl extends GenericDAO<NominaCliente, Long> implem
 					nominaClienteDto.setUsuarioNominista(new NoministaDto());
 					nominaClienteDto.getUsuarioNominista().setIdNominista(rs.getLong("id_nominista"));
 					nominaClienteDto.setRequiereFactura(rs.getLong("requiere_factura"));
-					
+					nominaClienteDto.setRequiereTimbre(rs.getLong("genera_timbre"));
 					return nominaClienteDto;	
 				}
 			});
@@ -128,11 +128,11 @@ public class NominaClienteDaoImpl extends GenericDAO<NominaCliente, Long> implem
 				sb.append(" 	and nc.id_nominista =  " + idNominista);
 			}
 			
-			sb.append(" 	and nc.id_cat_producto_nomina = ? ");
+	//	sb.append(" 	and nc.id_cat_producto_nomina IN ( 304 , 9958)");
 			
 			
 
-			return jdbcTemplate.query(sb.toString(), new Object[] {idCliente, TipoProductoEnum.PPP.getId()}, new RowMapper() {
+			return jdbcTemplate.query(sb.toString(), new Object[] {idCliente}, new RowMapper() {
 				public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 					
 					NominaClienteDto nominaClienteDto = new NominaClienteDto();
@@ -199,6 +199,132 @@ public class NominaClienteDaoImpl extends GenericDAO<NominaCliente, Long> implem
 			return Collections.emptyList();
 		}
 	}
+	
+	
+	/*lista**/
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	@Transactional(readOnly = true)
+	public List<NominaClienteDto> listaNominaClient(Long idCliente , Long idNominista) {
+		
+		try {
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append(" select ");
+			sb.append(" 	nc.id_nomina_cliente, ");
+			sb.append(" 	nc.id_cliente, ");
+			sb.append(" 	nc.nombre_nomina, ");
+			sb.append(" 	nc.clave_nomina, ");
+			sb.append(" 	nc.id_cat_producto_nomina, ");
+			sb.append(" 	cg.descripcion as desc_producto_nomina, ");
+			sb.append(" 	nc.id_nominista, ");
+			sb.append(" 	celcli.id_celula,  nch.iva_comercial , ");
+			sb.append(" 	nch.id_nomina_cliente  , nch.honorario_ppp  , cf1.id_cat_formulas as idformulaPPP  , cf1.clave as claveFormulaPPP , cf1.descripcion as descripcionFormulaPPP , ");
+			sb.append(" 	cf2.id_cat_formulas as id_cat_formulas_factura , cf2.clave as claveFormulaFactura , cf2.descripcion as descFormulaFactura ,cf3.id_cat_formulas as id_cat_formulaIVA  , cf3.clave as  claveIva , cf3.descripcion as descIva ,");
+			sb.append(" 	np.id_nomina_periodicidad , ctp.id_tipo_pago , ctp.cve_tipo_pago , ctp.descripcion_tipo_pago ");
+			sb.append(" 	, cli.razon_social, cli.nombre, cli.apellido_paterno, cli.apellido_materno, cli.rfc ");
+			sb.append("     , (select nombre from celula where id_celula = celcli.id_celula) as nombre_celula");
+			sb.append("     , (select razon_social from prestadora_servicio where id_prestadora_servicio = (SELECT distinct(id_prestadora_servicio_fondo) FROM cliente_prestadora_servicio where id_cliente = cli.id_cliente)) as razon_social_prestadora "); 
+			sb.append("     , (SELECT distinct(id_prestadora_servicio_fondo) FROM cliente_prestadora_servicio where id_cliente = cli.id_cliente) as id_prestadora_servicio ");  
+		    sb.append("     ,(select ifnull(id_consar, ' ') from prestadora_servicio where id_prestadora_servicio = (SELECT distinct(id_prestadora_servicio_fondo)  FROM cliente_prestadora_servicio where id_cliente = cli.id_cliente)) as id_consar "); 
+			sb.append(" from ");
+			sb.append(" 	nomina_cliente nc ");
+			sb.append(" 	inner join  cliente cli on  	cli.id_cliente = nc.id_cliente ");
+			sb.append(" 	inner join  cat_general cg on cg.id_cat_general = nc.id_cat_producto_nomina ");
+			sb.append(" 	inner join  cat_maestro cm  on cm.id_cat_maestro = cg.id_cat_maestro  ");
+			sb.append(" 	inner join  celula_cliente celcli on celcli.id_cliente = cli.id_cliente and celcli.id_cliente = nc.id_cliente ");
+			sb.append(" 	left join nomina_cliente_honorario nch  on nc.id_nomina_cliente  = nch.id_nomina_cliente and nch.ind_estatus  = 1 ");
+			sb.append(" 	left join cat_formulas cf1  on nch.id_cat_formula_ppp =cf1.id_cat_formulas   ");
+			sb.append(" 	left join cat_formulas cf2  on nch.id_cat_formula_factura = cf2.id_cat_formulas ");
+			sb.append(" 	left join cat_formulas cf3  on nch.id_cat_tipo_iva = cf3.id_cat_formulas ");
+			sb.append(" 	left join nomina_periodicidad np on np.id_nomina  = nc.id_nomina_cliente ");
+			sb.append("     left join cat_tipo_pago ctp on	ctp.id_tipo_pago  = np.id_cat_periodicidad ");
+			sb.append(" where ");
+			sb.append(" 	nc.ind_estatus = 1 ");
+			sb.append(" 	and nc.id_cliente = ?  and nc.requiere_factura=1");
+			
+			if(idNominista != null) {
+				sb.append(" 	and nc.id_nominista =  " + idNominista);
+			}
+			
+	//	sb.append(" 	and nc.id_cat_producto_nomina IN ( 304 , 9958)");
+			
+			
+
+			return jdbcTemplate.query(sb.toString(), new Object[] {idCliente}, new RowMapper() {
+				public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+					
+					NominaClienteDto nominaClienteDto = new NominaClienteDto();
+					nominaClienteDto.setIdNominaCliente(rs.getLong("id_nomina_cliente"));
+//					nominaClienteDto.setClienteDto(new ClienteDto(idCliente));
+					nominaClienteDto.setNombreNomina(rs.getString("nombre_nomina"));
+					nominaClienteDto.setClaveNomina(rs.getString("clave_nomina"));
+					nominaClienteDto.setCatProductoNomina(new CatGeneralDto(rs.getLong("id_cat_producto_nomina"), rs.getString("desc_producto_nomina")));
+					nominaClienteDto.setDescripcionCompuesta(rs.getString("clave_nomina")+" - "+rs.getString("nombre_nomina")+" - "+rs.getString("desc_producto_nomina"));
+					ClienteDto clienteDto = new ClienteDto();
+					clienteDto.setIdCliente(rs.getLong("id_cliente"));
+					clienteDto.setRazonSocial(rs.getString("razon_social"));
+					clienteDto.setNombre(rs.getString("nombre"));
+					clienteDto.setApellidoPaterno(rs.getString("apellido_paterno"));
+					clienteDto.setApellidoMaterno(rs.getString("apellido_materno"));
+					clienteDto.setRfc(rs.getString("rfc"));
+					CelulaDto celula = new CelulaDto();
+					celula.setIdCelula(rs.getLong("id_celula"));
+					celula.setNombre(rs.getString("nombre_celula"));
+					clienteDto.setCelula(celula);
+					PrestadoraServicioDto prestadoraServicioFondo = new PrestadoraServicioDto();
+					prestadoraServicioFondo.setRazonSocial(rs.getString("razon_social_prestadora"));
+					clienteDto.setPrestadoraServicioFondo(prestadoraServicioFondo);
+					nominaClienteDto.setClienteDto(clienteDto);
+					nominaClienteDto.setUsuarioNominista(new NoministaDto());
+					nominaClienteDto.getUsuarioNominista().setIdNominista(rs.getLong("id_nominista"));
+					
+				
+					nominaClienteDto.setFormulaPPP(new CatGeneralDto());
+					nominaClienteDto.getFormulaPPP().setIdCatGeneral(rs.getLong("idformulaPPP"));
+					nominaClienteDto.getFormulaPPP().setClave(rs.getString("claveFormulaPPP"));
+					nominaClienteDto.getFormulaPPP().setDescripcion(rs.getString( "descripcionFormulaPPP"));
+					
+					
+					nominaClienteDto.setFormulaFactura(new CatGeneralDto());
+					nominaClienteDto.getFormulaFactura().setIdCatGeneral(rs.getLong("id_cat_formulas_factura"));
+					nominaClienteDto.getFormulaFactura().setClave(rs.getString("claveFormulaFactura"));
+					nominaClienteDto.getFormulaFactura().setDescripcion(rs.getString("descFormulaFactura"));
+					
+					
+					
+					nominaClienteDto.setFormulaTipoIva(new CatGeneralDto());
+					nominaClienteDto.getFormulaTipoIva().setIdCatGeneral(rs.getLong("id_cat_formulaIVA"));
+					nominaClienteDto.getFormulaTipoIva().setClave(rs.getString("claveIva"));
+					nominaClienteDto.getFormulaTipoIva().setDescripcion(rs.getString("descIva"));
+					
+					nominaClienteDto.setIvaComercial(rs.getString("iva_comercial"));
+					
+					CatGeneralDto periodicidad = new CatGeneralDto();
+					periodicidad.setIdCatGeneral(rs.getLong("id_tipo_pago"));
+					periodicidad.setClave(rs.getString("cve_tipo_pago"));
+					periodicidad.setDescripcion(rs.getString("descripcion_tipo_pago"));
+					
+					nominaClienteDto.setPeriodicidadNomina(periodicidad);
+					
+					nominaClienteDto.setHonorarioPPP(rs.getString("honorario_ppp"));
+					
+					PrestadoraServicioDto prestadoraDto = new PrestadoraServicioDto();
+					prestadoraDto.setIdPrestadoraServicio(rs.getLong("id_prestadora_servicio"));
+					prestadoraDto.setIdConsar(rs.getString("id_consar"));
+					nominaClienteDto.setPrestadoraServicio(prestadoraDto);
+					
+					return nominaClienteDto;	
+				}
+			});
+			
+		}catch (Exception e) {
+			LOGGER.error("Ocurrio un error en listaNominaClient ", e);
+			return Collections.emptyList();
+		}
+	}
+	
+	
 	
 	
 	
@@ -268,7 +394,11 @@ public class NominaClienteDaoImpl extends GenericDAO<NominaCliente, Long> implem
 					String ivaComercial = rs.getString("iva_comercial");
 					if(ivaComercial != null) {
 						formulaFactura.setIvaComercial(ivaComercial);	
-					}else {
+					}else if(formulaFactura.getCatProductoNomina().getIdCatGeneral()==9958){
+						
+						formulaFactura.setIvaComercial("0");	
+					}
+					else {
 						formulaFactura.setIvaComercial("16");
 					}
 					
@@ -387,7 +517,7 @@ public class NominaClienteDaoImpl extends GenericDAO<NominaCliente, Long> implem
 	@Transactional(readOnly = true)
 	public ValidaCreacionNominaDto validaSecciones(Long idCliente , Long idNominaCliente) {
 		
-		try {
+		try { 
 			
 			StringBuilder sb = new StringBuilder();			
 			sb.append(" select if(cli.rfc is not null, \"ok\", \"* Favor de ingresar <strong>RFC</strong> en la sección \"\"Datos generales\"\" \") as rfc, ");
@@ -397,33 +527,36 @@ public class NominaClienteDaoImpl extends GenericDAO<NominaCliente, Long> implem
 			sb.append("																					from sin.nomina_cliente ");
 			sb.append("																					where id_cliente = cli.id_cliente ");
 			sb.append("																					and id_nomina_cliente = ? ");
-			sb.append("																					and id_cat_producto_nomina = 304) and ind_estatus = 1) is not null, \"ok\", \"* Favor de ingresar <strong>Periodicidad</strong> en la sección \"\"Nóminas > Ver detalle de la nómina > Periodicidad \"\"\" ) as periodicidad, ");
+			sb.append("																					and id_cat_producto_nomina in(304, 9958,9950))) is not null, \"ok\", \"* Favor de ingresar <strong>Periodicidad</strong> en la sección \"\"Nóminas > Ver detalle de la nómina > Periodicidad \"\"\" ) as periodicidad, ");
 			sb.append(" if((select id_nomina_cliente  from sin.nomina_cliente_honorario where id_nomina_cliente = (select id_nomina_cliente  ");
 			sb.append("																								from sin.nomina_cliente ");
 			sb.append("																								where id_cliente = cli.id_cliente ");
 			sb.append("																								and id_nomina_cliente = ? ");
-			sb.append("																								and id_cat_producto_nomina = 304)  and ind_estatus = 1)is not null, \"ok\", \"* Favor de ingresar <strong>Honorario</strong> en la sección \"\"Honorarios \"\"\" ) as honorario_ppp, ");
+			sb.append("																								and id_cat_producto_nomina in (304, 9958,9950))  and ind_estatus = 1)is not null, \"ok\", \"* Favor de ingresar <strong>Honorario</strong> en la sección \"\"Honorarios \"\"\" ) as honorario_ppp, ");
 			sb.append(" if(cli.prefijo_stp is not null, \"ok\", \"* Favor de ingresar <strong>Prefijo STP</strong> en la sección \"\"Datos STP \"\"\") as prefijo_stp,	 ");
 			sb.append(" if((select rfc from sin.prestadora_servicio where id_prestadora_servicio = (SELECT distinct(id_prestadora_servicio_fondo) FROM sin.cliente_prestadora_servicio where id_cliente = cli.id_cliente)  and ind_estatus = 1 ) is not null, \"ok\", \"* Favor de ingresar <strong>RFC</strong> en la sección \"\"Datos generales\"\"\") as rfc_prestadora,	 ");
 			sb.append(" if((select nombre_corto from sin.prestadora_servicio where id_prestadora_servicio = (SELECT distinct(id_prestadora_servicio_fondo) FROM sin.cliente_prestadora_servicio where id_cliente =  cli.id_cliente)  and ind_estatus = 1 ) is not null, \"ok\", \"* Favor de ingresar <strong>Nombre corto</strong> en la sección \"\"Datos generales\"\"\") as nombre_corto_prestadora, ");
 			sb.append(" if((select razon_social from sin.prestadora_servicio where id_prestadora_servicio = (SELECT distinct(id_prestadora_servicio_fondo) FROM sin.cliente_prestadora_servicio where id_cliente =  cli.id_cliente)  and ind_estatus = 1) is not null, \"ok\", \"* Favor de ingresar <strong>Razón social</strong> en la sección \"\"Datos generales\"\"\") as razon_social_prestadora, ");
-			sb.append(" if((select id_consar from sin.prestadora_servicio where id_prestadora_servicio = (SELECT distinct(id_prestadora_servicio_fondo) FROM sin.cliente_prestadora_servicio where id_cliente =  cli.id_cliente)  and ind_estatus = 1) is not null, \"ok\", \"* Favor de ingresar <strong>ID consar</strong> en la sección \"\"Datos generales\"\"\") as id_consar_prestadora, ");
+			/*sb.append(" if((select id_consar from sin.prestadora_servicio where id_prestadora_servicio = (SELECT distinct(id_prestadora_servicio_fondo) FROM sin.cliente_prestadora_servicio where id_cliente =  cli.id_cliente)  and ind_estatus = 1) is not null, \"ok\",  * \"* Favor de ingresar <strong>ID consar</strong> en la sección \"\"Datos generales\"\"\") as id_consar_prestadora, ");*/
+			sb.append("  CASE  WHEN  ncli.id_cat_producto_nomina in (304, 9958,9950) THEN 'ok' ");
+			sb.append("       WHEN (select e.id_consar from sin.prestadora_servicio e where e.id_prestadora_servicio = (SELECT distinct(id_prestadora_servicio_fondo) FROM sin.cliente_prestadora_servicio where id_cliente =  cli.id_cliente) and e.ind_estatus = 1) is not null THEN 'OK' ");
+			sb.append("       ELSE  \"* Favor de ingresar <strong>ID consar</strong> en la sección \"\"Datos generales\"\"\"  END AS id_consar_prestadora, ");
 			sb.append(" if((select id_celula from sin.celula_prestadora_servicio where id_prestadora_servicio = (SELECT distinct(id_prestadora_servicio_fondo) FROM sin.cliente_prestadora_servicio where id_cliente = cli.id_cliente)  and ind_estatus = 1) is not null, \"ok\", \"* Favor de ingresar <strong>Célula</strong> en la sección \"\"Datos generales\"\"\") as celula_prestadora, ");
 			sb.append(" if((SELECT id_domicilio FROM sin.prestadora_servicio_domicilio where id_prestadora_servicio = (SELECT distinct(id_prestadora_servicio_fondo) FROM sin.cliente_prestadora_servicio where id_cliente = cli.id_cliente)  and ind_estatus = 1) is not null, \"ok\", \"* Favor de ingresar <strong>Domiclio fiscal</strong> en la sección \"\"Domicilio\"\"\") as domicilio_prestadora, ");
-			sb.append(" if((SELECT nombre_centro_costos FROM sin.prestadora_servicio_stp where id_prestadora_servicio = (SELECT distinct(id_prestadora_servicio_fondo) FROM sin.cliente_prestadora_servicio where id_cliente = cli.id_cliente)  and ind_estatus = 1) is not null, \"ok\", \"* Favor de ingresar <strong>Nombre centro de costos</strong> en la sección \"\"Datos STP\"\"\") as nomb_centro_costos_prestadora, ");
-			sb.append(" if((SELECT clabe_cuenta_ordenante FROM sin.prestadora_servicio_stp where id_prestadora_servicio = (SELECT distinct(id_prestadora_servicio_fondo) FROM sin.cliente_prestadora_servicio where id_cliente = cli.id_cliente)  and ind_estatus = 1) is not null, \"ok\", \"* Favor de ingresar <strong>CLABE cuenta ordenante</strong> en la sección \"\"Datos STP\"\"\") as clabe_cuenta_ordenante_prestadora, ");
+			sb.append(" if((SELECT nombre_centro_costos FROM sin.prestadora_servicio_stp where id_prestadora_servicio_stp = (SELECT distinct(id_prestadora_servicio_stp) FROM sin.cliente_prestadora_servicio where id_cliente = cli.id_cliente and ind_estatus=1)  and ind_estatus = 1) is not null, \"ok\", \"* Favor de ingresar <strong>Nombre centro de costos</strong> en la sección \"\"Datos STP\"\"\") as nomb_centro_costos_prestadora, ");
+			sb.append(" if((SELECT clabe_cuenta_ordenante FROM sin.prestadora_servicio_stp where id_prestadora_servicio_stp = (SELECT distinct(id_prestadora_servicio_stp) FROM sin.cliente_prestadora_servicio where id_cliente = cli.id_cliente)  and ind_estatus = 1) is not null, \"ok\", \"* Favor de ingresar <strong>CLABE cuenta ordenante</strong> en la sección \"\"Datos STP\"\"\") as clabe_cuenta_ordenante_prestadora, ");
 			sb.append(" if((SELECT psd.id_cms FROM definicion_documento dd LEFT JOIN ( SELECT psdi.* FROM prestadora_servicio_doctos psdi WHERE  psdi.id_prestadora_servicio = (SELECT distinct(id_prestadora_servicio_fondo) ");
 			sb.append(" FROM sin.cliente_prestadora_servicio where id_cliente = ?) ) psd  ON dd.id_definicion_documento = psd.id_definicion_documento WHERE dd.id_definicion_documento IN (13)) is not null, \"ok\", \"* Favor de registrar <strong>Archivo KEY</strong> en la sección \"\"CSD\"\"\") as key_csd_prestadora, ");
 			sb.append( "if((SELECT psd.id_cms FROM definicion_documento dd LEFT JOIN ( SELECT psdi.* FROM prestadora_servicio_doctos psdi WHERE  psdi.id_prestadora_servicio = (SELECT distinct(id_prestadora_servicio_fondo) ");
 			sb.append(" FROM sin.cliente_prestadora_servicio where id_cliente = ?) ) psd  ON dd.id_definicion_documento = psd.id_definicion_documento WHERE dd.id_definicion_documento IN (14)) is not null, \"ok\", \"* Favor de registrar <strong>Archivo CSD</strong> en la sección \"\"CSD\"\"\") as cer_csd_prestadora, ");
 			sb.append(" if((select password_csd from sin.prestadora_servicio where id_prestadora_servicio = (SELECT distinct(id_prestadora_servicio_fondo) FROM sin.cliente_prestadora_servicio where id_cliente = cli.id_cliente)  and ind_estatus = 1) is not null, \"ok\", \"* Favor de ingresar <strong>Contraseña certificado CSD</strong> en la sección \"\"CSD\"\"\") as pass_csd_prestadora ");
 			sb.append(" from sin.cliente cli ");
+			sb.append(" left join sin.nomina_cliente ncli on cli.id_cliente= ncli.id_cliente ");
 			sb.append(" where cli.id_cliente = ? ");
-			sb.append(" and cli.ind_estatus = 1 ");
-			
+			sb.append(" and cli.ind_estatus = 1 and ncli.id_nomina_cliente =? ");
 			
 
-			List<ValidaCreacionNominaDto> list =  jdbcTemplate.query(sb.toString(), new Object[] {idNominaCliente, idNominaCliente, idCliente, idCliente, idCliente}, new RowMapper() {
+			List<ValidaCreacionNominaDto> list =  jdbcTemplate.query(sb.toString(), new Object[] {idNominaCliente, idNominaCliente, idCliente, idCliente, idCliente, idNominaCliente}, new RowMapper() {
 				public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 					String error = "";
 					String errorPrestadora = "";

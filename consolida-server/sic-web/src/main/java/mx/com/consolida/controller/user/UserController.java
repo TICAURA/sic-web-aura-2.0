@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import mx.com.consolida.RolUsuarioENUM;
+import mx.com.consolida.crm.dto.CelulaDto;
 import mx.com.consolida.service.admin.CanalVentaBO;
+import mx.com.consolida.service.usuario.UsuarioBO;
 import mx.com.consolida.usuario.UserDetailNomina;
 import mx.com.consolida.usuario.UsuarioDTO;
 
@@ -17,6 +19,9 @@ import mx.com.consolida.usuario.UsuarioDTO;
 public class UserController {
 	@Autowired
 	private CanalVentaBO canalVenta;
+	
+	@Autowired
+	private UsuarioBO usuario;
 
 	@RequestMapping(value="/")
 	@ResponseBody
@@ -54,7 +59,10 @@ public class UserController {
 		  usuarioDTO.setSegundoApellido(user.getSegundoApellido()!=null ? user.getSegundoApellido() : "");
 		  usuarioDTO.setUsuarioRols(user.getUsuarioRols());
 		  usuarioDTO.setRol(user.getUsuarioRols().get(0).getRol());
-		  
+	
+		  CelulaDto celula=  usuario.getDatosCelula(user.getIdUsuario());
+		  usuarioDTO.setCelula(celula);
+		 
 		  return  usuarioDTO;
 	  }
 	

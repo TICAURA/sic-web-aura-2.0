@@ -5,7 +5,7 @@ import com.lgec.enlacefi.spei.integration.h2h.OrdenPagoWS;
 public class ResultadoRastreoDto {
 	
 	private int id;
-	private OrdenPagoWS ordenPago; 
+	private OrdenPago ordenPago; 
 	private String descripcionError;
 		
 	/**
@@ -13,7 +13,7 @@ public class ResultadoRastreoDto {
 	 */
 	public ResultadoRastreoDto() {
 		//
-		this.ordenPago=new OrdenPagoWS();
+		this.ordenPago=new OrdenPago();
 	}
 	public int getId() {
 		return id;
@@ -21,10 +21,10 @@ public class ResultadoRastreoDto {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public OrdenPagoWS getOrdenPago() {
+	public OrdenPago getOrdenPago() {
 		return ordenPago;
 	}
-	public void setOrdenPago(OrdenPagoWS ordenPago) {
+	public void setOrdenPago(OrdenPago ordenPago) {
 		this.ordenPago = ordenPago;
 	}
 	public String getDescripcionError() {

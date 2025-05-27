@@ -29,12 +29,12 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class CatMunicipios implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cat_municipios")
 	private Long idCatMunicipios;
 
@@ -65,14 +65,14 @@ public class CatMunicipios implements java.io.Serializable {
 
 	@Column(name = "ind_estatus")
 	private Long indEstatus;
-
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_entidad_federativa", nullable = false)
 	private CatEntidadFederativa catEntidadFederativa;
 
 	public CatMunicipios() {
 	}
-
+	
 	public CatMunicipios(Long idCatMunicipios) {
 		this.idCatMunicipios = idCatMunicipios;
 	}

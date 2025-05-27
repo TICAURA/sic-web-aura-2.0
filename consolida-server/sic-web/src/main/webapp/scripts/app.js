@@ -45,6 +45,9 @@ angular
       .when('/admin/pantalla', {
         templateUrl: 'views/admin/pantalla.html',
       })
+      .when('/admin/codificador', {
+        templateUrl: 'views/codificador/codificador.html',
+      })
       .when('/crm/clientes', {
         templateUrl: 'views/crm/clientes.html',
       })
@@ -184,6 +187,11 @@ angular
       .when('/reportes/:templateFile', {
         templateUrl: function(param) {
           return 'views/reportes/' + param.templateFile + '.html';
+        }
+      })
+	.when('/finanzas/:templateFile', {
+        templateUrl: function(param) {
+          return 'views/finanzas/' + param.templateFile + '.html';
         }
       })
       .otherwise({

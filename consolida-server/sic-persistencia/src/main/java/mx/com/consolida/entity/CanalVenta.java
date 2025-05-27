@@ -34,7 +34,7 @@ public class CanalVenta implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_canal_venta")
     private Long idCanalVenta;
     @Column(name = "razon_social")
@@ -53,10 +53,10 @@ public class CanalVenta implements Serializable {
     @Column(name = "fecha_modificaicon")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificaicon;
-
+    
     @Column(name = "ind_estatus")
     private String indEstatus;
-
+    
     /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "idCanalVenta")
     private List<OficinaCanalVenta> oficinaCanalVentaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCanalVenta")
@@ -65,7 +65,7 @@ public class CanalVenta implements Serializable {
     private List<Cliente> clienteList;
     @OneToMany(mappedBy = "idCanalVenta")
     private List<ClienteTemp> clienteTempList;*/
-
+    
     @JoinColumn(name = "id_entidad_federativa_sede", referencedColumnName = "id_entidad_federativa")
     @ManyToOne(optional = false)
     private CatEntidadFederativa idEntidadFederativaSede;
@@ -275,5 +275,5 @@ public class CanalVenta implements Serializable {
     public String toString() {
         return "mx.com.consolida.entity.CanalVenta[ idCanalVenta=" + idCanalVenta + " ]";
     }
-
+    
 }

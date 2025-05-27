@@ -30,7 +30,7 @@ public class CatSubsidio implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Basic(optional = false)
     @Column(name = "id_cat_subsidio")
     private Long idCatSubsidio;
@@ -129,7 +129,7 @@ public class CatSubsidio implements Serializable {
 	public void setIdTipoPago(Integer idTipoPago) {
 		this.idTipoPago = idTipoPago;
 	}
-
+	
 
     public Long getIdUsuarioModificacion() {
 		return idUsuarioModificacion;
@@ -161,5 +161,5 @@ public class CatSubsidio implements Serializable {
     public String toString() {
         return "mx.com.consolida.entity.CatSubsidio[ idCatSubsidio=" + idCatSubsidio + " ]";
     }
-
+    
 }

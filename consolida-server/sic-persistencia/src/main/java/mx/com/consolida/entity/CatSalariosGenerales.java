@@ -26,7 +26,7 @@ public class CatSalariosGenerales implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Basic(optional = false)
 	@Column(name = "id_cat_salarios_generaleas")
 	private Long idCatSalariosGeneraleas;
@@ -46,7 +46,7 @@ public class CatSalariosGenerales implements Serializable {
 	private Date fechaModificacion;
 	@Column(name = "usuario_modificacion")
 	private Long idUsuarioModificacion;
-
+	
 	/// MAPEO HIBERNATE /////////
 	private String clave;
 	////////////
@@ -98,7 +98,7 @@ public class CatSalariosGenerales implements Serializable {
 	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
-
+	
 	public Date getFechaModificacion() {
 		return fechaModificacion;
 	}

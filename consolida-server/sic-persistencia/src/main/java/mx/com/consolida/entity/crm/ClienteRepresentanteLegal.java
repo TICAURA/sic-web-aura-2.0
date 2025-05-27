@@ -23,54 +23,54 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "cliente_representante_legal")
 @NamedQueries({ @NamedQuery(name = "ClienteRepresentanteLegal.findAll", query = "SELECT c FROM ClienteRepresentanteLegal c") })
 public class ClienteRepresentanteLegal implements java.io.Serializable{
-
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cliente_representante_legal")
 	private Long idClienteRepresentanteLegal;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cliente", nullable = false)
 	private Cliente cliente;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_persona", nullable = false)
 	private Persona persona;
-
+	
 	@Column(name = "contrasena_certificado",  length = 45)
 	private String contrasenaCertificado;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+		
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
-
+	
 	public ClienteRepresentanteLegal() {
-
+		
 	}
-
+	
 	public ClienteRepresentanteLegal(Long idClienteRepresentanteLegal) {
 		this.idClienteRepresentanteLegal = idClienteRepresentanteLegal;
-
+		
 	}
 
 	public Long getIdClienteRepresentanteLegal() {
@@ -144,7 +144,7 @@ public class ClienteRepresentanteLegal implements java.io.Serializable{
 	public void setIndEstatus(Long indEstatus) {
 		this.indEstatus = indEstatus;
 	}
-
-
+	
+	
 
 }

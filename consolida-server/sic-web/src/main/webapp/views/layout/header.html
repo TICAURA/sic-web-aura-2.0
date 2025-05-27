@@ -128,7 +128,10 @@
 		</li>
 -->
 	<li class="dropdown" ng-show="isLoggedIn">
-		<a href="#/" style="font-size: 15px"><!--<i class="fa fa-user"></i>--><b style="color: white">BIENVENIDO: {{usuarioDTO.nombre +" "+ usuarioDTO.primerApellido}} {{+" "+ (usuarioDTO.segundoApellido==null ? '':usuarioDTO.segundoApellido)}}</b></a>
+	 <a href="#/" style="font-size: 13px; padding-top: 0.5px; padding-bottom: 0.5px;">	<!--  <i class="fa fa-user"></i>--><b style="color: white">BIENVENIDO: {{usuarioDTO.nombre +" "+ usuarioDTO.primerApellido}} {{+" "+ (usuarioDTO.segundoApellido==null ? '':usuarioDTO.segundoApellido)}}</b></a>
+	 <a href="#/" style="font-size: 13px; padding-top: 0.5px; padding-bottom: 0.5px;"><b style="color: white">PERFIL: {{usuarioDTO.rol.descripcion }}</b></a>
+	   <a href="#/" style="font-size: 13px; padding-top: 0.5px; padding-bottom: 0.5px;"><b style="color: white"> CENTRO DE COSTOS:{{(usuarioDTO.celula.nombre==null  ? 'SIN ADSCRIPCI&Oacute;N':usuarioDTO.celula.nombre)}}</b></a>
+	  
 	  </li>	
 	  
 		<li class="dropdown" ng-show="isLoggedIn" ng-controller="MessagesController" >

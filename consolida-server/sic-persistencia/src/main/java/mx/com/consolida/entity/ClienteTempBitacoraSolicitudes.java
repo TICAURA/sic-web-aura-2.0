@@ -16,7 +16,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.TemporalType; 
 
 @Entity
 @Table(name = "Cliente_Temp_Bitacora_solicitudes")
@@ -24,12 +24,12 @@ import javax.persistence.TemporalType;
 public class ClienteTempBitacoraSolicitudes implements Serializable {
 
 	/**
-	*
+	* 
 	*/
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_Cliente_Temp_Bitacora_solicitudes")
 	private Long idClienteTempBitacoraSolicitudes;
 
@@ -40,19 +40,19 @@ public class ClienteTempBitacoraSolicitudes implements Serializable {
 	@JoinColumn(name = "id_estatus", referencedColumnName = "id_estatus")
 	@ManyToOne(targetEntity = CatEstatus.class)
 	private CatEstatus catEstatus;
-
+	
 	@JoinColumn(name = "id_cotizacion", referencedColumnName = "id_cotizacion")
 	@OneToOne(targetEntity = Cotizacion.class)
 	private Cotizacion cotizacion;
 
 	@Column(name = "observacion")
 	private String observacion;
-
+	
 	@Basic(optional = false)
 	@Column(name = "fecha_alta")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaAlta;
-
+	
 	@Column(name = "fecha_modificacion")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaModificacion;
@@ -67,11 +67,11 @@ public class ClienteTempBitacoraSolicitudes implements Serializable {
 	@Basic(optional = false)
 	@Column(name = "ind_estatus")
 	private Long indEstatus;
-
+	
 	@Column(name = "archivo")
 	private byte[] archivo;
-
-
+	
+	
 	public byte[] getArchivo() {
 		return archivo;
 	}
@@ -91,7 +91,7 @@ public class ClienteTempBitacoraSolicitudes implements Serializable {
 	@Column(name = "nombre_archivo")
 	private String nombreArchivo;
 
-
+	
 	public Long getIdClienteTempBitacoraSolicitudes() {
 		return idClienteTempBitacoraSolicitudes;
 	}
@@ -171,6 +171,6 @@ public class ClienteTempBitacoraSolicitudes implements Serializable {
 	public void setUsuarioModificacion(Long usuarioModificacion) {
 		this.usuarioModificacion = usuarioModificacion;
 	}
-
-
+	
+	
 }

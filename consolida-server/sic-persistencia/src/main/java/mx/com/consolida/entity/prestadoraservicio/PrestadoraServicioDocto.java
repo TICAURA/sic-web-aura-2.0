@@ -29,58 +29,58 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @NamedQueries({ @NamedQuery(name = "PrestadoraServicioDocto.findAll", query = "SELECT c FROM PrestadoraServicioDocto c") })
 public class PrestadoraServicioDocto implements java.io.Serializable {
 
-
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_prestadora_servicio_documento")
 	private Long idPrestadoraServicioDocumento;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestadora_servicio", nullable = false)
 	private PrestadoraServicio prestadoraServicio;
-
-
+	
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_definicion_documento", nullable = false)
 	private DefinicionDocumento definicionDocumento;
-
+	
 	@Column(name="id_CMS")
 	private Long idCMS;
-
+	
 	@Column(name = "nombre_archivo", length = 200)
 	private String nombreArchivo;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion")
 	private Date fechaModificacion;
-
-
+	
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
-
+	
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private String indEstatus;
-
-
+	
+	
 	public PrestadoraServicioDocto() {
 	}
 
-
+	
 	public Long getIdPrestadoraServicioDocumento() {
 		return idPrestadoraServicioDocumento;
 	}

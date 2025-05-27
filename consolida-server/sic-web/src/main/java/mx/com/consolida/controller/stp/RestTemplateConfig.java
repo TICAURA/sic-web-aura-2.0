@@ -15,11 +15,11 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 public class RestTemplateConfig {
+	
+	private static int connectionTimeout=5000;
+    private static int receptionTimeout=15000;
 
-	  private static int connectionTimeout=5000;
-	    private static int receptionTimeout=15000;
-
-
+    
     public RestTemplate restTemplate() throws NoSuchAlgorithmException, KeyManagementException {
 
         TrustManager[] trustAllCerts = new TrustManager[] {
@@ -34,20 +34,20 @@ public class RestTemplateConfig {
                             java.security.cert.X509Certificate[] certs, String authType) {
                     }
                 }
-        };
+        };  
         SSLContext sslContext = SSLContext.getInstance("SSL");
-        sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+        sslContext.init(null, trustAllCerts, new java.security.SecureRandom()); 
         CloseableHttpClient httpClient = HttpClients.custom()
                 .setSSLContext(sslContext)
                 .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                .build();
+                .build();   
         HttpComponentsClientHttpRequestFactory customRequestFactory = new HttpComponentsClientHttpRequestFactory();
         customRequestFactory.setHttpClient(httpClient);
         customRequestFactory.setConnectTimeout(connectionTimeout);
         customRequestFactory.setReadTimeout(receptionTimeout);
-
+        
         RestTemplate rs = new RestTemplate(customRequestFactory);
-
-        return rs;
+        
+        return rs;  
     }
 }

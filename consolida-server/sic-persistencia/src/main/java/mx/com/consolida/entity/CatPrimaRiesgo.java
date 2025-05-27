@@ -28,7 +28,7 @@ public class CatPrimaRiesgo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Basic(optional = false)
     @Column(name = "id_cat_prima_riesgo")
     private Long idCatPrimaRiesgo;
@@ -36,7 +36,7 @@ public class CatPrimaRiesgo implements Serializable {
     private String claveRiesgo;
     @Column(name = "riesgo_trabajo")
     private BigDecimal riesgoTrabajo;
-
+    
     @Column(name = "ind_estatus")
     private Long indEstatus;
     @Column(name = "usuario_alta")

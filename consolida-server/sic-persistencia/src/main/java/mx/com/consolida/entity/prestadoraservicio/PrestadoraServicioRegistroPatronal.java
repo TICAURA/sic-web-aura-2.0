@@ -30,12 +30,12 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class PrestadoraServicioRegistroPatronal implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_prestadora_servicio_registro_patronal")
 	private Long idPrestadoraServicioRegistroPatronal;
 

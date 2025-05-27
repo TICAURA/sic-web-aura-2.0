@@ -24,15 +24,15 @@ public class NominaPeriodicidadFechas implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Basic(optional = false)
     @Column(name = "id_nomina_periodicidad_fechas")
     private Long idNominaPeriodicidadFechas;
-
+    
     @Basic(optional = false)
     @Column(name = "id_nomina_periodicidad")
     private Long idNominaPeriodicidad;
-
+    
     @Basic(optional = false)
     @Column(name = "fecha_inicio_periodo")
     @Temporal(TemporalType.TIMESTAMP)
@@ -67,7 +67,7 @@ public class NominaPeriodicidadFechas implements Serializable {
         this.idNominaPeriodicidadFechas = idNominaPeriodicidadFechas;
     }
 
-
+    
     public Long getIdNominaPeriodicidadFechas() {
 		return idNominaPeriodicidadFechas;
 	}
@@ -172,5 +172,5 @@ public class NominaPeriodicidadFechas implements Serializable {
     public String toString() {
         return "mx.com.consolida.entity.NominaPeriodicidadFechas[ idNominaPeriodicidadFechas=" + idNominaPeriodicidadFechas + " ]";
     }
-
+    
 }

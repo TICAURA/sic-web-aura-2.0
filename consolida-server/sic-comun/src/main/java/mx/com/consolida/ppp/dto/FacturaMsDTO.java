@@ -9,8 +9,8 @@ public class FacturaMsDTO implements Serializable {
 	private DocumentoMSDto pdf;
 	private DocumentoMSDto xml;
 	
-	private String responseCode ="200";
-	private String responseMessage ="El archivo se guardo exitosamente";
+	private String responseCode ="";
+	private String responseMessage ="";
 	
 	public FacturaMsDTO() {
 	}

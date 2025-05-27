@@ -31,39 +31,39 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class PrestadoraServicioApoderadoLegalFacultad implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_prestadora_servicio_apoderado_legal_facultad")
 	private Long idPrestadoraServicioApoderadoLegalFacultad;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_facultad", nullable = false)
 	private CatGeneral catFacultad;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestadora_servicio_apoderado_legal", nullable = false)
 	private PrestadoraServicioApoderadoLegal prestadoraServicioApoderadoLegal;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
 
@@ -132,7 +132,7 @@ public class PrestadoraServicioApoderadoLegalFacultad implements java.io.Seriali
 		this.prestadoraServicioApoderadoLegal = prestadoraServicioApoderadoLegal;
 	}
 
-
+	
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
@@ -153,7 +153,7 @@ public class PrestadoraServicioApoderadoLegalFacultad implements java.io.Seriali
 		this.fechaModificacion = fechaModificacion;
 	}
 
-
+	
 	public Long getIndEstatus() {
 		return this.indEstatus;
 	}

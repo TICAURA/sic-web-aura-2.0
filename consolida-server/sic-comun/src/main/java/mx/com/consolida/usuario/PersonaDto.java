@@ -24,6 +24,8 @@ public class PersonaDto implements Serializable{
 //	private String usuarioModificacion;
 	private String indEstatus;
 //	private List<UsuarioDTO> usuarios;
+	private String correo;
+	private String telefono;
 	
 	
 	public Long getIdPersona() {
@@ -98,6 +100,20 @@ public class PersonaDto implements Serializable{
 //	public void setUsuarios(List<UsuarioDTO> usuarios) {
 //		this.usuarios = usuarios;
 //	}
+	public String getCorreo() {
+		return correo;
+	}
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+	public String getTelefono() {
+		return telefono;
+	}
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+	
+	
 	
 	
 }

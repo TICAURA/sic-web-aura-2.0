@@ -31,27 +31,27 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class PrestadoraServicioEstatus implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_prestadora_servicio_estatus")
 	private Long idPrestadoraServicioEstatus;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestadora_servicio", nullable = false)
 	private PrestadoraServicio prestadoraServicio;
-
+	
 	@JoinColumn(name="id_cat_estatus")
 	@ManyToOne(targetEntity = CatEstatus.class, cascade=CascadeType.ALL)
     private CatEstatus catEstatus;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
@@ -59,17 +59,17 @@ public class PrestadoraServicioEstatus implements java.io.Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
 
 	public PrestadoraServicioEstatus() {
 	}
-
+	
 	public PrestadoraServicioEstatus(Long idPrestadoraServicioEstatus) {
 		this.idPrestadoraServicioEstatus = idPrestadoraServicioEstatus;
 	}
@@ -138,8 +138,8 @@ public class PrestadoraServicioEstatus implements java.io.Serializable {
 	public void setIndEstatus(Long indEstatus) {
 		this.indEstatus = indEstatus;
 	}
-
-
+	
+	
 
 
 }

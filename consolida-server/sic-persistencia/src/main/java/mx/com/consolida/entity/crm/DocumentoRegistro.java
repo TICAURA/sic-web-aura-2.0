@@ -30,41 +30,41 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class DocumentoRegistro implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_documento_registro")
 	private Long idDocumentoRegistro;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_definicion_documento", nullable = false)
 	private CatDefinicionDocumento catDefinicionDocumento;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioByUsuarioModificacion;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioByUsuarioAlta;
-
+	
 	@Column(name = "id_content_file", nullable = false, length = 45)
 	private String idContentFile;
-
+	
 	@Column(name = "ruta", nullable = false, length = 45)
 	private String ruta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
 //	private Set prestadoraServicioApoderadoLegalDocumentos = new HashSet(0);
@@ -181,7 +181,7 @@ public class DocumentoRegistro implements java.io.Serializable {
 		this.fechaModificacion = fechaModificacion;
 	}
 
-
+	
 	public Long getIndEstatus() {
 		return this.indEstatus;
 	}

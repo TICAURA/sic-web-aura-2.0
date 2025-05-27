@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 /**
  * The persistent class for the rol_modulo database table.
- *
+ * 
  */
 @Entity
 @Table(name="rol_pantalla")
@@ -15,7 +15,7 @@ public class RolPantalla implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_rol_pantalla")
 	private Long idRolPantalla;
 

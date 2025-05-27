@@ -33,5 +33,5 @@ public interface CatalogoBO {
 	public CatGeneralDto obtenerCatGeneralByClvMaestroClv(String cve, String cveSat);
 	public List<CatGeneralDto> catFormulasByIdTipoFormula(int id);
 	List<CatGeneralDto> obtenerCatGeneralByClvMaestroOrderByIdCatGeneral(String clv);
-
+	public List<CatGeneralDto> obtenerCatGeneralListaProductos ();
 }

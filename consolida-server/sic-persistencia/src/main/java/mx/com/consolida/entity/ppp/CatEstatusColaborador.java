@@ -23,23 +23,23 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "cat_estatus_colaborador")
 @NamedQueries({ @NamedQuery(name = "CatEstatusColaborador.findAll", query = "SELECT c FROM CatEstatusColaborador c") })
 public class CatEstatusColaborador implements Serializable{
-
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cat_estatus_colaborador")
 	private Long idCatEstatusColaborador;
-
+	
 	@Column(name = "clave")
 	private String clave;
-
+	
 	@Column(name = "descripcion")
 	private String descripcion;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
@@ -47,11 +47,11 @@ public class CatEstatusColaborador implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
@@ -122,7 +122,7 @@ public class CatEstatusColaborador implements Serializable{
 	public void setIndEstatus(Long indEstatus) {
 		this.indEstatus = indEstatus;
 	}
-
-
+	
+	
 
 }

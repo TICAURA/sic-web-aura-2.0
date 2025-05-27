@@ -34,7 +34,7 @@ public class CotizacionColaborador implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cotizacion_colaborador")
 	private Long idCotizacionColaborador;
 	@Column(name = "dgNombre")
@@ -177,8 +177,8 @@ public class CotizacionColaborador implements Serializable {
 
 	public CotizacionColaborador() {
 	}
-
-
+	
+	
 
 	public CotizacionColaborador(CotizacionColaboradorDto dto) {
 		super();
@@ -823,7 +823,7 @@ public class CotizacionColaborador implements Serializable {
 	public void setFechaModificacion(Date fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
 	}
-
+	
 	public Long getIdUsuarioModificacion() {
 		return idUsuarioModificacion;
 	}

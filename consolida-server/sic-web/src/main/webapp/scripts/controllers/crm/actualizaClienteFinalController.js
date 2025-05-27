@@ -1,7 +1,7 @@
 'use strict';
 angular.module('theme.core.templates')
   .controller('actualizaClienteFinalController', function( $route,$window,$scope, $rootScope, $templateCache,$location, $timeout,$http, CONFIG, $bootbox,$log, clienteFinalService, pinesNotifications, agregarClienteCrmService) {
-
+  
 	  $scope.escrituraDatosGenerales=['ADMINISTRADOR_CRM' ,'DIRECTOR_COMERCIAL' ,'GERENTE_COMERCIAL' ,'DIRECTOR_OPERACIONES'];
 
 	  $scope.escrituraDomicilioMedioContacto=['ADMINISTRADOR_CRM' ,'DIRECTOR_COMERCIAL' ,'GERENTE_COMERCIAL' ,'DIRECTOR_OPERACIONES'];
@@ -23,43 +23,44 @@ angular.module('theme.core.templates')
 	  $scope.escrituraRepresentanteYApoderado=['ADMINISTRADOR_CRM' ,'DIRECTOR_COMERCIAL' ,'GERENTE_COMERCIAL' ,'DIRECTOR_OPERACIONES'];
 
 	  $scope.escrituraDocumentos=['ADMINISTRADOR_CRM' ,'DIRECTOR_COMERCIAL' ,'GERENTE_COMERCIAL' ,'DIRECTOR_OPERACIONES'];
-
+	  
 	  $scope.noVenComisiones = ['GERENTE_CELULA','SUPERVISOR_CELULA','NOMINISTA'];
 
-
-
+	  
+	  
 	  $scope.tipoDoc = "";
 	  $scope.tabSeleccionado = "generales";
 	  $scope.ejemploPPP = {};
 	  $scope.rolSeleccionado = null;
 	  $scope.inHabilitaEscritura = false;
-
+	  $scope.productos ={};
+	  
 	  $scope.muestaComisiones = true;
-
+	  
 	  $scope.cargaInicialRol = function(){
-
+		  
 		  $scope.inHabilitaEscritura = true;
 		  $scope.muestaComisiones = true;
-
+		  
 		  $http.get(CONFIG.APIURL +"/usuarioAplicativo.json").then(function(data){
 	            $scope.rolSeleccionado = data.data.usuarioRols[0].rol.nombre.toUpperCase();
-
+	            
 				  if($scope.escrituraDatosGenerales.includes($scope.rolSeleccionado)){
 					  $scope.inHabilitaEscritura = false;
 				  }
-
+				  
 				  if($scope.noVenComisiones.includes($scope.rolSeleccionado)){
 					  $scope.muestaComisiones = false;
 				  }
-
-
+				  
+	            
 		  },function(data){
 	            console.log("error --> " + data);
 	          });
 	  }
-
+	  
 	  $scope.cargaInicialRol();
-
+	  
 	  // este if se ocuapara cuando se este atacando la pantalla de la nomina del cliente, ya que debe de haber un redirect
 	  if($location.url().includes('nominaCliente')){
 		  $scope.tabSeleccionado = "generales";
@@ -69,108 +70,113 @@ angular.module('theme.core.templates')
 	  $scope.seleccionarTab = function(tab){
 		  $scope.tabSeleccionado = tab;
 		  $scope.inHabilitaEscritura = true;
-
+		  
 		  if($scope.tabSeleccionado == "generales"){
 			  $scope.cargaInicialDatosGenerales();
 			  $scope.cargaInicialActividad();
-
+			  
 			  if($scope.escrituraDatosGenerales.includes($scope.rolSeleccionado)){
 				  $scope.inHabilitaEscritura = false;
 			  }
-
+			  
 		  }else if($scope.tabSeleccionado == "celula"){
 			  $scope.cargaInicialCelula();
-
+			  
 			  if($scope.escrituraCelula.includes($scope.rolSeleccionado)){
 				  $scope.inHabilitaEscritura = false;
 			  }
-
+			  
 		  }else if($scope.tabSeleccionado == "domicilio"){
 			  $scope.cargaInicialDomicilio();
-
+			  
 			  if($scope.escrituraDomicilioMedioContacto.includes($scope.rolSeleccionado)){
 				  $scope.inHabilitaEscritura = false;
 			  }
-
+			  
 		  }else if($scope.tabSeleccionado == "productos"){
 			  $scope.cargaInicialProductos();
 			  $scope.cargaInicialConceptoFacturacion();
-
+			  
 			  if($scope.escrituraConceptoFacturacionServicio.includes($scope.rolSeleccionado)){
 				  $scope.inHabilitaEscritura = false;
 			  }
-
+			  
+		  }else if($scope.tabSeleccionado == "prodGral"){
+			  
+			  $scope.cargaProductos();
+			 
+			  
 		  }else if($scope.tabSeleccionado == "nominas"){
-			  $scope.cargaInicialNominaCliente();
+			  $scope.cargaInicialNominaCliente();  
 			  $scope.cargaInicialCelula();
 			  $scope.getNoministas();
-
+			  
 			  if($scope.escrituraNominas.includes($scope.rolSeleccionado)){
 				  $scope.inHabilitaEscritura = false;
 			  }
-
+			  
 		  }else if($scope.tabSeleccionado == "cuentasBancarias"){
 			  $scope.cargaInicialCuentasBancarias();
-
+			  
 			  if($scope.escrituraCuentasBancarias.includes($scope.rolSeleccionado)){
 				  $scope.inHabilitaEscritura = false;
 			  }
-
+			  
 		  }else if($scope.tabSeleccionado == "stpCliente"){
 			  $scope.cargaInicialDatosStp();
-
+			  
 			  if($scope.escrituraDatosSTP.includes($scope.rolSeleccionado)){
 				  $scope.inHabilitaEscritura = false;
 			  }
-
+			  
 		  }else if($scope.tabSeleccionado == "actividades"){
 		  $scope.cargaInicialActividad();
-
+		  
 		  }else if($scope.tabSeleccionado == "comisiones"){
-			  $scope.cargaInicialClienteComisiones();
+			  $scope.cargaInicialClienteComisiones();  
 			  $scope.cargaInicialCelula();
-
+			  
 			  if($scope.escrituraComisiones.includes($scope.rolSeleccionado)){
 				  $scope.inHabilitaEscritura = false;
 			  }
 //			  $scope.getNoministas();
-
+			  
 		  }else if($scope.tabSeleccionado == "formulaHono"){
 			  $scope.mostrarPanelHonorarios = false;
 			  $scope.mostrarPanelAgregarHonorarios = false;
 			  $scope.mostrarPanelAgregarHonorariosMaquila = false;
 			  $scope.mostrarPanelAgregarHonorariosSS = false;
 			  $scope.mostrarPanelAgregarHonorariosMixto = false;
-			  $scope.cargaInicialClienteHonorarios();
+			  $scope.cargaInicialClienteHonorarios();  
 			  $scope.cargaInicialCelula();
 			  $scope.limpiarHonorario();
-
+			  
 			  if($scope.escrituraHonorarios.includes($scope.rolSeleccionado)){
 				  $scope.inHabilitaEscritura = false;
 			  }
-
+			  
 //			  $scope.getNoministas();
-
+			  
 		  }else if($scope.tabSeleccionado === "apoderadoLegal"){
 			  $scope.cargaInicialRepresentanteLegal();
 			  $scope.cargaInicialApoderadoLegal();
-
+			  
 			  if($scope.escrituraRepresentanteYApoderado.includes($scope.rolSeleccionado)){
 				  $scope.inHabilitaEscritura = false;
 			  }
-
+			  
 		  }else if($scope.tabSeleccionado === "docCliente"){
 			  $scope.cargaInicialDocumentosCliente();
-
+			  
 			  if($scope.escrituraDocumentos.includes($scope.rolSeleccionado)){
 				  $scope.inHabilitaEscritura = false;
 			  }
-		  }
+		  }		  
 	  }
-
-
-
-
+	  
+	  
+	  
+	  
 	  var paramValue = $route.current.params.idCliente;
 	  var data = {};
 	  $scope.clienteTempDto = {};
@@ -182,29 +188,29 @@ angular.module('theme.core.templates')
 	  $scope.clienteDomicilioDto.domicilioComercial = {};
 	  $scope.clienteDomicilioDto.domicilioComercial.catMunicipios = {};
 	  $scope.clienteMedioContactoDto = {};
-
-
+	  
+	  
 	 // CUENTAS BANCARIAS
 	  $scope.clienteCuentasBancarias ={};
 	  $scope.clienteCuentaBancaria = {};
 	  $scope.clienteCuentaBancaria.catBanco = {};
 	  $scope.clienteCuentaBancaria.catTipoCuenta = {};
-	  $scope.mostrarCuenta = false;
-
+	  $scope.mostrarCuenta = false; 
+	  
 	//// COMISIONES
 	  $scope.mostrarPanelComisiones = false;
 	  $scope.mostrarPanelAgregarComision = false;
 	  $scope.comision={};
 	  $scope.comision.canalVenta={};
-
+	  
 	  $scope.comision.esquema={};
 	  $scope.comision.formulaPricing={};
 	  $scope.comision.formulaComision ={};
 	  $scope.comision.usuario = {};
 	  $scope.tipoCanalVenta = {};
-
+	  
 	  $scope.comision.esquema.idCatGeneral = '';
-
+	  
 	  //HONORARIOS
 	  $scope.mostrarPanelHonorarios = false;
 	  $scope.mostrarPanelAgregarHonorarios = false;
@@ -221,22 +227,22 @@ angular.module('theme.core.templates')
 	  $scope.honorario.formulaPPPMaquila ={};
 	  $scope.honorario.formulaPPPMixto ={};
 	  $scope.honorario.formulaPPPSs ={};
-
-
+	  
+	  
 	  // DATOS GENERALES Y CONCEPTOS FACTURACION CLIENTE
 	  $scope.clienteDto = {};
 	  $scope.clienteDto.prefijoSTP;
 	  $scope.clienteConceptoFacturacion = {}
 	  $scope.IsVisibleBotonGuardarConcepto = true;
 	  $scope.IsVisibleBotonActualizarConcepto = false;
-
+	  
 	  // NOMINA CLIENTE
 	  $scope.nominaClienteDto = {};
 	  $scope.nominaClienteDto.prestadoraServicio;
 	  $scope.IsVisibleComboComisionSS = true;
 	  $scope.IsVisibleBotoAgregar = true;
 	  $scope.IsVisibleCampoSueldosSalarios = false;
-	  $scope.tituloNominaCliente;
+	  $scope.tituloNominaCliente;	  
 	  $scope.agregarNomina = function(){
 		  $scope.nominaClienteDto.idNominaCliente = null;
 		  $scope.nominaClienteDto.nombreNomina = null;
@@ -250,40 +256,42 @@ angular.module('theme.core.templates')
 		  $scope.IsVisibleCargarNomina = false;
 		  $scope.IsVisibleComision = false;
 		  $scope.tituloNominaCliente = "AGREGAR NÓMINA"
-		  $scope.validarAgregarNomina();
+		  $scope.validarAgregarNomina();  
 	  }
 	  $scope.campoSueldosSalarios = function(){
 		  if($scope.nominaClienteDto.catProductoNomina.idCatGeneral == 306
 				  || $scope.nominaClienteHonorariosDto.catProductoNomina.idCatGeneral == 9949
-				  || $scope.nominaClienteHonorariosDto.catProductoNomina.idCatGeneral == 9950){
+				  || $scope.nominaClienteHonorariosDto.catProductoNomina.idCatGeneral == 9950
+				){
+				  
 			  $scope.IsVisibleCampoSueldosSalarios = true;
 		  }else{
 			  $scope.IsVisibleCampoSueldosSalarios = false;
 			  $scope.nominaClienteDto.comisionSs=null;
 		  }
 	  }
-
+	  
 	  // CELULA
 	  $scope.isVisibleComboPrestadora = false;
-
+	  
 	  // REPRESENTANTE Y APODERADOS LEGALES
 	  $scope.representanteLegalDto = {};
 	  $scope.IsVisibleFormularioRepresentante = false;
 	  $scope.IsVisibleDocumentosRepresentante = false;
 	  $scope.IsVisibleRepresentanteArchivos = false;
 	  $scope.tituloDinamicoLegal = '';
-
+	  
 	  $scope.apoderadoLegalDto = {};
 	  $scope.IsVisibleFormularioApoderado = false;
 	  $scope.IsVisibleDocumentosApoderado = false;
-
+	  
 
 
 //////////////////////////////////////////////////// DATOS DUMMIES - BORRARLO DESPUES ////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+	  
 	  //////////////////////// DUMMIES ///////////////////////////////////
 	  $scope.IsVisibleColaboradorNomina = false;
 	  $scope.IsVisibleRegistroColaborador = false;
@@ -292,10 +300,10 @@ angular.module('theme.core.templates')
 	  $scope.IsVisibleCargarNomina = false;
 	  $scope.IsVisibleCargarNomina = false;
 	  $scope.isVisibleFactorDescuento = false;
-
+	  
 	  $scope.IsVisibleComision = false;
-
-
+	  
+	  
 		  $scope.actualizaCliente = function() {
 			  bootbox
 				.confirm({
@@ -313,12 +321,12 @@ angular.module('theme.core.templates')
 					},
 					callback : function(result) {
 						if (result) {
-
+							
 							 var data = {
 									 'clienteTempDto' : $scope.clienteTempDto
 							 };
 							clienteFinalService.update(data.clienteTempDto,function() {
-
+										
 								$log.debug('ok');
 								pinesNotifications.notify({
 							        title: 'Mensaje',
@@ -340,7 +348,7 @@ angular.module('theme.core.templates')
 					}
 				});
 		  }
-
+		  
 		  $scope.nuevoApoderado = function(){
 			  $scope.tituloDinamicoLegal = "Agregar apoderado legal";
 			  $scope.editar=false;
@@ -364,21 +372,21 @@ angular.module('theme.core.templates')
 			  $scope.editar=false;
 			  $scope.cuentaBancaria  = {numeroCuenta:"000000000000", clabe:"1231231231231231"};
 		  }
-
-
+		  
+		  
 		// COLABORADORES
 		  $scope.showColaboradorNomima = function(){
 			  $scope.IsVisibleColaboradorNomina = true;
 			  $scope.IsVisibleRegistroColaborador = false;
 			  $scope.IsVisibleDocColaborador=false;
 		  }
-
+		  
 		  $scope.showRegistroColaborador = function(){
 			  $scope.IsVisibleRegistroColaborador = true;
 			  $scope.IsVisibleColaboradorNomina = false;
 			  $scope.IsVisibleDocColaborador=false;
 		  }
-
+		  
 		  $scope.showEditarColaborador = function(){
 			  $scope.IsVisibleRegistroColaborador = true;
 			  $scope.IsVisibleColaboradorNomina = false;
@@ -386,36 +394,36 @@ angular.module('theme.core.templates')
 			  $scope.nombreColaborador = "SERGIO ANDRES HERNANDEZ GONZALEZ";
 			  $scope.colaborador = {nombre:"SERGIO ANDRES",
 					  apellidoPaterno:"HERNANDEZ", apellidoMaterno:"GONZALEZ",
-					  rfc:"AMANZO840839YT5", curp:"AMANZO840839YT5HDFRNR02"
-
+					  rfc:"AMANZO840839YT5", curp:"AMANZO840839YT5HDFRNR02" 
+					  
 			  };
 		  }
-
+		  
 		  $scope.showDocColaborador = function(){
 			  $scope.IsVisibleDocColaborador=true
 			  $scope.IsVisibleRegistroColaborador = false;
 			  $scope.IsVisibleColaboradorNomina = false;
 		  }
-
+		  
 		  $scope.showFactorDescuento = function(){
-
+			  
 			  $scope.isVisibleFactorDescuento = true;
 		  }
-
-
+		  
+		  
 	      $scope.valor = {
 	    	        radio: '1'
 	    	      };
+	      
 
-
-
-
+		  
+		  
 		  $scope.agregarComision = function(){
 			  $scope.IsVisibleAgregarNomina = false;
 			  $scope.IsVisibleCargarNomina = false;
 			  $scope.IsVisibleComision = true;
 		  }
-
+		  
 		  $scope.cargarArchivoNomina = function(){
 			  $scope.IsVisibleAgregarNomina = false;
 			  $scope.IsVisibleCargarNomina = true;
@@ -425,14 +433,14 @@ angular.module('theme.core.templates')
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-////////////////DATOS GENERALES  ///////////////////////////////////////////
-
+		  
+		  
+		  
+////////////////DATOS GENERALES  ///////////////////////////////////////////	
+		  
 		  $scope.cargaInicialDatosGenerales = function() {
 			  clienteFinalService.cargaInicialDatosGenCliente(function(response) {
-
+				  
 				  $scope.clienteDto = response.data.clienteDto;
 				  $scope.listaGrupos = response.data.listaGruposDto;
 				  $scope.listaCatTipoPago = response.data.listaCatTipoPago;
@@ -444,7 +452,7 @@ angular.module('theme.core.templates')
 				  agregarClienteCrmService.listaCelulas();
 				  $scope.cargaInicialActividad();
 				  if(response.data.clienteDto.fechaConstitucionEmpresa!=undefined && response.data.clienteDto.fechaConstitucionEmpresa!=null){
-					  $scope.clienteDto.fechaConstitucionEmpresa =  new Date(response.data.clienteDto.fechaConstitucionEmpresa);
+					  $scope.clienteDto.fechaConstitucionEmpresa =  new Date(response.data.clienteDto.fechaConstitucionEmpresa);  
 				  }
 				  if($location.url().includes('nominaCliente')){
 					  //$('#nominas').click();
@@ -459,7 +467,7 @@ angular.module('theme.core.templates')
 					      });
 
 					});
-
+			  
 			  clienteFinalService.cargaInicialConceptoFacturacion(function(response) {
 				  $scope.gridConcepFacturacion = response.data;
 			  },function(response) {
@@ -471,7 +479,7 @@ angular.module('theme.core.templates')
 				      });
 
 				});
-
+			  		  
 			  clienteFinalService.detalles(paramValue,function(response){
 
 				  $scope.tituloDinamicoLegal = "Agregar apoderado legal";
@@ -480,8 +488,8 @@ angular.module('theme.core.templates')
 					  $scope.clienteTempDto = response.data;
 					  $scope.clienteTempDto.idClienteTemp = paramValue;
 				  }
-
-
+				  
+				 
 			  },function(response){
 					$log.error(response.status+ ' - '+ response.statusText);
 					pinesNotifications.notify({
@@ -490,19 +498,19 @@ angular.module('theme.core.templates')
 				        type: 'error'
 				      });
 			  });
-
-
+			  
+			  
 			  agregarClienteCrmService.listaCelulas(function(response) {
 		    		$scope.listaCelulas = response.data;
 		    	},function(response){});
-
+			  
 		  }
-
-
+		  
+		  
 		  $scope.cargaInicialDatosGenerales();
+		  
 
-
-
+		  
 		  	$scope.guardarDatosGenerales = function() {
 
 		    	bootbox.confirm({
@@ -536,7 +544,7 @@ angular.module('theme.core.templates')
 								        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 								        type: 'success'
 								      });
-
+										
 											$scope.cargaInicialDatosGenerales();
 								}
 							},
@@ -553,10 +561,10 @@ angular.module('theme.core.templates')
 					}
 				});
 		    };
-
-			  // combo de subgrupo comercial
+		    
+			  // combo de subgrupo comercial    	  
 			  $scope.getSubgrupo = function () {
-
+				  
 				  if($scope.clienteDto){
 					  $http.get(CONFIG.APIURL + "/clienteCrm/listaCatSubGiroComercial/"+$scope.clienteDto.catGiroComercialDto.idCatGeneral+".json").then(function(response){
 						  $scope.listaSubGrupo = response.data;
@@ -566,9 +574,9 @@ angular.module('theme.core.templates')
 				  	  });
 				  }
 			  }
-
-
-			  // combo de prestadoras fondo
+			  
+			  
+			  // combo de prestadoras fondo    	  
 			  $scope.getPrestadoras = function (idCelula) {
 				  $http.post(CONFIG.APIURL + "/clienteCrm/getPrestadorasByIdCelula.json", idCelula).then(function(response){
 					  $scope.listaPrestadorasFondo = response.data.listaPrestadorasFondo;
@@ -588,17 +596,17 @@ angular.module('theme.core.templates')
 			  $scope.listaClientesPrestadoras = response.data.listaClientesPrestadoras;
 			  $scope.listaPrestadorasFondo = response.data.listaPrestadorasFondo;
 			  $scope.listaPrestadoras = response.data.listaPrestadoras;
-
+			  
 			  if($scope.clienteDto.celula!=null && $scope.clienteDto.celula.idCelula !=null){
-				  $scope.clienteDto.prestadoraServicioFondo.idPrestadoraServicio = response.data.listaPrestadorasFondo[0].idPrestadoraServicio;
+				  $scope.clienteDto.prestadoraServicioFondo.idPrestadoraServicio = response.data.listaPrestadorasFondo[0].idPrestadoraServicio; 
 			  }
-
+			  
 			  if($scope.listaPrestadoras!=undefined &&  $scope.listaPrestadoras!=null && $scope.listaPrestadoras.length > 0){
 				  $scope.isVisibleComboPrestadora = true;
 			  }else{
 				  $scope.isVisibleComboPrestadora = false;
 			  }
-
+			  
 		  },function(response) {
 				$log.error("error --> " + response);
 				pinesNotifications.notify({
@@ -609,7 +617,7 @@ angular.module('theme.core.templates')
 
 			});
 		};
-
+		
 	  	$scope.guardarDatosCelula = function() {
 
 	    	bootbox.confirm({
@@ -643,7 +651,7 @@ angular.module('theme.core.templates')
 							        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 							        type: 'success'
 							      });
-
+									
 										$scope.cargaInicialCelula();
 							}
 						},
@@ -660,10 +668,10 @@ angular.module('theme.core.templates')
 				}
 			});
 	    };
-
-		  // combo de noministas, se mostraran noministas vinculados a la celula seleccionada
+	    
+		  // combo de noministas, se mostraran noministas vinculados a la celula seleccionada    	  
 		  $scope.getNoministas = function () {
-
+			  
 			  if($scope.clienteDto !=undefined && $scope.clienteDto != null){
 				  if(($scope.clienteDto.celula !=undefined && $scope.clienteDto.celula != null)
 						  && ($scope.clienteDto.celula.idCelula !=undefined && $scope.clienteDto.celula.idCelula != null)){
@@ -672,30 +680,30 @@ angular.module('theme.core.templates')
 						  $scope.clienteDto.noministaDto = null;
 				  	    },function(data){
 				  	        console.log("error --> " + data);
-				  	  });
+				  	  }); 
 				  }
 			  }
 		  }
-
-		  // combo de noministas, se mostraran noministas vinculados a la celula seleccionada
+		  
+		  // combo de noministas, se mostraran noministas vinculados a la celula seleccionada    	  
 		  $scope.getPrestadoras = function (idCelula) {
 			  $http.post(CONFIG.APIURL + "/clienteSeccionesCrm/celula/getPrestadorasByIdCelula.json", idCelula).then(function(response){
 				  $scope.listaPrestadorasFondo = response.data.listaPrestadorasFondo;
 				  $scope.clienteDto.prestadoraServicioFondo.idPrestadoraServicio = response.data.listaPrestadorasFondo[0].idPrestadoraServicio;
 				  $scope.listaPrestadoras = response.data.listaPrestadoras;
-
+				  
 				  if($scope.listaPrestadoras!=undefined &&  $scope.listaPrestadoras!=null && $scope.listaPrestadoras.length > 0){
 					  $scope.isVisibleComboPrestadora = true;
 				  }else{
 					  $scope.isVisibleComboPrestadora = false;
 				  }
-
+				  
 //					  $scope.clienteDto.noministaDto = null;
 		  	    },function(data){
 		  	        console.log("error --> " + data);
 		  	  });
 		  }
-
+		  
 		  $scope.eliminarClientePrestadora = function(idClientePrestadoraServicio) {
 			  bootbox.confirm({
 				  title : "Confirmar acci&oacute;n",
@@ -729,7 +737,7 @@ angular.module('theme.core.templates')
 								        type: 'success'
 								      });
 
-
+											
 											$scope.cargaInicialCelula();
 
 								}
@@ -743,13 +751,13 @@ angular.module('theme.core.templates')
 							      });
 							});
 						}
-					}
+					}				  
 			  });
 			};
-
+		
 //////////////CONCEPTO FACTURACION CLIENTE  ///////////////////////////////////////////
-
-
+		  
+		  
 		  $scope.cargaInicialConceptoFacturacion = function() {
 			  clienteFinalService.cargaInicialConceptoFacturacion(function(response) {
 				  $scope.gridConcepFacturacion = response.data;
@@ -763,9 +771,9 @@ angular.module('theme.core.templates')
 
 				});
 			};
-
+		  
 		  $scope.guardaConceptoFacturacion = function() {
-
+			  			  
 			  clienteFinalService.guardaConceptoFacturacion($scope.clienteConceptoFacturacion,function(response) {
 				  if(response.data.mensajeError != undefined || response.data.mensajeError!=null){
 					  $log.error(response.status+ ' - '+ response.statusText);
@@ -794,7 +802,7 @@ angular.module('theme.core.templates')
 
 				});
 			};
-
+			
 
 		  $scope.eliminarConceptoFacturacion = function(conceptoFact) {
 			  bootbox.confirm({
@@ -828,7 +836,7 @@ angular.module('theme.core.templates')
 								        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 								        type: 'success'
 								      });
-
+										
 											$scope.clienteConceptoFacturacion.descConceptoFacturacion = null;
 											$scope.IsVisibleBotonGuardarConcepto = true;
 											$scope.IsVisibleBotonActualizarConcepto = false;
@@ -845,22 +853,22 @@ angular.module('theme.core.templates')
 							      });
 							});
 						}
-					}
+					}				  
 			  });
 			};
-
-
+			
+			
 			// opcion del grid
 			$scope.actualizarConceptoFacturacion = function(conceptoFact) {
 				$scope.IsVisibleBotonGuardarConcepto = false;
 				$scope.IsVisibleBotonActualizarConcepto = true;
-
+				
 				$scope.clienteConceptoFacturacion = angular.copy(conceptoFact);
 			}
-
-
+			
+			
 			// servicio que realiza la accion de actualizar
-			$scope.actualizarConcepto = function() {
+			$scope.actualizarConcepto = function() {				
 			  clienteFinalService.guardaConceptoFacturacion($scope.clienteConceptoFacturacion,function(response) {
 				  if(response.data.mensajeError != undefined || response.data.mensajeError!=null){
 					  bootbox.alert({
@@ -896,16 +904,16 @@ angular.module('theme.core.templates')
 				      });
 
 				});
-
+				
 			}
-
+			
 			$scope.cancelarActualizacion = function() {
 				$scope.IsVisibleBotonGuardarConcepto = true;
 				$scope.IsVisibleBotonActualizarConcepto = false;
 				$scope.clienteConceptoFacturacion = {}
 				 $scope.cargaInicialConceptoFacturacion();
 			}
-
+			
 			function handleInput(e) {
 				   var ss = e.target.selectionStart;
 				   var se = e.target.selectionEnd;
@@ -936,10 +944,10 @@ angular.module('theme.core.templates')
 
 					});
 				};
-
+				
 				  $scope.validarAgregarNomina = function() {
 					  $http.post(CONFIG.APIURL + "/clienteSeccionesCrm/nominaCliente/existeFondo.json", $scope.clienteDto.idCliente).then(function(response) {
-
+						  
 						  if(!response.data){
 							  bootbox.alert({
 									title : "Error",
@@ -951,16 +959,16 @@ angular.module('theme.core.templates')
 										}
 									},
 									callback : function() {
-
+										
 									}
-								});
-
+								});	
+							  
 							  $scope.IsVisibleAgregarNomina = false;
-
+							  
 						  }else{
 							  $scope.cargaNominaCliente();
 						  }
-
+							
 						}, function(data) {
 							console.log("error cargaInicialDomicilio--> " + data);
 							pinesNotifications.notify({
@@ -969,9 +977,9 @@ angular.module('theme.core.templates')
 						        type: 'error'
 						      });
 						});
-
+						
 				  };
-
+				
 			  $scope.cargaNominaCliente = function() {
 				  clienteFinalService.cargaInicialNominaCliente(function(response) {
 					  $scope.gridNominaCliente = response.data.gridNominaCliente;
@@ -992,12 +1000,20 @@ angular.module('theme.core.templates')
 
 					});
 				};
-
+				
 				$scope.selectPPP = function(valor){
 					if(valor) {
 	            		$scope.nominaClienteDto.requiereFactura = 1;
 	            	} else {
 	            		$scope.nominaClienteDto.requiereFactura = 0;
+	            	}
+				}
+				
+				$scope.selectTimbre = function(valor){
+					if(valor) {
+	            		$scope.nominaClienteDto.requiereTimbre = 1;
+	            	} else {
+	            		$scope.nominaClienteDto.requiereTimbre = 0;
 	            	}
 				}
 			  	$scope.guardarDatosNominaCliente = function(nominaClienteForm) {
@@ -1016,7 +1032,7 @@ angular.module('theme.core.templates')
 							}
 						},
 						callback : function(result) {
-							if (result) {
+							if (result) {								
 								clienteFinalService.guardaNominaCliente($scope.nominaClienteDto, function(response) {
 
 									if(response.data.mensajeError != undefined){
@@ -1034,18 +1050,18 @@ angular.module('theme.core.templates')
 									        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 									        type: 'success'
 									      });
-
-
+										
+										
 										if(nominaClienteForm){
 											nominaClienteForm.$setPristine();
 											nominaClienteForm.$setUntouched();
 										}
-
+										
 										$location.path("/crm/actualiza-nomina");
 //												 $scope.cargaInicialNominaCliente();
 //												 $scope.nominaClienteDto = {};
 //												 $scope.IsVisibleAgregarNomina = false;
-
+									
 									}
 								},
 								function(response) {
@@ -1061,35 +1077,37 @@ angular.module('theme.core.templates')
 						}
 					});
 			    };
-
-
+			    
+								
 			  $scope.editarNominaCliente = function(nomCliente) {
 
 				  clienteFinalService.getNominaClienteById(nomCliente, function(response) {
-
+					  
 					  if(response.data!=null){
-
+						  
 						  $scope.nominaClienteDto = response.data.nominaCliente;
-
+						  
 						  if($scope.nominaClienteDto.catProductoNomina.idCatGeneral == 306
 								  || $scope.nominaClienteDto.catProductoNomina.idCatGeneral == 9949
-								  || $scope.nominaClienteDto.catProductoNomina.idCatGeneral == 9950){
+								  || $scope.nominaClienteDto.catProductoNomina.idCatGeneral == 9950
+								   ){
 							  $scope.IsVisibleCampoSueldosSalarios = true;
-
+							  
 							  $scope.nominaClienteDto.prestadoraServicioFondo = null;
-
+							  
 						  }else{
 							  $scope.IsVisibleCampoSueldosSalarios = false;
 							  $scope.nominaClienteDto.comisionSs=null;
-
-							  $scope.nominaClienteDto.prestadoraServicioFondo =  response.data.nominaCliente.prestadoraServicio;
+							  
+							//  $scope.nominaClienteDto.prestadoraServicioFondo =  response.data.nominaCliente.prestadoraServicio;
+							  $scope.nominaClienteDto.prestadoraServicioFondo =  response.data.catPrestadorasServicioFondo[0];
 							  $scope.nominaClienteDto.prestadoraServicio =  null;
 						  }
-
+						  
 						  $scope.tituloNominaCliente = "ACTUALIZAR NÓMINA"
 						  $scope.IsVisibleBotoAgregar = false;
 						  $scope.gridNominaCliente = response.data.gridNominaCliente;
-
+						  
 						  $scope.listaCelulasDto = response.data.listaCelulasDto;
 						  $scope.listaProductosNomina = response.data.listaProductosNomina;
 						  $scope.listaPrestadorasFondo = response.data.listaPrestadorasFondo;
@@ -1106,9 +1124,9 @@ angular.module('theme.core.templates')
 					  }
 					});
 				}
-
+			  
 			  $scope.eliminarNominaCliente = function(idNominaCliente) {
-
+				  
 				  bootbox.confirm({
 						title : "Confirmar acci&oacute;n",
 						message : "¿Est\u00e1s seguro que deseas eliminar la n\u00f3mina?",
@@ -1126,13 +1144,13 @@ angular.module('theme.core.templates')
 							if (result) {
 								  clienteFinalService.eliminarNominaCliente(idNominaCliente, function(response) {
 								  if(response.data.mensajeError != undefined && response.data.mensajeError != null){
-
+									  
 									  $log.error("error --> " + response);
 										pinesNotifications.notify({
 									        title: 'Error',
 									        text: 'Ocurrio un error al realizar la operaci\u00f3n. Favor de intentarlo mas tarde.',
 									        type: 'error'
-									      });
+									      }); 
 								  }else{
 									  $log.debug('ok');
 										pinesNotifications.notify({
@@ -1142,7 +1160,7 @@ angular.module('theme.core.templates')
 									      });
 												 $scope.cargaInicialNominaCliente();
 								  }
-
+			
 							  },function(response) {
 									$log.error("error --> " + response);
 									pinesNotifications.notify({
@@ -1150,18 +1168,18 @@ angular.module('theme.core.templates')
 								        text: 'Ocurrio un error al realizar la operaci\u00f3n. Favor de intentarlo mas tarde.',
 								        type: 'error'
 								      });
-
+			
 								});
 							}
 						}
 					});
 				};
 
-
+				
 				$scope.getFondoDefault = function(esquemaNomina, nomCliente) {
-
+					
 					// 304 es PPP
-					if(esquemaNomina.idCatGeneral == 304){
+					if(esquemaNomina.idCatGeneral == 304 || esquemaNomina.idCatGeneral == 9958 ){
 						clienteFinalService.getNominaClienteById(nomCliente,function(response) {
 							$scope.nominaClienteDto = response.data.nominaCliente;
 							$scope.nominaClienteDto.prestadoraServicioFondo = response.data.catPrestadorasServicioFondo[0];
@@ -1175,12 +1193,12 @@ angular.module('theme.core.templates')
 
 							});
 					}
-
+					
 				}
-
+			
 
 ///////////////////// Domicilio  ///////////////////////////////////////////
-
+		  
 		  $scope.cargaInicialDomicilio = function() {
 				$http.post(CONFIG.APIURL + "/clienteSeccionesCrm/domicilio/cargaInicialDomicilio.json").then(
 						function(response) {
@@ -1199,9 +1217,9 @@ angular.module('theme.core.templates')
 						      });
 						});
 			};
-
-
-
+		  
+		  
+		  
 		  $scope.obtenerEntidadFederativaXCP = function(codigoPostal) {
 			  clienteFinalService.obtenerEntidadFederativaXCP(codigoPostal, function(response) {
 		    		$scope.clienteDomicilioDto.municipios = response.data.municipios;
@@ -1212,12 +1230,12 @@ angular.module('theme.core.templates')
 		    			$scope.clienteDomicilioDto.domicilio.catMunicipios = {};
 			    		$scope.clienteDomicilioDto.domicilio.idEntidadFederativa = null;
 		    		}
-
+		    		
 		    	},function(response){
-
+					
 				});
 		    }
-
+		  
 		  $scope.obtenerEntidadFederativaXCPComercial = function(codigoPostal) {
 			  clienteFinalService.obtenerEntidadFederativaXCP(codigoPostal, function(response) {
 		    		$scope.clienteDomicilioDto.municipiosDomicilioComercial = response.data.municipios;
@@ -1228,13 +1246,13 @@ angular.module('theme.core.templates')
 		    			$scope.clienteDomicilioDto.domicilioComercial.catMunicipios = {};
 			    		$scope.clienteDomicilioDto.domicilioComercial.idEntidadFederativa = null;
 		    		}
-
+		    		
 		    	},function(response){
-
+					
 				});
 		    }
-
-
+		  
+		  
 		  $scope.guardarDomicilioCliente = function(domicilio) {
 
 		    	bootbox
@@ -1253,7 +1271,7 @@ angular.module('theme.core.templates')
 					},
 					callback : function(result) {
 						if (result) {
-
+							
 //						var data = {
 //		                    'prestadoraServicioDto' : prestadora
 //		                };
@@ -1273,7 +1291,7 @@ angular.module('theme.core.templates')
 											        text: 'Domicilio fiscal se ha guardado con \u00e9xito.',
 											        type: 'success'
 											      });
-
+												
 												 $scope.cargaInicialDomicilio();
 										}
 											},
@@ -1291,7 +1309,7 @@ angular.module('theme.core.templates')
 					}
 				});
 		    }
-
+		  
 		  $scope.guardarDomicilioComercial = function(domicilio) {
 
 		    	bootbox
@@ -1310,7 +1328,7 @@ angular.module('theme.core.templates')
 					},
 					callback : function(result) {
 						if (result) {
-
+							
 //						var data = {
 //		                    'prestadoraServicioDto' : prestadora
 //		                };
@@ -1330,7 +1348,7 @@ angular.module('theme.core.templates')
 											        text: 'Domicilio comercial se ha guardado con \u00e9xito.',
 											        type: 'success'
 											      });
-
+												
 												 $scope.cargaInicialDomicilio();
 										}
 											},
@@ -1348,7 +1366,7 @@ angular.module('theme.core.templates')
 					}
 				});
 		    }
-
+		  
 		  $scope.guardarClienteMedioContacto = function(medioContacto) {
 
 		    	bootbox
@@ -1367,7 +1385,7 @@ angular.module('theme.core.templates')
 					},
 					callback : function(result) {
 						if (result) {
-
+							
 //						var data = {
 //		                    'prestadoraServicioDto' : prestadora
 //		                };
@@ -1388,7 +1406,7 @@ angular.module('theme.core.templates')
 											        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 											        type: 'success'
 											      });
-
+												
 												$scope.cargaInicialDomicilio();
 										}
 											},
@@ -1406,9 +1424,9 @@ angular.module('theme.core.templates')
 					}
 				});
 		    }
-
-
-
+		  
+		  
+		  
 		  $scope.guardarClienteMedioContactoCEO = function(medioContacto) {
 
 		    	bootbox
@@ -1427,7 +1445,7 @@ angular.module('theme.core.templates')
 					},
 					callback : function(result) {
 						if (result) {
-
+							
 //						var data = {
 //		                    'prestadoraServicioDto' : prestadora
 //		                };
@@ -1448,7 +1466,7 @@ angular.module('theme.core.templates')
 											        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 											        type: 'success'
 											      });
-
+												
 												$scope.cargaInicialDomicilio();
 										}
 											},
@@ -1468,11 +1486,11 @@ angular.module('theme.core.templates')
 		    }
 		  ///////////////////////////////////////////////////////////////////////////
 
-
-
+  
+		 
 
   /////////////////////////////////// Cuentas Bancarias //////////////////////////////
-
+		  
 		  $scope.cargaInicialCuentasBancarias = function() {
 				$http.post(CONFIG.APIURL + "/clienteSeccionesCrm/cuentaBancaria/cargaInicialCuentasBancarias.json").then(
 						function(response) {
@@ -1489,8 +1507,8 @@ angular.module('theme.core.templates')
 						      });
 						});
 			};
-
-
+			
+			
 			 $scope.guardarCuentaBancaria = function(cuenta) {
 
 			    	bootbox
@@ -1548,7 +1566,7 @@ angular.module('theme.core.templates')
 					});
 			    }
 
-
+			 
 			 $scope.editarCuentaBancaria = function(cuenta) {
 				  $scope.clienteCuentaBancaria.numeroCuenta = cuenta.numeroCuenta;
 				  $scope.clienteCuentaBancaria.esPrincipal = cuenta.esPrincipal;
@@ -1558,21 +1576,21 @@ angular.module('theme.core.templates')
 				  $scope.clienteCuentaBancaria.catTipoCuenta.idCatGeneral = cuenta.catTipoCuenta.idCatGeneral
 				  $scope.clienteCuentaBancaria.idClienteCuentaBancaria = cuenta.idClienteCuentaBancaria;
 				  $scope.mostrarCuenta = true;
-
+				  
 			  }
-
+			 
 			 $scope.nuevaCuenta = function() {
-
+				 
 				 $scope.clienteCuentaBancaria = {};
 				 $scope.clienteCuentaBancaria.catBanco = {};
 				 $scope.clienteCuentaBancaria.catTipoCuenta = {};
 				 $scope.clienteCuentaBancaria.catBanco.idCatGeneral =-1;
 				 $scope.clienteCuentaBancaria.catTipoCuenta.idCatGeneral = -1;
 				 $scope.mostrarCuenta =true;
-
+				 
 				};
-
-
+			 
+			 
 			 $scope.eliminarCuentaBancaria = function(cuenta) {
 
 			    	bootbox
@@ -1628,7 +1646,7 @@ angular.module('theme.core.templates')
 						}
 					});
 			    }
-
+			 
 /////////////////////////////////// DATOS STP ////////////////////////////////////
   $scope.cargaInicialDatosStp = function() {
 		$http.get(CONFIG.APIURL + "/clienteSeccionesCrm/datosStp/cargaInicialDatosStp.json").then(function(response) {
@@ -1643,7 +1661,7 @@ angular.module('theme.core.templates')
 				      });
 				});
 	};
-
+	
 	$scope.guardarPrefijoStp = function(datosStpForm) {
 		$http.post(CONFIG.APIURL + "/clienteSeccionesCrm/datosStp/guardarPrefijoStp.json", $scope.clienteDto).then(function(response) {
 
@@ -1662,16 +1680,16 @@ angular.module('theme.core.templates')
 				        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 				        type: 'success'
 				      });
-
-
+					
+					
 					if(datosStpForm){
 						datosStpForm.$setPristine();
 						datosStpForm.$setUntouched();
-					}
+					}	
 			}
-
+			
 			$scope.cargaInicialDatosStp();
-
+			
 		}, function(data) {
 			console.log("error guardarPrefijoStp--> " + data);
 			pinesNotifications.notify({
@@ -1681,10 +1699,10 @@ angular.module('theme.core.templates')
 		      });
 		});
 	}
-
-
+			 
+			 
 /////////////////////////////////// Giro  //////////////////////////////////////////
-
+			 
 			 $scope.cargaInicialActividad = function() {
 					$http.post(CONFIG.APIURL + "/clienteSeccionesCrm/actividad/cargaInicialActividad.json").then(
 							function(response) {
@@ -1700,18 +1718,18 @@ angular.module('theme.core.templates')
 							      });
 							});
 				};
-
-
+				
+				
 				 $scope.obtenerSubgiro = function(idGiro) {
 					 clienteFinalService.obtenerSubgiro(idGiro, function(response) {
 				    		$scope.clienteActividad.catSubGiroComercial = response.data.catSubGiroComercial;
 				    		$scope.clienteActividad.idSubGiroComercial = null;
 				    	},function(response){
-
+							
 						});
 				    }
-
-
+				 
+				 
 				 $scope.guardarActividad = function(actividad) {
 
 				    	bootbox
@@ -1747,7 +1765,7 @@ angular.module('theme.core.templates')
 													        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 													        type: 'success'
 													      });
-
+													
 														 $scope.reset();
 														$scope.cargaInicialActividad();
 												}
@@ -1766,8 +1784,8 @@ angular.module('theme.core.templates')
 							}
 						});
 				    }
-
-
+				 
+				 
 				 $scope.eliminarActividad = function(actividad) {
 
 				    	bootbox
@@ -1795,7 +1813,7 @@ angular.module('theme.core.templates')
 											        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 											        type: 'success'
 											      });
-
+												
 												$scope.cargaInicialActividad();
 						                  },
 						                  function (response) {
@@ -1812,20 +1830,20 @@ angular.module('theme.core.templates')
 							}
 						});
 				    }
-
+				 
 /////////////////////////////////////////////////////////////////////////////////////////
-
+				 
 ////////////// Productos ///////////////////////////////////////////////////////////////
 				 $scope.cargaInicialProductos = function() {
-						$http.post(CONFIG.APIURL + "/clienteSeccionesCrm/productos/cargaInicialProductos.json").then(
+					 $http.post(CONFIG.APIURL + "/clienteSeccionesCrm/productos/cargaInicialProductos.json").then(
 								function(data) {
 									$scope.clienteProductoDto = data.data;
 								}, function(data) {
 									console.log("error --> " + data);
 								});
 					};
-
-
+					
+					
 					 $scope.guardarProducto = function (producto){
 //						   producto.cliente = $scope.clienteDto;
 						   var data = {
@@ -1841,7 +1859,7 @@ angular.module('theme.core.templates')
 									        type: 'success'
 									      });
 										 $scope.cargaInicialProductos();
-
+										
 				                  },
 				                  function (response) {
 				                	  $log.error(response.status+ ' - '+ response.statusText);
@@ -1854,8 +1872,8 @@ angular.module('theme.core.templates')
 				                	  $scope.cargaInicialProductos();
 				                  });
 					  };
-
-
+				 
+				 
 ////////////////////////////////////////////////////////////////////////////////////////
 
 					  ////////////////// Comisiones
@@ -1874,12 +1892,12 @@ angular.module('theme.core.templates')
 								        type: 'error'
 								      });
 
-								});
+								});			  
 	}
-
+					  
 	$scope.agregarComision = function() {
 	  $scope.mostrarPanelAgregarComision = true;
-
+	  
 //	  $scope.comision={};
 	  if($scope.nominaClienteComisionesDto.catProductoNomina.idCatGeneral == 304){
 		  $scope.comision.esquema.idCatGeneral = 2878;
@@ -1887,7 +1905,11 @@ angular.module('theme.core.templates')
 		  $scope.comision.esquema.idCatGeneral = 9949;
 	  }else if($scope.nominaClienteComisionesDto.catProductoNomina.idCatGeneral == 9950){
 		  $scope.comision.esquema.idCatGeneral = 9950;
-	  }else{
+	  }
+	   else if($scope.nominaClienteComisionesDto.catProductoNomina.idCatGeneral == 9958){
+		  $scope.comision.esquema.idCatGeneral = 9959;
+	  }
+	  else{
 		  $scope.comision.esquema = '';
 	  }
 	  $scope.comision.canalVenta ='';
@@ -1896,11 +1918,11 @@ angular.module('theme.core.templates')
 	  $scope.comision.comision = null;
 	  $scope.comision.idNominaClienteComision = null;
 	}
-
+	
 	$scope.cancelarAgregarComision = function() {
 		  $scope.mostrarPanelAgregarComision = false;
 	}
-
+	
 	$scope.editarComision = function(comision) {
 		 if($scope.nominaClienteComisionesDto.catProductoNomina.idCatGeneral == 304){
 			  $scope.comision.esquema.idCatGeneral = 2878;
@@ -1909,6 +1931,10 @@ angular.module('theme.core.templates')
 		  }else if($scope.nominaClienteComisionesDto.catProductoNomina.idCatGeneral == 9950){
 			  $scope.comision.esquema.idCatGeneral = 9950;
 		  }
+		  else if($scope.nominaClienteComisionesDto.catProductoNomina.idCatGeneral == 9958){
+			  $scope.comision.esquema.idCatGeneral = 9959;
+		  }
+		
 		  $scope.mostrarPanelAgregarComision = true;
 		  $scope.comision.esquema = comision.esquema;
 		  $scope.comision.canalVenta = comision.canalVenta;
@@ -1920,25 +1946,25 @@ angular.module('theme.core.templates')
 		  $scope.comision.fechaFinPago = new Date(comision.fechaFinPago);
 		  }
 		  $scope.comision.idNominaClienteComision = comision.idNominaClienteComision;
-
+		  		  
 		  if(comision.canalVenta.idCatGeneral == 64 || comision.canalVenta.idCatGeneral == 61){
 				$scope.comision.formulaPricing = $scope.catFormulaPrincing[0];
 				$scope.comision.formulaComision = '';
 				$scope.comision.porcentajeComision = '';
 			}
-
+			
 			if(comision.canalVenta.idCatGeneral == 60 || comision.canalVenta.idCatGeneral == 62 || comision.canalVenta.idCatGeneral == 63){
 				$scope.comision.formulaComision = $scope.catFormulaComision[0];
 				$scope.comision.formulaPricing = '';
 				$scope.comision.porcentajeComision = '';
 			}
-
+			
 			if(comision.canalVenta.idCatGeneral == 65){
 				$scope.comision.formulaComision = $scope.catFormulaComision[0];
 				$scope.comision.formulaPricing = '';
 				$scope.comision.porcentajeComision = comision.porcentajeComision;
 			}
-
+		  
 		  $http.post(CONFIG.APIURL + "/clienteSeccionesCrm/nominaCliente/obtenerUsuarioCanalVenta.json", comision.canalVenta.idCatGeneral).then(
 					function(response) {
 						if(response.data.length == 0){
@@ -1947,15 +1973,15 @@ angular.module('theme.core.templates')
 						}else{
 						$scope.tipoCanalVentaUsuario = response.data;
 						}
-
+						
 			  },function(response) {
 					$log.error("error --> " + response);
 
-				});
+				});	
 		}
-
+	
 	$scope.eliminarComision = function(comision) {
-
+		  
 		bootbox
 		.confirm({
 			title : "Confirmar acci&oacute;n",
@@ -1979,14 +2005,14 @@ angular.module('theme.core.templates')
 							        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 							        type: 'success'
 							      });
-
+								 
 								$scope.mostrarPanelAgregarComision = false;
 								 $http.post(CONFIG.APIURL + "/clienteSeccionesCrm/nominaCliente/cargaInicialGridComisiones.json", $scope.nominaClienteComisionesDto.idNominaCliente).then(
 											function(response) {
 										$scope.gridNominaComisiones = response.data;
 									  },function(response) {
 											$log.error("error --> " + response);
-										});
+										});			  
 		                  },
 		                  function (response) {
 		                	  $log.error(response.status+ ' - '+ response.statusText);
@@ -2002,7 +2028,7 @@ angular.module('theme.core.templates')
 			}
 		});
 		}
-
+	
 	$scope.guardarComision = function(comision, comisionForm) {
 	comision.nominaCliente = $scope.nominaClienteComisionesDto;
     	bootbox
@@ -2036,8 +2062,8 @@ angular.module('theme.core.templates')
 							        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 							        type: 'success'
 							      });
-
-
+								
+								
 								if(comisionForm){
 									comisionForm.$setPristine();
 									comisionForm.$setUntouched();
@@ -2066,8 +2092,8 @@ angular.module('theme.core.templates')
 			}
 		});
 		}
-
-
+	
+	
 	$scope.cargaInicialClienteComisiones = function() {
 		$http.post(CONFIG.APIURL + "/clienteSeccionesCrm/nominaCliente/cargaInicialComisiones.json").then(
 				function(response) {
@@ -2096,8 +2122,8 @@ angular.module('theme.core.templates')
 
 			});
 		}
-
-
+		
+		
 		$scope.obtenerUsuarioCanalVenta = function(idCanalVenta){
 					$http.post(CONFIG.APIURL + "/clienteSeccionesCrm/nominaCliente/obtenerUsuarioCanalVenta.json", idCanalVenta).then(
 							function(response) {
@@ -2107,19 +2133,19 @@ angular.module('theme.core.templates')
 								}else{
 								$scope.tipoCanalVentaUsuario = response.data;
 								}
-
+								
 								if(idCanalVenta == 64 || idCanalVenta == 61){
 									$scope.comision.formulaPricing = $scope.catFormulaPrincing[0];
 									$scope.comision.formulaComision = '';
 									$scope.comision.porcentajeComision = '';
 								}
-
+								
 								if(idCanalVenta == 60 || idCanalVenta == 62 || idCanalVenta == 63){
 									$scope.comision.formulaComision = $scope.catFormulaComision[0];
 									$scope.comision.formulaPricing = '';
 									$scope.comision.porcentajeComision = '';
 								}
-
+								
 								if(idCanalVenta == 65){
 									$scope.comision.formulaComision = $scope.catFormulaComision[0];
 									$scope.comision.formulaPricing = '';
@@ -2129,14 +2155,14 @@ angular.module('theme.core.templates')
 					  },function(response) {
 							$log.error("error --> " + response);
 
-						});
-
+						});	
+			
 		}
-
-
+	
+	
 		///////////////////////////////////
-
-
+	
+	
 	  ////////////////// Honorarios
 	 $scope.seleccionarNominaHonorarios = function(seleccion) {
 		$scope.nominaClienteHonorariosDto = seleccion;
@@ -2156,9 +2182,9 @@ angular.module('theme.core.templates')
 			        type: 'error'
 			      });
 
-			});
+			});		
 	}
-
+	 
 	 $scope.agregarHonorario = function() {
 		  $scope.mostrarPanelAgregarHonorarios = true;
 		  $scope.limpiarHonorario();
@@ -2181,11 +2207,11 @@ angular.module('theme.core.templates')
 			  $scope.mostrarPanelAgregarHonorariosMaquila = false;
 		  }
 		}
-
+	 
 	 $scope.cancelarActualizarHonorario = function() {
 		  $scope.mostrarPanelAgregarHonorarios = false;
 		}
-
+	
 	 $scope.cargaInicialClienteHonorarios = function() {
 			$http.post(CONFIG.APIURL + "/clienteSeccionesCrm/nominaCliente/cargaInicialHonorarios.json").then(
 					function(response) {
@@ -2198,11 +2224,11 @@ angular.module('theme.core.templates')
 				  $scope.catFormulaHonorario = response.data.catFormulaHonorario;
 				  $scope.catFormulaFactura = response.data.catFormulaFactura;
 				  $scope.catTipoIVA = response.data.catTipoIVA;
-
+				  
 				  $scope.catFormulaHonorarioMaquila = response.data.catFormulaHonorarioMaquila;
 				  $scope.catFormulaHonorarioMixto = response.data.catFormulaHonorarioMixto;
 				  $scope.catFormulaHonorarioSS = response.data.catFormulaHonorarioSS;
-
+				  
 				  $scope.catTipoIVASs = response.data.catTipoIVASs;
 				  $scope.catTipoIVAMixto = response.data.catTipoIVAMixto;
 				  $scope.catFormulaFacturaSs = response.data.catFormulaFacturaSs;
@@ -2217,7 +2243,7 @@ angular.module('theme.core.templates')
 
 				});
 			}
-
+	 
 	 $scope.guardarHonorario = function(honorario) {
 			honorario.nominaCliente = $scope.nominaClienteHonorariosDto;
 		    	bootbox
@@ -2261,7 +2287,7 @@ angular.module('theme.core.templates')
 												$scope.gridNominaHonorarios = response.data;
 											  },function(response) {
 													$log.error("error --> " + response);
-												});
+												});	
 								}
 				                  },
 				                  function (response) {
@@ -2278,13 +2304,13 @@ angular.module('theme.core.templates')
 					}
 				});
 				}
-
+	 
 	 $scope.limpiarHonorario = function(){
 		 $scope.honorario.honorarioPPP = '';
 		  $scope.honorario.formulaPPP = '';
 		  $scope.honorario.formulaFactura = '';
 		  $scope.honorario.formulaTipoIva = '';
-
+		  
 		  $scope.honorario.formulaPPPSs = '';
 		  $scope.honorario.formulaPPPMixto = '';
 		  $scope.honorario.formulaPPPMaquila = '';
@@ -2296,7 +2322,7 @@ angular.module('theme.core.templates')
 //		  $scope.honorario.catFormulaFacturaSs  = undefined;
 //		  $scope.honorario.catFormulaFacturaMixto  = undefined;
 	 }
-
+	 
 	 $scope.editarHonorario = function(honorario) {
 		 $scope.limpiarHonorario();
 		 if($scope.nominaClienteHonorariosDto.catProductoNomina.idCatGeneral == 306){//ss
@@ -2331,22 +2357,22 @@ angular.module('theme.core.templates')
 			  $scope.mostrarPanelAgregarHonorariosSS = false;
 			  $scope.mostrarPanelAgregarHonorariosMixto = false;
 			  $scope.mostrarPanelAgregarHonorariosMaquila = false;
-
+			  
 			  $scope.honorario.honorarioPPP = honorario.honorarioPPP;
 			  if(honorario.ivaComercial !=null && honorario.ivaComercial != undefined){
-				  $scope.honorario.ivaComercial = honorario.ivaComercial;
+				  $scope.honorario.ivaComercial = honorario.ivaComercial;  
 			  }
 			  $scope.honorario.formulaPPP = honorario.formulaPPP;
 			  $scope.honorario.formulaFactura = honorario.formulaFactura;
 			  $scope.honorario.formulaTipoIva = honorario.formulaTipoIva;
 			  $scope.honorario.idNominaClienteHonorario = honorario.idNominaClienteHonorario;
-
+			  
 			  $scope.catFormulaFacturaAux = angular.copy($scope.catFormulaFactura);
 //			  $scope.obtenerCatTipoIVAHonorario(honorario.formulaTipoIva.idCatGeneral);
 		  }
-
+		  
 		}
-
+	 
 	 $scope.obtenerCatTipoIVAHonorario = function(idTipoIVA){
 		 if(idTipoIVA == 5){
 			 $http.post(CONFIG.APIURL + "/clienteSeccionesCrm/nominaCliente/modificarCatalogoTipoIVA.json").then(
@@ -2361,9 +2387,9 @@ angular.module('theme.core.templates')
 			 $scope.catFormulaFactura = angular.copy($scope.catFormulaFacturaAux);
 		 }
 	 }
-
+	 
 	 $scope.eliminarHonorario = function(honorario) {
-
+		  
 			bootbox
 			.confirm({
 				title : "Confirmar acci&oacute;n",
@@ -2387,7 +2413,7 @@ angular.module('theme.core.templates')
 								        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 								        type: 'success'
 								      });
-
+									 
 									$scope.mostrarPanelAgregarHonorarios = false;
 									  $scope.mostrarPanelAgregarHonorariosSS = false;
 									  $scope.mostrarPanelAgregarHonorariosMixto = false;
@@ -2398,7 +2424,7 @@ angular.module('theme.core.templates')
 										$scope.gridNominaHonorarios = response.data;
 									  },function(response) {
 											$log.error("error --> " + response);
-										});
+										});			
 			                  },
 			                  function (response) {
 			                	  $log.error(response.status+ ' - '+ response.statusText);
@@ -2414,12 +2440,12 @@ angular.module('theme.core.templates')
 				}
 			});
 			}
-
+	 
 	 //////////////////////////
-
-
-
-
+	 
+	 
+	 
+	 
 	 $scope.verDetalleNominaCliente = function(idNominaCliente){
 		 $http.post(CONFIG.APIURL + "/clienteSeccionesCrm/detalleNominaCliente.json", idNominaCliente).then(
 				 function(response){
@@ -2434,9 +2460,9 @@ angular.module('theme.core.templates')
 						console.log("error --> " + data);
 				 }
 		 );
-
+		 
 	 }
-
+	 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////REPRESENTANTES LEGALES //////////////////////////////////////////
 
@@ -2488,7 +2514,7 @@ angular.module('theme.core.templates')
 													representanteLegalForm.$setPristine();
 													representanteLegalForm.$setUntouched();
 												}
-
+												
 												$scope.cargaInicialRepresentanteLegal();
 
 											}
@@ -2568,15 +2594,15 @@ angular.module('theme.core.templates')
 
 					// accion que carga los campos para su edicion
 					$scope.actualizarRepresentanteLegal = function(representante) {
-
+						
 						$scope.tituloDinamicoLegal = 'ACTUALIZAR INFORMACIÓN REPRESENTANTE LEGAL';
-
+						
 						$scope.IsVisibleDocumentosRepresentante = false;
-
+						
 						$scope.representanteLegalDto = {};
 						$scope.IsVisibleFormularioRepresentante = true;
 						$scope.representanteLegalDto = angular.copy(representante);
-
+						
 						// se cierran formularios de apoderados
 						$scope.IsVisibleFormularioApoderado = false;
 						$scope.IsVisibleDocumentosApoderado = false;
@@ -2585,19 +2611,19 @@ angular.module('theme.core.templates')
 					}
 
 					$scope.nuevoRepresentanteLegal = function(representanteLegalForm) {
-
+						
 						$scope.tituloDinamicoLegal = 'REGISTRO DE REPRESENTANTE LEGAL';
-
+						
 						$scope.representanteLegalDto = {};
 						$scope.IsVisibleFormularioRepresentante = true;
 						$scope.IsVisibleDocumentosRepresentante = false;
-
+						
 						// se cierran formularios de apoderados
 						$scope.IsVisibleFormularioApoderado = false;
 						$scope.IsVisibleDocumentosApoderado = false;
 						$scope.IsVisibleRepresentanteArchivos = false;
-
-
+						
+						
 						$scope.limpiarConcepto = function(formularioConcepto){
 					    	  $scope.concepto = {};
 					    	  if(formularioConcepto){
@@ -2606,28 +2632,28 @@ angular.module('theme.core.templates')
 //					        	  formularioConcepto.$submitted = false;
 //					        	  $scope.$apply();
 					    	  }
-
+					    	  
 					      }
 
 					}
-
+					
 					$scope.showDocumentosRepresentante = function(representante) {
-
+						
 						$scope.representanteLegalDto = angular.copy(representante);
-
+						
 						$scope.cargaInicialDocumentosClienteRepresentanteLegal($scope.representanteLegalDto.idGenericoRepresentanteLegal);
-
+						
 						$scope.IsVisibleFormularioRepresentante = false;
 						$scope.IsVisibleDocumentosRepresentante = true;
 						$scope.IsVisibleRepresentanteArchivos = false;
-
+						
 						// se cierran formularios de apoderados
 						$scope.IsVisibleFormularioApoderado = false;
 						$scope.IsVisibleDocumentosApoderado = false;
-
-
+						
+						
 					}
-
+					
 					  $scope.cargaInicialDocumentosClienteRepresentanteLegal = function (id){
 						  $http.post(CONFIG.APIURL + "/clienteSeccionesCrm/representanteLegal/obtenerDocumentosRepresentante.json", id).then(
 									function(data) {
@@ -2636,36 +2662,36 @@ angular.module('theme.core.templates')
 										console.log("error --> " + data);
 									});
 					  }
-
+					  
 					  $scope.mostrarModalDocumentoRepresentante = function(itemDefinicionDocumento) {
 
 						  	$scope.archivoPrestadora = {};
 						  	itemDefinicionDocumento.idClienteRepresentanteLegal = $scope.representanteLegalDto.idGenericoRepresentanteLegal;
-
+						  							
 						  	$scope.itemDefinicionDocumento = angular.copy(itemDefinicionDocumento);
-
+						  	
 					        $('#agregarDocumentoRepresentante').modal('show');
-
+					        
 					        var fileElement = angular.element('#file_representante');
 					        angular.element(fileElement).val(null);
 
 					    };
-
-
+					    
+					    
 				      	$scope.guardarDocumentoRepresentante = function(){
-
-					    	  if($scope.itemDefinicionDocumento == undefined || $scope.itemDefinicionDocumento.documentoNuevo === undefined ||
+					    	  
+					    	  if($scope.itemDefinicionDocumento == undefined || $scope.itemDefinicionDocumento.documentoNuevo === undefined || 
 					    			  $scope.itemDefinicionDocumento.documentoNuevo.nombreArchivo === undefined){
-
+					    		  
 					    		  pinesNotifications.notify({
 								        title: 'Error',
 								        text: 'Es necesario adjuntar el documento',
 								        type: 'error'
 								      });
-
+					    		  
 					    		  return;
 					    	  }
-
+					    	  
 					    	  $http.post(CONFIG.APIURL + "/clienteSeccionesCrm/representanteLegal/guardarDocumentosClienteRepresentante.json", $scope.itemDefinicionDocumento).then(
 					                  function (response) {
 					                	  $log.debug('ok');
@@ -2674,7 +2700,7 @@ angular.module('theme.core.templates')
 										        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 										        type: 'success'
 										      });
-
+											
 											$scope.cargaInicialDocumentosClienteRepresentanteLegal($scope.representanteLegalDto.idGenericoRepresentanteLegal);
 											$('#agregarDocumentoRepresentante').modal('hide');
 					                  },
@@ -2687,9 +2713,9 @@ angular.module('theme.core.templates')
 										      });
 					                  });
 					      	}
-
+				      	
 				      	$scope.eliminarDocumentoRepresentante = function(itemDefinicionDocumento){
-
+					    	  
 				      		bootbox.confirm({
 								  title : "Confirmar acci&oacute;n",
 									message : "¿Est\u00e1s seguro de eliminar el documento ?",
@@ -2705,7 +2731,7 @@ angular.module('theme.core.templates')
 									},
 									callback : function(result) {
 										if (result) {
-
+											
 											 $http.post(CONFIG.APIURL + "/clienteSeccionesCrm/representanteLegal/eliminarDocumentosRepresentante.json",itemDefinicionDocumento).then(
 									                  function (response) {
 									                	  $log.debug('ok');
@@ -2714,9 +2740,9 @@ angular.module('theme.core.templates')
 														        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 														        type: 'success'
 														      });
-
+															
 															$scope.cargaInicialDocumentosClienteRepresentanteLegal($scope.representanteLegalDto.idGenericoRepresentanteLegal);
-
+															
 									                  },
 									                  function (data) {
 									                	  $log.error(data.status+ ' - '+ data.statusText);
@@ -2726,13 +2752,13 @@ angular.module('theme.core.templates')
 														        type: 'error'
 														      });
 									                  });
-
+											
 										}
-									}
+									}				  
 							  });
 				      }
-
-
+				      	
+				      	
 				      	$scope.cargaInicialDocumentosCerKeyRepresentante = function (id){
 							$http.post(CONFIG.APIURL + "/clienteSeccionesCrm/representanteLegal/obtenerDoctosClienteDocumentoRepresentanteCerKey.json", id).then(
 							         function(data) {
@@ -2741,12 +2767,12 @@ angular.module('theme.core.templates')
 							   console.log("error --> " + data);
 							});
 							}
-
-
+				      	
+				      	
 				      	$scope.guardarDocumentoRepresentanteCerKey = function(){
-							  if($scope.itemDefinicionDocumento == undefined || $scope.itemDefinicionDocumento.documentoNuevo === undefined ||
+							  if($scope.itemDefinicionDocumento == undefined || $scope.itemDefinicionDocumento.documentoNuevo === undefined || 
 									$scope.itemDefinicionDocumento.documentoNuevo.nombreArchivo === undefined){
-
+																	    		  
 								  pinesNotifications.notify({
 								  title: 'Error',
 								  text: 'Es necesario adjuntar el documento',
@@ -2754,7 +2780,7 @@ angular.module('theme.core.templates')
 								  });
 								 return;
 								 }
-
+																	    	  
 					$http.post(CONFIG.APIURL + "/clienteSeccionesCrm/representanteLegal/guardarDocumentosClienteRepresentanteCerKey.json", $scope.itemDefinicionDocumento).then(
 					  function (response) {
 					    $log.debug('ok');
@@ -2763,7 +2789,7 @@ angular.module('theme.core.templates')
 						text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 						type: 'success'
 						});
-
+																							
 						$scope.cargaInicialDocumentosCerKeyRepresentante($scope.representanteLegalDto.idGenericoRepresentanteLegal);
 						var fileElement = angular.element('#fileRepresentanteCerKey');
 						angular.element(fileElement).val(null);
@@ -2778,7 +2804,7 @@ angular.module('theme.core.templates')
 									});
 					});
 				}
-
+				      	
 				      	$scope.showDocumentosCerKeyRepresentante = function(archivo, representanteLegalForm){
 							$scope.representanteLegalDto = angular.copy(archivo);
 							$scope.IsVisibleRepresentanteArchivos = true;
@@ -2786,26 +2812,26 @@ angular.module('theme.core.templates')
 							$scope.IsVisibleDocumentosApoderado = false;
 							$scope.IsVisibleDocumentosRepresentante = false;
 							$scope.IsVisibleFormularioRepresentante = false;
-
+							
 							if(representanteLegalForm){
 								representanteLegalForm.$setPristine();
 								representanteLegalForm.$setUntouched();
 							}
-
+							
 							$scope.cargaInicialDocumentosCerKeyRepresentante($scope.representanteLegalDto.idGenericoRepresentanteLegal);
 						}
-
+				      	
 				      	$scope.mostrarModalDocumentoRepresentanteCerKey = function(itemDefinicionDocumento) {
 				      		$scope.tipoDoc = angular.lowercase(itemDefinicionDocumento.definicion.nombreDocumento);
 							$scope.archivoPrestadora = {};
-
+							
 						  	itemDefinicionDocumento.idClienteRepresentanteLegal = $scope.representanteLegalDto.idGenericoRepresentanteLegal;
   							$scope.itemDefinicionDocumento = angular.copy(itemDefinicionDocumento);
 
 								$('#agregarDocumentoRepresentanteCerKey').modal('show');
 							 };
-
-
+				     
+							 
 								$scope.eliminarDocumentoRepresentanteCerKey = function(documento) {
 									  bootbox.confirm({
 										  title : "Confirmar acci&oacute;n",
@@ -2831,7 +2857,7 @@ angular.module('theme.core.templates')
 														        text: response.data.mensajeError,
 														        type: 'error'
 														      });
-
+															
 														}else{
 															$log.debug('ok');
 															pinesNotifications.notify({
@@ -2854,10 +2880,10 @@ angular.module('theme.core.templates')
 													      });
 													});
 												}
-											}
+											}				  
 									  });
 								}
-
+								
 								$scope.guardarRepresentanteLegalContrasenia = function() {
 									clienteFinalService.guardarContraseniaCerKeyRepresentanteLegal($scope.representanteLegalDto,function(response) {
 										  if(response.data.mensajeError != undefined || response.data.mensajeError!=null){
@@ -2875,7 +2901,7 @@ angular.module('theme.core.templates')
 											        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 											        type: 'success'
 											      });
-
+												
 												clienteFinalService.cargaInicialRepresentanteLegal(
 														function(response) {
 															$scope.gridRepresentantesLegales = response.data.gridRepresentantesLegales;
@@ -2901,7 +2927,7 @@ angular.module('theme.core.templates')
 										      });
 										});
 									}
-
+				      	
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2948,12 +2974,12 @@ angular.module('theme.core.templates')
 
 												$scope.IsVisibleFormularioApoderado = false;
 												$scope.IsVisibleDocumentosApoderado = false;
-
+												
 												if(apoderadoLegalForm){
 													apoderadoLegalForm.$setPristine();
 													apoderadoLegalForm.$setUntouched();
 												}
-
+												
 												$scope.cargaInicialApoderadoLegal();
 
 											}
@@ -3030,49 +3056,49 @@ angular.module('theme.core.templates')
 };
 
 				// accion que carga los campos para su edicion
-				$scope.actualizarApoderadoLegal = function(apoderado) {
+				$scope.actualizarApoderadoLegal = function(apoderado) {	
 					$scope.tituloDinamicoLegal = 'ACTUALIZAR INFORMACIÓN APODERADO LEGAL';
-
+					
 					$scope.IsVisibleDocumentosApoderado = false;
-
+					
 					$scope.apoderadoLegalDto = {};
 					$scope.IsVisibleFormularioApoderado = true;
 					$scope.apoderadoLegalDto = angular.copy(apoderado);
-
+					
 					// se cierran formularios de representante
 					$scope.IsVisibleFormularioRepresentante = false;
 					$scope.IsVisibleDocumentosRepresentante = false;
-
+					
 				}
-
+				
 				$scope.nuevoApoderadoLegal = function() {
 					$scope.tituloDinamicoLegal = 'REGISTRO DE APODERADO LEGAL';
-
+					
 					$scope.apoderadoLegalDto = {};
 					$scope.IsVisibleFormularioApoderado = true;
 					$scope.IsVisibleDocumentosApoderado = false;
-
+					
 					// se cierran formularios de representante
 					$scope.IsVisibleFormularioRepresentante = false;
 					$scope.IsVisibleDocumentosRepresentante = false;
-
+					
 				}
-
+				
 				$scope.showDocumentoApoderado = function(apoderado) {
-
+					
 					$scope.apoderadoLegalDto = angular.copy(apoderado);
-
+					
 					$scope.cargaInicialDocumentosClienteApoderadoLegal($scope.apoderadoLegalDto.idGenericoApoderadoLegal);
-
+					
 					$scope.IsVisibleDocumentosApoderado = true;
 					$scope.IsVisibleFormularioApoderado = false;
-
+					
 					// se cierran formularios de representante
 					$scope.IsVisibleFormularioRepresentante = false;
 					$scope.IsVisibleDocumentosRepresentante = false;
-
+					
 				}
-
+				
 				  $scope.cargaInicialDocumentosClienteApoderadoLegal = function (id){
 					  $http.post(CONFIG.APIURL + "/clienteSeccionesCrm/apoderadoLegal/obtenerDocumentosApoderado.json", id).then(
 								function(data) {
@@ -3081,34 +3107,34 @@ angular.module('theme.core.templates')
 									console.log("error --> " + data);
 								});
 				  }
-
+				  
 				  $scope.mostrarModalDocumentoApoderado = function(itemDefinicionDocumento) {
 
 					  	$scope.archivoPrestadora = {};
 					  	itemDefinicionDocumento.idClienteApoderadoLegal = $scope.apoderadoLegalDto.idGenericoApoderadoLegal;
 					  	$scope.itemDefinicionDocumento = angular.copy(itemDefinicionDocumento);
-
+					  	
 				        $('#agregarDocumentoApoderado').modal('show');
-
+				        
 				        var fileElement = angular.element('#file_apoderado');
 				        angular.element(fileElement).val(null);
 
 				    };
-
+				    
 				      $scope.guardarDocumentoApoderado = function(){
-
-				    	  if($scope.itemDefinicionDocumento == undefined || $scope.itemDefinicionDocumento.documentoNuevo === undefined ||
+				    	  
+				    	  if($scope.itemDefinicionDocumento == undefined || $scope.itemDefinicionDocumento.documentoNuevo === undefined || 
 				    			  $scope.itemDefinicionDocumento.documentoNuevo.nombreArchivo === undefined){
-
+				    		  
 				    		  pinesNotifications.notify({
 							        title: 'Error',
 							        text: 'Es necesario adjuntar el documento',
 							        type: 'error'
 							      });
-
+				    		  
 				    		  return;
 				    	  }
-
+				    	  
 				    	  $http.post(CONFIG.APIURL + "/clienteSeccionesCrm/apoderadoLegal/guardarDocumentosClienteApoderado.json", $scope.itemDefinicionDocumento).then(
 				                  function (response) {
 				                	  $log.debug('ok');
@@ -3117,7 +3143,7 @@ angular.module('theme.core.templates')
 									        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 									        type: 'success'
 									      });
-
+										
 										$scope.cargaInicialDocumentosClienteApoderadoLegal($scope.apoderadoLegalDto.idGenericoApoderadoLegal);
 										$('#agregarDocumentoApoderado').modal('hide');
 				                  },
@@ -3129,12 +3155,12 @@ angular.module('theme.core.templates')
 									        type: 'error'
 									      });
 				                  });
-
-
+				    	  
+				    	  
 				      }
-
+				    
 				    $scope.eliminarDocumentoApoderado = function(itemDefinicionDocumento){
-
+				    	  
 			      		bootbox.confirm({
 							  title : "Confirmar acci&oacute;n",
 								message : "¿Est\u00e1s seguro de eliminar el documento ?",
@@ -3150,7 +3176,7 @@ angular.module('theme.core.templates')
 								},
 								callback : function(result) {
 									if (result) {
-
+										
 										 $http.post(CONFIG.APIURL + "/clienteSeccionesCrm/apoderadoLegal/eliminarDocumentosApoderado.json",itemDefinicionDocumento).then(
 								                  function (response) {
 								                	  $log.debug('ok');
@@ -3159,9 +3185,9 @@ angular.module('theme.core.templates')
 													        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 													        type: 'success'
 													      });
-
+														
 														$scope.cargaInicialDocumentosClienteApoderadoLegal($scope.apoderadoLegalDto.idGenericoApoderadoLegal);
-
+														
 								                  },
 								                  function (data) {
 								                	  $log.error(data.status+ ' - '+ data.statusText);
@@ -3171,16 +3197,16 @@ angular.module('theme.core.templates')
 													        type: 'error'
 													      });
 								                  });
-
+										
 									}
-								}
+								}				  
 						  });
 			      }
-
+				    
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////    DOCUMENTOS CLIENTE //////////////////////////////////////////////////////////////
-
+				    
 				  $scope.cargaInicialDocumentosCliente = function (){
 					  $http.post(CONFIG.APIURL + "/clienteSeccionesCrm/documentos/obtenerDocumentosCliente.json").then(
 								function(data) {
@@ -3189,22 +3215,22 @@ angular.module('theme.core.templates')
 									console.log("error --> " + data);
 								});
 				  }
-
+				  
 
 				  $scope.guardarDocumentoCliente = function(){
-
-			    	  if($scope.itemDefinicionDocumento == undefined || $scope.itemDefinicionDocumento.documentoNuevo === undefined ||
+			    	  
+			    	  if($scope.itemDefinicionDocumento == undefined || $scope.itemDefinicionDocumento.documentoNuevo === undefined || 
 			    			  $scope.itemDefinicionDocumento.documentoNuevo.nombreArchivo === undefined){
-
+			    		  
 			    		  pinesNotifications.notify({
 						        title: 'Error',
 						        text: 'Es necesario adjuntar el documento',
 						        type: 'error'
 						      });
-
+			    		  
 			    		  return;
 			    	  }
-
+			    	  
 			    	  $http.post(CONFIG.APIURL + "/clienteSeccionesCrm/documentos/guardarDocumentosCliente.json", $scope.itemDefinicionDocumento).then(
 			                  function (response) {
 			                	  $log.debug('ok');
@@ -3213,7 +3239,7 @@ angular.module('theme.core.templates')
 								        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 								        type: 'success'
 								      });
-
+									
 									$scope.cargaInicialDocumentosCliente();
 
 									$('#agregarDocumentoCliente').modal('hide');
@@ -3226,12 +3252,12 @@ angular.module('theme.core.templates')
 								        type: 'error'
 								      });
 			                  });
-
-
+			    	  
+			    	  
 			      }
-
+				  
 				  $scope.eliminarDocumentoCliente = function(itemDefinicionDocumento){
-
+			    	  
 			      		bootbox.confirm({
 							  title : "Confirmar acci&oacute;n",
 								message : "¿Est\u00e1s seguro de eliminar el documento ?",
@@ -3247,7 +3273,7 @@ angular.module('theme.core.templates')
 								},
 								callback : function(result) {
 									if (result) {
-
+										
 										 $http.post(CONFIG.APIURL + "/clienteSeccionesCrm/documentos/eliminarDocumentosCliente.json",itemDefinicionDocumento).then(
 								                  function (response) {
 								                	  $log.debug('ok');
@@ -3256,9 +3282,9 @@ angular.module('theme.core.templates')
 													        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 													        type: 'success'
 													      });
-
+														
 														$scope.cargaInicialDocumentosCliente();
-
+														
 								                  },
 								                  function (data) {
 								                	  $log.error(data.status+ ' - '+ data.statusText);
@@ -3268,33 +3294,33 @@ angular.module('theme.core.templates')
 													        type: 'error'
 													      });
 								                  });
-
+										
 									}
-								}
+								}				  
 						  });
 			      }
-
+				  
 				  $scope.mostrarModalDocumentoCliente = function(itemDefinicionDocumento) {
 					  	$scope.archivoPrestadora = {};
-
+					  	
 					  	$scope.itemDefinicionDocumento = angular.copy(itemDefinicionDocumento);
 				        $('#agregarDocumentoCliente').modal('show');
-
+				        
 				        var fileElement = angular.element('#file_prestadora');
 				        angular.element(fileElement).val(null);
-
+				         
 
 				    };
-
-
+				
+				
 //////////////////////////////////////////////////////////////////////////////
 ///////////////////////// DESCARGA DE  TODO LOS DOCUMENTOS, METEODO GENERICO /////////////////////////////
-
+				
 		      	$scope.descargarDocumentoByIdCMS = function(idCMS){
-
-
+			    	  
+					
 	      			$http.get(CONFIG.APIURL + "/documento/documentoByIdCMS/"+ idCMS +".json").then(function (response) {
-
+	      				
 	      				var link = document.createElement("a");
 	      				   link.href =  response.data.mimeType + response.data.documentoBase64;
                       	   link.style = "visibility:hidden";
@@ -3302,7 +3328,7 @@ angular.module('theme.core.templates')
                       	   document.body.appendChild(link);
                       	   link.click();
                       	   document.body.removeChild(link);
-
+							
 	                  },
 	                  function (data) {
 	                	  $log.error(data.status+ ' - '+ data.statusText);
@@ -3313,14 +3339,14 @@ angular.module('theme.core.templates')
 						      });
 	                  });
 		      }
-
+		      	
 				  $scope.fileChangedDocPrestadora = function (documento) {
-
+					  
 			          var lstArchivos = documento.files;
 			          var val = lstArchivos[0].name.toLowerCase();
-
-
-
+			          
+			          
+			        
 			          var regex = new RegExp("(.*?)\.(pdf|docx|png|jpg)$");
 
 			          if (!(regex.test(val))) {
@@ -3338,25 +3364,25 @@ angular.module('theme.core.templates')
 			              alert($scope.mensaje);
 			          } else {
 			              var reader = new FileReader();
-
+			              
 			              reader.onloadend = function () {
 			                  $log.debug("Archivo cargado memoria");
-
+			                  
 			                  var documento = {};
 			                  documento.mimeType = reader.result.substr(0,reader.result.indexOf(',')+1);
 			                  documento.archivo = reader.result.substr(reader.result.indexOf(',') + 1);
 			                  documento.nombreArchivo = lstArchivos[0].name;
 			                  documento.tamanioArchivo = lstArchivos[0].size;
-
+			                  
 			                  $scope.itemDefinicionDocumento.documentoNuevo = documento;
 			              }
-
+			              
 			              reader.readAsDataURL(lstArchivos[0]);
-
+			              
 			          }
 
 			      };
-
+			      
 			      $scope.fileChangedFielCsd = function (documento) {
 			          var lstArchivos = documento.files;
 
@@ -3379,20 +3405,20 @@ angular.module('theme.core.templates')
 			              var reader = new FileReader();
 			              reader.onloadend = function () {
 			            	  var documento = {};
-
+			            	  
 			            	  documento.mimeType = reader.result.substr(0,reader.result.indexOf(',')+1);
 			                  documento.archivo = reader.result.substr(reader.result.indexOf(',') + 1);
 			                  documento.nombreArchivo = lstArchivos[0].name;
 			                  documento.tamanioArchivo = lstArchivos[0].size;
-
+			                  
 			                  $scope.itemDefinicionDocumento.documentoNuevo = documento;
 			              }
 			              reader.readAsDataURL(lstArchivos[0]);
 			          }
 			      }
-
+	
 					  ///////////////////////////////////
-
+	
 			    $scope.limpiarSeleccion = function(seleccion) {
 			    	if(seleccion ==="22"){
 			    		$scope.clienteDto.nombre = null;
@@ -3404,32 +3430,32 @@ angular.module('theme.core.templates')
 			    		$scope.clienteDto.rfc = null;
 			    	}
 			    };
-
+			        	
 			    $scope.cancelar = function() {
 			    	location.href=CONFIG.APIURL+"#/crm/clientes";
 			    }
-
+			    
 			    function limpiarNumero(obj) {
 			    	  /* El evento "change" sólo saltará si son diferentes */
 			    	  obj.value = obj.value.replace(/\D/g, '');
 			    }
-
-
+			    
+			    
 			    $scope.reset = function() {
 			    	$scope.clienteActividad = {};
 			      }
-
-
+			    
+			    
 			    $scope.calculaConceptoYFactura  = function(){
-
+			    	
 			    	$scope.concepto ={};
 			    	$scope.montosFactura = {};
 			    	$scope.concepto.cantidad=1;
-
+					
 					//calculo de la factura
 					//Honorario DISPERSIÓN PPP * HONORARIO PACTADO
 					 $scope.montosFactura.honorario =  parseFloat($scope.ejemploPPP.montoPPP) * parseFloat($scope.honorario.honorarioPPP) / 100;
-
+					 
 					 //Formula IVA Agregamos el iva comercial
 					 if($scope.honorario.formulaTipoIva.clave === 'H2'){ //IVA * MONTO DISPERSIÓN + HONORARIO PACTADO
 						 $scope.montosFactura.iva = (parseFloat($scope.ejemploPPP.montoPPP) + $scope.montosFactura.honorario) * parseFloat((parseFloat($scope.honorario.ivaComercial) / 100).toFixed(2));
@@ -3438,22 +3464,76 @@ angular.module('theme.core.templates')
 					 }else if($scope.honorario.formulaTipoIva.clave === 'H4'){// NO APLICA
 						 $scope.montosFactura.iva = parseFloat(0);
 					 }
-
+					 
 					 //Formula Factura
-					 if($scope.honorario.formulaFactura.clave === 'H5'){ //DISPERSIÓN PPP + HONORARIO PACTADO + IVA
+					 if($scope.honorario.formulaFactura.clave === 'H5'){ //DISPERSIÓN PPP + HONORARIO PACTADO + IVA	
 						 $scope.montosFactura.montoFactura = (parseFloat($scope.ejemploPPP.montoPPP)+ $scope.montosFactura.honorario  + $scope.montosFactura.iva );
 					 }else if($scope.honorario.formulaFactura.clave === 'H6'){//HONORARIO PPP + IVA
 						 $scope.montosFactura.montoFactura = ( $scope.montosFactura.honorario +   $scope.montosFactura.iva );
 					 }
-
+					 
 					 $scope.montosFactura.subtotal= parseFloat(parseFloat($scope.montosFactura.montoFactura / parseFloat(1.16)).toFixed(2));
 					 $scope.concepto.precioUnitario = parseFloat(parseFloat($scope.montosFactura.subtotal).toFixed(2));
 					 $scope.concepto.importe =  $scope.concepto.cantidad *  $scope.concepto.precioUnitario;
-
-
+					 
+					 
 					 $scope.concepto.ivaTrasladado16Monto = parseFloat(parseFloat($scope.concepto.precioUnitario * parseFloat(0.16)).toFixed(2));
-
+					 
 			    }
-
+			    
+			    $scope.cargaProductos= function(){
+			    	
+			    	 $http.post(CONFIG.APIURL + "/clienteSeccionesCrm/productos/listaClienteProductos.json",$scope.clienteDto.idCliente ).then(
+			                  function (response) {
+			                	  $log.debug('ok');
+			                	  
+			                	  $scope.productos= response.data.productos;
+									
+									
+			                  },
+			                  function (data) {
+			                	  $log.error(data.status+ ' - '+ data.statusText);
+									pinesNotifications.notify({
+								        title: 'Error',
+								        text: 'Ocurrio un error al eliminar, favor de intentarlo más tarde.',
+								        type: 'error'
+								      });
+			                  });
+			    	
+			    }
+			    
+			    $scope.guardarProductoGral= function(producto) {
+			   	 $http.post(CONFIG.APIURL + "/clienteSeccionesCrm/productos/guardarProductoGral.json",producto).then(
+		                  function (response) {
+		                	  $log.debug('ok');
+		                	  $scope.cargaProductos();
+		                	  
+		                	  if (producto.idClienteProducto==0){
+		                		  pinesNotifications.notify({
+		                			  title: 'Productos',
+		                			  text: 'El  producto se guard\u00f3 correctamente ',
+		                			  type: 'success'
+		                		  });
+		                	  }else{
+		                		  pinesNotifications.notify({
+		                			  title: 'Productos',
+		                			  text: 'El  producto se elimin\u00f3 correctamente ',
+		                			  type: 'success'
+		                		  });
+		                	  }
+		                	  
+		         		
+		                  },
+		                  function (data) {
+		                	  $log.error(data.status+ ' - '+ data.statusText);
+								pinesNotifications.notify({
+							        title: 'Error',
+							        text: 'Ocurrio un error al eliminar, favor de intentarlo más tarde.',
+							        type: 'error'
+							      });
+		                  });
+			    	
+			    }
+			    
 
   });

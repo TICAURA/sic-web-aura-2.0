@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * The persistent class for the usuario database table.
- *
+ * 
  */
 @Entity
 @NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
@@ -17,7 +17,7 @@ public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_usuario")
 	private Long idUsuario;
 
@@ -49,7 +49,7 @@ public class Usuario implements Serializable {
 
 	public Usuario() {
 	}
-
+	
 	public Usuario(Long idUsuario) {
 		this.idUsuario = idUsuario;
 	}

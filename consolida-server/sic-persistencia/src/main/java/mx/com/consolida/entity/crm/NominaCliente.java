@@ -27,54 +27,54 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "nomina_cliente")
 @NamedQueries({ @NamedQuery(name = "NominaCliente.findAll", query = "SELECT c FROM NominaCliente c") })
 public class NominaCliente implements java.io.Serializable {
-
-
+	
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_nomina_cliente", nullable = false)
 	private Long idNominaCliente;
-
+	
 	@Column(name = "nombre_nomina", nullable = false, length = 50)
 	private String nombreNomina;
-
+	
 	@Column(name = "clave_nomina", nullable = false, length = 45)
 	private String claveNomina;
-
+	
 //	@Column(name = "comision_ppp", nullable = false)
 //	private Long comisionPpp;
-//
+//	
 //	@Column(name = "comision_ss")
 //	private Long comisionSs;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_producto_nomina")
 	private CatGeneral catProductoNomina;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cliente", nullable = false)
 	private Cliente cliente;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestadora_servicio")
 	private PrestadoraServicio PrestadoraServicio;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_nominista", nullable = false)
 	private Usuario usuarioNominista;
-
+	
 //	@ManyToOne(fetch = FetchType.LAZY)
 //	@JoinColumn(name = "id_prestadora_servicio")
 //	private PrestadoraServicio prestadoraServicio;
-//
+//	
 //	@ManyToOne(fetch = FetchType.LAZY)
 //	@JoinColumn(name = "id_prestadora_servicio_fondo")
 //	private PrestadoraServicio prestadoraServicioFondo;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
@@ -82,33 +82,36 @@ public class NominaCliente implements java.io.Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
 
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
-
+	
 	@OneToMany(mappedBy = "nominaCliente")
     @OrderBy("fechaAlta DESC")
     private List<NominaClienteComision> nominaClienteComision;
-
+	
 	@OneToMany(mappedBy = "nominaCliente")
     @OrderBy("fechaAlta DESC")
     private List<NominaClienteHonorario> nominaClienteHonorarios;
-
+	
 	@Column(name = "requiere_factura", nullable = false)
 	private Long requiereFactura;
-
+	
+	@Column(name = "genera_timbre", nullable = false)
+	private Long requiereTimbre;
+	
 	public NominaCliente() {
-
+		
 	}
-
+	
 	public NominaCliente(Long idNominaCliente) {
 		this.idNominaCliente = idNominaCliente;
 	}
@@ -248,5 +251,15 @@ public class NominaCliente implements java.io.Serializable {
 	public void setPrestadoraServicio(PrestadoraServicio prestadoraServicio) {
 		PrestadoraServicio = prestadoraServicio;
 	}
+
+	public Long getRequiereTimbre() {
+		return requiereTimbre;
+	}
+
+	public void setRequiereTimbre(Long requiereTimbre) {
+		this.requiereTimbre = requiereTimbre;
+	}
+	
+	
 
 }

@@ -35,87 +35,87 @@ public class CostoAdicional implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_costo_adicional")
     private Long idCostoAdicional;
-
+    
     @JoinColumn(name = "id_porcentaje_promotor", referencedColumnName = "id_cat_valor_default")
     @ManyToOne
     private CatValorDefault idPorcentajePromotor;
-
+    
     @JoinColumn(name = "id_porcentaje_promotor_imss", referencedColumnName = "id_cat_valor_default")
     @ManyToOne
     private CatValorDefault idPorcentajePromotorImss;
-
+    
     @JoinColumn(name = "id_porcentaje_costos_indirectos", referencedColumnName = "id_cat_valor_default")
     @ManyToOne
     private CatValorDefault idPorcentajeCostosIndirectos;
-
+    
     @JoinColumn(name = "id_valor_timbre", referencedColumnName = "id_cat_valor_default")
     @ManyToOne
     private CatValorDefault idValorTimbre;
-
+    
     @JoinColumn(name = "id_valo_spei", referencedColumnName = "id_cat_valor_default")
     @ManyToOne
     private CatValorDefault idValoSpei;
-
+    
     @JoinColumn(name = "id_porcentaje_costo_estrategia", referencedColumnName = "id_cat_valor_default")
     @ManyToOne
     private CatValorDefault idPorcentajeCostoEstrategia;
-
+    
     @Column(name = "monto_sgmm")
     private BigDecimal montoSgmm;
-
+    
     @Column(name = "porcentaje_cliente_sgmm")
     private BigDecimal porcentajeClienteSgmm;
-
+    
     @Column(name = "porcentaje_promotor_sgmm")
     private BigDecimal porcentajePromotorSgmm;
-
+    
     @Column(name = "porcentaje_corporativo_sgmm")
     private BigDecimal porcentajeCorporativoSgmm;
-
+    
     @Column(name = "monto_implant")
     private BigDecimal montoImplant;
-
+    
     @Column(name = "porcentaje_cliente_implant")
     private BigDecimal porcentajeClienteImplant;
-
+    
     @Column(name = "porcentaje_promotor_implant")
     private BigDecimal porcentajePromotorImplant;
-
+    
     @Column(name = "porcentaje_corporativo_implant")
     private BigDecimal porcentajeCorporativoImplant;
-
+    
     @JoinColumn(name = "id_cliente_temp", referencedColumnName = "id_cliente_temp")
     @ManyToOne
     private ClienteTemp idClienteTemp;
-
+    
     @JoinColumn(name = "id_cotizacion", referencedColumnName = "id_cotizacion")
     @ManyToOne
     private Cotizacion idCotizacion;
-
+    
     @JoinColumn(name = "usuario_alta", referencedColumnName = "id_usuario")
     @ManyToOne
     private Usuario usuarioAlta;
-
+    
     @JoinColumn(name = "usuario_modificacion", referencedColumnName = "id_usuario")
     @ManyToOne
     private Usuario usuarioModificacion;
-
+    
     @Column(name = "fecha_alta")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaAlta;
-
+    
     @Column(name = "fecha_modificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificaicon;
-
+    
     @Column(name = "ind_estatus")
     private Long indEstatus;
-
-
-
+    
+    
+    
 
 	public CostoAdicional(CostoAdicionalDto dto) {
 		super();
@@ -161,7 +161,7 @@ public class CostoAdicional implements Serializable {
 	public Long getIdCostoAdicional() {
 		return idCostoAdicional;
 	}
-
+	
 
 
 	public void setIdCostoAdicional(Long idCostoAdicional) {
@@ -385,5 +385,5 @@ public class CostoAdicional implements Serializable {
     public String toString() {
         return "mx.com.consolida.entity.CostoAdicional[ idCostoAdicional=" + idCostoAdicional + " ]";
     }
-
+    
 }

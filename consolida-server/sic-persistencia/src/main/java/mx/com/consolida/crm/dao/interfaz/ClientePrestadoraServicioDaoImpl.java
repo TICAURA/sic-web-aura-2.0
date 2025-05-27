@@ -115,5 +115,34 @@ public class ClientePrestadoraServicioDaoImpl extends GenericDAO<ClientePrestado
 			return null;
 		}
 	}
+	
+
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Transactional(readOnly=true)
+	@Override
+	public Long getidFondoPrestadoraByIdCliente(Long idCliente) {
+		Long idPrestadora=null;
+		try {
+		
+			StringBuilder sb = new StringBuilder();
+			sb.append("select id_prestadora_servicio_fondo " + 
+					" from sin.cliente_prestadora_servicio" + 
+					" where id_cliente_prestadora_servicio = (select ifnull(max(id_cliente_prestadora_servicio),0) " + 
+					"										from sin.cliente_prestadora_servicio " + 
+					"                                        where id_cliente = ?" + 
+					"                                        and ind_estatus = 1) " + 
+					" and ind_estatus = 1 ");
+			
+			idPrestadora=jdbcTemplate.queryForObject(sb.toString(), new Object[]{idCliente}, Long.class);
+					return idPrestadora;	
+		
+		}catch (Exception e) {
+			LOGGER.error("Ocurrio un error en getNominasComplementariasEnBorrador ", e);
+		}
+		return idPrestadora;
+	}
+	
+
 
 }

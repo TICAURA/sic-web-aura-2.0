@@ -19,11 +19,11 @@ import javax.persistence.TemporalType;
 public class MedioContactoTemp implements Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_medio_contacto_temp")
 	private Long idMedioContactoTemp;
 	@Column(name = "codigo_postal")
@@ -190,7 +190,7 @@ public class MedioContactoTemp implements Serializable {
 	public void setUsuarioModificacion(Long usuarioModificacion) {
 		this.usuarioModificacion = usuarioModificacion;
 	}
-
-
+	
+	
 
 }

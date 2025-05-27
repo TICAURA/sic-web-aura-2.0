@@ -31,12 +31,12 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class PrestadoraServicioAccionista implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_prestadora_servicio_accionista")
 	private Long idPrestadoraServicioAccionista;
 

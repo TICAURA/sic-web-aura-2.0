@@ -17,13 +17,28 @@ angular.module('theme.core.templates')
       $scope.isVisibleEstimados = false;
       $scope.isVisibleOperaciones = false;
       $scope.isVisibleVariaciones = false;
+      $scope.isVisibleProductos = false;
       $scope.isVisibleColabFaltCrm = false;
       $scope.isDiferenteNominista = false;
-      $scope.isVisibleFacturacion = false;
+      $scope.isVisibleCamposReporteFacturacion=false;
+      $scope.isVisisbleConsar = false;
+      $scope.isVisisbleTesoOpera = false;
       $scope.isVisibleCamposReporteOperaciones = false;
       $scope.isVisibleCamposReporteVariaciones_Estimados = false;
-      $scope.isVisibleCamposReporteFacturacion=false;
+      $scope.isVisibleCamposReporteFacturas=false;
+      $scope.isVisibleCamposReporteDispersion=false;
+      $scope.isVisibleCamposReporteColaboradores=false;
+	  $scope.isVisibleDispersion = false;
+	  $scope.isVisibleColaboradores = false;
+      $scope.isVisibleClientes = false;
+      $scope.totalPPP=null;
+      $scope.totalSueldosYSalarios=null;
+      $scope.totalMaquila=null;
+      $scope.totalMixtoPPP=null;
+      $scope.totalIrlab=null;
+      $scope.totalQamm=null;
       $scope.nombreReporte = "";
+      
       
       
 	  
@@ -40,21 +55,32 @@ angular.module('theme.core.templates')
 			  $scope.catReportes = response.data.catReportes;
 			  $scope.catCelula = response.data.catCelula;
 			  $scope.catTipoPeriodo = response.data.catTipoPeriodo;
+			  $scope.catListaProductos = response.data.catListaProductos;
 			  $scope.isVisibleEstimados = false;
 		      $scope.isVisibleOperaciones = false;
 		      $scope.isVisibleVariaciones = false;
+		      $scope.isVisibleProductos = false;
+		      $scope.totalPPP=null;
+		      $scope.totalSueldosYSalarios=null;
+              $scope.totalMaquila=null;
+             $scope.totalMixtoPPP=null;
+             $scope.totalIrlab=null;
+             $scope.totalQamm=null;
 		      $scope.isVisibleColabFaltCrm = false;
 		      $scope.cargaAnioMes();
 		      
 			  if(response.data.usuario != undefined && response.data.usuario !=null){
 				  $scope.usuarioDto = response.data.usuario;
 				  
-				  if($scope.usuarioDto.rol.nombre == "NOMINISTA"){
+				  if($scope.usuarioDto.rol.nombre == "NOMINISTA" ){
 					  $scope.deshabilitarCelula = true;
 					  $scope.isDiferenteNominista = false;
 					  $scope.reporteDto.catCelula={};
 					  $scope.reporteDto.catCelula.idCelula= $scope.usuarioDto.idUsuarioCelula;
 				  }	  
+				  
+				  
+			
 			  }
 
 
@@ -99,7 +125,30 @@ angular.module('theme.core.templates')
     			      });
     		  }
 			  
-		  }else{
+		  }if('REPOR_CONSAR' === reporteForm.catReporte.$modelValue.clave){
+			  
+			  if(reporteForm.fechaInicio_.$invalid || reporteForm.fechaFin_.$invalid){
+    			  return pinesNotifications.notify({
+    			        title: 'Reportes',
+    			        text: 'El formulario tiene un error. <br>Favor de seleccionar "Periodo inicio y Periodo fin',
+    			        type: 'error'
+    			      });
+    		  }
+			  
+		  }
+              if('REPOR_TESO_OPERA' === reporteForm.catReporte.$modelValue.clave){
+			  
+			  if(reporteForm.fechaInicio_.$invalid || reporteForm.fechaFin_.$invalid){
+    			  return pinesNotifications.notify({
+    			        title: 'Reportes',
+    			        text: 'El formulario tiene un error. <br>Favor de seleccionar "Periodo inicio y Periodo fin',
+    			        type: 'error'
+    			      });
+    		  }
+			  
+		  }
+		  
+		  else{
 
 			  if('REPOR_EST' === reporteForm.catReporte.$modelValue.clave
 					  || 'REPOR_VARI' === reporteForm.catReporte.$modelValue.clave 
@@ -121,16 +170,14 @@ angular.module('theme.core.templates')
 		  			      });
 				  }
 				  
-				  if('REPOR_FACMES' != reporteForm.catReporte.$modelValue.clave
-					 ){
-				  
-				  if($scope.reporteDto.catTipoPeriodo == null || $scope.reporteDto.catTipoPeriodo == undefined ||  JSON.stringify($scope.reporteDto.catTipoPeriodo)=='{}') {
-	    			  return pinesNotifications.notify({
-	    			        title: 'Reportes',
-	    			        text: 'El formulario tiene un error. <br>Favor de seleccionar "Quincena"',
-	    			        type: 'error'
-	    			      });
-	    		  }
+				  if('REPOR_FACMES' != reporteForm.catReporte.$modelValue.clave){
+					  if($scope.reporteDto.catTipoPeriodo == null || $scope.reporteDto.catTipoPeriodo == undefined ||  JSON.stringify($scope.reporteDto.catTipoPeriodo)=='{}') {
+						  return pinesNotifications.notify({
+							  title: 'Reportes',
+							  text: 'El formulario tiene un error. <br>Favor de seleccionar "Quincena"',
+							  type: 'error'
+						  });
+					  }
 				  }
 			  }
 		  }
@@ -191,8 +238,66 @@ angular.module('theme.core.templates')
 			  $scope.reporteDto.mes = null;
 			  $scope.reporteDto.anio = null;
 			  $scope.reporteDto.catTipoPeriodo = null;
+			  $scope.reporteDto.catListaProductos = null;
 			  
-		  }else if ('COLAB_FALT_CRM' === reporteForm.catReporte.$modelValue.clave){
+		  }
+ 			else  if('REPOR_FAC' === reporteForm.catReporte.$modelValue.clave){
+			  
+			  $scope.reporteDto.mes = null;
+			  $scope.reporteDto.anio = null;
+			  $scope.reporteDto.catTipoPeriodo = null;
+			  $scope.reporteDto.catListaProductos = null;
+			  
+		  }else  if('REPOR_DISP' === reporteForm.catReporte.$modelValue.clave){
+			  
+			  $scope.reporteDto.mes = null;
+			  $scope.reporteDto.anio = null;
+			  $scope.reporteDto.catTipoPeriodo = null;
+			  $scope.reporteDto.catListaProductos = null;
+			  
+		  }else  if('REPOR_COLAB' === reporteForm.catReporte.$modelValue.clave){
+			  
+			  $scope.reporteDto.mes = null;
+			  $scope.reporteDto.anio = null;
+			  $scope.reporteDto.catTipoPeriodo = null;
+			  $scope.reporteDto.catListaProductos = null;
+			  
+		  }else  if('REPOR_CLTS' === reporteForm.catReporte.$modelValue.clave){
+			  
+			  $scope.reporteDto.mes = null;
+			  $scope.reporteDto.anio = null;
+			  $scope.reporteDto.catTipoPeriodo = null;
+			  $scope.reporteDto.catListaProductos = null;
+			  
+		  }
+          
+		  else  if('REPOR_CONSAR' === reporteForm.catReporte.$modelValue.clave){
+			  
+			  $scope.reporteDto.mes = null;
+			  $scope.reporteDto.anio = null;
+			  $scope.reporteDto.catTipoPeriodo = null;
+			  $scope.reporteDto.catListaProductos = null;
+			  
+		  }
+	      else  if('REPOR_TESO_OPERA' === reporteForm.catReporte.$modelValue.clave){
+			  
+			  $scope.reporteDto.mes = null;
+			  $scope.reporteDto.anio = null;
+			  $scope.reporteDto.catTipoPeriodo = null;
+			  $scope.reporteDto.catListaProductos = null;
+			  
+		  }
+		  
+		  else if ('COLAB_FALT_CRM' === reporteForm.catReporte.$modelValue.clave){
+			  $scope.reporteDto.mes = null;
+			  $scope.reporteDto.anio = null;
+			  $scope.reporteDto.catTipoPeriodo = null;
+			  $scope.reporteDto.catListaProductos = null;
+			  $scope.reporteDto.fechaFin = null;
+			  $scope.reporteDto.fechaInicio = null;
+			  $scope.reporteDto.catCelula = null;
+			  
+		  }else if ('REPOR_PROD' === reporteForm.catReporte.$modelValue.clave){
 			  $scope.reporteDto.mes = null;
 			  $scope.reporteDto.anio = null;
 			  $scope.reporteDto.catTipoPeriodo = null;
@@ -200,7 +305,8 @@ angular.module('theme.core.templates')
 			  $scope.reporteDto.fechaInicio = null;
 			  $scope.reporteDto.catCelula = null;
 			  
-		  }else{
+		  }
+		  else{
 			  mesCongelado = angular.copy($scope.reporteDto.mes);
 			  $scope.reporteDto.mes = $scope.getMes($scope.reporteDto.mes); 
 		  }
@@ -212,47 +318,198 @@ angular.module('theme.core.templates')
 			      $scope.isVisibleEstimados = true;
 			      $scope.isVisibleOperaciones = false;
 			      $scope.isVisibleVariaciones = false;
+			      $scope.isVisibleProductos = false;
 			      $scope.isVisibleColabFaltCrm = false;
 			      $scope.isVisibleFacturacion = false;
+				  $scope.isVisibleFacturas = false;
+			      $scope.isVisisbleConsar = false;
+			      $scope.isVisisbleTesoOpera = false;
+				  $scope.isVisibleDispersion = false;
+				  $scope.isVisibleColaboradores = false;
 			      $scope.nombreReporte = "REPORTE ESTIMADOS";
+				  $scope.isVisibleClientes = false;
 				  
 			  }else  if($scope.reporteDto.catReporte.clave == 'REPOR_OPER'){
 				  
 			      $scope.isVisibleEstimados = false;
 			      $scope.isVisibleOperaciones = true;
 			      $scope.isVisibleVariaciones = false;
+			      $scope.isVisibleProductos = false;
 			      $scope.isVisibleColabFaltCrm = false;
 			      $scope.isVisibleFacturacion = false;
+				  $scope.isVisibleFacturas = false;
+			      $scope.isVisisbleConsar = false;
+			      $scope.isVisisbleTesoOpera = false;
+				  $scope.isVisibleDispersion = false;
 			      $scope.nombreReporte = "REPORTE OPERACIONES";
+				  $scope.isVisibleColaboradores = false;
+				  $scope.isVisibleClientes = false;
 				  
-			  }else  if($scope.reporteDto.catReporte.clave == 'REPOR_VARI'){
+			  }
+			  else  if($scope.reporteDto.catReporte.clave == 'REPOR_CONSAR'){
+				  
+				  $scope.isVisisbleConsar = true;
+				  $scope.isVisisbleTesoOpera = false;
+			      $scope.isVisibleEstimados = false;
+			      $scope.isVisibleOperaciones = false;
+			      $scope.isVisibleVariaciones = false;
+			      $scope.isVisibleProductos = false;
+			      $scope.isVisibleColabFaltCrm = false;
+			      $scope.isVisibleFacturacion = false;
+				  $scope.isVisibleFacturas = false;
+				  $scope.isVisibleDispersion = false;
+			      $scope.nombreReporte = "REPORTE CONSAR";
+				  $scope.isVisibleColaboradores = false;
+				  $scope.isVisibleClientes = false;				  
+			  }
+			  else  if($scope.reporteDto.catReporte.clave == 'REPOR_TESO_OPERA'){
+				  
+				  $scope.isVisisbleConsar = false;
+				  $scope.isVisisbleTesoOpera = true;
+			      $scope.isVisibleEstimados = false;
+			      $scope.isVisibleOperaciones = false;
+			      $scope.isVisibleVariaciones = false;
+			      $scope.isVisibleProductos = false;
+			      $scope.isVisibleColabFaltCrm = false;
+			      $scope.isVisibleFacturacion = false;
+				  $scope.isVisibleFacturas = false;
+				  $scope.isVisibleDispersion = false;
+			      $scope.nombreReporte = "REPORTE TESORERIA OPERACIONES";
+				  $scope.isVisibleColaboradores = false;
+				  $scope.isVisibleClientes = false;				  
+			  }
+			  
+			  else  if($scope.reporteDto.catReporte.clave == 'REPOR_VARI'){
 				  
 			      $scope.isVisibleEstimados = false;
 			      $scope.isVisibleOperaciones = false;
 			      $scope.isVisibleVariaciones = true;
+			      $scope.isVisibleProductos = false;
 			      $scope.isVisibleColabFaltCrm = false;
 			      $scope.isVisibleFacturacion = false;
+				  $scope.isVisibleFacturas = false;
+			      $scope.isVisisbleConsar = false;
+			      $scope.isVisisbleTesoOpera = false;
+				  $scope.isVisibleDispersion = false;
 			      $scope.nombreReporte = "REPORTE VARIACIONES";
-				  
+				  $scope.isVisibleColaboradores = false;
+				  $scope.isVisibleClientes = false;				  
 			  }else  if($scope.reporteDto.catReporte.clave == 'COLAB_FALT_CRM'){
 				  
 			      $scope.isVisibleEstimados = false;
 			      $scope.isVisibleOperaciones = false;
 			      $scope.isVisibleVariaciones = false;
+			      $scope.isVisibleProductos = false;
 			      $scope.isVisibleColabFaltCrm = true;
 			      $scope.isVisibleFacturacion = false;
-			      $scope.isVisibleFacturacion = false;
+                  $scope.isVisibleFacturas = false;
+			       $scope.isVisisbleConsar = false;
+			       $scope.isVisisbleTesoOpera = false;
+				  $scope.isVisibleDispersion = false;
 			      $scope.nombreReporte = "COLABORADORES FALTANTES EN CRM";
-				  
+				  $scope.isVisibleColaboradores = false;
+				  $scope.isVisibleClientes = false;				  
 			  }else  if($scope.reporteDto.catReporte.clave == 'REPOR_FACMES'){
 				  
 			      $scope.isVisibleEstimados = false;
 			      $scope.isVisibleOperaciones = false;
 			      $scope.isVisibleVariaciones = false;
+			      $scope.isVisibleProductos = false;
 			      $scope.isVisibleColabFaltCrm = false;
 			      $scope.isVisibleFacturacion = true;
+                  $scope.isVisibleFacturas = false;
+			      $scope.isVisisbleConsar = false;
+			      $scope.isVisisbleTesoOpera = false;
+				  $scope.isVisibleDispersion = false;
 			      $scope.nombreReporte = "FACTURACIÓN MENSUAL";
+				  $scope.isVisibleColaboradores = false;
+				  $scope.isVisibleClientes = false;				  
+			  }else  if($scope.reporteDto.catReporte.clave == 'REPOR_FAC'){
 				  
+			      $scope.isVisibleEstimados = false;
+			      $scope.isVisibleOperaciones = false;
+			      $scope.isVisibleVariaciones = false;
+			      $scope.isVisibleProductos = false;
+			      $scope.isVisibleColabFaltCrm = false;
+			      $scope.isVisibleFacturacion = false;
+				  $scope.isVisibleFacturas = true;
+		          $scope.isVisisbleConsar = false
+		          $scope.isVisisbleTesoOpera = false;
+				  $scope.isVisibleDispersion = false;		
+			      $scope.nombreReporte = "FACTURAS";
+				  $scope.isVisibleColaboradores = false;
+				  $scope.isVisibleClientes = false;				  
+			  }else  if($scope.reporteDto.catReporte.clave == 'REPOR_DISP'){
+				  
+			      $scope.isVisibleEstimados = false;
+			      $scope.isVisibleOperaciones = false;
+			      $scope.isVisibleVariaciones = false;
+			      $scope.isVisibleProductos = false;
+			      $scope.isVisibleColabFaltCrm = false;
+			      $scope.isVisibleFacturacion = false;
+				  $scope.isVisibleFacturas = false;
+				  $scope.isVisibleDispersion = true;
+		          $scope.isVisisbleConsar = false;
+		          $scope.isVisisbleTesoOpera = false;
+			      $scope.nombreReporte = "DISPERSIONES";
+				  $scope.isVisibleColaboradores = false;	
+				  $scope.isVisibleClientes = false;			  
+			  }else  if($scope.reporteDto.catReporte.clave == 'REPOR_COLAB'){
+				  
+			      $scope.isVisibleEstimados = false;
+			      $scope.isVisibleOperaciones = false;
+			      $scope.isVisibleVariaciones = false;
+			      $scope.isVisibleProductos = false;
+			      $scope.isVisibleColabFaltCrm = false;
+			      $scope.isVisibleFacturacion = false;
+					
+				  $scope.isVisibleFacturas = false;
+				  $scope.isVisibleDispersion = true;
+		          $scope.isVisisbleConsar = false;
+		          $scope.isVisisbleTesoOpera = false;
+				  $scope.isVisibleDispersion = false;
+			      $scope.nombreReporte = "COLABORADORES";
+				  $scope.isVisibleColaboradores = true;	
+				  $scope.isVisibleClientes = false;			  
+			  }else  if($scope.reporteDto.catReporte.clave == 'REPOR_CLTS'){
+				  
+			      $scope.isVisibleEstimados = false;
+			      $scope.isVisibleOperaciones = false;
+			      $scope.isVisibleVariaciones = false;
+			      $scope.isVisibleProductos = false;
+			      $scope.isVisibleColabFaltCrm = false;
+			      $scope.isVisibleFacturacion = false;
+					
+				  $scope.isVisibleFacturas = false;
+				  $scope.isVisibleDispersion = true;
+		          $scope.isVisisbleConsar = false;
+		          $scope.isVisisbleTesoOpera = false;
+				  $scope.isVisibleDispersion = false;
+			      $scope.nombreReporte = "CLIENTES";
+  				  $scope.isVisibleColaboradores = false;	
+				  $scope.isVisibleClientes = true;				  
+			  }
+			  else  if($scope.reporteDto.catReporte.clave == 'REPOR_PROD'){
+				  
+			      $scope.isVisibleEstimados = false;
+			      $scope.isVisibleOperaciones = false;
+			      $scope.isVisibleVariaciones = false;
+			      $scope.isVisibleProductos = true;
+			      $scope.isVisibleColabFaltCrm = false;
+			      $scope.isVisibleFacturacion = false;
+                  $scope.isVisibleFacturas = false;
+			      $scope.isVisisbleConsar = false;
+			      $scope.isVisisbleTesoOpera = false;
+				  $scope.isVisibleDispersion = false;
+			      $scope.nombreReporte = "REPORTE PRODUCTOS";
+			      $scope.totalPPP=response.data.reporte[1].totalPPP;
+			      $scope.totalSueldosYSalarios=response.data.reporte[1].totalSueldosYSalarios;
+                  $scope.totalMaquila=response.data.reporte[1].totalMaquila;
+                  $scope.totalMixtoPPP=response.data.reporte[1].totalMixtoPPP;
+                  $scope.totalIrlab=response.data.reporte[1].totalIrlab;
+                  $scope.totalQamm=response.data.reporte[1].totalQamm;;
+				  $scope.isVisibleColaboradores = false;	
+				  $scope.isVisibleClientes = false;		       		  
 			  }
 			 
 			  
@@ -285,12 +542,15 @@ angular.module('theme.core.templates')
 		  $scope.isVisibleEstimados = false;
 	      $scope.isVisibleOperaciones = false;
 	      $scope.isVisibleVariaciones = false;
+	       $scope.isVisibleProductos = false;
 	      $scope.isVisibleColabFaltCrm = false;
 	      
 //	      $scope.reporteDto.catReporte = {};
 	      $scope.reporteDto.fechaInicio = "";
 	      $scope.reporteDto.fechaFin = "";
 	      $scope.reporteDto.catTipoPeriodo = {};
+	      $scope.reporteDto.catListaProductos = {};
+	      $scope.reporteDto.catListaProductos.idCatGeneral=0;
 	      $scope.reporteDto.mes ={};
 	      $scope.reporteDto.anio ={};
 	      $scope.gridReporte = 0;
@@ -307,20 +567,97 @@ angular.module('theme.core.templates')
 		      $scope.isVisibleCamposReporteOperaciones = false;
 		      $scope.isVisibleCamposReporteVariaciones_Estimados = true;
 		      $scope.isVisibleCamposReporteFacturacion = false;
+		      $scope.isVisibleCamposReporteFacturas = false;
+              $scope.isVisibleCamposReporteDispersion = false;
+			  $scope.isVisibleCamposReporteColaboradores = false;
+		      $scope.isVisibleCamposReporteClientes = false;
 		  }else if ('REPOR_OPER' === reporte.clave){
 		      $scope.isVisibleCamposReporteOperaciones = true;
 		      $scope.isVisibleCamposReporteVariaciones_Estimados = false;  
 		      $scope.isVisibleCamposReporteFacturacion = false;
-		  }else if ('COLAB_FALT_CRM' === reporte.clave){
+		      $scope.isVisibleCamposReporteFacturas = false;
+              $scope.isVisibleCamposReporteDispersion = false;
+			  $scope.isVisibleCamposReporteColaboradores = false;
+		      $scope.isVisibleCamposReporteClientes = false;
+		  }else if ('REPOR_CONSAR' === reporte.clave){
+		      $scope.isVisibleCamposReporteOperaciones = true;
+		      $scope.isVisibleCamposReporteVariaciones_Estimados = false;  
+		      $scope.isVisibleCamposReporteFacturacion = false;
+			  $scope.isVisibleCamposReporteFacturas = false;
+	          $scope.isVisibleCamposReporteDispersion = false;
+			  $scope.isVisibleCamposReporteColaboradores = false;
+		      $scope.isVisibleCamposReporteClientes = false;		  
+		  } 
+		  else if ('REPOR_TESO_OPERA' === reporte.clave){
+		      $scope.isVisibleCamposReporteOperaciones = true;
+		      $scope.isVisibleCamposReporteVariaciones_Estimados = false;  
+		      $scope.isVisibleCamposReporteFacturacion = false;
+			  $scope.isVisibleCamposReporteFacturas = false;
+	          $scope.isVisibleCamposReporteDispersion = false;
+			  $scope.isVisibleCamposReporteColaboradores = false;
+		      $scope.isVisibleCamposReporteClientes = false;		  
+		  }
+		  else if ('COLAB_FALT_CRM' === reporte.clave){
 		      $scope.isVisibleCamposReporteOperaciones = false;
 		      $scope.isVisibleCamposReporteVariaciones_Estimados = false;  
 		      $scope.isVisibleCamposReporteFacturacion = false;
-		  }else if ('REPOR_FACMES' === reporte.clave){
+			  $scope.isVisibleCamposReporteFacturas = false;
+	          $scope.isVisibleCamposReporteDispersion = false;
+			  $scope.isVisibleCamposReporteColaboradores = false;
+		      $scope.isVisibleCamposReporteClientes = false;		     
+		  }else if ('REPOR_FACMES' === reporte.clave ){
 		      $scope.isVisibleCamposReporteOperaciones = false;
 		      $scope.isVisibleCamposReporteVariaciones_Estimados = false;  
+			  $scope.isVisibleCamposReporteFacturas = false;
 		      $scope.isVisibleCamposReporteFacturacion = true;
+              $scope.isVisibleCamposReporteDispersion = false;
+			  $scope.isVisibleCamposReporteColaboradores = false;
+		      $scope.isVisibleCamposReporteClientes = false;		    
+		  }else if ('REPOR_FAC'=== reporte.clave ){
+		      $scope.isVisibleCamposReporteOperaciones = false;
+		      $scope.isVisibleCamposReporteVariaciones_Estimados = false;  
+			  $scope.isVisibleCamposReporteFacturacion = false;
+		      $scope.isVisibleCamposReporteFacturas = true;
+			  $scope.isVisibleCamposReporteDispersion = false;
+			  $scope.isVisibleCamposReporteColaboradores = false;
+		      $scope.isVisibleCamposReporteClientes = false;		    
+		  }else if ('REPOR_DISP'=== reporte.clave ){
+		      $scope.isVisibleCamposReporteOperaciones = false;
+		      $scope.isVisibleCamposReporteVariaciones_Estimados = false;  
+			  $scope.isVisibleCamposReporteFacturacion = false;
+			  $scope.isVisibleCamposReporteFacturas = false;
+		      $scope.isVisibleCamposReporteDispersion = true;
+			  $scope.isVisibleCamposReporteColaboradores = false;
+		      $scope.isVisibleCamposReporteClientes = false;		  		  		    
+		  }else if ('REPOR_COLAB'=== reporte.clave ){
+		      $scope.isVisibleCamposReporteOperaciones = false;
+		      $scope.isVisibleCamposReporteVariaciones_Estimados = false;  
+			  $scope.isVisibleCamposReporteFacturacion = false;
+			  $scope.isVisibleCamposReporteFacturas = false;
+			  $scope.isVisibleCamposReporteDispersion = false;
+	          $scope.isVisibleCamposReporteColaboradores = true;
+		      $scope.isVisibleCamposReporteClientes = false;
+		   }else if ('REPOR_CLTS'=== reporte.clave ){
+		      $scope.isVisibleCamposReporteOperaciones = false;
+		      $scope.isVisibleCamposReporteVariaciones_Estimados = false;  
+			  $scope.isVisibleCamposReporteFacturacion = false;
+			  $scope.isVisibleCamposReporteFacturas = false;
+			  $scope.isVisibleCamposReporteColaboradores = false;
+			  $scope.isVisibleCamposReporteDispersion = false;
+			  $scope.isVisibleCamposReporteColaboradores = false;
+	           $scope.isVisibleCamposReporteClientes = true;
+
+		  }else if ('REPOR_PROD' === reporte.clave){
+		      $scope.isVisibleCamposReporteOperaciones = false;
+			  $scope.isVisibleCamposReporteFacturacion = false;
+		      $scope.isVisibleCamposReporteVariaciones_Estimados = false;  
+		      $scope.isVisibleCamposReporteFacturas = false;
+			  $scope.isVisibleCamposReporteDispersion = false;
+			  $scope.isVisibleCamposReporteColaboradores = false;
+		      $scope.isVisibleCamposReporteClientes = false;
 		  }
-	  }
+	  };
+	  
 	  
 	  $scope.cargaAnioMes = function(){  
 		  	$scope.years = [];
@@ -389,5 +726,6 @@ angular.module('theme.core.templates')
 
 	 	  
 	  $scope.cargaInicial();
-
+	  
+   
   });

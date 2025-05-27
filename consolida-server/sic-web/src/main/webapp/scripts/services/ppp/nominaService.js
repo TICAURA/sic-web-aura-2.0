@@ -65,4 +65,4 @@ angular.module('theme.crm').service('nominaService',function($http,CONFIG) {
     		$http.post(CONFIG.APIURL + '/ppp/nominas/getDatosNominaByIdNominaComplementaria.json', data).then(success,error);
         },
     };
-  });
+  }); 

@@ -23,54 +23,54 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "nomina_cliente_comision")
 @NamedQueries({ @NamedQuery(name = "NominaClienteComision.findAll", query = "SELECT c FROM NominaClienteComision c") })
 public class NominaClienteComision {
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_nomina_cliente_comision", nullable = false)
 	private Long idNominaClienteComision;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_nomina_cliente")
 	private NominaCliente nominaCliente;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_canal_venta", nullable = false)
 	private CatGeneral canalVenta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_comisionista", nullable = false)
 	private Usuario comisionista;
-
+	
 	@Column(name = "pricing")
 	private String pricing;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_formula_pricing")
 	private CatFormulas catFormulaPricing;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_formula_comision")
 	private CatFormulas catFormulaComision;
-
+	
 	@Column(name = "comision")
 	private String comision;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_porcentaje_comision_referidos")
 	private CatGeneral porcentajeComision;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_esquema")
 	private CatGeneral esquema;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_inicio_pago")
 	private Date fechaInicioPago;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_final_pago")
 	private Date fechaFinalPago;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
@@ -78,11 +78,11 @@ public class NominaClienteComision {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
@@ -93,11 +93,11 @@ public class NominaClienteComision {
 	public NominaClienteComision(Long idNominaClienteComision) {
 		this.idNominaClienteComision = idNominaClienteComision;
 	}
-
+	
 	public NominaClienteComision() {
-
+		
 	}
-
+	
 	public Long getIdNominaClienteComision() {
 		return idNominaClienteComision;
 	}
@@ -233,5 +233,5 @@ public class NominaClienteComision {
 	public void setPorcentajeComision(CatGeneral porcentajeComision) {
 		this.porcentajeComision = porcentajeComision;
 	}
-
+	
 }

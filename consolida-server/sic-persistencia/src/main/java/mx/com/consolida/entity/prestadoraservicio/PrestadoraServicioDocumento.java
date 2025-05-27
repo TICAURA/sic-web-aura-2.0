@@ -28,77 +28,77 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @NamedQueries({ @NamedQuery(name = "PrestadoraServicioDocumento.findAll", query = "SELECT c FROM PrestadoraServicioDocumento c") })
 public class PrestadoraServicioDocumento implements java.io.Serializable {
 
-
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_prestadora_servicio_documento")
 	private Long idPrestadoraServicioDocumento;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestadora_servicio", nullable = false)
 	private PrestadoraServicio prestadoraServicio;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_documento_registro")
 	private DocumentoRegistro docuemDocumentoRegistro;
-
+	
 	@Column(name = "id_content_file")
 	private Long idContentFile;
-
+	
 	@Column(name = "ruta_documento", length = 45)
 	private String rutaDocumento;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion")
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
-
+	
 	@Column(name = "nombre_archivo_fiel_cer")
 	private String nombreArchivoFielCer;
-
+	
 	@Column(name = "archivo_fiel_cer")
 	private byte[] archivoFielCer;
-
+	
 	@Column(name = "nombre_archivo_fiel_key")
 	private String nombreArchivoFielKey;
-
+	
 	@Column(name = "archivo_fiel_key")
 	private byte[] archivoFielKey;
-
+	
 	@Column(name = "password_fiel")
 	private String passwordFiel;
-
+	
 	@Column(name = "nombre_archivo_csd_cer")
 	private String nombreArchivoCsdCer;
-
+	
 	@Column(name = "archivo_csd_cer")
 	private byte[] archivoCsdCer;
-
+	
 	@Column(name = "nombre_archivo_csd_key")
 	private String nombreArchivoCsdKey;
-
+	
 	@Column(name = "archivo_csd_key")
 	private byte[] archivoCsdKey;
-
+	
 	@Column(name = "password_csd")
 	private String passwordCsd;
 

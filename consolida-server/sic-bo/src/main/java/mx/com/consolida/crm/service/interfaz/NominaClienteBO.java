@@ -18,6 +18,8 @@ public interface NominaClienteBO {
 	
 	List<NominaClienteDto> listaNominaCliente(Long idCliente);
 	List<NominaClienteDto> listaNominaCliente(Long idCliente , Long idUsuarioNominista);
+	List<NominaClienteDto> listaNominaClient(Long idCliente , Long idUsuarioNominista);
+	
 	public NominaClienteDto nominaClientebyId(Long idNominaCliente);
 	public ColaboradorDto guardarColaborador(ColaboradorDto dto, UsuarioAplicativo us) throws TechnicalException;
 	public ColaboradorDto editarColaborador(ColaboradorDto dto, UsuarioAplicativo us);

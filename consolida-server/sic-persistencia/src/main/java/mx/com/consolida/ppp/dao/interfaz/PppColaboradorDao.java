@@ -10,7 +10,7 @@ public interface PppColaboradorDao extends DAO<PppColaborador,Long>{
 
 	void eliminarColaboradores(Long idPppNomina);
 	List<EmpleadoDTO> obtenercolaboradoresParaDispersionStpByidNomina(Long idPppNomina);
-	Long totalColaboradoresByIdPppNomina(Long idPppNomina, Long idCatEstatusColaborador, Long idCatEstatusColaborador2, Long idCatEstatusColaborador3);
+	Long totalColaboradoresByIdPppNomina(Long idPppNomina, Long estado);
 	void eliminarColaborador(Long idPppColaborador);
 
 }

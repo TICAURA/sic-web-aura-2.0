@@ -23,23 +23,23 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "cat_estatus_nomina")
 @NamedQueries({ @NamedQuery(name = "CatEstatusNomina.findAll", query = "SELECT c FROM CatEstatusNomina c") })
 public class CatEstatusNomina implements Serializable{
-
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cat_estatus_nomina")
 	private Long idCatEstatusNomina;
-
+	
 	@Column(name = "clave")
 	private String clave;
-
+	
 	@Column(name = "descripcion")
 	private String descripcion;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
@@ -47,22 +47,22 @@ public class CatEstatusNomina implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
 
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
-
+	
 	public CatEstatusNomina() {
-
+		
 	}
-
+	
 	public CatEstatusNomina(Long idCatEstatusNomina) {
 		this.idCatEstatusNomina = idCatEstatusNomina;
 	}
@@ -130,7 +130,7 @@ public class CatEstatusNomina implements Serializable{
 	public void setIndEstatus(Long indEstatus) {
 		this.indEstatus = indEstatus;
 	}
-
-
+	
+	
 
 }

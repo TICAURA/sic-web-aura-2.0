@@ -171,8 +171,9 @@ public interface PrestadoraServicioBO {
 	
 	List<PrestadoraServicioDto> listPrestadoraServicioByIdCelulaAndIdCliente(Long idCelula, Long idCliente, boolean esFondo)   throws Exception;
 
-	PrestadoraServicioDto obtenerPrestadoraServicioByStp(PrestadoraServicioDto prestadoraServicioDto,
-			Long idPrestadoraServicio);
+	PrestadoraServicioDto obtenerPrestadoraServicioByStp(Long idPrestadoraServicio);
+	
+	
 
 	void guardarDatosStp(PrestadoraServicioStpDto prestadoraServicioStp, Long idPrestadoraServicio, Long idUsuario);
 }

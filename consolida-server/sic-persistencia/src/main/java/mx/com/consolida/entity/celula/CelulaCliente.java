@@ -33,59 +33,59 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class CelulaCliente implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_celula_cliente")
 	private Long idCelulaCliente;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_celula", nullable = false)
 	private Celula celula;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cliente", nullable = false)
 	private Cliente cliente;
-
+		
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
 
 	public CelulaCliente() {
 	}
-
+	
 
 	public CelulaCliente(Long idCelulaCliente) {
 		this.idCelulaCliente = idCelulaCliente;
 	}
-
+	
 	public CelulaCliente(Cliente cliente) {
 		this.cliente=cliente;
 	}
-
+	
 	public CelulaCliente(Long idCelulaCliente, Celula celula) {
 		this.idCelulaCliente = idCelulaCliente;
 		this.celula = celula;
 	}
-
+	
 
 	public CelulaCliente(Celula celula, Cliente cliente, Usuario usuarioAlta,
 			Date fechaAlta, Long indEstatus) {
@@ -147,7 +147,7 @@ public class CelulaCliente implements java.io.Serializable {
 		this.usuarioModificacion = usuarioModificacion;
 	}
 
-
+	
 	public Date getFechaAlta() {
 		return this.fechaAlta;
 	}
@@ -156,7 +156,7 @@ public class CelulaCliente implements java.io.Serializable {
 		this.fechaAlta = fechaAlta;
 	}
 
-
+	
 	public Date getFechaModificacion() {
 		return this.fechaModificacion;
 	}
@@ -165,7 +165,7 @@ public class CelulaCliente implements java.io.Serializable {
 		this.fechaModificacion = fechaModificacion;
 	}
 
-
+	
 	public Long getIndEstatus() {
 		return this.indEstatus;
 	}

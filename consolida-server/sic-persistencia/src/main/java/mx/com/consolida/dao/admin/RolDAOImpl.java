@@ -19,17 +19,17 @@ import mx.com.consolida.entity.seguridad.Rol;
 
 @Repository
 public class RolDAOImpl  extends GenericDAO<Rol, Long>  implements RolDAO {
-
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(RolDAOImpl.class);
-
-
+	
+	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
 	@SuppressWarnings("unchecked")
 	public List<RolDTO> rolesCelula() {
-
-
+			
+		
 			try {
 				String inRolesString =
 						RolUsuarioENUM.ADMINISTRADOR_CELULA.getId() +"," +
@@ -41,29 +41,29 @@ public class RolDAOImpl  extends GenericDAO<Rol, Long>  implements RolDAO {
 						//RolUsuarioENUM.COORDINADOR_TESORERIA.getId() +"," +
 						//RolUsuarioENUM.AUXILIAR_CONTABILIDAD.getId() +"," +
 						//RolUsuarioENUM.COORDINADOR_CONTABILIDAD.getId()  ;
-
-
+						
+						
 				StringBuilder sb = new StringBuilder();
 				sb.append(" select id_rol,nombre, descripcion from rol where id_rol  in (" +inRolesString +") and ind_estatus = 1");
-
+	
 				return jdbcTemplate.query(sb.toString(), new Object[] {}, new RowMapper() {
 					public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-
+						
 						RolDTO rol = new RolDTO();
 						rol.setIdRol(rs.getLong("id_rol"));
 						rol.setNombre(rs.getString("nombre"));
 						rol.setDescripcion(rs.getString("descripcion"));
-
-
+						
+						
 						return rol;
-
+						
 					}
 				});
-
+	
 			}catch (Exception e) {
 				LOGGER.error("Ocurrio un error al en listarTodasCelularRegistradas ", e);
 				return Collections.emptyList();
 			}
-
+			
 		}
 }

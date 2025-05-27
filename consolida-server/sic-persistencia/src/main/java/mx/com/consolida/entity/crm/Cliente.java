@@ -37,14 +37,14 @@ public class Cliente implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cliente")
 	private Long idCliente;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_tipo_persona", nullable = false)
 	private CatGeneral catTipoPersona;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_tipo_pago")
 	private CatGeneral catTipoPago;
@@ -52,11 +52,11 @@ public class Cliente implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_categoria")
 	private CatGeneral catCategoria;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_regimen_fiscal")
 	private CatGeneral catRegimenFiscal;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cliente_temp")
 	private ClienteTemp clienteTemp;
@@ -78,7 +78,7 @@ public class Cliente implements java.io.Serializable {
 
 	@Column(name = "nombre_comercial", length = 100)
 	private String nombreComercial;
-
+	
 	@Column(name = "es_activo")
 	private Boolean esActivo;
 
@@ -88,14 +88,14 @@ public class Cliente implements java.io.Serializable {
 
 	@Column(name = "cve_registro_patronal", length = 45)
 	private String cveRegistroPatronal;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_grupo", nullable = false)
 	private CatGrupo catGrupo;
-
+	
     @Column(name = "id_cat_giro_comercial")
     private Long idCatGiroComercial;
-
+    
     @Column(name = "id_cat_sub_giro_comercial")
     private Long idSubCatGiroComercial;
 
@@ -106,42 +106,42 @@ public class Cliente implements java.io.Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
 
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
-
+	
 	@Column(name = "prefijo_stp", length = 44)
 	private String prefijoSTP;
-
+	
 	@Column(name = "actividad_economica_final", length = 250)
 	private String actividadEconomicaFinal;
-
+	 
 	@OneToMany(mappedBy = "cliente")
 	 private List<ClienteDomicilio> clienteDomicilio;
-
+	
 	@OneToMany(mappedBy = "cliente")
 	 private List<ClienteMedioContacto> clienteMedioContacto;
-
+		
 	@OneToMany(mappedBy = "cliente")
 	 private List<ClienteCuentaBancaria> clienteCuentaBancaria;
-
+	
 	@OneToMany(mappedBy = "cliente")
 	 private List<ClienteGiroComercial> ClienteGiroComercial;
-
+	
 	@OneToMany(mappedBy = "cliente")
 	 private List<ClienteServicio> clienteProductos;
 
 	public Cliente() {
 	}
-
+	
 	public Cliente(Long idCliente) {
 		this.idCliente = idCliente;
 	}
@@ -156,7 +156,7 @@ public class Cliente implements java.io.Serializable {
 		this.indEstatus = indEstatus;
 	}
 
-	public Cliente(CatGeneral catTipoPersona,
+	public Cliente(CatGeneral catTipoPersona, 
 			ClienteTemp clienteTemp, Usuario usuarioAlta, Usuario usuarioModificacion, String rfc, String razonSocial,
 			String nombre, String apellidoPaterno, String apellidoMaterno, String nombreComercial,
 			Date fechaConstitucionEmpresa, String cveRegistroPatronal,Date fechaAlta,

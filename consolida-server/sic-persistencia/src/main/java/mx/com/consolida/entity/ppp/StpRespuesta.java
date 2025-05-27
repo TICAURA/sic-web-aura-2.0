@@ -23,38 +23,38 @@ import javax.persistence.TemporalType;
 public class StpRespuesta  implements java.io.Serializable{
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_stp_respuesta")
 	private Long idStpRespuesta;
-
+	
 	@Column(name = "id_stp")
 	private Long idStp;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_ppp_colaborador")
 	private PppColaborador pppColaborador;
-
+	
 	@Column(name = "nombre_empresa")
 	private  String nombreEmpresa;
-
+	
 	@Column(name = "folio_origen")
 	private  String folioOrigen;
-
+	
 	@Column(name = "estado")
 	private  String estado;
-
+	
 	@Column(name = "causa_devolucion")
 	private  String causaDevolucion;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private String indEstatus;
 
@@ -129,7 +129,7 @@ public class StpRespuesta  implements java.io.Serializable{
 	public void setPppColaborador(PppColaborador pppColaborador) {
 		this.pppColaborador = pppColaborador;
 	}
-
-
-
+	
+	
+	
 }

@@ -31,47 +31,47 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class CatProducto implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cat_producto")
 	private Long idCatProducto;
-
+	
 	@OneToOne
 	@JoinColumn(name = "id_cat_producto_sat" )
 	private CatProductoSat catProductoSat;
-
+	
 	@Column(name = "clave", length = 20)
 	private String clave;
-
+	
 	@Column(name = "descripcion", nullable = false, length = 100)
 	private String descripcion;
-
+	
 	@Column(name = "codigo_sat", nullable = false, length = 25)
 	private String codigoSat;
-
+	
 	@Column(name = "descripcion_sat", nullable = false, length = 100)
 	private String descripcionSat;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
 //	private Set catComisionProductos = new HashSet(0);
@@ -168,5 +168,5 @@ public class CatProducto implements java.io.Serializable {
 		this.indEstatus = indEstatus;
 	}
 
-
+	
 }

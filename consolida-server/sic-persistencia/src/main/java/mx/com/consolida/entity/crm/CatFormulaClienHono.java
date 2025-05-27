@@ -32,7 +32,7 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class CatFormulaClienHono implements java.io.Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cat_formula_clien_hono")
 	private Long idCatFormulaClienHono;
 

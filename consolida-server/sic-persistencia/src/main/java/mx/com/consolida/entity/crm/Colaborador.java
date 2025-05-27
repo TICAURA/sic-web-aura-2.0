@@ -26,28 +26,28 @@ public class Colaborador implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_colaborador")
     private Long idColaborador;
-
+    
     @Column(name = "clave_trabajador")
     private String claveTrabajador;
-
+    
     @Column(name = "nombre")
     private String nombre;
-
+    
     @Column(name = "apellido_paterno")
     private String apellidoPaterno;
     @Column(name = "apellido_materno")
     private String apellidoMaterno;
-
+    
     @Column(name = "fecha_nacimiento")
     @Temporal(TemporalType.DATE)
     private Date fechaNacimiento;
-
+    
     @Column(name = "rfc")
     private String rfc;
-
+    
     @Column(name = "curp")
     private String curp;
     @Column(name = "numero_telefono")
@@ -159,17 +159,17 @@ public class Colaborador implements java.io.Serializable {
     private Long idBeneficioAdicional;
     @Column(name = "usuario_modificacion")
     private Long usuarioModificacion;
-
+    
     @Column(name = "usuario_alta")
     private Long usuarioAlta;
-
+    
     @Column(name = "fecha_alta")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaAlta;
     @Column(name = "fecha_modificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-
+    
     @Column(name = "ind_estatus")
     private String indEstatus;
 
@@ -782,7 +782,7 @@ public class Colaborador implements java.io.Serializable {
         this.indEstatus = indEstatus;
     }
 
-
+    
 
     @Override
 	public int hashCode() {
@@ -1197,5 +1197,5 @@ public class Colaborador implements java.io.Serializable {
     public String toString() {
         return "mx.com.consolida.entity.Colaborador[ idColaborador=" + idColaborador + " ]";
     }
-
+    
 }

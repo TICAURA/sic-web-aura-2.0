@@ -31,12 +31,12 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class ClienteEstatus implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cliente_estatus")
 	private Long idClienteEstatus;
 
@@ -47,14 +47,14 @@ public class ClienteEstatus implements java.io.Serializable {
 	@JoinColumn(name="id_estatus", referencedColumnName= "id_estatus")
 	@ManyToOne(targetEntity = CatEstatus.class, cascade=CascadeType.ALL)
     private CatEstatus catEstatus;
-
+	
 	@Column(name = "observacion", length = 100)
 	private String observacion;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
@@ -62,7 +62,7 @@ public class ClienteEstatus implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;

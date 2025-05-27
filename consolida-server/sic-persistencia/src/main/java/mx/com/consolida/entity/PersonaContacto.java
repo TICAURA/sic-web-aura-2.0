@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @NamedQuery(name="PersonaContacto.findAll", query="SELECT c FROM PersonaContacto c")
 public class PersonaContacto {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_persona_contacto")
 	private int idPersonaContacto;
 	@Column(name="nombre_persona")
@@ -30,7 +30,7 @@ public class PersonaContacto {
 	private Date fechaModificacion;
 	@Column(name="usuario_alta")
 	private String usuarioAlta;
-
+	
 	public int getIdPersonaContacto() {
 		return idPersonaContacto;
 	}
@@ -73,5 +73,5 @@ public class PersonaContacto {
 	public void setUsuarioAlta(String usuarioAlta) {
 		this.usuarioAlta = usuarioAlta;
 	}
-
+	
 }

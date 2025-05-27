@@ -2,6 +2,7 @@ package mx.com.consolida.service.usuario;
 
 import java.util.List;
 
+import mx.com.consolida.crm.dto.CelulaDto;
 import mx.com.consolida.generico.BusinessException;
 import mx.com.consolida.generico.ResponseDTO;
 import mx.com.consolida.usuario.ResponseUsuarioDTO;
@@ -23,6 +24,8 @@ public interface UsuarioBO  {
 	public List<UsuarioDTO> getUsuariosByRol(Long idRol);
 	
 	Long getIdCelulaByIdUsuario(Long idUsuario);
+	
+	public CelulaDto getDatosCelula(Long idUsuario) ;
 		
 }
 	

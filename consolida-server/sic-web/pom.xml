@@ -32,17 +32,17 @@
 		</dependency>
 
 		<!-- JSTL -->
-		<!-- <dependency> -->
-		<!-- <groupId>javax.servlet</groupId> -->
-		<!-- <artifactId>jstl</artifactId> -->
-		<!-- <version>1.1.2</version> -->
-		<!-- </dependency> -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.2</version>
+		</dependency>
 
-		<!-- <dependency> -->
-		<!-- <groupId>taglibs</groupId> -->
-		<!-- <artifactId>standard</artifactId> -->
-		<!-- <version>1.1.2</version> -->
-		<!-- </dependency> -->
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -102,126 +102,30 @@
 			<artifactId>commons-io</artifactId>
 			<version>1.4</version>
 		</dependency>
-		<!-- <dependency> <groupId>org.codehaus.jackson</groupId> <artifactId>jackson-mapper-asl</artifactId>
+		<!-- <dependency> <groupId>org.codehaus.jackson</groupId> <artifactId>jackson-mapper-asl</artifactId> 
 			<version>1.4.2</version> </dependency> -->
 
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxws</artifactId>
 			<version>2.7.4</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>asm</artifactId>
-					<groupId>asm</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
-
+		
 		<!--Dependencias Jasper -->
-		<dependency>
-			<groupId>net.sf.jasperreports</groupId>
-			<artifactId>jasperreports</artifactId>
-			<version>5.6.0</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.lowagie</groupId>
-					<artifactId>itext</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bctsp-jdk14</artifactId>
-			<version>1.38</version>
-		</dependency>
-		<dependency>
-			<groupId>com.lowagie</groupId>
-			<artifactId>itext</artifactId>
-			<version>2.1.7</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-			<version>3.17</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm</artifactId>
-			<version>8.0.1</version>
-		</dependency>
-
-
+ 		<dependency>
+	         <groupId>net.sf.jasperreports</groupId>
+	         <artifactId>jasperreports</artifactId>
+	         <version>5.6.0</version>
+		 </dependency>
+		 
+		  <dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>3.17</version>
+		  </dependency>
+		
 	</dependencies>
 	<build>
 		<finalName>sic-web</finalName>
-
-
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.sonarsource.scanner.maven</groupId>
-					<artifactId>sonar-maven-plugin</artifactId>
-					<version>3.7.0.1746</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.wildfly.plugins</groupId>
-					<artifactId>wildfly-maven-plugin</artifactId>
-					<version>2.1.0.Beta1</version>
-					<dependencies>
-						<dependency>
-							<groupId>mysql</groupId>
-							<artifactId>mysql-connector-java</artifactId>
-							<version>8.0.19</version>
-						</dependency>
-					</dependencies>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-
-
-		<plugins>
-			<plugin>
-				<groupId>org.wildfly.plugins</groupId>
-				<artifactId>wildfly-maven-plugin</artifactId>
-				<!-- <executions> -->
-				<!-- <execution> -->
-				<!-- <id>add-datasource</id> -->
-				<!-- <phase>package</phase> -->
-				<!-- <goals> -->
-				<!-- <goal>add-resource</goal> -->
-				<!-- </goals> -->
-				<!-- <configuration> -->
-				<!-- <address>subsystem=datasources,data-source=java:comp/env/jdbc/datasources/sinDS</address> -->
-				<!-- <resources> -->
-				<!-- <resource> -->
-				<!-- <properties> -->
-				<!-- <jndi-name>java:comp/env/jdbc/datasources/sinDS</jndi-name> -->
-				<!-- <enabled>true</enabled> -->
-				<!-- <connection-url>jdbc:mysql://localhost/sin</connection-url> -->
-				<!-- <driver-class>com.mysql.cj.jdbc.Driver</driver-class> -->
-				<!-- <driver-name>mysql</driver-name> -->
-				<!-- <user-name>sindev</user-name> -->
-				<!-- <password>Sindev_2020</password> -->
-				<!-- </properties> -->
-				<!-- </resource> -->
-				<!-- </resources> -->
-				<!-- </configuration> -->
-				<!-- </execution> -->
-				<!-- </executions> -->
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>11</source>
-					<target>11</target>
-				</configuration>
-			</plugin>
-		</plugins>
-
 	</build>
 </project>

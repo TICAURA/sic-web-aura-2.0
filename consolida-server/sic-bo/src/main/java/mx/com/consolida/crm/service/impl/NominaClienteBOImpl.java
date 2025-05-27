@@ -111,6 +111,19 @@ public class NominaClienteBOImpl implements NominaClienteBO{
 		}
 	}
 	
+	@Override
+	@Transactional(readOnly = true)
+	public List<NominaClienteDto> listaNominaClient(Long idCliente , Long idNominista) {
+		try {
+			List<NominaClienteDto> lista  = nominaClienteDao.listaNominaClient(idCliente, idNominista);
+			
+			return lista;
+		}catch (Exception e) {
+			LOGGER.error("Ocurrio un error en listaNominaCliente ", e);
+			return Collections.emptyList();
+		}
+	}
+	
 	public NominaClienteDto nominaClientebyId(Long idNominaCliente) {
 		return nominaClienteDao.nominaClientebyId(idNominaCliente);
 	}
@@ -237,6 +250,7 @@ public class NominaClienteBOImpl implements NominaClienteBO{
 					ef.setIdNominaPeriodicidad(dto.getIdNominaPeriodicidad());
 					ef.setIndEstatus("1");
 					ef.setUsuarioAlta(us.getIdUsuario());
+					ef.setFechaModificacion(new Date());
 					
 					nominaPeriodicidadFechasDao.guardarNominaPeriodicidad(ef, us);
 					fechaInicioPeriodo.add(Calendar.DAY_OF_YEAR, 7);
@@ -259,7 +273,7 @@ public class NominaClienteBOImpl implements NominaClienteBO{
 					ef.setIdNominaPeriodicidad(dto.getIdNominaPeriodicidad());
 					ef.setIndEstatus("1");
 					ef.setUsuarioAlta(us.getIdUsuario());
-
+					ef.setFechaModificacion(new Date());
 					nominaPeriodicidadFechasDao.guardarNominaPeriodicidad(ef, us);
 					fechaInicioPeriodo.add(Calendar.DAY_OF_YEAR, 14);
 				}
@@ -297,6 +311,7 @@ public class NominaClienteBOImpl implements NominaClienteBO{
 					ef.setIdNominaPeriodicidad(dto.getIdNominaPeriodicidad());
 					ef.setIndEstatus("1");
 					ef.setUsuarioAlta(us.getIdUsuario());
+					ef.setFechaModificacion(new Date());
 					nominaPeriodicidadFechasDao.guardarNominaPeriodicidad(ef, us);
 					/*********************** 2do periodo quincenal ********************************/
 					NominaPeriodicidadFechas ef1 = new NominaPeriodicidadFechas();
@@ -329,6 +344,7 @@ public class NominaClienteBOImpl implements NominaClienteBO{
 					ef1.setIdNominaPeriodicidad(dto.getIdNominaPeriodicidad());
 					ef1.setIndEstatus("1");
 					ef1.setUsuarioAlta(us.getIdUsuario());
+					ef1.setFechaModificacion(new Date());
 					
 					nominaPeriodicidadFechasDao.guardarNominaPeriodicidad(ef1, us);
 					fechaInicioPeriodo.add(Calendar.MONTH, 1);
@@ -366,7 +382,7 @@ public class NominaClienteBOImpl implements NominaClienteBO{
 					ef.setIdNominaPeriodicidad(dto.getIdNominaPeriodicidad());
 					ef.setIndEstatus("1");
 					ef.setUsuarioAlta(us.getIdUsuario());
-					
+					ef.setFechaModificacion(new Date());
 					nominaPeriodicidadFechasDao.guardarNominaPeriodicidad(ef, us);
 					fechaInicioPeriodo.add(Calendar.MONTH, 1);
 				}
@@ -402,7 +418,7 @@ public class NominaClienteBOImpl implements NominaClienteBO{
 					ef.setIdNominaPeriodicidad(dto.getIdNominaPeriodicidad());
 					ef.setIndEstatus("1");
 					ef.setUsuarioAlta(us.getIdUsuario());
-					
+					ef.setFechaModificacion(new Date());
 					nominaPeriodicidadFechasDao.guardarNominaPeriodicidad(ef, us);
 					fechaInicioPeriodo.add(Calendar.YEAR, 1);
 				}

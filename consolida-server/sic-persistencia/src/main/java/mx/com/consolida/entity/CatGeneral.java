@@ -40,30 +40,30 @@ public class CatGeneral implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Basic(optional = false)
 	@Column(name = "id_cat_general")
 	private Long idCatGeneral;
 
 	@Column(name = "clave")
 	private String clave;
-
+	
 	@Column(name = "descripcion")
 	private String descripcion;
-
+	
 	@Column(name = "ind_estatus")
 	private Long indEstatus;
-
+	
 	@Column(name = "usuario_alta")
 	private Long idUsuarioAlta;
-
+	
 	@Column(name = "usuario_modificacion")
 	private Long idUsuarioModificacion;
-
+	
 	@Column(name = "fecha_alta")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaAlta;
-
+	
 	@Column(name = "fecha_modificacion")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaModificacion;

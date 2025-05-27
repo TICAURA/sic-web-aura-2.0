@@ -8,5 +8,7 @@ import mx.com.consolida.entity.prestadoraservicio.PrestadoraServicioStp;
 public interface PrestadoraServicioStpDao extends mx.com.consolida.dao.DAO<PrestadoraServicioStp, Long>{
 
 	List<PrestadoraServicioStpDto> convertirPrestadoraServicioStpADto(List<PrestadoraServicioStp> prestadoraServicioStp);
-
+	void actualizarPrestadora(Long idPrestadoraServicio);
+	
+	
 }

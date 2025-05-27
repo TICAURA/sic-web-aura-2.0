@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
 import org.hibernate.Session;
@@ -24,8 +26,10 @@ public abstract class GenericDAO<T, K extends Serializable> extends Convertir im
 
    @Autowired
    protected SessionFactory sessionFactory;
-
-
+   @Autowired
+   protected EntityManagerFactory emf;
+   
+   
    protected final Class<T> entityType;
 
    {
@@ -36,18 +40,14 @@ public abstract class GenericDAO<T, K extends Serializable> extends Convertir im
 
    @Transactional(propagation = Propagation.MANDATORY)
    public K create(final T newInstance) {
-      try{
-         final Session session = sessionFactory.getCurrentSession();
 
-         final K pk = (K) session.save(newInstance);
+      final Session session = sessionFactory.getCurrentSession();
 
-         session.flush();
+      final K pk = (K) session.save(newInstance);
 
-         return pk;
+      session.flush();
 
-      }catch (Exception ex){
-         throw new RuntimeException("Error: ", ex);
-      }
+      return pk;
    }
 
    @Transactional(propagation = Propagation.MANDATORY)
@@ -75,7 +75,7 @@ public abstract class GenericDAO<T, K extends Serializable> extends Convertir im
    public T read(final K id) {
       return (T) sessionFactory.getCurrentSession().get(entityType, id);
    }
-
+   
    @Transactional(propagation = Propagation.MANDATORY)
    public List<T> findAll() {
 	    try
@@ -110,39 +110,36 @@ public abstract class GenericDAO<T, K extends Serializable> extends Convertir im
    public void flush() {
       sessionFactory.getCurrentSession().flush();
    }
-
+   
    @Transactional(propagation = Propagation.MANDATORY)
    public void close() {
       sessionFactory.getCurrentSession().close();
    }
-
+   
    @Transactional(propagation = Propagation.MANDATORY)
    public void open() {
       sessionFactory.getCurrentSession();
    }
-
+   
    @Transactional(propagation = Propagation.MANDATORY)
    public void flushAndClear() {
 	   sessionFactory.getCurrentSession().flush();
        sessionFactory.getCurrentSession().clear();
-
+      
    }
-
+   
    public List<T> callNativeQuery(String cadenaQuery, String cadenaMapeo, Map<String, Object> map) {
-	   //EntityManager em = emf.createEntityManager();
-      final Session session = sessionFactory.getCurrentSession();
-      Query q = session.createNativeQuery(cadenaQuery,cadenaMapeo);
-       //Query q = em.createNativeQuery(cadenaQuery, cadenaMapeo);
+	   EntityManager em = emf.createEntityManager();
+       Query q = em.createNativeQuery(cadenaQuery, cadenaMapeo);
 //       if (map != null) {
 //           map.keySet().forEach(s -> q.setParameter(s, map.get(s)));
 //       }
        List<T> list = q.getResultList();
-      //session.clear();
-      //session.close();
-      session.flush();
+       em.clear(); 
+       em.close();
        return list;
    }
-
+   
    public <F> List<F> castList(List<?> srcList, Class<F> clas) {
       List<F> list = new ArrayList<F>();
       for (Object obj : srcList) {

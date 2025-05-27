@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.consolida.crm.dao.interfaz.UsuarioCelulaDAO;
+import mx.com.consolida.crm.dto.CelulaDto;
 import mx.com.consolida.dao.usuario.DatosGeneralesUsuarioDAO;
 import mx.com.consolida.dao.usuario.PersonaDAO;
 import mx.com.consolida.dao.usuario.UsuarioDAO;
@@ -105,6 +106,10 @@ public class UsuarioBOImpl implements UsuarioBO{
 				usuarioDTO.setPrimerApellido(datosUsuario.getApellidoPaterno());
 				usuarioDTO.setSegundoApellido(datosUsuario.getApellidoMaterno());
 			}
+			List<CelulaDto> celula =usuarioDAO.getCelula(usuario.getIdUsuario());
+			usuarioDTO.setCelula(celula.get(0));
+		
+
 			
 		}else{
 			throw new Exception("No se encontro el usuario o no se encuentra activo");
@@ -263,6 +268,31 @@ public class UsuarioBOImpl implements UsuarioBO{
 			
 		}catch (Exception e) {
 			LOGGER.error("Ocurrio un error en getIdCelulaByIdUsuario ", e);
+			return null;
+		}
+	}
+	
+	
+	@Transactional(readOnly = true)
+	public CelulaDto getDatosCelula(Long idUsuario) {
+		try {
+				
+			CelulaDto celula= new CelulaDto();
+			List<CelulaDto> celul =usuarioDAO.getCelula(idUsuario);
+			celula.setIdCelula(celul.get(0).getIdCelula());
+			celula.setNombre(celul.get(0).getNombre());
+					
+		
+			
+			if(celula!=null && celula.getIdCelula()!=null) {
+				return celula;
+			}else {
+				return new CelulaDto();
+			}
+				
+			
+		}catch (Exception e) {
+			LOGGER.error("Ocurrio un error en getDatosCelula ", e);
 			return null;
 		}
 	}

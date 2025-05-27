@@ -26,61 +26,61 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class NominaClienteHonorario implements Serializable{
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_nomina_cliente_honorario", nullable = false)
 	private Long idNominaClienteHonorario;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_nomina_cliente")
 	private NominaCliente nominaCliente;
-
+	
 	@Column(name = "honorario_ppp")
 	private String honorarioPpp;
-
+	
 	@Column(name = "iva_comercial")
 	private String ivaComercial;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_formula_ppp")
 	private CatFormulas catFormulaPpp;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_tipo_iva")
 	private CatFormulas catTipoIva;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_formula_factura")
 	private CatFormulas catFormulaFactura;
-
-
-
-
+	
+	
+	
+	
 	///////
 	@Column(name = "honorario_ppp_ss")
 	private String honorarioPppSs;
-
+	
 	@Column(name = "honorario_ppp_mixto")
 	private String honorarioPppMixto;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_formula_ss")
 	private CatFormulas catFormulaFacturaSS;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_formula_mixto")
 	private CatFormulas catFormulaFacturaMixto;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_formula_maquila")
 	private CatFormulas catFormulaFacturaMaquila;
-
+	
 	///////
-
+	
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
@@ -100,11 +100,11 @@ public class NominaClienteHonorario implements Serializable{
 
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
-
+	
 	public NominaClienteHonorario() {
-
+		
 	}
-
+	
 	public NominaClienteHonorario(Long idNominaClienteHonorario) {
 		this.idNominaClienteHonorario = idNominaClienteHonorario;
 	}

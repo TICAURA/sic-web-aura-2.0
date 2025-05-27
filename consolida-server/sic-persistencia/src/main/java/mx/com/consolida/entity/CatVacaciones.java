@@ -27,7 +27,7 @@ public class CatVacaciones implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Basic(optional = false)
     @Column(name = "id_cat_vacaciones")
     private Integer idCatVacaciones;

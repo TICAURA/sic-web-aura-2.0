@@ -31,15 +31,15 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class PrestadoraServicioApoderadoLegalDocumento implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_prestadora_servicio_apoderado_legal_documento")
 	private Long idPrestadoraServicioApoderadoLegalDocumento;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestadora_servicio_apoderado_legal", nullable = false)
 	private PrestadoraServicioApoderadoLegal prestadoraServicioApoderadoLegal;

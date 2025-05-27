@@ -25,52 +25,52 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "ppp_nomina_complemento")
 @NamedQueries({ @NamedQuery(name = "PppNominaComplemento.findAll", query = "SELECT c FROM PppNominaComplemento c") })
 public class PppNominaComplemento implements Serializable{
-
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_ppp_nomina_complemento")
 	private Long idPppNominaComplemento;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_ppp_nomina")
 	private PppNomina pppNomina;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_facturacion",  length = 19)
 	private Date fechaFacturacion;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_timbrado",  length = 19)
 	private Date fechaTimbrado;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_dispersion",  length = 19)
 	private Date fechaDispersion;
-
+	
 	@Column(name = "requiere_financiamiento")
 	private Boolean requiereFianciamiento;
-
+	
 	@Column(name = "monto_financiamiento")
 	private BigDecimal montoFinanciamiento;
-
+	
 	@Column(name = "id_definicion_documento")
 	private Long idDefinicionDocumento;
-
+	
 	@Column(name="id_CMS")
 	private Long idCMS;
-
+	
 	@Column(name = "nombre_archivo", length = 245)
 	private String nombreArchivo;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Column(name = "observaciones", length = 250)
 	private String observaciones;
 
@@ -88,11 +88,11 @@ public class PppNominaComplemento implements Serializable{
 
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
-
+	
 	public PppNominaComplemento() {
-
+		
 	}
-
+	
 	public PppNominaComplemento(Long idPppNominaComplemento) {
 		this.idPppNominaComplemento= idPppNominaComplemento;
 	}
@@ -224,6 +224,6 @@ public class PppNominaComplemento implements Serializable{
 	public void setNombreArchivo(String nombreArchivo) {
 		this.nombreArchivo = nombreArchivo;
 	}
-
+	
 
 }

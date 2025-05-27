@@ -18,16 +18,16 @@ public class BeneficioAdicionalColaborador implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_beneficio_adicional_colaborador")
     private Long idBeneficioAdicionalColaborador;
-
+    
     @Column(name = "id_beneficio_adicional")
     private Long idBeneficioAdicional;
-
+    
     @Column(name = "id_colaborador")
     private Long idColaborador;
-
+    
     @Column(name = "ind_estatus")
     private Long indEstatus;
 
@@ -76,5 +76,5 @@ public class BeneficioAdicionalColaborador implements java.io.Serializable {
     public String toString() {
         return "mx.com.consolida.entity.BeneficioAdicionalColaborador[ idBeneficioAdicionalColaborador =" + idBeneficioAdicionalColaborador + " ]";
     }
-
+    
 }

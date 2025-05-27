@@ -24,31 +24,31 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "ppp_nomina_factura_documento")
 @NamedQueries({ @NamedQuery(name = "PppNominaFacturaDocumento.findAll", query = "SELECT c FROM PppNominaFacturaDocumento c") })
 public class PppNominaFacturaDocumento implements Serializable{
-
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_ppp_nomina_factura_documento")
 	private Long idPppNominaFacturaDocumento;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_ppp_nomina_factura")
 	private PppNominaFactura pppNominaFactura;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_definicion_documento", nullable = false)
 	private DefinicionDocumento definicionDocumento;
-
+	
 	@Column(name="id_CMS")
 	private Long idCMS;
-
+	
 	@Column(name = "nombre_archivo", length = 200)
 	private String nombreArchivo;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
@@ -147,7 +147,7 @@ public class PppNominaFacturaDocumento implements Serializable{
 	public void setIndEstatus(String indEstatus) {
 		this.indEstatus = indEstatus;
 	}
-
-
+	
+	
 
 }

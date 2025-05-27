@@ -3,6 +3,7 @@ package mx.com.consolida.crm.service.interfaz;
 import java.util.List;
 
 import mx.com.consolida.crm.dto.CelulaDto;
+import mx.com.consolida.crm.dto.PrestadoraServicioSicofiDto;
 import mx.com.consolida.usuario.UsuarioDTO;
 
 public interface CelulaBO {
@@ -17,6 +18,8 @@ public interface CelulaBO {
 
 	List<CelulaDto> listarTodasLasCelulas();
 	
+	List<CelulaDto> listarTodasLasCelulasCliente();
+	
 	CelulaDto consultarDatosCelula(String rfcCelula);
 	
 	CelulaDto consultarDatosCelula(Long idRol, Long  idUsuario) ;
@@ -27,5 +30,11 @@ public interface CelulaBO {
 	
 	CelulaDto consultarDatosCelulaByIdCliente(Long  idCliente);
 	
+	List<CelulaDto> consultarCelulaPorUsuario(Long  idUsuario);
+
+	List<PrestadoraServicioSicofiDto> listaPrestadorasSicofi();
 	
+	List<PrestadoraServicioSicofiDto> listaPrestadorasSicofiProvision(String claveProvision, String fondo);
+	
+
 }

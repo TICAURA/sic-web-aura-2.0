@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * The persistent class for the rol database table.
- *
+ * 
  */
 @Entity
 @NamedQuery(name="Rol.findAll", query="SELECT r FROM Rol r")
@@ -15,7 +15,7 @@ public class Rol implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_rol")
 	private Long idRol;
 

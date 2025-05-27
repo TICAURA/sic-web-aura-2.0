@@ -3,11 +3,16 @@ package mx.com.facturacion.factura;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import mx.com.consolida.catalogos.CatGeneralDto;
 import mx.com.consolida.catalogos.DocumentoDTO;
+import mx.com.consolida.comunes.dto.CatEstatusDto;
+import mx.com.consolida.crm.dto.CelulaDto;
+import mx.com.consolida.generico.NominaEstatusEnum;
 import mx.com.consolida.ppp.dto.NominaDto;
+import mx.com.consolida.ppp.dto.NominasDTO;
 
 @SuppressWarnings("serial")
 public class FacturaDTO implements Serializable {
@@ -16,11 +21,13 @@ public class FacturaDTO implements Serializable {
 	private Long idFactura;
 	private String fechaHoraEmision;
 	private Long idPrestadoraServicio;
+	private String consar;
 	private Long idCliente;
 	private Long idUsuarioAplicativo;
 	private Long idPPPNomina;
 	private String idConsar;
 	private BigDecimal montoComprobantePago;
+	private NominaEstatusEnum nominaEstatus;
 	
 	//1 emisor
 	private EmpresaDTO empresa;
@@ -34,6 +41,7 @@ public class FacturaDTO implements Serializable {
 	//3 Datos facturacion
 	private CatGeneralDto tipoFactura;
 	private CatGeneralDto tipoComprobante; // se cmabia "String-tipoFactura" por  catTipoComprobante
+	private Date fechaCreacionDate;
 	private String fechaCreacion;
 	private CatGeneralDto serie;
 	
@@ -114,6 +122,53 @@ public class FacturaDTO implements Serializable {
 	
 	private Long folio;
 	
+	/*multifactura*/
+	private Long idNominaCliente;
+	private Long totalNominas;
+	private int isMultifactura;
+	private String serieS;
+	private List<ConceptoDTO> conceptosPlus;
+	//private List<NominaDto> listNominasVincular;
+	private List<NominasDTO> listNominasVincular;
+	private ConceptoDTO conceptoPlus;
+	private CelulaDto celula;
+	private Long idDeposito;
+	
+	 //sindicato
+	 private String titulo;
+	 private Long percepciones;
+	 private String clavePercepcion;
+	 private String descripcion;
+	 private Long estimbreSindicato;
+
+	
+	public BigDecimal getMontoDepositoMenosDiez() {
+		return montoDepositoMenosDiez;
+	}
+
+	public void setMontoDepositoMenosDiez(BigDecimal montoDepositoMenosDiez) {
+		this.montoDepositoMenosDiez = montoDepositoMenosDiez;
+	}
+
+	private BigDecimal montoDeposito;
+	private BigDecimal montoDepositoMenosDiez;
+	
+	public CelulaDto getCelula() {
+		return celula;
+	}
+
+	public void setCelula(CelulaDto celula) {
+		this.celula = celula;
+	}
+
+	public ConceptoDTO getConceptoPlus() {
+		return conceptoPlus;
+	}
+
+	public void setConceptoPlus(ConceptoDTO conceptoPlus) {
+		this.conceptoPlus = conceptoPlus;
+	}
+
 	public FacturaDTO(){
 		
 	}
@@ -184,6 +239,17 @@ public class FacturaDTO implements Serializable {
 
 	public void setDomicilioCliente(DomicilioDTO domicilioCliente) {
 		this.domicilioCliente = domicilioCliente;
+	}
+
+
+
+
+	public Date getFechaCreacionDate() {
+		return fechaCreacionDate;
+	}
+
+	public void setFechaCreacionDate(Date fechaCreacionDate) {
+		this.fechaCreacionDate = fechaCreacionDate;
 	}
 
 	public String getFechaCreacion() {
@@ -623,6 +689,130 @@ public class FacturaDTO implements Serializable {
 	public void setFolio(Long folio) {
 		this.folio = folio;
 	}
+
+	public NominaEstatusEnum getNominaEstatus() {
+		return nominaEstatus;
+	}
+
+	public void setNominaEstatus(NominaEstatusEnum nominaEstatus) {
+		this.nominaEstatus = nominaEstatus;
+	}
+
+	public Long getIdNominaCliente() {
+		return idNominaCliente;
+	}
+
+	public void setIdNominaCliente(Long idNominaCliente) {
+		this.idNominaCliente = idNominaCliente;
+	}
+
+	public Long getTotalNominas() {
+		return totalNominas;
+	}
+
+	public void setTotalNominas(Long totalNominas) {
+		this.totalNominas = totalNominas;
+	}
+
+	public int getIsMultifactura() {
+		return isMultifactura;
+	}
+
+	public void setIsMultifactura(int isMultifactura) {
+		this.isMultifactura = isMultifactura;
+	}
+
+	public String getSerieS() {
+		return serieS;
+	}
+
+	public void setSerieS(String serieS) {
+		this.serieS = serieS;
+	}
+
+	public List<ConceptoDTO> getConceptosPlus() {
+		return conceptosPlus;
+	}
+
+	public void setConceptosPlus(List<ConceptoDTO> conceptosPlus) {
+		this.conceptosPlus = conceptosPlus;
+	}
+
+	public List<NominasDTO> getListNominasVincular() {
+		return listNominasVincular;
+	}
+
+	public void setListNominasVincular(List<NominasDTO> listNominasVincular) {
+		this.listNominasVincular = listNominasVincular;
+	}
+
+	public Long getIdDeposito() {
+		return idDeposito;
+	}
+
+	public void setIdDeposito(Long idDeposito) {
+		this.idDeposito = idDeposito;
+	}
+
+	public BigDecimal getMontoDeposito() {
+		return montoDeposito;
+	}
+
+	public void setMontoDeposito(BigDecimal montoDeposito) {
+		this.montoDeposito = montoDeposito;
+	}
+
+	public String getConsar() {
+		return consar;
+	}
+
+	public void setConsar(String consar) {
+		this.consar = consar;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public Long getPercepciones() {
+		return percepciones;
+	}
+
+	public void setPercepciones(Long percepciones) {
+		this.percepciones = percepciones;
+	}
+
+	public String getClavePercepcion() {
+		return clavePercepcion;
+	}
+
+	public void setClavePercepcion(String clavePercepcion) {
+		this.clavePercepcion = clavePercepcion;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public Long getEstimbreSindicato() {
+		return estimbreSindicato;
+	}
+
+	public void setEstimbreSindicato(Long estimbreSindicato) {
+		this.estimbreSindicato = estimbreSindicato;
+	}
+
+
+
+
 
 	
 

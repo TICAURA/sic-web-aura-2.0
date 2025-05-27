@@ -60,10 +60,13 @@ angular.module('theme.core.templates')
 	  
 	  /// Producto
 	  $scope.prestadoraServicioProductoDto = {};
+	  $scope.catDispersor = {};
+	  $scope.edicionDispersor = {};
 	  $scope.agregarCatSat = false;
 	  $scope.prestadoraServicioProductoCatSatDto= {};
 	  $scope.prestadoraServicioProductoCatSatDto.catSat = {};
 	  $scope.panelAgregarProducto = false;
+	  $scope.panelAgregarDispersor = false;
 
 	  
 	  // REGISTRO PATRONAL, CLASE Y FRACCION, IMSS
@@ -310,10 +313,12 @@ angular.module('theme.core.templates')
 		  }	
 		  
 		  if($scope.tabSeleccionado == "stpPrestServ"){
-			  $http.post(CONFIG.APIURL + "/prestadoraServicio/cargaInicialDatosStp.json").then(
+			  $scope.panelAgregarDispersor = false;
+			  $http.post(CONFIG.APIURL + "/prestadoraServicio/cargaInicialDispersores.json").then(
 						function(data) {
-							$scope.prestadoraServicioDto = data.data;
-							$scope.prestadoraServicioDocumento = data.data.prestadoraServicioDocumento;
+							$scope.prestadoraServicioDto.listprestadoraServicioStpDto = data.data.listprestadoraServicioStpDto;
+							$scope.catDispersor= data.data.catTipoDispersor;
+							
 						}, function(data) {
 							console.log("error --> " + data);
 						});
@@ -1637,23 +1642,43 @@ angular.module('theme.core.templates')
 							});
 		  }
 		      
+		      
+		      $scope.setDispersor = function(dispersor){
+				var prueba = dispersor;
+		  }
+		      
 		  $scope.limpiarFormProducto = function(){
 			  $scope.panelAgregarProducto = false;
+			
 					$scope.prestadoraServicioProductoDto.clave='';
 					$scope.prestadoraServicioProductoDto.descripcionProductoConsolida='';
 					$scope.prestadoraServicioProductoDto.idPrestadoraServicioProducto = null;
+		}
+		  
+		  $scope.limpiarFormDispersor = function(){
+			  $scope.panelAgregarDispersor = false;
+			 
 		}
 		  
 
 		      
 		  $scope.editarProducto = function(producto){
 			  $scope.panelAgregarProducto = true;
+			 
 			$scope.prestadoraServicioProductoDto.idCatGeneral = producto.idCatGeneral;
 			$scope.prestadoraServicioProductoDto.clave = producto.clave;
 			$scope.prestadoraServicioProductoDto.descripcionProductoConsolida = producto.descripcionProductoConsolida;
 			$scope.prestadoraServicioProductoDto.idPrestadoraServicioProducto = producto.idPrestadoraServicioProducto;
 								
 		  }
+		  
+		  $scope.editarDispersor = function(dispersor){
+			  $scope.panelAgregarDispersor =  true;
+			  $scope.edicionDispersor=dispersor;
+								
+		  }
+		  
+		
 		  
 		  $scope.mostrarPanelAgregarProducto= function(){
 			  $scope.panelAgregarProducto = true;
@@ -1662,7 +1687,16 @@ angular.module('theme.core.templates')
 				$scope.prestadoraServicioProductoDto.descripcionProductoConsolida = '';
 				$scope.prestadoraServicioProductoDto.idPrestadoraServicioProducto = null;
 		  }
+		  
+		  $scope.mostrarPanelAgregarDispersor= function(){
+			  $scope.edicionDispersor={};
+			  $scope.edicionDispersor.activo=false;
+			  $scope.panelAgregarDispersor = true;
+			  setTimeout("$('html, body').animate({scrollTop: ($('#panelAgregarDispersor').offset().top)-65}, 1500);",1000);
+			
+		  }
 		      
+		  
 		  $scope.eliminarProducto = function(producto){
 			$http.post(CONFIG.APIURL + "/prestadoraServicio/eliminarProducto.json", producto).then(
 				function(response) {
@@ -3056,6 +3090,7 @@ angular.module('theme.core.templates')
 										},
 										callback : function(result) {
 											if (result) {
+												
 												agregarPrestadoraServicioService.guardarDatosStp(cuenta, function(response) {
 													if(response.data.mensajeError != undefined){
 														$log.error(response.status+ ' - '+ response.statusText);
@@ -3085,6 +3120,13 @@ angular.module('theme.core.templates')
 										}				  
 								  });
 						      }
+					      	 
+					      	  $scope.activarDispersor = function(activar) {
+					          	
+					          		edicionDispersor.activo=!activar;
+					          		
+					          	
+					          };
 					      	
 				      			
   });

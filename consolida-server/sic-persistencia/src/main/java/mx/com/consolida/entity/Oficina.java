@@ -35,62 +35,62 @@ public class Oficina implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_oficina")
     private Long idOficina;
-
+    
     @Column(name = "clave")
     private String clave;
-
+    
     @Column(name = "descripcion")
     private String descripcion;
-
+    
     @Column(name = "rfc")
     private String rfc;
-
+    
     @Column(name = "razon_social")
     private String razonSocial;
-
+    
     @Column(name = "nombre_contacto")
     private String nombreContacto;
-
+    
     @Column(name = "telefono_contacto")
     private String telefonoContacto;
-
+    
     @Column(name = "correo_electronico_contacto")
     private String correoElectronicoContacto;
-
+    
     @Column(name = "ciudad_sede")
     private String ciudadSede;
-
+    
     @Column(name = "fecha_alta")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaAlta;
-
+    
     @Column(name = "fecha_modificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-
+    
     @Column(name = "ind_estatus")
     private String indEstatus;
-
+    
     /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "idOficina")
     private List<OficinaCanalVenta> oficinaCanalVentaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOficina")
     private List<OficinaCuentaBancaria> oficinaCuentaBancariaList;*/
-
+    
     @JoinColumn(name = "id_domicilio", referencedColumnName = "id_domicilio")
     @ManyToOne(optional = false)
     private Domicilio idDomicilio;
-
+    
     @JoinColumn(name = "id_entidad_federativa_sede", referencedColumnName = "id_entidad_federativa")
     @ManyToOne(optional = false)
     private CatEntidadFederativa idEntidadFederativaSede;
-
+    
     @JoinColumn(name = "usuario_alta", referencedColumnName = "id_usuario")
     @ManyToOne(optional = false)
     private Usuario usuarioAlta;
-
+    
     @JoinColumn(name = "usuario_modificacion", referencedColumnName = "id_usuario")
     @ManyToOne
     private Usuario usuarioModificacion;
@@ -262,5 +262,5 @@ public class Oficina implements Serializable {
     public String toString() {
         return "mx.com.consolida.entity.Oficina[ idOficina=" + idOficina + " ]";
     }
-
+    
 }

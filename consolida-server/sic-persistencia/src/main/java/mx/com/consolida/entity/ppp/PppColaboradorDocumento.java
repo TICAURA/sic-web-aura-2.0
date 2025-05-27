@@ -24,43 +24,43 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "ppp_colaborador_documento")
 @NamedQueries({ @NamedQuery(name = "PppColaboradorDocumento.findAll", query = "SELECT c FROM PppColaboradorDocumento c") })
 public class PppColaboradorDocumento implements Serializable{
-
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_ppp_colaborador_documento")
 	private Long idPppColaboradorDocumento;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_ppp_colaborador", nullable = false)
 	private PppColaborador pppColaborador;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_definicion_documento", nullable = false)
 	private DefinicionDocumento definicionDocumento;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_ppp_nomina_factura", nullable = false)
 	private PppNominaFactura pppNominaFactura;
-
+	
 	@Column(name="id_CMS")
 	private Long idCMS;
-
+	
 	@Column(name = "nombre_archivo")
 	private String nombreArchivo;
-
+	
 	@Column(name = "uuid")
 	private String uuid;
-
+	
 	@Column(name = "certificado_emisor")
 	private String certificadoEmisor;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_hora_certificacion", length = 19)
 	private Date fechaHoraCertificacion;
-
-
+	
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
@@ -77,14 +77,14 @@ public class PppColaboradorDocumento implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private String indEstatus;
-
+	
 	public PppColaboradorDocumento() {
-
+		
 	}
-
+	
 	public PppColaboradorDocumento(Long idPppColaboradorDocumento) {
 		this.idPppColaboradorDocumento = idPppColaboradorDocumento;
 	}

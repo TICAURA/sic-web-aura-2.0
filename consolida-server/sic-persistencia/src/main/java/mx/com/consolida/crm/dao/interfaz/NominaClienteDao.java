@@ -12,6 +12,7 @@ public interface NominaClienteDao extends DAO<NominaCliente,Long>{
 	
 	List<NominaClienteDto> listaNominaCliente(Long idCliente);
 	List<NominaClienteDto> listaNominaCliente(Long idCliente , Long idNominista) ;
+	List<NominaClienteDto> listaNominaClient(Long idCliente , Long idNominista) ;
 	
 	List<NominaClienteDto> listaDetalleNominaByIdCliente(Long idCliente);
 	NominaClienteDto nominaClientebyId(Long idNominaCliente);

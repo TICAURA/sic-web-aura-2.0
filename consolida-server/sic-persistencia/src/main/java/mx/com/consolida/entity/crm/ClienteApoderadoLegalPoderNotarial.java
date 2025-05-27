@@ -30,12 +30,12 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class ClienteApoderadoLegalPoderNotarial implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cliente_apoderado_legal_poder_notarial", unique = true, nullable = false)
 	private Long idClienteApoderadoLegalPoderNotarial;
 

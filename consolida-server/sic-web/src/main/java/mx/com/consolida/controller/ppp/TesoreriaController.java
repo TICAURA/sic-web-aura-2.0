@@ -20,6 +20,7 @@ import mx.com.consolida.generico.MensajeDTO;
 import mx.com.consolida.generico.NominaEstatusEnum;
 import mx.com.consolida.generico.ReferenciaSeguridad;
 import mx.com.consolida.ppp.dto.NominaDto;
+import mx.com.consolida.ppp.service.interfaz.FacturaBO;
 import mx.com.consolida.ppp.service.interfaz.NominaBO;
 import mx.com.consolida.ppp.service.interfaz.NominaComplementoBO;
 
@@ -32,6 +33,8 @@ public class TesoreriaController  extends BaseController {
 	
 	@Autowired
 	private NominaBO nominaBO;
+	@Autowired
+	private FacturaBO facturaBo;
 	
 	@Autowired
 	private NominaComplementoBO nominaComplementoBO;
@@ -107,6 +110,13 @@ public class TesoreriaController  extends BaseController {
 				 LOGGER.error("Ocurrio un error en autorizarFinanciamientoTesoreria ");
 				 mensajeDTO.setMensajeError("Ocurrio un error al realizar la operaci\u00f3n. Favor de intentarlo mas tarde");
 			 }
+			 
+			 if(!nominaBO.cambioEstatusOtorgarFinanciamientoGenerico(nomina.getIdNominaPPP(), nomina.getMotivoRechazo(), NominaEstatusEnum.CTA_CONCILIADA, getUser().getIdUsuario())) {
+				 LOGGER.error("Ocurrio un error en autorizarFinanciamientoTesoreria ");
+				 mensajeDTO.setMensajeError("Ocurrio un error al realizar la operaci\u00f3n. Favor de intentarlo mas tarde");
+			 }
+			 
+			facturaBo.guardarNominaFacturaRegistro(nomina, getUser().getIdUsuario());
 			 
 			 
 		 }catch (Exception e) {

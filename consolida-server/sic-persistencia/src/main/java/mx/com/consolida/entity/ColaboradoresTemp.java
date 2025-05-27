@@ -37,65 +37,65 @@ public class ColaboradoresTemp implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_colaborador_temp")
     private Long idColaboradorTemp;
-
+    
     @Column(name = "salario_diario")
     private BigDecimal salarioDiario;
-
+    
     @Column(name = "salario_diario_integral")
     private BigDecimal salarioDiarioIntegral;
-
+    
     @Column(name = "sueldo")
     private BigDecimal sueldo;
-
+    
     @Column(name = "gravados")
     private BigDecimal gravados;
-
+    
     @Column(name = "exentos")
     private BigDecimal exentos;
-
+    
     @Column(name = "subsidio")
     private BigDecimal subsidio;
-
+    
     @Column(name = "isr")
     private BigDecimal isr;
-
+    
     @Column(name = "co_imss")
     private BigDecimal coImss;
-
+    
     @Column(name = "neto_nomina")
     private BigDecimal netoNomina;
-
+    
     @Column(name = "fecha_alta")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaAlta;
-
+    
     @Column(name = "fecha_modificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-
+    
     @Column(name = "usuario_alta")
     private Long usuarioAlta;
-
+    
     @Column(name = "usuario_modificacion")
     private Long usuarioModificacion;
-
+    
     @Column(name = "ind_estatus")
     private Long indEstatus;
-
+    
     @JoinColumn(name = "id_cotizacion", referencedColumnName = "id_cotizacion")
     @ManyToOne(targetEntity = Cotizacion.class)
     private Cotizacion idCotizacion;
-
+    
     @Column(name = "fecha_antiguedad")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaAntiguedad;
-
+    
     @OneToMany(mappedBy = "idColaboradorTemp")
     private List<CotizacionColaborador> cotizacionColaboradorList;
-
+    
     public ColaboradoresTemp() {
     }
 
@@ -111,8 +111,8 @@ public class ColaboradoresTemp implements Serializable {
         this.fechaAlta = fechaAlta;
         this.usuarioAlta = usuarioAlta;
     }
-
-
+    
+    
 
     public ColaboradoresTemp(ColaboradoresTempDto dto) {
 		super();
@@ -278,7 +278,7 @@ public class ColaboradoresTemp implements Serializable {
 	public void setUsuarioModificacion(Long usuarioModificacion) {
 		this.usuarioModificacion = usuarioModificacion;
 	}
-
-
-
+	
+	
+    
 }

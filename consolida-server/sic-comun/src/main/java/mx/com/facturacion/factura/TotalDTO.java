@@ -16,7 +16,44 @@ public class TotalDTO implements Serializable{
 	private BigDecimal honorario;
 	private BigDecimal montoTotalHonorario;
 	private BigDecimal montoTotalColaboradoresPPP;
+	private BigDecimal saldoDisponible;
+	private BigDecimal ochentaYdos;
+	private BigDecimal totalMas10;
 	
+	public BigDecimal getTotalMas10() {
+		return totalMas10;
+	}
+
+	public void setTotalMas10(BigDecimal totalMas10) {
+		this.totalMas10 = totalMas10;
+	}
+
+	public BigDecimal getTotalMenos10() {
+		return totalMenos10;
+	}
+
+	public void setTotalMenos10(BigDecimal totalMenos10) {
+		this.totalMenos10 = totalMenos10;
+	}
+
+	private BigDecimal totalMenos10;
+	
+	public BigDecimal getSaldoDisponible() {
+		return saldoDisponible;
+	}
+
+	public void setSaldoDisponible(BigDecimal saldoDisponible) {
+		this.saldoDisponible = saldoDisponible;
+	}
+
+	public BigDecimal getOchentaYdos() {
+		return ochentaYdos;
+	}
+
+	public void setOchentaYdos(BigDecimal ochentaYdos) {
+		this.ochentaYdos = ochentaYdos;
+	}
+
 	public TotalDTO(){
 		
 	}

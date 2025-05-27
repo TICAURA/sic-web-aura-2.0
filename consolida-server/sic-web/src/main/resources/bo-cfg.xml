@@ -23,13 +23,11 @@
         <prop key="aliasKeyJks">freyxenet</prop>
         <prop key="passwordKeyJks">sTp_Fr3yX3n3t</prop>
         <prop key="urlXLS">/opt/jboss/wildfly/xls/</prop>
-
-		<prop key="url.ms.base">http://traefik</prop>
-		<prop key="url.factura.service">/api/factura</prop>
-		<prop key="url.nomina.service">/api/facturanomina</prop>
-		<prop key="url.documento.service">/api/documento</prop>
+         <prop key="urlZuul">http://127.0.0.1:8090/</prop>
         <prop key="urlStp">https://prod.stpmex.com:7002/speiws/rest/ordenPago/</prop>
-        <prop key="auth.cookie.hmac-key">y.E@EA!FbtCwXYB-2v_n.!*xgzRqgtbq2d2_A_U!W2hubL@URHRzNP96WNPxEcXK</prop>
-     </util:properties>
-<!--         <prop key="urlZuul">http://172.16.69.2:8090</prop> -->     
+        <prop key="urlStpConsulta">https://prod.stpmex.com:7002/efws/API/</prop>
+        <prop key="stpKey">b644e264a8de782cf9e5d2f0912a47d558a2687296b94a5faec05c6f19ea7d0c6d91ef94c1ca08a615b653362fc3ada84e903254aead3a4a9775c3e445057807</prop>
+   	    <prop key="urlAlquimia">http://127.0.0.1:8033/aura-alquimiapay/</prop>
+  </util:properties>
+     
 </beans>

@@ -43,14 +43,16 @@ import mx.com.consolida.dto.CatatologosCotizadorDto;
 import mx.com.consolida.dto.CotizacionDto;
 import mx.com.consolida.generico.ReferenciaSeguridad;
 import mx.com.consolida.service.interfaz.CotizadorBO;
+import org.apache.commons.codec.binary.Base64;
+
 
 @RestController
 @RequestMapping(value = "/archivo")
-@SessionAttributes(value = { ReferenciaSeguridad.COTIZADOR, ReferenciaSeguridad.CATS_COTIZADOR })
+@SessionAttributes(value={ReferenciaSeguridad.COTIZADOR,ReferenciaSeguridad.CATS_COTIZADOR })
 public class ExcelPoiHelper {
-
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExcelPoiHelper.class);
-
+	
 	@Value("${urlReportes}")
 	private String urlReportes;
 	@Autowired
@@ -58,7 +60,7 @@ public class ExcelPoiHelper {
 	
 	private static List<String> nombreColumnas = Arrays.asList("SALARIO_DIARIO", "GRAVADOS", "EXENTOS", "FECHA_DE_ANTIGUEDAD","NETO_NOMINA","ASIMILADOS","OTROS","PRIMA_DE_RIESGO","MONTO_PPP");
 
-
+    @SuppressWarnings("resource")
    	public Map <String ,Object >  readJExcel(ByteArrayInputStream bytesArray,String FILE_NAME, CotizacionDto cot,CatatologosCotizadorDto cat) {
     	System.out.println("\n ingresa a readJExcel");
     	Map <String ,Object > datosExcel = new HashMap<String, Object>();
@@ -66,13 +68,13 @@ public class ExcelPoiHelper {
        	List<EmpleadoDTO> rowsData = new ArrayList<EmpleadoDTO>();
        	datosExcel.put("header", headerData);
        	System.out.println("\n inicia el proceso");
-
+ 	 
        	Workbook workbook = null;
        	XSSFWorkbook  workbooks = null;
        	Sheet datatypeSheet =null;
-
-
-
+       	
+       	
+       	
         if(FILE_NAME != null && (FILE_NAME.contains(".xlsx") || FILE_NAME.contains(".XLSX"))) {
           	try {
           		workbooks = new XSSFWorkbook(bytesArray);
@@ -91,7 +93,7 @@ public class ExcelPoiHelper {
           }
 
 
-           try {
+           try {               
                Iterator<Row> iterator = datatypeSheet.iterator();
                int i = 0;
                while (iterator.hasNext()) {
@@ -102,7 +104,7 @@ public class ExcelPoiHelper {
                             Cell currentCell = cellIterator.next();
                             if(nombreColumnas.contains(currentCell.toString())) {
                             	headerData.add(currentCell.getStringCellValue());
-                            }else {
+                            }else { 
                             	 LOGGER.error("Error controlado, El contenido del archivo excel no corresponde al layout para el servicio readJExcel");
                             	datosExcel.put("errorCargalayout", "El contenido del archivo excel no corresponde al layout");
                         	    return datosExcel;
@@ -135,11 +137,11 @@ public class ExcelPoiHelper {
   		   	                    	rowData.setSoloPpp(new BigDecimal(String.valueOf(ce.getNumericCellValue())));
   		   	                      }
                              }
-                     }
+                     }         
                        if(cot.getIdImss().getIdCatGeneral() != 9L) {
 							if ((rowData.getSalarioDiario() != null && rowData.getSalarioDiario().compareTo(new BigDecimal(0)) == 1)
 									|| (rowData.getNetoNomina() != null && rowData.getNetoNomina().compareTo(new BigDecimal(0)) == 1)) {
-
+								
 								rowData.setSalarioDiario(rowData.getSalarioDiario() != null ? rowData.getSalarioDiario() : new BigDecimal(0));
 								if(rowData.getSalarioDiario() != null && rowData.getSalarioDiario().compareTo(new BigDecimal(0)) == 1) {
 									rowData.setNetoNomina(new BigDecimal(0));
@@ -165,7 +167,7 @@ public class ExcelPoiHelper {
 							rowData.setaOtros(new BigDecimal(0));
 							rowData.setGravados(new BigDecimal(0));
 							rowData.setDgPrimaDeRiesgo("I");
-
+							
                     	   rowData.setaOtros(rowData.getSoloPpp());
                     	   rowsData.add(rowData);
                        }
@@ -206,15 +208,15 @@ public class ExcelPoiHelper {
 	        			   return o1.getGravados().compareTo(o2.getGravados());
 	        		   }
 	        	   }else {
-	        		   return o1.getNetoNomina().compareTo(o2.getNetoNomina());
+	        		   return o1.getNetoNomina().compareTo(o2.getNetoNomina());  
 	        	   }
         	   } else {
         		   return o1.getSalarioDiario().compareTo(o2.getSalarioDiario());
         	   }
-
+        		   
         	   }).collect(Collectors.toList());
            rowsData = listEmpleados;
-
+           
            if(rowsData.size() > 0) {
         	   datosExcel.put("contentRows", rowsData);
            }else {
@@ -223,13 +225,13 @@ public class ExcelPoiHelper {
         	   }else {
         		   datosExcel.put("errorCargalayout", "EL layout no contiene colaboradores para registrar, recuerda que para el producto 'PPP + IMSS' o 'PPP + IMSS Cliente' es obligatorio el campo SALARIO_DIARIO o  NETO_NOMINA \n");
         	   }
-
+        	    
         	    return datosExcel;
            }
-
+           
            return datosExcel;
        }
-
+    
 
 	@SuppressWarnings("restriction")
 	@RequestMapping(value="/xlsFile", method=RequestMethod.POST)
@@ -247,14 +249,22 @@ public class ExcelPoiHelper {
 		    	}else {
 		    	 archivoString = documento.getArchivo().replace("data:application/vnd.ms-excel;base64,", "");
 		    	}
-			bytes = java.util.Base64.getDecoder().decode(archivoString);
+	      //  bytes = new sun.misc.BASE64Decoder().decodeBuffer(archivoString);
+	        Base64 base64 = new Base64();
+	    	bytes =   base64.decode(archivoString);
+	        
+	        
 	        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
-
+	        
 	        datosExcel = readJExcel(byteArrayInputStream,documento.getNombreArchivo(),cot,cat);
 	        System.out.print("\nArchivo creado correctamente a las :" + new Date());
-        }catch(Exception e) {
+        }	/*catch(IOException e) {
         	 LOGGER.error("Ocurrio un error en createFile ", e);
-        }
+        		}*/ 
+    	catch (Exception e) {
+        	 LOGGER.error("Ocurrio un error en createFile ", e);
+        	e.printStackTrace();
+		}
         return datosExcel;
     	}else {
     		return datosExcel;
@@ -268,7 +278,7 @@ public class ExcelPoiHelper {
 		String workingDir = System.getProperty("user.dir");
     	String filePath= workingDir+"/src/main/resources/cotizador/LayoutCotizadorDetallado.xlsx";
     	    File file = new File(filePath);
-
+    	    
     	    byte[] fileArray = new byte[(int) file.length()];
     	    Base64 base64 = new Base64();
     		InputStream inputStream;
@@ -281,10 +291,13 @@ public class ExcelPoiHelper {
     		} catch (Exception e) {
     			// Manejar Error
     		}
-
+    	    
     	    documento.put("documento", encodedFile);
     		return documento;
     }
-
-
+    
+ 
 }
+
+
+

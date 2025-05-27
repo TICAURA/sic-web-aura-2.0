@@ -22,62 +22,62 @@ import javax.persistence.TemporalType;
 @Table(name = "persona")
 @NamedQueries({@NamedQuery(name = "Persona.findAll", query = "SELECT c FROM Persona c") })
 public class Persona implements Serializable{
-
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_persona")
 	private Long idPersona;
-
+	
 	@Column(name = "nombre", nullable = false, length = 50)
 	private String nombre;
-
+	
 	@Column(name = "apellido_paterno", nullable = false, length = 50)
 	private String apellidoPaterno;
-
+	
 	@Column(name = "apellido_materno", length = 50)
 	private String apellidoMaterno;
-
+	
 	@Column(name = "rfc", length = 20)
 	private String rfc;
-
+	
 	@Column(name = "curp", length = 45)
 	private String curp;
 
 	@Column(name = "correo_electronico", length = 45)
 	private String correo_electronico;
-
+	
 	@Column(name = "telefono", length = 25)
 	private String telefono;
 
 	@Column(name = "fecha_nacimiento")
 	private Date fechaNacimiento;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "usuario_alta", nullable = false, length = 45)
 	private Long usuarioAlta;
-
+	
 	@Column(name = "usuario_modificacion")
 	private Long usuarioModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private String indEstatus;
-
+	
 //	//bi-directional many-to-one association to Usuario
 	@OneToMany(mappedBy="persona")
 	private List<Usuario> usuarios;
 
 	public Persona() {
 	}
-
+	
 	public Persona(Long idPersona) {
 		this.idPersona = idPersona;
 	}
@@ -114,7 +114,7 @@ public class Persona implements Serializable{
 		this.idPersona = idPersona;
 	}
 
-
+	
 	public String getNombre() {
 		return this.nombre;
 	}
@@ -123,7 +123,7 @@ public class Persona implements Serializable{
 		this.nombre = nombre;
 	}
 
-
+	
 	public String getApellidoPaterno() {
 		return this.apellidoPaterno;
 	}
@@ -140,7 +140,7 @@ public class Persona implements Serializable{
 		this.apellidoMaterno = apellidoMaterno;
 	}
 
-
+	
 	public String getRfc() {
 		return this.rfc;
 	}
@@ -198,7 +198,7 @@ public class Persona implements Serializable{
 	public void setIndEstatus(String indEstatus) {
 		this.indEstatus = indEstatus;
 	}
-
+	
 	public List<Usuario> getUsuarios() {
 		return usuarios;
 	}
@@ -232,6 +232,6 @@ public class Persona implements Serializable{
 	}
 
 
-
-
+	
+	
 }

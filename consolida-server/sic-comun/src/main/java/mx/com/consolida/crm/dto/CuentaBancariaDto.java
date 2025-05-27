@@ -9,6 +9,7 @@ public class CuentaBancariaDto {
 	private Long idPrestadoraServicio;
 	private Long idCanalVentaCuentaBancaria;
 	private Long idOficinaCuentaBancaria;
+	private Long idComisionistaCuentaBancaria;
 	private String numeroCuenta;
 	private String clabeInterbancaria;
 	private Boolean esPrincipal;
@@ -16,6 +17,12 @@ public class CuentaBancariaDto {
 	private String numeroReferencia;
 	
 	
+	public Long getIdComisionistaCuentaBancaria() {
+		return idComisionistaCuentaBancaria;
+	}
+	public void setIdComisionistaCuentaBancaria(Long idComisionistaCuentaBancaria) {
+		this.idComisionistaCuentaBancaria = idComisionistaCuentaBancaria;
+	}
 	public Long getIdCanalVentaCuentaBancaria() {
 		return idCanalVentaCuentaBancaria;
 	}

@@ -17,48 +17,48 @@ import javax.persistence.TemporalType;
 @Table(name="cat_grupo")
 @NamedQuery(name="CatGrupo.findAll", query="SELECT c FROM CatGrupo c")
 public class CatGrupo  implements Serializable{
-
+			
 		/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 		@Id
-		@GeneratedValue(strategy = GenerationType.IDENTITY)
+		@GeneratedValue(strategy = GenerationType.AUTO)
 	    @Column(name = "id_cat_grupo")
 		private Long idCatGrupo;
-
-
+		
+		
 		@Column(name = "cve_grupo")
 	    private String cveGrupo;
-
-
+		
+		
 		@Column(name = "descripcion_razon_social")
 	    private String descripcionRazonSocial;
-
-
+		
+		
 		@Column(name = "rfc")
 	    private String rfc;
-
-
+		
+		
 	    @Column(name = "fecha_alta")
 	    @Temporal(TemporalType.TIMESTAMP)
 	    private Date fechaAlta;
-
+		
 	    @Column(name = "fecha_modificacion")
 	    @Temporal(TemporalType.TIMESTAMP)
 	    private Date fechaModificacion;
-
-
+	    
+	    
 	    @Column(name = "usuario_alta")
 	    private Long usuarioAlta;
-
+	    
 	    @Column(name = "usuario_modificacion")
 	    private Long usuarioModificacion;
-
+	    
 	    @Column(name = "ind_estatus")
 	    private Long indEstatus;
-
+	    
 		public Long getIdCatGrupo() {
 			return idCatGrupo;
 		}

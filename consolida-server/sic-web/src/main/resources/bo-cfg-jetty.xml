@@ -10,45 +10,40 @@
 	<context:component-scan base-package="mx.com.consolida.service" />
 	<context:component-scan base-package="mx.com.consolida.crm.service" />
 	<context:component-scan base-package="mx.com.consolida.ppp.service" />
-
-
-
+	
+	
+	
 	<!-- Load properties so we can easily change them -->
 	<context:property-placeholder  properties-ref="local" />
-
+	
 	 <util:properties id="local">
- 		<prop key="ambiente">LOCAL</prop>
- 		<prop key="urlReportes">C:\proyectos\sic-web-git-aura\docs-sic\jasper\</prop>
-
+ 		<prop key="ambiente">LOCAL</prop>	
+ 		<prop key="urlReportes">D:\PC\Documentos\Grupo AURA\proyecto\consolida-server\consolida-server\cotizador\consolida-server\sic-web\src\main\resources\reportes\</prop>
+ 		                      
         <prop key="urlXLS">/opt/jboss/wildfly/xls/</prop>
-        <!-- <prop key="urlZuul">http://localhost:8090/</prop> -->
-        <prop key="urlZuul">http://172.23.1.163:8090/</prop>
-        <prop key="url.ms.base">http://traefik</prop>
-		<prop key="url.factura.service">/api/factura</prop>
-		<prop key="url.nomina.service">/api/facturanomina</prop>
-		<prop key="url.documento.service">/api/documento</prop>
+     
+<!--          <prop key="urlZuul">http://desarrolloaura.southcentralus.cloudapp.azure.com:8090/</prop>  -->
+      <prop key="urlZuul">http://localhost:8090/</prop> 
+      <prop key="urlAlquimia">http://localhost:8033/aura-alquimiapay/</prop>
+<!--         <prop key="urlZuul">http://172.23.1.163:8090/</prop> -->
+        
         <!-- Propiedades de STP -->
-       <prop key="urlStp">https://demo.stpmex.com:7024/speiws/rest/ordenPago/registra</prop>
-       <prop key="urlJks">src/main/resources/jks</prop>
- 	   <prop key="nombreJks">llavePrivadaFREYXENET.jks</prop>
-   	   <prop key="passwordJKS">Temporal1</prop>
-   	   <prop key="aliasKeyJks">FREYXENET</prop>
-       <prop key="passwordKeyJks">Temporal1</prop>
-   	   <prop key="auth.cookie.hmac-key">y.E@EA!FbtCwXYB-2v_n.!*xgzRqgtbq2d2_A_U!W2hubL@URHRzNP96WNPxEcXK</prop>
+       <prop key="urlStp">https://demo.stpmex.com:7024/speiws/rest/ordenPago/</prop>
+       <prop key="urlStpConsulta">https://efws-dev.stpmex.com/efws/API/</prop>
+       <prop key="urlJks">C:\\docs-sic\\jks</prop> 
+ <!--       <prop key="urlJks">/home/saxt/docs-sic/jks</prop>-->
 
-       <!--
-       <prop key="urlXLS">C:\proyectos\sic-web-git-aura\docs-sic\jasper\</prop>
-               <prop key="urlZuul">http://localhost:8090/</prop>
-              <prop key="urlZuul">http://localhost:8090/</prop>
-
-                Propiedades de STP
-              <prop key="urlStp">https://demo.stpmex.com:7024/speiws/rest/ordenPago/</prop>
-              <prop key="urlJks">C:\docs-sic\jks\</prop>
-              <prop key="nombreJks">llavePrivadaCARENERO.jks</prop>
-               <prop key="passwordJKS">12345678</prop>
-               <prop key="aliasKeyJks">prueba</prop>
-               <prop key="passwordKeyJks">12345678</prop>
-       -->
+<!--    	   <prop key="passwordJKS">Temporal1</prop> -->
+<!--    	   <prop key="aliasKeyJks">FREYXENET</prop> -->
+<!--        <prop key="passwordKeyJks">Temporal1</prop> -->
+ <prop key="nombreJks">llavePrivadaFREYXENET.jks</prop>
+<!--          <prop key="nombreJks">S_CARENERO.jks</prop> -->
+        <prop key="passwordJKS">Fr3yX3n3t.2020</prop>
+        <prop key="aliasKeyJks">FREYXENET</prop>
+        <prop key="passwordKeyJks">sTp_Fr3yX3n3t</prop>
+        <prop key="stpKey">b644e264a8de782cf9e5d2f0912a47d558a2687296b94a5faec05c6f19ea7d0c6d91ef94c1ca08a615b653362fc3ada84e903254aead3a4a9775c3e445057807</prop>
+   	   
+   	   
      </util:properties>
-
+      
 </beans>

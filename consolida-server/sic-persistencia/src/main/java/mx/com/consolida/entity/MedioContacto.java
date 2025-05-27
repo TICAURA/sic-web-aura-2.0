@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class MedioContacto {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_medio_contacto")
 	private int idMedioContacto;
 	@Column(name="codigo_postal")
@@ -41,8 +41,8 @@ public class MedioContacto {
 	private String usuarioAlta;
 	@Column(name="telefono")
 	private String telefono;
-
-
+	
+	
 	public int getIdMedioContacto() {
 		return idMedioContacto;
 	}
@@ -115,6 +115,6 @@ public class MedioContacto {
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
-
-
+	
+	
 }

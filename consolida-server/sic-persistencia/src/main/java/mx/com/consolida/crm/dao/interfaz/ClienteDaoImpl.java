@@ -369,14 +369,14 @@ public class ClienteDaoImpl extends GenericDAO<Cliente, Long> implements Cliente
 			sb.append(" (select cg4.descripcion from sin.cat_maestro cm4, sin.cat_general cg4     ");
 			sb.append(" where cm4.id_cat_maestro = cg4.id_cat_maestro  ");  
 			sb.append(" and cg4.id_cat_general = cli.id_cat_categoria) as desc_cat_categoria,   ");
-			sb.append(" cli.id_cat_regimen_fiscal, ");
-			sb.append(" (select cg4.descripcion from sin.cat_maestro cm4, sin.cat_general cg4     ");
-			sb.append(" where cm4.id_cat_maestro = cg4.id_cat_maestro  ");  
-			sb.append(" and cg4.id_cat_general = cli.id_cat_regimen_fiscal) as desc_cat_regimen_fiscal  ");
-			sb.append(" from sin.cliente cli, sin.cat_grupo cg, sin.cat_maestro cm, sin.cat_general cgen   ");
+			sb.append(" rfis.id_cat_general id_regimen_fiscal, ");
+			sb.append(" rfis.clave  as clave_regimen_fiscal,   ");
+			sb.append(" rfis.descripcion as descripcion_regimen_fiscal  ");  
+			sb.append(" from sin.cliente cli, sin.cat_grupo cg, sin.cat_maestro cm, sin.cat_general cgen, sin.cat_general rfis   ");
 			sb.append(" where cli.id_cat_grupo = cg.id_cat_grupo  ");  
 			sb.append(" and cgen.id_cat_maestro = cm.id_cat_maestro    ");
 			sb.append(" and cgen.id_cat_general = cli.id_tipo_persona   "); 
+			sb.append(" and rfis.id_cat_general = cli.id_cat_regimen_fiscal   "); 
 			sb.append(" and cli.ind_estatus = 1  ");
 			sb.append(" and cli.id_cliente = ?  ");
     					
@@ -434,8 +434,9 @@ public class ClienteDaoImpl extends GenericDAO<Cliente, Long> implements Cliente
     						cliente.setCatCategoria(catCategoria);
     						
     						CatGeneralDto catRegimenFiscal = new CatGeneralDto();
-    						catRegimenFiscal.setIdCatGeneral(rs.getLong("id_cat_regimen_fiscal"));
-    						catRegimenFiscal.setDescripcion(rs.getString("desc_cat_regimen_fiscal"));
+    						catRegimenFiscal.setIdCatGeneral(rs.getLong("id_regimen_fiscal"));
+    						catRegimenFiscal.setClave(rs.getString("clave_regimen_fiscal"));
+    						catRegimenFiscal.setDescripcion(rs.getString("descripcion_regimen_fiscal"));
     						cliente.setCatRegimenFiscal(catRegimenFiscal);
     						
     						if(rs.getLong("id_cliente")>0) {

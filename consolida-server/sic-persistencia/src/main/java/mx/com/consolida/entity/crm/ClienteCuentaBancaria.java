@@ -29,12 +29,12 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class ClienteCuentaBancaria implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cliente_cuenta_bancaria")
 	private Long idClienteCuentaBancaria;
 
@@ -51,17 +51,17 @@ public class ClienteCuentaBancaria implements java.io.Serializable {
 
 	@Column(name = "clabe_interbancaria",  length = 30)
 	private String clabeInterbancaria;
-
+	
 	@Column(name = "numero_referencia", length = 30)
 	private String numeroReferencia;
-
+	
 	@Column(name = "es_principal", nullable = false)
 	private int esPrincipal;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_tipo_cuenta", nullable = false)
 	private CatGeneral catTipoCuenta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;

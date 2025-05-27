@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import mx.com.consolida.crm.dto.CelulaDto;
 import mx.com.consolida.dto.CanalVentaDto;
 import mx.com.consolida.dto.admin.RolDTO;
 
@@ -38,6 +39,7 @@ public class UsuarioDTO implements Serializable {
 	private PersonaDto persona;
 	private List<UsuarioRolDto> usuarioRols;
 	private RolDTO rol;
+	private CelulaDto celula;
 	
 	
 	private CanalVentaDto canalVentaDto;
@@ -255,5 +257,14 @@ public class UsuarioDTO implements Serializable {
 	public void setNombreCompleto(String nombreCompleto) {
 		this.nombreCompleto = nombreCompleto;
 	}
+
+	public CelulaDto getCelula() {
+		return celula;
+	}
+
+	public void setCelula(CelulaDto celula) {
+		this.celula = celula;
+	}
+	
 		
 }

@@ -22,47 +22,47 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "prestadora_servicio_imss")
 @NamedQueries({ @NamedQuery(name = "PrestadoraServicioImss.findAll", query = "SELECT c FROM PrestadoraServicioImss c") })
 public class PrestadoraServicioImss implements java.io.Serializable {
-
+	
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_prestadora_servicio_imss")
 	private Long idPrestadoraServicioImss;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestadora_servicio", nullable = false)
 	private PrestadoraServicio prestadoraServicio;
-
+	
 	@Column(name = "usuario", nullable = false, length = 50)
 	private String usuario;
-
+	
 	@Column(name = "password", nullable = false, length = 50)
 	private String password;
-
+		
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+		
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion")
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
-
+	
 	public PrestadoraServicioImss() {
-
+		
 	}
-
+	
 	public PrestadoraServicioImss(Long idPrestadoraServicioImss) {
 		this.idPrestadoraServicioImss = idPrestadoraServicioImss;
 	}

@@ -27,41 +27,41 @@ import mx.com.consolida.ppp.dto.HistoricoNominaDto;
 
 @Repository
 public class PppNominaEstatusDaoImpl extends GenericDAO<PppNominaEstatus, Long> implements PppNominaEstatusDao {
-
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PppNominaEstatusDaoImpl.class);
-
+	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-
+	
 	@Autowired
 	protected SessionFactory sessionFactory;
 
 	public List<PppNominaEstatus> getPppNominaEstatusActivo(Long idNomina) {
-
+		
 		try {
-
+			
 			Session session = sessionFactory.getCurrentSession();
 			Query query = session.createQuery("select estatus from PppNominaEstatus estatus where estatus.indEstatus = 1 and estatus.pppNomina.idPppNomina = :idNomina");
 			query.setParameter("idNomina", idNomina);
 
 			return (List<PppNominaEstatus>) query.list();
-
+			
 		}catch (Exception e) {
 			LOGGER.error("Ocurrio un error en getPppNominaEstatusActivo ", e);
 			return null;
 		}
 
 	}
+	
 
-
-
+		
 	@Override
 	@Transactional(readOnly = true)
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<HistoricoNominaDto> getHistoricoByIdPppNomina(Long idPppNomina) {
 		try {
-
-			StringBuilder sb = new StringBuilder();
+			
+			StringBuilder sb = new StringBuilder();						
 			sb.append(" select pppne.id_ppp_nomina_estatus, pppne.id_ppp_nomina, pppne.observacion, pppne.fecha_alta, ");
 			sb.append(" cen.descripcion as desc_cat_estatus_nomina, per.nombre, per.apellido_paterno, per.apellido_materno  ");
 			sb.append(" from sin.ppp_nomina_estatus pppne, sin.cat_estatus_nomina cen, sin.persona per, ");
@@ -81,7 +81,7 @@ public class PppNominaEstatusDaoImpl extends GenericDAO<PppNominaEstatus, Long> 
 					}else {
 						historico.setNombreUsuarioMovimiento(rs.getString("nombre")+" "+rs.getString("apellido_paterno"));
 					}
-
+					
 					historico.setFechaMovimiento(rs.getDate("fecha_alta"));
 					historico.setFechaMovimientoFormato(Utilerias.convirteDateToStringMesEnLetra(rs.getDate("fecha_alta")));
 					historico.setObservacion(rs.getString("observacion"));

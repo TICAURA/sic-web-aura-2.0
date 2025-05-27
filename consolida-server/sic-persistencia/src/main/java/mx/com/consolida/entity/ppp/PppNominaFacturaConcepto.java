@@ -25,59 +25,59 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "ppp_nomina_factura_concepto")
 @NamedQueries({ @NamedQuery(name = "PppNominaFacturaConcepto.findAll", query = "SELECT c FROM PppNominaFacturaConcepto c") })
 public class PppNominaFacturaConcepto implements java.io.Serializable{
-
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_ppp_nomina_factura_concepto")
 	private Long idPppNominaFacturaConcepto;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_ppp_nomina_factura")
 	private PppNominaFactura pppNominaFactura;
-
+	
 	@Column(name = "cantidad")
 	private BigDecimal cantidad;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_unidad_medida")
 	private CatGeneral unidadMedida;
-
+	
 	@Column(name = "codigo_sat")
 	private String codigoSat;
-
+	
 	@Column(name = "descripcion_sat")
 	private String descripcionSat;
-
+	
 	@Column(name = "descripcion_concepto")
 	private String descripcionConcepto;
-
+	
 	@Column(name = "descripcion_concepto_adicional")
 	private String descripcionConceptoAdicional;
-
+	
 	@Column(name = "precio_unitario")
 	private BigDecimal precioUnitario;
-
+	
 	@Column(name = "importe")
 	private BigDecimal importe;
-
+	
 	@Column(name = "iva_trasladado_16")
 	private String ivaTrasladado16;
-
+	
 	@Column(name="iva_trasladado_16_monto")
 	private BigDecimal ivaTrasladado16Monto;
-
+	
 	@Column(name = "iva_retenido_6")
 	private String ivaRetenido6;
-
+	
 	@Column(name="iva_retenido_6_monto")
 	private BigDecimal ivaRetenido6Monto;
-
-
+	
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
@@ -249,5 +249,5 @@ public class PppNominaFacturaConcepto implements java.io.Serializable{
 		this.descripcionConceptoAdicional = descripcionConceptoAdicional;
 	}
 
-
+	
 }

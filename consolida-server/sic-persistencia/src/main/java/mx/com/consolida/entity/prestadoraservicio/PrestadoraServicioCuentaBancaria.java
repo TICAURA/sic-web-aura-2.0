@@ -29,58 +29,58 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class PrestadoraServicioCuentaBancaria implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = -2796292979287706421L;
 
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_prestadora_servicio_cuenta_bancaria")
 	private Long idPrestadoraServicioCuentaBancaria;
-
+	
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_banco", nullable = false)
 	private CatGeneral catBanco;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestadora_servicio", nullable = false)
 	private PrestadoraServicio prestadoraServicio;
-
-
+	
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+	
 	@Column(name = "numero_cuenta", length = 45)
 	private String numeroCuenta;
-
+	
 	@Column(name = "clabe_interbancaria", length = 45)
 	private String clabeInterbancaria;
-
+	
 	@Column(name = "es_principal", nullable = false)
 	private int esPrincipal;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_tipo_cuenta", nullable = false)
 	private CatGeneral catTipoCuenta;
-
+	
 	@Column(name = "numero_referencia")
 	private String numeroReferencia;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
 

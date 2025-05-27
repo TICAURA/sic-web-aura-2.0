@@ -26,4 +26,5 @@ public interface CatalogoDao {
 	List<CatGeneralDto> catFormulasByIdTipoFormula(Long idTipoFormula);
 	List<CatGeneralDto> obtenerCatGeneralByClvMaestroOrderByIdCatGeneral(String clv);
 	List<CatGeneralDto> obtenerCatCelula();
+	List<CatGeneralDto> obtenerListaProductos();
 }

@@ -22,35 +22,35 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "ppp_colaborador_stp")
 @NamedQueries({ @NamedQuery(name = "PppColaboradorStp.findAll", query = "SELECT c FROM PppColaboradorStp c") })
 public class PppColaboradorStp  implements java.io.Serializable{
-
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_ppp_colaborador_stp")
 	private Long idPppColaboradorStp;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_ppp_colaborador")
 	private PppColaborador pppColaborador;
-
+	
 	@Column(name = "cve_orden_pago")
 	private  String cveOrdenPago;
-
+	
 	@Column(name = "id_stp")
 	private Integer idStp;
-
+	
 	@Column(name = "descripcion_error_stp")
 	private  String descripcionErrorStp;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
 
@@ -117,7 +117,7 @@ public class PppColaboradorStp  implements java.io.Serializable{
 	public void setIndEstatus(Long indEstatus) {
 		this.indEstatus = indEstatus;
 	}
-
-
+	
+	
 
 }

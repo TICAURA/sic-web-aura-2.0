@@ -40,35 +40,35 @@ import mx.com.documento.DefinicionDocumentoDto;
 
 @Service
 public class NominaComplementoBOImpl implements NominaComplementoBO{
-
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(NominaComplementoBOImpl.class);
 
 	@Autowired
 	private PppNominaComplementoDao nominaComplementoDao;
-
+	
 	@Autowired
 	private PppNominaEstatusDao pppNominaEstatusDao;
-
+	
 	@Autowired
 	private PppNominaDao pppNominaDao;
-
+	
 	@Autowired
 	private DocumentoServiceBO documentoServiceBO;
 
 	@Override
 	@Transactional
 	public Boolean guargarNominaComplemento(NominaComplementoDto nominaComplementoDto, Long idUsuarioAplicativo) {
-
+		
 		Map<String,String> contextos = new HashMap<String,String>();
 		DocumentoCSMDto documento = new DocumentoCSMDto();
 		Long idCMS = null;
-
+		
 		try {
-
+			
 			PppNominaComplemento nominaComplemento = new PppNominaComplemento();
-
+			
 			if (nominaComplementoDto.getIdNominaComplemento() != null) {
-
+	
 				nominaComplemento = nominaComplementoDao.read(nominaComplementoDto.getIdNominaComplemento());
 				nominaComplemento.setFechaFacturacion(nominaComplementoDto.getFechaFacturacion());
 				nominaComplemento.setFechaDispersion(nominaComplementoDto.getFechaDispersion());
@@ -79,14 +79,14 @@ public class NominaComplementoBOImpl implements NominaComplementoBO{
 				nominaComplemento.setFechaModificacion(new Date());
 				nominaComplemento.setUsuarioModificacion(new Usuario(idUsuarioAplicativo));
 				nominaComplemento.setIndEstatus(Long.valueOf(IndEstatusEnum.ACTIVO.getEstatus()));
-
+				
 				if(nominaComplementoDto.getRequiereFianciamiento()) {
-
+					
 					if(nominaComplementoDto.getDocumentoNuevo().getMimeType()!=null) {
 							contextos.put("1","nomina");
 							contextos.put("2",String.valueOf(nominaComplementoDto.getNominaDto().getIdNomina()));
 							contextos.put("3", String.valueOf(DefinicionDocumentoENUM.PPP_DOCUMENTO_SUSTENTO_FINANCIAMIENTO.getIdDefinicionDocumento()));
-
+							
 							documento.setDocumentoNuevo(nominaComplementoDto.getDocumentoNuevo());
 							documento.setDefinicion(new DefinicionDocumentoDto(DefinicionDocumentoENUM.PPP_DOCUMENTO_SUSTENTO_FINANCIAMIENTO.getIdDefinicionDocumento()));
 						    idCMS = documentoServiceBO.guardarDocumentoCMS(documento, contextos);
@@ -100,11 +100,11 @@ public class NominaComplementoBOImpl implements NominaComplementoBO{
 					nominaComplemento.setIdCMS(null);
 					nominaComplemento.setNombreArchivo(null);
 				}
-
-				nominaComplementoDao.update(nominaComplemento);
-
+				
+				nominaComplementoDao.update(nominaComplemento);	
+				
 				if(nominaComplementoDto.getRequiereFianciamiento() != null && nominaComplementoDto.getRequiereFianciamiento()) {
-
+					
 					actualizarPPPNominaEstatus(nominaComplementoDto.getNominaDto().getIdNomina(),
 							nominaComplementoDto.getObservaciones()!=null ? nominaComplementoDto.getObservaciones() : null,
 									NominaEstatusEnum.REQUIERE_FINANCIAMIENTO,
@@ -115,21 +115,21 @@ public class NominaComplementoBOImpl implements NominaComplementoBO{
 									NominaEstatusEnum.BORRADOR,
 									idUsuarioAplicativo);
 				}
-
+	
 			} else {
-
+				
 				if(nominaComplementoDto.getRequiereFianciamiento()) {
 					contextos.put("1","nomina");
 					contextos.put("2",String.valueOf(nominaComplementoDto.getNominaDto().getIdNomina()));
 					contextos.put("3", String.valueOf(DefinicionDocumentoENUM.PPP_DOCUMENTO_SUSTENTO_FINANCIAMIENTO.getIdDefinicionDocumento()));
-
+					
 					documento.setDocumentoNuevo(nominaComplementoDto.getDocumentoNuevo());
 					documento.setDefinicion(new DefinicionDocumentoDto(DefinicionDocumentoENUM.PPP_DOCUMENTO_SUSTENTO_FINANCIAMIENTO.getIdDefinicionDocumento()));
 				    idCMS = documentoServiceBO.guardarDocumentoCMS(documento, contextos);
 				    nominaComplemento.setIdDefinicionDocumento(DefinicionDocumentoENUM.PPP_DOCUMENTO_SUSTENTO_FINANCIAMIENTO.getIdDefinicionDocumento());
 					nominaComplemento.setIdCMS(idCMS);
 					nominaComplemento.setNombreArchivo(nominaComplementoDto.getDocumentoNuevo().getNombreArchivo());
-
+					
 				}else {
 					nominaComplemento.setIdDefinicionDocumento(null);
 					nominaComplemento.setIdCMS(null);
@@ -146,10 +146,10 @@ public class NominaComplementoBOImpl implements NominaComplementoBO{
 				nominaComplemento.setFechaAlta(new Date());
 				nominaComplemento.setUsuarioAlta(new Usuario(idUsuarioAplicativo));
 				nominaComplemento.setIndEstatus(Long.valueOf(IndEstatusEnum.ACTIVO.getEstatus()));
-				nominaComplementoDao.create(nominaComplemento);
-
+				nominaComplementoDao.create(nominaComplemento);				
+							
 				if(nominaComplementoDto.getRequiereFianciamiento() != null && nominaComplementoDto.getRequiereFianciamiento()) {
-
+					
 					actualizarPPPNominaEstatus(nominaComplementoDto.getNominaDto().getIdNomina(),
 							nominaComplementoDto.getObservaciones()!=null ? nominaComplementoDto.getObservaciones() : null,
 									NominaEstatusEnum.REQUIERE_FINANCIAMIENTO,
@@ -160,14 +160,29 @@ public class NominaComplementoBOImpl implements NominaComplementoBO{
 							nominaComplementoDto.getObservaciones()!=null ? nominaComplementoDto.getObservaciones() : null,
 									NominaEstatusEnum.CTA_CONCILIADA,
 									idUsuarioAplicativo);
-
+					
 				}
-
+				//ejemplo con Layner
+				if(nominaComplementoDto.getNominaDto().getClienteDto().getEstimbreSindicato()==1) {
+					actualizarPPPNominaEstatus(nominaComplementoDto.getNominaDto().getIdNomina(),
+							nominaComplementoDto.getObservaciones()!=null ? nominaComplementoDto.getObservaciones() : null,
+									NominaEstatusEnum.CTA_CONCILIADA,
+									idUsuarioAplicativo);
+				}
+				
+				/*if(nominaComplementoDto.getNominaDto().getNecesitaFactura()== false) {
+					actualizarPPPNominaEstatus(nominaComplementoDto.getNominaDto().getIdNomina(),
+							nominaComplementoDto.getObservaciones()!=null ? nominaComplementoDto.getObservaciones() : null,
+									NominaEstatusEnum.COL_CARGADOS,
+									idUsuarioAplicativo);
+					
+				}*/
+				
 			}
-
-
+	
+			
 			return Boolean.TRUE;
-
+			
 		}catch (Exception e) {
 			LOGGER.error("Ocurrio un error en guargarNominaComplemento ", e);
 			return Boolean.FALSE;
@@ -177,12 +192,12 @@ public class NominaComplementoBOImpl implements NominaComplementoBO{
 	private void actualizarPPPNominaEstatus(Long idNominaPPP, String observacion , NominaEstatusEnum estatus , Long idUsuarioAplicativo) {
 		//Consulta los estatus activos y los apaga  , inserta el nuevo estatus
 		List<PppNominaEstatus> estatusActivos = pppNominaEstatusDao.getPppNominaEstatusActivo(idNominaPPP);
-
+		
 		for (PppNominaEstatus pppNominaEstatus : estatusActivos) {
 			pppNominaEstatus.setIndEstatus(IndEstatusEnum.INACTIVO.getEstatus());
 			pppNominaEstatusDao.update(pppNominaEstatus);
 		}
-
+		
 		PppNominaEstatus nominaEstatus = new PppNominaEstatus();
 		nominaEstatus.setCatEstatusNomina(new CatEstatusNomina(new Long(estatus.getId())));
 		nominaEstatus.setPppNomina(new PppNomina(idNominaPPP));
@@ -190,17 +205,17 @@ public class NominaComplementoBOImpl implements NominaComplementoBO{
 		nominaEstatus.setUsuarioAlta(new Usuario(idUsuarioAplicativo));
 		nominaEstatus.setObservacion(observacion);
 		nominaEstatus.setIndEstatus(IndEstatusEnum.ACTIVO.getEstatus());
-
+		
 		pppNominaEstatusDao.create(nominaEstatus);
 	}
-
-
+	
+	
 
 	@Override
 	@Transactional(readOnly = true)
 	public NominaComplementoDto getDatosNomComplByIdNomCompl(String claveNomina) {
 		try {
-
+			
 			return nominaComplementoDao.getDatosNomComplByIdNomCompl(claveNomina);
 
 		}catch (Exception e) {
@@ -208,13 +223,13 @@ public class NominaComplementoBOImpl implements NominaComplementoBO{
 			return null;
 		}
 	}
-
+	
 	@Override
 	@Transactional
 	public Boolean autorizaFinanciamientoOperaciones(NominaComplementoDto nominaComplementoDto, Long idUsuarioAplicativo) {
 		try {
 
-
+			
 			if (nominaComplementoDto.getIdNominaComplemento() != null) {
 
 				if(nominaComplementoDto.getRequiereFianciamiento() != null && nominaComplementoDto.getRequiereFianciamiento()) {
@@ -224,16 +239,16 @@ public class NominaComplementoBOImpl implements NominaComplementoBO{
 									NominaEstatusEnum.AUTORIZADO_OPERACIONES,
 									idUsuarioAplicativo);
 				}
-
+	
 			} else {
-
+	
 				LOGGER.error("Ocurrio un error en guargarNominaComplemento, nominaComplementoDto.getIdNominaComplemento() es null ");
 				return Boolean.FALSE;
 			}
-
-
+	
+			
 			return Boolean.TRUE;
-
+			
 		}catch (Exception e) {
 			LOGGER.error("Ocurrio un error en guargarNominaComplemento ", e);
 			return Boolean.FALSE;
@@ -244,7 +259,7 @@ public class NominaComplementoBOImpl implements NominaComplementoBO{
 	@Transactional(readOnly = true)
 	public NominaDto getNominaDtoByClave(String claveNomina) {
 		try {
-
+			
 			return pppNominaDao.getNominaDtoByClave(claveNomina);
 
 		}catch (Exception e) {

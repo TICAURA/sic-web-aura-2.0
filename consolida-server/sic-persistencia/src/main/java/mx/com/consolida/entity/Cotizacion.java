@@ -39,7 +39,7 @@ public class Cotizacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_cotizacion")
     private Long idCotizacion;
     @Column(name = "porcentaje_nom_fis")
@@ -67,7 +67,7 @@ public class Cotizacion implements Serializable {
     @Column(name = "usuario_modificacion")
     private Long usuarioModificacion;
     @Column(name = "ind_estatus")
-    private Long indEstatus;
+    private Long indEstatus;    
     @JoinColumn(name = "id_vacaciones", referencedColumnName = "id_cat_general")
     @ManyToOne(cascade = CascadeType.DETACH)
     private CatGeneral idVacaciones;
@@ -98,51 +98,51 @@ public class Cotizacion implements Serializable {
     @JoinColumn(name = "id_zona", referencedColumnName = "id_cat_general")
     @ManyToOne(cascade = CascadeType.DETACH)
     private CatGeneral idZona;
-
+    
     @JoinColumn(name = "id_cliente_temp", referencedColumnName = "id_cliente_temp")
     @ManyToOne(cascade = CascadeType.DETACH)
     private ClienteTemp idCliente;
-
+    
     @JoinColumn(name = "id_estatus", referencedColumnName = "id_cat_general")
     @ManyToOne(cascade = CascadeType.DETACH)
     private CatGeneral idEstatus;
-
+    
     @Column(name = "observacion_autorizador")
     private String observacionAutorizador;
-
+    
     @Column(name = "comision_imss")
     private BigDecimal comisionImss;
-
+    
     @Column(name = "comision_ppp")
     private BigDecimal comisionPpp;
-
+    
     @Column(name = "dg_MontoBrutoMensual")
     private BigDecimal dgMontoBrutoMensual;
     @Column(name = "dg_VSM")
     private BigDecimal dgVSM;
     @Column(name = "dg_porcCotizacionDeseado")
     private BigDecimal dgporcCotizacionDeseado;
-
-
+    
+    
     @Column(name = "cve_cotizacion")
     private String cveCotizacion;
 
 //    @OneToMany(mappedBy = "idCotizacion",fetch = FetchType.EAGER)
 //    private List<ColaboradoresTemp> colaboradoresTempList;
-
+    
     @JoinColumn(name = "id_tipo_esquema", referencedColumnName = "id_cat_general")
     @ManyToOne(cascade = CascadeType.DETACH)
     private CatGeneral idTipoEsquema;
-
+    
     @Column(name = "tiene_costos_adicionales")
     private Long tieneCostosAdicionales;
-
+    
     public Cotizacion() {
     }
-
-
-
-
+    
+    
+    
+    
 
     public Cotizacion(CotizacionDto dto) {
 		super();
@@ -374,7 +374,7 @@ public class Cotizacion implements Serializable {
 	public void setIdEstatus(CatGeneral idEstatus) {
 		this.idEstatus = idEstatus;
 	}
-
+	
 	public String getObservacionAutorizador() {
 		return observacionAutorizador;
 	}
@@ -438,7 +438,7 @@ public class Cotizacion implements Serializable {
 	public void setIdTipoEsquema(CatGeneral idTipoEsquema) {
 		this.idTipoEsquema = idTipoEsquema;
 	}
-
+	
 
 	public Long getUsuarioModificacion() {
 		return usuarioModificacion;
@@ -447,10 +447,10 @@ public class Cotizacion implements Serializable {
 	public void setUsuarioModificacion(Long usuarioModificacion) {
 		this.usuarioModificacion = usuarioModificacion;
 	}
-
-
-
-
+	
+	
+	
+	
 	public Date getFechaModificacion() {
 		return fechaModificacion;
 	}
@@ -458,7 +458,7 @@ public class Cotizacion implements Serializable {
 	public void setFechaModificacion(Date fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
 	}
-
+	
 	public String getCveCotizacion() {
 		return cveCotizacion;
 	}
@@ -467,7 +467,7 @@ public class Cotizacion implements Serializable {
 		this.cveCotizacion = cveCotizacion;
 
 	}
-
+	
 	public Long getTieneCostosAdicionales() {
 		return tieneCostosAdicionales;
 	}

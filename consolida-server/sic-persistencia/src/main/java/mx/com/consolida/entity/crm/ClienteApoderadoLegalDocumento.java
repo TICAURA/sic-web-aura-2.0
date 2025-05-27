@@ -30,12 +30,12 @@ public class ClienteApoderadoLegalDocumento implements java.io.Serializable {
 
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cliente_apoderado_legal_documento")
 	private Long idClienteApoderadoLegalDocumento;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cliente_apoderado_legal", nullable = false)
 	private ClienteApoderadoLegal clienteApoderadoLegal;
@@ -43,29 +43,29 @@ public class ClienteApoderadoLegalDocumento implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_definicion_documento", nullable = false)
 	private DefinicionDocumento definicionDocumento;
-
+	
 	@Column(name="id_CMS")
 	private Long idCMS;
-
+	
 	@Column(name = "nombre_archivo", length = 250)
 	private String nombreArchivo;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private String indEstatus;
 

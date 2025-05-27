@@ -16,6 +16,7 @@ import mx.com.consolida.crm.dao.interfaz.ClienteDao;
 import mx.com.consolida.crm.dao.interfaz.ClienteEstatusDao;
 import mx.com.consolida.crm.dao.interfaz.ClientePrestadoraServicioDao;
 import mx.com.consolida.crm.dto.ClienteDto;
+import mx.com.consolida.crm.dto.ClientePrestadoraServicioDto;
 import mx.com.consolida.crm.service.interfaz.ClienteBO;
 import mx.com.consolida.dao.interfaz.CatEstatusDao;
 import mx.com.consolida.dao.interfaz.ClienteTempDao;
@@ -317,10 +318,23 @@ try {
 					celulaCliente.setCliente(cliente);
 					celulaCliente.setUsuarioAlta(usuarioAlta);
 					celulaCliente.setFechaAlta(new Date());
-					celulaCliente.setIndEstatus(CatEstatusEnum.ACTIVO.getIdEstatus());
+				celulaCliente.setIndEstatus(CatEstatusEnum.ACTIVO.getIdEstatus());
 					celulaClienteDao.create(celulaCliente);
 				}
-
+				
+			/*Agrega la prestadora*/
+				//Revisar que no exista
+				//Long idPrestadora=  clientePrestadoraServicioDao.getidFondoPrestadoraByIdCliente(idCliente);
+					
+			   // if( idPrestadora.equals(null) ){
+				clientePrestadora.setCliente(cliente);
+				clientePrestadora.setPrestadoraServicio(null);
+				clientePrestadora.setPrestadoraServicioFondo(new PrestadoraServicio(clienteDto.getPrestadoraServicioFondo().getIdPrestadoraServicio()));
+				clientePrestadora.setUsuarioAlta(usuarioAlta);
+				clientePrestadora.setFechaAlta(new Date());
+				clientePrestadora.setIndEstatus(CatEstatusEnum.ACTIVO.getIdEstatus());
+				clientePrestadoraServicioDao.create(clientePrestadora);
+			//   }
 				// ACTUALIZA EN CELULA CLIENT
 //				List<ClienteNominista> listNominista = clienteNoministaDao.getListNomistaClienteByCliente(cliente.getIdCliente());
 //				

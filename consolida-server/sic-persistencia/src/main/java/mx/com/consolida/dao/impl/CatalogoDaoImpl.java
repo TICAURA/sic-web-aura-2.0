@@ -95,6 +95,25 @@ public class CatalogoDaoImpl extends GenericDAO<CatGeneral, Integer> implements 
 		}
 	}
 	
+	
+	
+	@Override
+	public List<CatGeneralDto> obtenerListaProductos() {
+		try {
+			String sql = "select id_cat_general as idCatGeneral, clave, descripcion,ind_estatus as indEstatus \n"
+					+ "	from sin.cat_general where ind_Estatus = 1 and id_cat_maestro in (30,57)";
+					
+			List<CatGeneralDto> data = (List<CatGeneralDto>) (List<?>) callNativeQuery(sql, "obtenerGeneral", null);
+			return data;
+
+		} catch (Exception e) {
+			LOGGER.error("Ocurrio un error en obtenerListaProductos ", e);
+			return Collections.emptyList();
+		}
+	}
+	
+	
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional

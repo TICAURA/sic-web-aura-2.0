@@ -32,41 +32,41 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class CatFraccion implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_fraccion")
 	private Long idFraccion;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_clase", nullable = false)
 	private CatGeneral catClase;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioByUsuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioByUsuarioModificacion;
-
+	
 	@Column(name = "clave", nullable = false, length = 45)
 	private String clave;
-
+	
 	@Column(name = "descripcion", nullable = false, length = 45)
 	private String descripcion;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
 //	private Set prestadoraServicioRegistroPatronals = new HashSet(0);
@@ -121,7 +121,7 @@ public class CatFraccion implements java.io.Serializable {
 		this.usuarioByUsuarioAlta = usuarioByUsuarioAlta;
 	}
 
-
+	
 	public Usuario getUsuarioByUsuarioModificacion() {
 		return this.usuarioByUsuarioModificacion;
 	}
@@ -130,7 +130,7 @@ public class CatFraccion implements java.io.Serializable {
 		this.usuarioByUsuarioModificacion = usuarioByUsuarioModificacion;
 	}
 
-
+	
 	public String getClave() {
 		return this.clave;
 	}
@@ -139,7 +139,7 @@ public class CatFraccion implements java.io.Serializable {
 		this.clave = clave;
 	}
 
-
+	
 	public String getDescripcion() {
 		return this.descripcion;
 	}
@@ -148,7 +148,7 @@ public class CatFraccion implements java.io.Serializable {
 		this.descripcion = descripcion;
 	}
 
-
+	
 	public Date getFechaAlta() {
 		return this.fechaAlta;
 	}
@@ -157,7 +157,7 @@ public class CatFraccion implements java.io.Serializable {
 		this.fechaAlta = fechaAlta;
 	}
 
-
+	
 	public Date getFechaModificacion() {
 		return this.fechaModificacion;
 	}
@@ -166,7 +166,7 @@ public class CatFraccion implements java.io.Serializable {
 		this.fechaModificacion = fechaModificacion;
 	}
 
-
+	
 	public Long getIndEstatus() {
 		return this.indEstatus;
 	}

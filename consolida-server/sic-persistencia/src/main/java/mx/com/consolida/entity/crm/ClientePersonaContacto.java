@@ -34,50 +34,50 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class ClientePersonaContacto implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_persona_contacto")
 	private Long idPersonaContacto;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cliente", nullable = false)
 	private Cliente cliente;
-
+	
 	@Column(name = "nombre", nullable = false, length = 50)
 	private String nombre;
-
+	
 	@Column(name = "apellido_paterno", nullable = false, length = 50)
 	private String apellidoPaterno;
-
+	
 	@Column(name = "apellido_materno", length = 50)
 	private String apellidoMaterno;
-
+	
 	@Column(name = "correo_electronico", nullable = false, length = 50)
 	private String correoElectronico;
-
+	
 	@Column(name = "telefono", nullable = false, length = 15)
 	private String telefono;
-
+		
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+		
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion")
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
 
@@ -157,7 +157,7 @@ public class ClientePersonaContacto implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-
+	
 	public String getApellidoPaterno() {
 		return this.apellidoPaterno;
 	}
@@ -165,7 +165,7 @@ public class ClientePersonaContacto implements java.io.Serializable {
 	public void setApellidoPaterno(String apellidoPaterno) {
 		this.apellidoPaterno = apellidoPaterno;
 	}
-
+	
 	public String getApellidoMaterno() {
 		return this.apellidoMaterno;
 	}
@@ -174,7 +174,7 @@ public class ClientePersonaContacto implements java.io.Serializable {
 		this.apellidoMaterno = apellidoMaterno;
 	}
 
-
+	
 	public String getCorreoElectronico() {
 		return this.correoElectronico;
 	}
@@ -210,7 +210,7 @@ public class ClientePersonaContacto implements java.io.Serializable {
 		this.fechaModificacion = fechaModificacion;
 	}
 
-
+	
 	public Long getIndEstatus() {
 		return this.indEstatus;
 	}

@@ -29,20 +29,20 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class PrestadoraServicioAccionistaDocumento implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_prestadora_servicio_accionista_documento")
 	private Long idPrestadoraServicioAccionistaDocumento;
 
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestadora_servicio_accionista", nullable = false)
 	private PrestadoraServicioAccionista prestadoraServicioAccionista;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_definicion_documento", nullable = false)
 	private DefinicionDocumento definicionDocumento;
@@ -52,29 +52,29 @@ public class PrestadoraServicioAccionistaDocumento implements java.io.Serializab
 
 	@Column(name = "nombre_archivo", length = 250)
 	private String nombreArchivo;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private String indEstatus;
 
 	public PrestadoraServicioAccionistaDocumento() {
 	}
-
+	
 	public PrestadoraServicioAccionistaDocumento(Long idPrestadoraServicioAccionistaDocumento) {
 		this.idPrestadoraServicioAccionistaDocumento = idPrestadoraServicioAccionistaDocumento;
 	}

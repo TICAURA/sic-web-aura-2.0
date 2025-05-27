@@ -7,45 +7,45 @@ import mx.com.consolida.catalogos.CatGeneralDto;
 import mx.com.consolida.usuario.UsuarioDTO;
 
 public class NominaClienteDto implements java.io.Serializable {
-
+	
 	private static final long serialVersionUID = 1L;
-
+	
 	private Long idNominaCliente;
-
+	
 	private String nombreNomina;
-
+	
 	private String claveNomina;
-
+	
 	private String descripcionCompuesta;
-
+	
 	private Long comisionPpp;
-
+	
 	private Long comisionSs;
-
+	
 	private Long idCelula;
-
+	
 	private CatGeneralDto catProductoNomina;
-
+	
 	private CatGeneralDto catProductoNominaFondo;
-
+	
 	private ClienteDto clienteDto;
-
+	
 	private List<PrestadoraServicioDto> listaPrestadoraServicioFondo;
-
+	
 	private PrestadoraServicioDto prestadoraServicioFondo;
-
+	
 	private List<PrestadoraServicioDto> listaPrestadoraServicio;
-
+	
 	private PrestadoraServicioDto prestadoraServicio;
-
+	
 	private int totalColaboradores;
-
+	
 	private Double montoTotalColaboradores;
-
+	
 	private Double montoNoDispersado;
-
+	
 	private Double subtotalFacturado;
-
+	
 	private Date fechaAlta;
 
 	private Date fechaModificacion;
@@ -55,13 +55,13 @@ public class NominaClienteDto implements java.io.Serializable {
 	private UsuarioDTO usuarioModificacion;
 
 	private Long indEstatus;
-
+	
 	private NoministaDto usuarioNominista;
-
+	
 	private CatGeneralDto periodicidadNomina;
 	private String ivaComercial;
-
-
+	
+	
 	/// Honorario
 	private Long idNominaClienteHonorario;
 	private CatGeneralDto formulaPPP;
@@ -69,11 +69,13 @@ public class NominaClienteDto implements java.io.Serializable {
 	private CatGeneralDto formulaFactura;
 	private String honorarioPPP;
 	private Long requiereFactura;
-
+	private Long requiereTimbre;
+	
+	
 	public NominaClienteDto(){
-
+		
 	}
-
+	
 	public NominaClienteDto(Long idNominaCliente){
 		this.idNominaCliente = idNominaCliente;
 	}
@@ -334,11 +336,19 @@ public class NominaClienteDto implements java.io.Serializable {
 		this.subtotalFacturado = subtotalFacturado;
 	}
 
+	public Long getRequiereTimbre() {
+		return requiereTimbre;
+	}
 
-
-
-
-
-
+	public void setRequiereTimbre(Long requiereTimbre) {
+		this.requiereTimbre = requiereTimbre;
+	}
+	
+	
+	
+	
+	
+	
+	
 
 }

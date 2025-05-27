@@ -25,12 +25,12 @@ import mx.com.consolida.dto.ClienteTempBitacoraDto;
 public class ClienteTempBitacora implements Serializable {
 
 	/**
-	*
+	* 
 	*/
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_Cliente_Temp_Bitacora")
 	private Long idClienteTempBitacora;
 
@@ -53,7 +53,7 @@ public class ClienteTempBitacora implements Serializable {
 	@Column(name = "fecha_alta")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaAlta;
-
+	
 	@Column(name = "fecha_modificacion")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaModificacion;
@@ -61,15 +61,15 @@ public class ClienteTempBitacora implements Serializable {
 	@Basic(optional = false)
 	@Column(name = "usuario_alta")
 	private Long usuarioAlta;
-
+	
 	@Column(name = "usuario_modificacion")
 	private Long usuarioModificaicon;
 
 	@Basic(optional = false)
 	@Column(name = "ind_estatus")
 	private Long indEstatus;
-
-
+	
+	
 
 	public ClienteTempBitacora() {
 		super();
@@ -164,7 +164,7 @@ public class ClienteTempBitacora implements Serializable {
 	public void setUsuarioModificaicon(Long usuarioModificaicon) {
 		this.usuarioModificaicon = usuarioModificaicon;
 	}
-
-
+	
+	
 
 }

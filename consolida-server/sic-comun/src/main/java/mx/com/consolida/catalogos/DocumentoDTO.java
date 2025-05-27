@@ -13,6 +13,7 @@ public class DocumentoDTO implements Serializable {
 	private String nombreArchivo;
 	private String mimeType;
 	private Long tamanioArchivo;
+	private Long esSindicato;
 	
 	
 	public String getArchivo() {
@@ -39,6 +40,13 @@ public class DocumentoDTO implements Serializable {
 	public void setMimeType(String mimeType) {
 		this.mimeType = mimeType;
 	}
+	public Long getEsSindicato() {
+		return esSindicato;
+	}
+	public void setEsSindicato(Long esSindicato) {
+		this.esSindicato = esSindicato;
+	}
+	
 	
 
 	

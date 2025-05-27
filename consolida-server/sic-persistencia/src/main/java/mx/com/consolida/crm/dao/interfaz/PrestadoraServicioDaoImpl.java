@@ -148,15 +148,18 @@ public class PrestadoraServicioDaoImpl extends GenericDAO<PrestadoraServicio, Lo
         	final List<PrestadoraServicioDto> listaPrestdorasServFondo = new ArrayList<PrestadoraServicioDto>();
         	StringBuilder sb = new StringBuilder();
         	sb.append(" select pres.id_prestadora_servicio, pres.rfc, pres.nombre_corto, pres.razon_social, pres.es_fondo, ");
-        	sb.append(" celpres.id_celula_prestadora_servicio, celpres.id_celula  ");
-			sb.append(" from sin.prestadora_servicio pres, celula_prestadora_servicio celpres ");
-			sb.append(" where celpres.id_prestadora_servicio = pres.id_prestadora_servicio ");
+        	sb.append(" celpres.id_celula_prestadora_servicio, celpres.id_celula, cg.descripcion dispersor ");
+			sb.append(" from sin.prestadora_servicio pres, celula_prestadora_servicio celpres"
+					+ " ,prestadora_servicio_stp pss  , cat_general cg ");
+			sb.append(" where celpres.id_prestadora_servicio = pres.id_prestadora_servicio "
+					+ " and pss.id_prestadora_servicio= celpres.id_prestadora_servicio\r\n" + 
+					" and cg.id_cat_general = pss.id_tipo_dispersor");
 			if(esFondo) {
 				sb.append(" and pres.es_fondo = 1 ");
 			}else {
 				sb.append(" and pres.es_fondo = 0 ");
 			}
-			sb.append(" and celpres.id_celula = ? ");
+			sb.append(" and ( celpres.id_celula  = ? or pres.id_prestadora_servicio =" + idCelula + ") ");
 			sb.append(" and pres.ind_estatus = 1 ");
       
     					
@@ -168,12 +171,12 @@ public class PrestadoraServicioDaoImpl extends GenericDAO<PrestadoraServicio, Lo
 					presatdora.setNombreCorto(rs.getString("nombre_corto"));
 					presatdora.setRazonSocial(rs.getString("razon_social"));
 					presatdora.setEsFondo(rs.getLong("es_fondo") != 0 ? true : false);
-					
+					presatdora.setDispersor(rs.getString("dispersor"));
 					CelulaPrestadoraServicioDto celulaPrestadoraServicioDto = new CelulaPrestadoraServicioDto();
 					celulaPrestadoraServicioDto.setIdCelulaPrestadoraServicio(rs.getLong("id_celula_prestadora_servicio"));
 					celulaPrestadoraServicioDto.setCelula(new CelulaDto(rs.getLong("id_celula")));
 					presatdora.setCelulaPrestadoraServicioDto(celulaPrestadoraServicioDto);
-
+					
 					LOGGER.debug("listaPrestdorasFondoYSinFondoByIdCelula--> " + sb);
 					return presatdora;
 

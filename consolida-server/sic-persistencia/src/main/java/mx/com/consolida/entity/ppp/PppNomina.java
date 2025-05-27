@@ -24,38 +24,38 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "ppp_nomina")
 @NamedQueries({ @NamedQuery(name = "PppNomina.findAll", query = "SELECT c FROM PppNomina c") })
 public class PppNomina implements Serializable{
-
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_ppp_nomina")
 	private Long idPppNomina;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_nomina_cliente", nullable = false)
 	private NominaCliente nominaCliente;
-
+	
 	@Column(name = "clave")
 	private String clave;
-
+	
 	@Column(name = "descripcion")
 	private String descripcion;
-
+	
 	@Column(name = "consecutivo")
 	private Integer consecutivo;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_inicio_nomina", length = 19)
 	private Date fechaInicioNomina;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_fin_nomina", length = 19)
 	private Date fechaFinNomina;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
@@ -63,25 +63,25 @@ public class PppNomina implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
 
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
-
+	
 	@Column(name="id_periodicidad")
 	private Long idPeriodicidad;
-
+	
 	public PppNomina() {
-
+		
 	}
-
+	
 	public PppNomina(Long idPppNomina) {
 		this.idPppNomina = idPppNomina;
 	}

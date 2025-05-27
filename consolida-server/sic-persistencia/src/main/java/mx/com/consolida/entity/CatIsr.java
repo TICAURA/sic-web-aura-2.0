@@ -31,7 +31,7 @@ public class CatIsr implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Basic(optional = false)
     @Column(name = "id_cat_isr")
     private Long idCatIsr;
@@ -57,7 +57,7 @@ public class CatIsr implements Serializable {
     private Date fechaModificacion;
     @Column(name ="id_tipo_pago")
     private Integer idTipoPago;
-
+    
     public CatIsr() {
     }
 
@@ -136,7 +136,7 @@ public class CatIsr implements Serializable {
 	public void setIdTipoPago(Integer idTipoPago) {
 		this.idTipoPago = idTipoPago;
 	}
-
+	
 	public Long getIdUsuarioModificacion() {
 		return idUsuarioModificacion;
 	}
@@ -144,7 +144,7 @@ public class CatIsr implements Serializable {
 	public void setIdUsuarioModificacion(Long idUsuarioModificacion) {
 		this.idUsuarioModificacion = idUsuarioModificacion;
 	}
-
+	
 	public Date getFechaModificacion() {
 		return fechaModificacion;
 	}
@@ -152,7 +152,7 @@ public class CatIsr implements Serializable {
 	public void setFechaModificacion(Date fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
 	}
-
+	
 	@Override
     public int hashCode() {
         int hash = 0;
@@ -177,5 +177,5 @@ public class CatIsr implements Serializable {
     public String toString() {
         return "mx.com.consolida.entity.CatIsr[ idCatIsr=" + idCatIsr + " ]";
     }
-
+    
 }

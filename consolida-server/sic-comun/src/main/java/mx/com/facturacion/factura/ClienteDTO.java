@@ -3,10 +3,14 @@ package mx.com.facturacion.factura;
 import java.io.Serializable;
 
 import mx.com.consolida.catalogos.CatGeneralDto;
-import mx.com.consolida.generico.CatGenericoDTO;
+
 
 public class ClienteDTO implements Serializable {
 
+	/**
+	 * 
+	 */
+	
 	private Long idCliente;
 	private String rfc;
 	private String razonSocial;
@@ -21,6 +25,14 @@ public class ClienteDTO implements Serializable {
 	private String idEmpleadoSTP;
 	private String correoElectronico;
 	private String nss;
+	private CatGeneralDto regimenFiscal;
+	private String codigoPostal;
+	private String domicilio;
+	private String numAfiliacion;
+	private String folio;
+	private String clabeIntebancaria;
+	
+
 	
 	public ClienteDTO(){
 		
@@ -84,14 +96,6 @@ public class ClienteDTO implements Serializable {
 		this.segundoApellido = segundoApellido;
 	}
 
-	public CatGeneralDto getTipoPersona() {
-		return tipoPersona;
-	}
-
-	public void setTipoPersona(CatGeneralDto tipoPersona) {
-		this.tipoPersona = tipoPersona;
-	}
-
 	public String getContacto() {
 		return contacto;
 	}
@@ -106,6 +110,14 @@ public class ClienteDTO implements Serializable {
 
 	public void setNombreCompleto(String nombreCompleto) {
 		this.nombreCompleto = nombreCompleto;
+	}
+
+	public CatGeneralDto getTipoPersona() {
+		return tipoPersona;
+	}
+
+	public void setTipoPersona(CatGeneralDto tipoPersona) {
+		this.tipoPersona = tipoPersona;
 	}
 
 	public CatGeneralDto getUsoCFDI() {
@@ -147,6 +159,56 @@ public class ClienteDTO implements Serializable {
 	public void setNss(String nss) {
 		this.nss = nss;
 	}
+
+	public CatGeneralDto getRegimenFiscal() {
+		return regimenFiscal;
+	}
+
+	public void setRegimenFiscal(CatGeneralDto regimenFiscal) {
+		this.regimenFiscal = regimenFiscal;
+	}
+
+	public String getCodigoPostal() {
+		return codigoPostal;
+	}
+
+	public void setCodigoPostal(String codigoPostal) {
+		this.codigoPostal = codigoPostal;
+	}
+
+	public String getDomicilio() {
+		return domicilio;
+	}
+
+	public void setDomicilio(String domicilio) {
+		this.domicilio = domicilio;
+	}
+
+	public String getNumAfiliacion() {
+		return numAfiliacion;
+	}
+
+	public void setNumAfiliacion(String numAfiliacion) {
+		this.numAfiliacion = numAfiliacion;
+	}
+
+	public String getFolio() {
+		return folio;
+	}
+
+	public void setFolio(String folio) {
+		this.folio = folio;
+	}
+
+	public String getClabeIntebancaria() {
+		return clabeIntebancaria;
+	}
+
+	public void setClabeIntebancaria(String clabeIntebancaria) {
+		this.clabeIntebancaria = clabeIntebancaria;
+	}
+	
+	
 	
 	
 

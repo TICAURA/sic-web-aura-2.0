@@ -28,7 +28,7 @@ public class CatImss implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Basic(optional = false)
     @Column(name = "id_cat_imss")
     private Long idCatImss;
@@ -52,7 +52,7 @@ public class CatImss implements Serializable {
     @Column(name = "fecha_modificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-
+    
 
     public CatImss() {
     }
@@ -112,7 +112,7 @@ public class CatImss implements Serializable {
 	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
-
+	
 	public String getClave() {
 		return this.clave;
 	}
@@ -136,5 +136,5 @@ public class CatImss implements Serializable {
 	public void setFechaModificacion(Date fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
 	}
-
+   
 }

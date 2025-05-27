@@ -69,9 +69,16 @@ public class ReportesController  extends BaseController{
 
 						    
 			    dataReturn.put("usuario", usuario(userAut));
-			    dataReturn.put("catCelula", celulaBO.listarTodasLasCelulas());
+			    if(userAut.getCelula().getIdCelula()!=0l) {
+			      	dataReturn.put("catCelula", celulaBO.consultarCelulaPorUsuario(userAut.getIdUsuario()));
+
+			    }else {
+					   
+			    	dataReturn.put("catCelula", celulaBO.listarTodasLasCelulas());
+			   }
 				dataReturn.put("catReportes", catBo.obtenerCatGeneralByClvMaestro(CatMaestroEnum.REPORTES.getCve()));
 				dataReturn.put("catTipoPeriodo", catBo.obtenerCatGeneralByClvMaestro(CatMaestroEnum.TIPO_PERIODO.getCve()));
+				dataReturn.put("catListaProductos", catBo.obtenerCatGeneralListaProductos());
 
 				return dataReturn;
 		}catch (Exception e) {
@@ -118,12 +125,38 @@ public class ReportesController  extends BaseController{
 				}else if(CatReportesENUM.COLABORADORES_FALTANTES_EN_CRM.getClave().equals(reporte.getCatReporte().getClave())) {
 
 					dataReturn.put(ConstantesComunes.REPORTE, reportesBO.reporteColabFaltCrm(listString));
-			
+					
 				}else if (CatReportesENUM.FACTURACION_MES.getClave().equals(reporte.getCatReporte().getClave())) {
 					String periodo = reporte.getMes() + reporte.getAnio();
 					dataReturn.put(ConstantesComunes.REPORTE, reportesBO.reporteFacturacionMensual(listString, periodo));
+				}else if (CatReportesENUM.FACTURACION.getClave().equals(reporte.getCatReporte().getClave())) {
+					String periodo = reporte.getMes() + reporte.getAnio();
+					dataReturn.put(ConstantesComunes.REPORTE, reportesBO.reporteFacturacion(reporte.getFechaInicio(), reporte.getFechaFin(), listString));
+				}else if (CatReportesENUM.DISPERSION.getClave().equals(reporte.getCatReporte().getClave())) {
+					String periodo = reporte.getMes() + reporte.getAnio();
+					dataReturn.put(ConstantesComunes.REPORTE, reportesBO.reporteDispersion(reporte.getFechaInicio(), reporte.getFechaFin(), listString));
+				}else if (CatReportesENUM.COLABORADORES.getClave().equals(reporte.getCatReporte().getClave())) {
+					String periodo = reporte.getMes() + reporte.getAnio();
+					dataReturn.put(ConstantesComunes.REPORTE, reportesBO.reporteColaboradores(listString));
+				}else if (CatReportesENUM.CLIENTES.getClave().equals(reporte.getCatReporte().getClave())) {
+					String periodo = reporte.getMes() + reporte.getAnio();
+					dataReturn.put(ConstantesComunes.REPORTE, reportesBO.reporteClientes(listString));
 				}
-					
+				   else if(CatReportesENUM.REPORTE_CONSAR.getClave().equals(reporte.getCatReporte().getClave())) {
+						
+						dataReturn.put(ConstantesComunes.REPORTE, reportesBO.reporteConsar(reporte.getFechaInicio(), reporte.getFechaFin(), listString));
+						
+					}
+				   else if(CatReportesENUM.REPORTE_TESO_OPERA.getClave().equals(reporte.getCatReporte().getClave())) {
+						
+						dataReturn.put(ConstantesComunes.REPORTE, reportesBO.reporteTesoOpera(reporte.getFechaInicio(), reporte.getFechaFin(), listString));
+						
+					}
+				   else if(CatReportesENUM.REPORTE_PROD.getClave().equals(reporte.getCatReporte().getClave())) {
+						
+						dataReturn.put(ConstantesComunes.REPORTE, reportesBO.reporteProductos(reporte.getCatListaProductos().getClave(), listString));
+						
+					}
 			
 				dataReturn.put("catReportes", catBo.obtenerCatGeneralByClvMaestro(CatMaestroEnum.REPORTES.getCve()));
 

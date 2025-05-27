@@ -32,12 +32,12 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class PrestadoraServicioObjetoSocial implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_prestadora_servicio_objeto_social")
 	private Long idPrestadoraServicioObjetoSocial;
 
@@ -47,7 +47,7 @@ public class PrestadoraServicioObjetoSocial implements java.io.Serializable {
 
 	@Column(name = "descripcion_objeto_social")
 	private String descripcionObjetoSocial;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
@@ -69,7 +69,7 @@ public class PrestadoraServicioObjetoSocial implements java.io.Serializable {
 
 	public PrestadoraServicioObjetoSocial() {
 	}
-
+	
 	public PrestadoraServicioObjetoSocial(Long idPrestadoraServicioObjetoSocial) {
 		this.idPrestadoraServicioObjetoSocial = idPrestadoraServicioObjetoSocial;
 	}

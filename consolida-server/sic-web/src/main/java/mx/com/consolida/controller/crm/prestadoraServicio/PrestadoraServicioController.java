@@ -91,11 +91,12 @@ public class PrestadoraServicioController  extends BaseController {
 		try {
 			PrestadoraServicioDto prestadoraServicioDto = new PrestadoraServicioDto();
 			
-			if(model.containsAttribute(ReferenciaSeguridad.PRESTADORA_SERVICIO_EDITAR)) {
-			Long idPrestadoraServicio = (Long) model.asMap().get(ReferenciaSeguridad.PRESTADORA_SERVICIO_EDITAR);
-			if(idPrestadoraServicio != null && idPrestadoraServicio != 0) {
-				prestadoraServicioDto = prestadoraServicioBO.obtenerPrestadoraServicioByIdDatosGenerales(prestadoraServicioDto, idPrestadoraServicio);
-			}
+			if (model.containsAttribute(ReferenciaSeguridad.PRESTADORA_SERVICIO_EDITAR)) {
+				Long idPrestadoraServicio = (Long) model.asMap().get(ReferenciaSeguridad.PRESTADORA_SERVICIO_EDITAR);
+				if (idPrestadoraServicio != null && idPrestadoraServicio != 0) {
+					prestadoraServicioDto = prestadoraServicioBO
+							.obtenerPrestadoraServicioByIdDatosGenerales(prestadoraServicioDto, idPrestadoraServicio);
+				}
 			}
 			
 			prestadoraServicioDto = prestadoraServicioBO.obtenerCatalogosDatosGenerales(prestadoraServicioDto);
@@ -141,29 +142,29 @@ public class PrestadoraServicioController  extends BaseController {
 				if(idPrestadoraServicio != null && idPrestadoraServicio != 0) {
 					prestadoraServicioDto = prestadoraServicioBO.obtenerPrestadoraServicioByIdFiel(prestadoraServicioDto, idPrestadoraServicio);
 					
-					if(prestadoraServicioDto !=null) {
+				if(prestadoraServicioDto !=null) {
 						
 						if(prestadoraServicioDto.getPasswordCsd()!=null) {
-							byte[] decodedBytesCsd = Base64.getDecoder().decode(prestadoraServicioDto.getPasswordCsd());
-							String passCsd = new String(decodedBytesCsd);
-							prestadoraServicioDto.setPasswordCsd(passCsd);
+							//byte[] decodedBytesCsd = Base64.getDecoder().decode(prestadoraServicioDto.getPasswordCsd());
+							//String passCsd =  // new String(decodedBytesCsd);
+							prestadoraServicioDto.setPasswordCsd(prestadoraServicioDto.getPasswordCsd());
 							
 							if(prestadoraServicioDto.getPrestadoraServicioDocumento() != null) {
-								prestadoraServicioDto.getPrestadoraServicioDocumento().setPasswordCsd(passCsd);	
+								prestadoraServicioDto.getPrestadoraServicioDocumento().setPasswordCsd(prestadoraServicioDto.getPasswordCsd());	
 							}
 							
 						}
 						
 						if(prestadoraServicioDto.getPasswordFiel()!=null) {
-							byte[] decodedBytesFiel = Base64.getDecoder().decode(prestadoraServicioDto.getPasswordFiel());
-							String passFiel = new String(decodedBytesFiel);
+							//byte[] decodedBytesFiel = Base64.getDecoder().decode(prestadoraServicioDto.getPasswordFiel());
+							String passFiel =prestadoraServicioDto.getPasswordFiel();// new String(decodedBytesFiel);
 							prestadoraServicioDto.setPasswordFiel(passFiel);
 							
 							if(prestadoraServicioDto.getPrestadoraServicioDocumento() != null) {
 								prestadoraServicioDto.getPrestadoraServicioDocumento().setPasswordFiel(passFiel);
 							}
 						}
-					}
+				}
 
 				}
 			}
@@ -1831,26 +1832,25 @@ public class PrestadoraServicioController  extends BaseController {
 		
 		
 		
-		@RequestMapping(value = "/cargaInicialDatosStp")
-		@ResponseBody
-		public PrestadoraServicioDto cargaInicialDatosStp(Model model) {
-			try {
-				PrestadoraServicioDto prestadoraServicioDto = new PrestadoraServicioDto();
-				
-				if(model.containsAttribute(ReferenciaSeguridad.PRESTADORA_SERVICIO_EDITAR)) {
-				Long idPrestadoraServicio = (Long) model.asMap().get(ReferenciaSeguridad.PRESTADORA_SERVICIO_EDITAR);
-				if(idPrestadoraServicio != null && idPrestadoraServicio != 0) {
-					prestadoraServicioDto = prestadoraServicioBO.obtenerPrestadoraServicioByStp(prestadoraServicioDto, idPrestadoraServicio);
-				}
-				}
-										
-				return prestadoraServicioDto;
-				
-			}catch (Exception e) {
-				LOGGER.error("Ocurrio un error en prestadoraServicio/cargaCatalogos ", e);
-				return new PrestadoraServicioDto();
+	@RequestMapping(value = "/cargaInicialDispersores")
+	@ResponseBody
+	public PrestadoraServicioDto cargaInicialDispersores(Model model) {
+		try {
+			PrestadoraServicioDto prestadoraServicioDto = new PrestadoraServicioDto();
+			
+			if(model.containsAttribute(ReferenciaSeguridad.PRESTADORA_SERVICIO_EDITAR)) {
+			Long idPrestadoraServicio = (Long) model.asMap().get(ReferenciaSeguridad.PRESTADORA_SERVICIO_EDITAR);
+			if(idPrestadoraServicio != null && idPrestadoraServicio != 0) {
+				prestadoraServicioDto = prestadoraServicioBO.obtenerPrestadoraServicioByStp( idPrestadoraServicio);
 			}
+			}
+									
+			return prestadoraServicioDto;
+		} catch (Exception e) {
+			LOGGER.error("Ocurrio un error en prestadoraServicio/cargaCatalogos ", e);
+			return new PrestadoraServicioDto();
 		}
+	}
 		
 		@RequestMapping(value = "/stp/guardarDatosStp")
 		@ResponseBody

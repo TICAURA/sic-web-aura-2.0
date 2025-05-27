@@ -1,15 +1,15 @@
 'use strict';
 angular.module('theme.core.templates')
   .controller('finanzasController', function( $route,$window,$scope, $rootScope, $templateCache,$location, $timeout,$http, CONFIG, $bootbox,$log, finanzasService, nominaService, pinesNotifications) {
-
-
+	  
+	 
 	  $scope.isVisibleSecciones = false;
 	  $scope.isVisibleMensajeSinNominas = false;
-
+	  
 	  $scope.nominaComplementoDto={};
 	  $scope.nominaProcesoSeleccionada = {};
 	  $scope.celula = {}
-
+	  
 	  // documento excel
       $scope.data = {};
       $scope.dataExcel = {};
@@ -17,18 +17,23 @@ angular.module('theme.core.templates')
       $scope.registraOrden = {};
       $scope.ordenPago ={};
       $scope.idCatEstatusSelected = null;
-
-
+      $scope.textoDecodificar = "";
+      $scope.textoDecodificado = "";
+      $scope.datosDispersion={};
+      $scope.semaforo = new Boolean(false);
+		//$scope.saldo =100;
+      
+	  
 	  $scope.cargaInicial = function(){
-
+		  
 		  $scope.isVisibleSecciones = false;
-
+		  
 		  finanzasService.cargaInicial(function(response) {
 
 			  $scope.gridNominasParaDispersion = response.data.gridNominasParaDispersion;
 			  $scope.catEstatusNomina = response.data.catEstatusNomina;
-
-			  if($scope.usuarioDTO.rol.idRol===15){
+			
+			  if($scope.usuarioDTO.rol.idRol===15 || $scope.usuarioDTO.rol.idRol===12 || usuarioDTO.rol.idRol===11 || usuarioDTO.rol.idRol===9){
 			   $scope.idCatEstatusSelected = 25;
 			  }else{
 			  $scope.idCatEstatusSelected = 7;
@@ -44,10 +49,10 @@ angular.module('theme.core.templates')
 			      });
 			});
 	  };
-
+	  
 	  $scope.cargaInicialXEstatus = function(idEstatus){
 		  $scope.isVisibleSecciones = false;
-
+		  
 		  $http.post(CONFIG.APIURL + "/ppp/finanzas/cargaInicialFinanzasXEstatus.json", idEstatus).then(function(response) {
 			  $scope.gridNominasParaDispersion = response.data.gridNominasParaDispersion;
 			  if($scope.gridNominasParaDispersion.length == 0){
@@ -60,28 +65,34 @@ angular.module('theme.core.templates')
 			        text: 'Ocurrio un error al cargar los datos, favor de intentarlo nuevamente.',
 			        type: 'error'
 			      });
-			});
+			}); 
 	  };
 
-
+	 	  
 	  $scope.cargaInicial();
-
+	  
 	    $scope.getDatosNominaByIdNomina = function (nominaItem) {
 	    	$scope.isVisibleSecciones = true;
 	    	$scope.nominaProcesoSeleccionada = nominaItem;
+	    	$scope.datosDispersion = nominaItem.prestadoraServicioDto.prestadoraServicioStpDto;
 	    	$scope.getDatosNominaEnProceso(nominaItem.idNomina);
-	    	$scope.cargaInicialColaboradores(nominaItem.idNomina);
+	    	$scope.cargaInicialColaboradores(nominaItem.idNomina);	
 	    	$scope.getNominaComplemento(nominaItem.claveNomina);
 	    	$scope.getDatoFactura(nominaItem.idNomina);
+	    	
+	    	$scope.obtenerSaldo();
+	    	
+	    	
+	    	    	
 
 	    }
-
+	    
 	    $scope.getDatosNominaEnProceso = function(idNomina){
-
+	    	
 	    	nominaService.getDatosNominaByIdNomina(idNomina, function(response) {
 
 	    		if(response.data!=undefined && response.data !=null){
-
+	    			
 	    			$scope.isVisibleSeccionesNomina = true;
 	    			$scope.nominaDto = response.data.nominaDto;
 	    			$scope.nominaComplementoDto.nominaDto = response.data.nominaDto;
@@ -89,7 +100,7 @@ angular.module('theme.core.templates')
 	    			$scope.nominaDto.fechaFinNomina = new Date(response.data.nominaDto.fechaFinNomina);
 	    			$scope.comboConceptoFacturaCrm = response.data.comboConceptoFacturaCrm;
 
-
+	    			
 	    			$scope.idNomina = response.data.nominaDto.idNomina;
 	    		}else{
 	    			$log.error(response.status+ ' - '+ response.statusText);
@@ -105,19 +116,19 @@ angular.module('theme.core.templates')
 
 			});
 	    }
-
-
-
+	    
+	    
+	    
 		$scope.cargarDatosNominaSeleccionada = function(claveNomina) {
         	nominaService.cargarDatosDespuesDeGuardarComplemento(claveNomina, function(response) {
         			$scope.nominaProcesoSeleccionada = response.data;
-
+        			 
         			//Se actualiza de la lista el estatus de la nomina tambien
         			angular.forEach($scope.gridNominasParaDispersion,function (value,key) {
                    	  if(value.claveNomina === $scope.nominaProcesoSeleccionada.claveNomina){
                    		  //Se actualiza el estatus de la nomina
                    		$scope.gridNominasParaDispersion[key].catEstatusNomina = $scope.nominaProcesoSeleccionada.catEstatusNomina;
-                   	  }
+                   	  } 	  
                      });
     			},
     			function(response) {
@@ -127,7 +138,7 @@ angular.module('theme.core.templates')
     			        text: 'Ocurrio un error al guardar, favor de intentarlo más tarde.',
     			        type: 'error'
     			      });
-
+    				
     				var fileElement = angular.element('#file_nominappp');
     		        angular.element(fileElement).val(null);
     		       $('#agregarDocumentoNominaPpp').modal('hide');
@@ -136,12 +147,12 @@ angular.module('theme.core.templates')
 		}
 	      $scope.cargaInicialColaboradores = function (idNominaCliente) {
 	    	  	$http.post(CONFIG.APIURL + "/ppp/nominas/cargaInicialColaboradores.json", idNominaCliente).then(function(response) {
-
+	  			  
 	    	  		 $scope.dataExcel.contentRows= response.data;
 	    	  		 $scope.totalNominaPPPColaboradores =  response.data[0].totalMontoPPP;
 	    	  		 $scope.totalPPPColaboradores =  response.data[0].totalColaboradores;
-
-	    	  		 if($scope.nominaProcesoSeleccionada.nominaClienteDto.clienteDto.prefijoSTP != null ||
+	    	  		
+	    	  		 if($scope.nominaProcesoSeleccionada.nominaClienteDto.clienteDto.prefijoSTP != null || 
 	    					  $scope.nominaProcesoSeleccionada.nominaClienteDto.clienteDto.prefijoSTP != undefined){
 	    	  		$scope.generarCveOrdenPagoColaboradores();
 	    	  		}else{
@@ -150,7 +161,7 @@ angular.module('theme.core.templates')
 	    			        text: 'Para generar la clave de orden de pago de los colaboradores, debe agregar el prefijo STP',
 	    			        type: 'error'
 	    			      });
-
+	    	  			
 	    	  		}
 	  			}, function(data) {
 	  				console.log("error modalCrearNomina--> " + data);
@@ -159,13 +170,13 @@ angular.module('theme.core.templates')
 	  			        text: 'Ocurrio un error al cargar los datos para la creacion de una nomina, favor de intentarlo nuevamente.',
 	  			        type: 'error'
 	  			      });
-	  			});
+	  			}); 
 	      }
-
+	      
 	      $scope.generarCveOrdenPagoColaboradores = function () {
 	    	  if($scope.dataExcel.contentRows != null){
 	    		  if($scope.dataExcel.contentRows[0].cveOrdenPago == null || $scope.dataExcel.contentRows[0].cveOrdenPago == undefined){
-
+	    			 
 		  		var prefijoSTP = $scope.nominaProcesoSeleccionada.nominaClienteDto.clienteDto.prefijoSTP;
 		  		if(prefijoSTP.includes("_") || prefijoSTP.includes("-")  || prefijoSTP.includes("/") || prefijoSTP.includes(".")
 		  		 || prefijoSTP.includes("|")  || prefijoSTP.includes("!")  || prefijoSTP.includes("#")  || prefijoSTP.includes("$")
@@ -193,7 +204,7 @@ angular.module('theme.core.templates')
 		  			$scope.dataExcel.contentRows[i].idNomina = $scope.nominaProcesoSeleccionada.idNomina;
 		  			consecutivo  = consecutivo + 1;
 		  		}
-
+		  		
 		  		finanzasService
 					.guardarColaboradores($scope.dataExcel.contentRows ,function(response) {
 						if(response.data.mensajeError != undefined){
@@ -205,7 +216,7 @@ angular.module('theme.core.templates')
 						      });
 						}else{
 								$log.debug('ok');
-
+								
 						}
 						$scope.cargaInicialColaboradores($scope.nominaProcesoSeleccionada.idNomina);
 							},
@@ -232,7 +243,7 @@ angular.module('theme.core.templates')
 				  		var claveNominaDividida = claveNominaCompleta.split("-",3);
 				  		var claveNominaNumber = Number(claveNominaDividida[2]).toString();
 				  		var cveOrdenPago = $scope.dataExcel.contentRows[$scope.dataExcel.contentRows.length - 1].cveOrdenPago;
-
+				  		
 				  		var totalCadena = prefijoSTP.length + claveNominaNumber.length;
 				  		var consecutivo = parseInt(cveOrdenPago.substring(totalCadena,cveOrdenPago.length)) + parseInt(1);
 				  		var cadenaNumerica = '0000';
@@ -247,7 +258,7 @@ angular.module('theme.core.templates')
 				  			consecutivo  = consecutivo + 1;
 				  			}
 				  		}
-
+				  		
 				  		finanzasService
 							.guardarColaboradores($scope.dataExcel.contentRows ,function(response) {
 								if(response.data.mensajeError != undefined){
@@ -272,16 +283,17 @@ angular.module('theme.core.templates')
 									});
 		    	  }
 	      }
-
+	      
 	    }
    }
-
+	      
+	   
 	      $scope.generaRegistroSTP = function(list){
 	    	  list[0].idNomina = $scope.idNomina;
 	    	  list[0].nombreCentroCostos = $scope.nominaProcesoSeleccionada.prestadoraServicioDto.prestadoraServicioStpDto.nombreCentroCostos;
 	    	  list[0].urlActual = window.location.hostname;
 	    	  list[0].clabeCuentaOrdenante = $scope.nominaProcesoSeleccionada.prestadoraServicioDto.prestadoraServicioStpDto.clabeCuentaOrdenante;
-
+	    	  
 	    	  bootbox
 				.confirm({
 					title : "Confirmar acci&oacute;n",
@@ -298,65 +310,196 @@ angular.module('theme.core.templates')
 					},
 					callback : function(result) {
 						if (result) {
-							$http.post(CONFIG.APIURL + "/ppp/finanzas/generaPagosSTP.json", list).then(function(response) {
-					    		  if(response.data!=undefined && response.data !=null){
-					    	  			pinesNotifications.notify({
-					    	  				title: 'Archivo',
-					       			        text: 'La generaci&oacute;n se realiz&oacute; exitosamente',
-					       			        type: 'success'
-					    			      });
-					    		  }else{
-					    			  pinesNotifications.notify({
-					    			        title: 'Error',
-					    			        text: 'Existio un error al generar el registro de pago, en el sistema STP',
-					    			        type: 'error'
-					    			      });
-					    		  }
-
-					    		  $scope.cargaInicialColaboradores($scope.idNomina);
-//					    		  $scope.getDatosNominaEnProceso($scope.idNomina);
-					    		  $scope.cargarDatosNominaSeleccionada($scope.nominaProcesoSeleccionada.claveNomina);
-
-					  			}, function(data) {
-					  				console.log("error generaRegistroSTP--> " + data);
-					  				pinesNotifications.notify({
-					  			        title: 'Error',
-					  			        text: 'Existio un error al generar el registro de pago, en el sistema STP, favor de intentarlo nuevamente.',
-					  			        type: 'error'
-					  			      });
-
-					  				$scope.cargaInicialColaboradores($scope.idNomina);
-					  			});
+							
+							if($scope.datosDispersion.claveTipoDispersor=='STP'){
+								 $scope.dispersionStp(list);
+							}else{
+								$scope.dispersionAlquimia(list);
+							}
+							
+							
+						
 
 						}
 					}
 				});
 	      }
 
+	      $scope.generaRegistroAlquimia= function(list){
+	    	  list[0].idNomina = $scope.idNomina;
+	    	  list[0].nombreCentroCostos = $scope.nominaProcesoSeleccionada.prestadoraServicioDto.prestadoraServicioStpDto.nombreCentroCostos;
+	    	  list[0].urlActual = window.location.hostname;
+	    	  list[0].clabeCuentaOrdenante = $scope.nominaProcesoSeleccionada.prestadoraServicioDto.prestadoraServicioStpDto.clabeCuentaOrdenante;
+	    	  
+	    	  bootbox
+				.confirm({
+					title : "Confirmar acci&oacute;n",
+					message : "¿Est\u00e1s seguro que deseas generar la orden de pago en el sistema Alquimia?",
+					buttons : {
+						confirm : {
+							label : 'ACEPTAR',
+							className : 'btn-primary'
+						},
+						cancel : {
+							label : 'CANCELAR',
+							className : 'btn-danger'
+						}
+					},
+					callback : function(result) {
+						if (result) {
+							
+							if($scope.datosDispersion.claveTipoDispersor=='STP'){
+								 $scope.dispersionStp(list);
+							}else{
+								$scope.dispersionAlquimia(list);
+							}
+							
+							
+						
+
+						}
+					}
+				});
+	      }
+	      
+	      $scope.dispersionStp=  function(list){
+	    	  
+	    		$http.post(CONFIG.APIURL + "/ppp/finanzas/generaPagosSTP.json", list).then(function(response) {
+		    		  if(response.data!=undefined && response.data !=null){
+		    	  			pinesNotifications.notify({
+		    	  				title: 'Archivo',
+		       			        text: 'La generaci&oacute;n se realiz&oacute; exitosamente',
+		       			        type: 'success'
+		    			      });
+		    		  }else{
+		    			  pinesNotifications.notify({
+		    			        title: 'Error',
+		    			        text: 'Existio un error al generar el registro de pago, en el sistema STP',
+		    			        type: 'error'
+		    			      });
+		    		  }	
+		    		  
+		    		  $scope.cargaInicialColaboradores($scope.idNomina);	
+//		    		  $scope.getDatosNominaEnProceso($scope.idNomina);
+		    		  $scope.cargarDatosNominaSeleccionada($scope.nominaProcesoSeleccionada.claveNomina);
+		    		  
+		  			}, function(data) {
+		  				console.log("error generaRegistroSTP--> " + data);
+		  				pinesNotifications.notify({
+		  			        title: 'Error',
+		  			        text: 'Existio un error al generar el registro de pago, en el sistema STP, favor de intentarlo nuevamente.',
+		  			        type: 'error'
+		  			      });
+		  				
+		  				$scope.cargaInicialColaboradores($scope.idNomina);	
+		  			}); 
+	    	  
+	      }
+
+		
+	      
+	      $scope.dispersionAlquimia=  function(list){
+	    	 
+	    	  $scope.datosDispersionAlquimia={};
+	    	  $scope.datosDispersionAlquimia.colaboradores =list;
+	    	  $scope.datosDispersionAlquimia.idPrestadoraServicioStp =  $scope.datosDispersion.idPrestadoraServicioStp;
+	    	   
+	    		$http.post(CONFIG.APIURL + "/ppp/finanzas/dispersaAlquimia.json",  $scope.datosDispersionAlquimia).then(function(response) {
+		    		  if(response.data!=undefined && response.data !=null){
+		    	  			pinesNotifications.notify({
+		    	  				title: 'Archivo',
+		       			        text: 'La generaci&oacute;n se realiz&oacute; exitosamente',
+		       			        type: 'success'
+		    			      });
+		    		  }else{
+		    			  pinesNotifications.notify({
+		    			        title: 'Error',
+		    			        text: 'Existio un error al generar el registro de pago, en el sistema STP',
+		    			        type: 'error'
+		    			      });
+		    		  }	
+		    		  
+		    		  $scope.cargaInicialColaboradores($scope.idNomina);	
+//		    		  $scope.getDatosNominaEnProceso($scope.idNomina);
+		    		  $scope.cargarDatosNominaSeleccionada($scope.nominaProcesoSeleccionada.claveNomina);
+		    		  
+		  			}, function(data) {
+		  				console.log("error generaRegistroSTP--> " + data);
+		  				pinesNotifications.notify({
+		  			        title: 'Error',
+		  			        text: 'Existio un error al generar el registro de pago, en el sistema STP, favor de intentarlo nuevamente.',
+		  			        type: 'error'
+		  			      });
+		  				
+		  				$scope.cargaInicialColaboradores($scope.idNomina);	
+		  			}); 
+			
+	    	  
+	      }
+
+  $scope.rastreoAlquimia=  function(list){
+	    	   if($scope.datosDispersion.claveTipoDispersor=='ALQ'){
+	    	  $scope.datosDispersionAlquimia={};
+	    	  $scope.datosDispersionAlquimia.colaboradores =list;
+	    	  $scope.datosDispersionAlquimia.idPrestadoraServicioStp =  $scope.datosDispersion.idPrestadoraServicioStp;
+	    	 
+	    		$http.post(CONFIG.APIURL + "/ppp/finanzas/rastreoAlquimia.json",  $scope.datosDispersionAlquimia).then(function(response) {
+		    		  if(response.data!=undefined && response.data !=null){
+		    	  			pinesNotifications.notify({
+		    	  				title: 'Rastreo Alquimia',
+		       			        text: 'Rastreo correcto',
+		       			        type: 'success'
+		    			      });
+		    		  }else{
+		    			  pinesNotifications.notify({
+		    			        title: 'Error',
+		    			        text: ' Ocurrio un error, al realizar el ratreo',
+		    			        type: 'error'
+		    			      });
+		    		  }	
+		    		  
+		    		  $scope.cargaInicialColaboradores($scope.idNomina);	
+//		    		  $scope.getDatosNominaEnProceso($scope.idNomina);
+		    		  $scope.cargarDatosNominaSeleccionada($scope.nominaProcesoSeleccionada.claveNomina);
+		    		  
+		  			}, function(data) {
+		  				console.log("error rastreoAlquimia--> " + data);
+		  				pinesNotifications.notify({
+		  			        title: 'Error',
+		  			        text: 'Existio un error al realizar el rastreo, favor de intentalo mas tarde.',
+		  			        type: 'error'
+		  			      });
+		  				
+		  				$scope.cargaInicialColaboradores($scope.idNomina);	
+		  			}); 
+	    	   }
+	      }
+	      
+	      
 		    $scope.getNominaComplemento = function(nominaItem){
 		    	nominaService.getDatosNominaComplemento(nominaItem, function(response) {
 
 		    		if(response.data!=undefined && response.data !=null){
-
+		    			
 		    			if((response.data.idCMS!=null && response.data.idCMS!=undefined) && (response.data.nombreArchivo!=null && response.data.nombreArchivo!=undefined)){
 		    				$scope.nombreArchivo = response.data.nombreArchivo;
 		    			}
-
+		    			
 		    			$scope.isVisibleSeccionesNomina = true;
 		    			$scope.nominaComplementoDto = response.data;
-
+		    			
 		    			if(response.data.fechaDispersion != null && response.data.fechaDispersion != undefined && response.data.fechaDispersion != ""){
-		    				$scope.nominaComplementoDto.fechaDispersion =  new Date(response.data.fechaDispersion);
+		    				$scope.nominaComplementoDto.fechaDispersion =  new Date(response.data.fechaDispersion);	
 		    			}
-
+		    			
 		    			if(response.data.fechaTimbrado != null && response.data.fechaTimbrado != undefined && response.data.fechaTimbrado != ""){
 		    				$scope.nominaComplementoDto.fechaTimbrado  =  new Date(response.data.fechaTimbrado);
 		    			}
-
+		    			
 		    			if(response.data.fechaDispersion != null && response.data.fechaDispersion != undefined && response.data.fechaDispersion != ""){
-		    				$scope.nominaComplementoDto.fechaFacturacion =  new Date(response.data.fechaFacturacion);
+		    				$scope.nominaComplementoDto.fechaFacturacion =  new Date(response.data.fechaFacturacion);	
 		    			}
-
+		    			
 		    		}else{
 		    			$log.error(response.status+ ' - '+ response.statusText);
 		    		}
@@ -369,13 +512,13 @@ angular.module('theme.core.templates')
 				        type: 'error'
 				      });
 
-				});
+				});	
 		    }
-
+		    
 		    $scope.descargarDocumentoByIdCMS = function(idCMS){
-
+		    	  
 	  			$http.get(CONFIG.APIURL + "/documento/documentoByIdCMS/"+ idCMS +".json").then(function (response) {
-
+	  				
 	  				var link = document.createElement("a");
 	  				   link.href =  response.data.mimeType + response.data.documentoBase64;
 	              	   link.style = "visibility:hidden";
@@ -383,7 +526,7 @@ angular.module('theme.core.templates')
 	              	   document.body.appendChild(link);
 	              	   link.click();
 	              	   document.body.removeChild(link);
-
+						
 	              },
 	              function (data) {
 	            	  $log.error(data.status+ ' - '+ data.statusText);
@@ -395,12 +538,12 @@ angular.module('theme.core.templates')
 	              });
 
 	      	}
-
+		    
 		    $scope.getDatoFactura = function(idNomina){
 		    		nominaService.getDatosFacturaByIdNomina(idNomina, function(response) {
 
 			    		if(response.data!=undefined && response.data !=null && response.data !="" && response.data !=undefined){
-
+			    				
 			    			$scope.factura = response.data;
 			    			 $scope.totales = response.data.totales;
 
@@ -416,19 +559,19 @@ angular.module('theme.core.templates')
 
 					});
 
-
-
-
+		    	
+		    	
+		    	
 		    }
 
-
+	
 		       $scope.mostrarDialogoColaboradorEstatus = function (colaborador) {
 			       	var colaboradorAux = colaborador;
 			           $http.post(CONFIG.APIURL + "/ppp/nominas/cargaEstatusColaborador.json", colaborador).then(function(response) {
 			   			  var consecutivo = 0;
 			    	  		if(response.data.length >= 1){
 			   			  $scope.estatusColaborador = response.data;
-
+			    	  		 
 			    	  		 for (var i = 0; i < $scope.estatusColaborador.length; i++) {
 			    	  			consecutivo = consecutivo + 1;
 			    	  			$scope.estatusColaborador[i].consecutivo = consecutivo;
@@ -441,11 +584,11 @@ angular.module('theme.core.templates')
 			   			        text: 'Ocurrio un error al cargar los datos para la creacion de una nomina, favor de intentarlo nuevamente.',
 			   			        type: 'error'
 			   			      });
-			   			});
-
+			   			}); 
+			           
 			           $('#modalEstatus').modal('show');
 			       }
-
+		       
 			    $scope.getHistoricoByIdPppNomina = function (nomina) {
 
 			    	nominaService.getHistoricoByIdPppNomina(nomina.idNomina, function(response) {
@@ -464,15 +607,15 @@ angular.module('theme.core.templates')
 					});
 
 			      }
-
+			    
 			    $scope.modalColaboradores = function (nomina) {
-
+    		    	
 			    	$http.post(CONFIG.APIURL + "/ppp/nominas/cargaInicialColaboradores.json", nomina.idNomina).then(function(response) {
-
+						  
 			    		$scope.claveNomina = nomina.claveNomina;
 			  	  		 $scope.dataExcel.contentRows= response.data;
 			  	  		$('#modalColaboradores').modal('show');
-
+			  	  		 	  	  		
 						}, function(data) {
 							console.log("error modalCrearNomina--> " + data);
 							pinesNotifications.notify({
@@ -483,8 +626,8 @@ angular.module('theme.core.templates')
 						});
 
 			      }
-
-
+			    
+			    
 			    $scope.dispersionStpColaborador = function (idNomina) {
 			    	bootbox.confirm({
 						title : "Confirmar acci&oacute;n",
@@ -501,7 +644,7 @@ angular.module('theme.core.templates')
 						},
 						callback : function(result) {
 							if (result) {
-
+								
 								finanzasService.dispersionStpColaborador(idNomina, function(response) {
 
 									if(!response.data){
@@ -526,9 +669,9 @@ angular.module('theme.core.templates')
 
 												 $scope.getDatosNominaByIdNomina($scope.nominaProcesoSeleccionada);
 												 $scope.cargaInicial();
-
+												
 											}
-										});
+										});	
 									}
 								},
 								function(response) {
@@ -544,8 +687,8 @@ angular.module('theme.core.templates')
 						}
 					});
 			      }
-
-
+			      
+			      
 			      	$scope.enviarNominaCuentaConciliada = function() {
 					  bootbox.confirm({
 						  title : "Confirmar acci&oacute;n",
@@ -562,7 +705,7 @@ angular.module('theme.core.templates')
 							},
 							callback : function(result) {
 								if (result) {
-
+									
 							    	  $http.post(CONFIG.APIURL + "/ppp/nominas/cambiaEstatusNominaCuentaConciliada.json", $scope.nominaProcesoSeleccionada.idNomina).then(
 							                  function (response) {
 							                	  $log.debug('ok');
@@ -571,7 +714,7 @@ angular.module('theme.core.templates')
 												        text: 'La operaci\u00f3n se complet\u00f3 con \u00e9xito.',
 												        type: 'success'
 												      });
-
+										  		       
 														 $scope.getDatosNominaByIdNomina($scope.nominaProcesoSeleccionada);
 												         $scope.cargaInicial();
 							                  },
@@ -582,19 +725,19 @@ angular.module('theme.core.templates')
 												        text: 'Ocurrio un error en el sistema. Favor de intentarlo más tarde.',
 												        type: 'error'
 												      });
+													
 
-
-
+										  		       
 														 $scope.getDatosNominaByIdNomina($scope.nominaProcesoSeleccionada);
 												         $scope.cargaInicial();
 							                  });
 								}
-							}
+							}				  
 					  });
 				}
-
+			    
 				  $scope.modalRechazarDispersionStp = function (idPppNomina) {
-
+					  
 					  bootbox.confirm({
 						  title : "Confirmar acci&oacute;n",
 							message : "¿Esta seguro de cancelar la dispersión?",
@@ -609,7 +752,7 @@ angular.module('theme.core.templates')
 								}
 							},
 							callback : function(result) {
-
+								
 								if (result) {
 									  $scope.motivoRechazo = "";
 									  $scope.idPppNomina = idPppNomina;
@@ -618,14 +761,14 @@ angular.module('theme.core.templates')
 							}
 					  	});
 		          }
-
+				  
 			       $scope.cancelarDispersionStp = function (idNomina){
-
+			    	   
 			    	   $scope.nominaDto = {
 					        idNominaPPP : idNomina,
 							motivoRechazo : $scope.motivoCancelacion
 			              }
-
+			
 			    	   finanzasService.cambiaEstatusNominaRechazarDispersion($scope.nominaDto,function(response) {
 						 		if(response.data.mensajeError != undefined || response.data.mensajeError != null){
 							 			$scope.idNominaPPP = null;
@@ -643,7 +786,7 @@ angular.module('theme.core.templates')
 											 $scope.getDatosNominaByIdNomina($scope.nominaProcesoSeleccionada);
 											 $scope.cargaInicial();
 										}
-									});
+									});	
 		                        }else{
 		                              $scope.idPppNomina = null;
 							 		  $('#modalRechazarDispersionStp').modal('hide');
@@ -657,12 +800,12 @@ angular.module('theme.core.templates')
 		  										}
 		  									},
 		  									callback : function() {
-
+		  									
 												 $scope.getDatosNominaByIdNomina($scope.nominaProcesoSeleccionada);
 												 $scope.cargaInicial();
 
 		  									}
-		  								});
+		  								});		
 							  }
 		                    }, function(response) {
 		                        $log.error(response.status + ' - ' + response.statusText);
@@ -670,7 +813,7 @@ angular.module('theme.core.templates')
 								 $scope.cargaInicial();
 							});
 			          }
-
+			       
 			       $scope.rastreoStpColaborador = function(colaborador) {
 						colaborador.nombreCentroCostos = $scope.nominaProcesoSeleccionada.prestadoraServicioDto.prestadoraServicioStpDto.nombreCentroCostos;
 						colaborador.clabeCuentaOrdenante = $scope.nominaProcesoSeleccionada.prestadoraServicioDto.prestadoraServicioStpDto.clabeCuentaOrdenante;
@@ -678,14 +821,14 @@ angular.module('theme.core.templates')
 						$http.post(CONFIG.APIURL	+ "/ppp/finanzas/restreoMovimieno.json",colaborador).then(function(response) {
 										//		$("#actualizaColaboradores").trigger("click");
 										$scope.cargaInicialColaboradores($scope.nominaProcesoSeleccionada.idNomina);
-
+										
 										pinesNotifications
 										.notify({
 											title : 'Actualización de estado dispersión',
 											text : 'La operación se actualizó correctamente. ',
 											type : 'success'
 										});
-
+											
 										},
 										function(data) {
 											console.log("error rastreo  --> "
@@ -723,4 +866,71 @@ angular.module('theme.core.templates')
 										});
 
 					}
+					
+					$scope.obtenerSaldo = function() {
+					
+						$http.post(CONFIG.APIURL + "/ppp/finanzas/obtenerSaldo.json",$scope.datosDispersion).then(function(response) {
+											
+											  if (response.data.error) {
+													
+													pinesNotifications
+															.notify({
+																title : 'Error al obtener saldos ',
+																text : 'EL servidor de STP, no se encuentra disponible, favor de intentarlo más tarde.',
+																type : 'warning'
+															});
+												} else {
+											
+											
+													$scope.saldo = response.data.saldo;
+											
+										    	$scope.fechaSaldo= response.data.fechaSaldo;
+										    	$scope.prestadora = response.data.prestadora;
+											    
+												}
+										
+										},
+										function(data) {console.log("error rastreo  --> " + data);
+											pinesNotifications.notify({
+														title : 'Error',
+														text : 'Por el momento el servicio de rastreo no se encuetra disponible, por favor intentelo más tarde. ',
+														type : 'error'
+													});
+										});
+
+					}
+					
+					$scope.decodificar = function(textoDecodificar){
+						
+						$http.post(CONFIG.APIURL + "/ppp/decrypt.json", textoDecodificar).then(function(response) {
+													
+							if (Array.isArray(response.data)){
+								const datos = response.data;
+							datos.forEach(function(datos, index) {
+								if(`${datos}`===":"){
+									$scope.textoDecodificado+="|";
+								}else{
+									$scope.textoDecodificado+=`${datos}`;
+								}
+							});
+							}else {
+								$scope.textoDecodificado =JSON.stringify(response.data);
+							}
+					
+				  			}, function(data) {
+				  				console.log("error texto a decodificar--> " + data);
+				  				pinesNotifications.notify({
+				  			        title: 'Error',
+				  			        text: 'La cadea no tiene el formato correcto',
+				  			        type: 'error'
+				  			      });
+				  				
+				  				$scope.cargaInicialColaboradores($scope.idNomina);	
+				  			}); 
+
+						
+					}
+					
+					
+					
   });

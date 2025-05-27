@@ -100,38 +100,31 @@ public class PppColaboradorDaoImpl extends GenericDAO<PppColaborador, Long> impl
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Transactional(readOnly = true)
-	public Long totalColaboradoresByIdPppNomina(Long idPppNomina, Long idCatEstatusColaborador, Long idCatEstatusColaborador2, Long idCatEstatusColaborador3) {
+	public Long totalColaboradoresByIdPppNomina(Long idPppNomina, Long estado) {
 			try {
 				
 				StringBuilder sb = new StringBuilder();					
 				sb.append(" select count(pcol.id_ppp_colaborador) as total "); 
 				sb.append(" from sin.ppp_colaborador pcol, sin.ppp_colaborador_estatus pce "); 
+				sb.append(" , (	select  max(id_ppp_colaborador_estatus) id_ppp_colaborador_estatus,pc.id_ppp_colaborador\r\n" + 
+						"	from		sin.ppp_colaborador_estatus pce join ppp_colaborador  pc on pce.id_ppp_colaborador = pc.id_ppp_colaborador \r\n" + 
+						"	where 	pc.id_ppp_nomina = ? and\r\n" + 
+						"	pc.ind_estatus = 1\r\n" + 
+						"		group by  pc.id_ppp_colaborador) mce ");
 				sb.append(" where pcol.id_ppp_nomina = ? "); 
 				sb.append(" and pce.id_ppp_colaborador = pcol.id_ppp_colaborador "); 
-				sb.append(" and pce.id_ppp_colaborador_estatus = (select max(id_ppp_colaborador_estatus)  "); 
-				sb.append(" 									from sin.ppp_colaborador_estatus  "); 
-				
-				if(idCatEstatusColaborador2 !=null && idCatEstatusColaborador3 !=null) {
-					sb.append("                                 where id_cat_estatus_colaborador in (?, ?, ?)  "); 
-				}else {
-					sb.append("                                 where id_cat_estatus_colaborador in (?)  "); 
-				}
-				
-				sb.append("                                     and id_ppp_colaborador = pcol.id_ppp_colaborador "); 
-				sb.append("                                     and ind_estatus = 1) "); 
+				sb.append(" and pce.id_ppp_colaborador_estatus = mce.id_ppp_colaborador_estatus"); 
 				sb.append(" and pcol.ind_estatus = 1 "); 
 				sb.append(" and pce.ind_estatus = 1 ");
-
-				
-				Object[] objeto = null;
-				if(idCatEstatusColaborador2 !=null) {
-					objeto = new Object[] {idPppNomina, idCatEstatusColaborador, idCatEstatusColaborador2, idCatEstatusColaborador3};
-				}else {
-					 objeto = new Object[] {idPppNomina, idCatEstatusColaborador};
+				if(estado ==1) {
+					sb.append("          and pce.id_cat_estatus_colaborador in (1, 6,11, 12,16,3)  "); 
+				}else if (estado ==2) {
+					sb.append("                                 and pce.id_cat_estatus_colaborador in (3)  "); 
+				}else if (estado ==3) {
+					sb.append("                                 and pce.id_cat_estatus_colaborador in (12,16)  "); 
 				}
-				
 
-				List<Long> total = jdbcTemplate.query(sb.toString(),objeto, new RowMapper() {
+				List<Long> total = jdbcTemplate.query(sb.toString(),new Object[] {idPppNomina,idPppNomina},new RowMapper() {
 					public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 						Long id = rs.getLong("total");
 						

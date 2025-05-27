@@ -24,7 +24,7 @@ public class NominaPeriodicidad implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Basic(optional = false)
     @Column(name = "id_nomina_periodicidad")
     private Long idNominaPeriodicidad;
@@ -66,7 +66,7 @@ public class NominaPeriodicidad implements Serializable {
         this.usuarioAlta = usuarioAlta;
         this.fechaAlta = fechaAlta;
     }
-
+    
     public NominaPeriodicidad(NominaPeriodicidadDto dto) {
 		this.idNominaPeriodicidad = dto.getIdNominaPeriodicidad();
 		this.idNomina = dto.getIdNomina();
@@ -166,5 +166,5 @@ public class NominaPeriodicidad implements Serializable {
     public String toString() {
         return "mx.com.consolida.entity.NominaPeriodicidad[ idNominaPeriodicidad=" + idNominaPeriodicidad + " ]";
     }
-
+    
 }

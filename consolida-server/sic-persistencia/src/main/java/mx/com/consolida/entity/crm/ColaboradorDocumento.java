@@ -22,14 +22,14 @@ public class ColaboradorDocumento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_colaborador_documento")
     private Long idColaboradorDocumento;
     @Column(name = "id_colaborador")
     private Long idColaborador;
     @Column(name = "id_definicion_documento")
     private Long idDefinicionDocumento;
-
+    
     @Column(name = "id_CMS")
     private Long idCms;
     @Column(name = "nombre_archivo")

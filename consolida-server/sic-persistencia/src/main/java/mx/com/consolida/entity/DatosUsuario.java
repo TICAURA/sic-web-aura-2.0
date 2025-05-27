@@ -8,7 +8,7 @@
 //
 ///**
 // * The persistent class for the datos_usuario database table.
-// *
+// * 
 // */
 //@Entity
 //@Table(name="datos_usuario")
@@ -17,7 +17,7 @@
 //	private static final long serialVersionUID = 1L;
 //
 //	@Id
-//	@GeneratedValue(strategy=GenerationType.IDENTITY)
+//	@GeneratedValue(strategy=GenerationType.AUTO)
 //	@Column(name="id_datos_usuario")
 //	private Long idDatosUsuario;
 //

@@ -118,7 +118,7 @@
         </div>
     </nav>
 
-    <div id="wrapper">
+    <div id="wrapper" style="bottom: -18px">
         <div id="layout-static">
             <div class="static-sidebar-wrapper" ng-show="!layoutLoading">
                 <nav class="static-sidebar" role="navigation">
@@ -154,7 +154,7 @@
 <!--                             <li> web 2020 Derechos reservados</li> -->
 
                         </ul>
-                        <button class="pull-right btn btn-default btn-sm hidden-print" back-to-top style="padding: 1px 10px;"><i class="fa fa-angle-up"></i></button>
+                        
                     </div>
                 </footer>
             </div>
@@ -395,7 +395,7 @@
     <script src="scripts/controllers/cotizador/seguimientoProspectosController.js"></script>
     <script src="scripts/controllers/cotizador/rentabilidadController.js"></script>
     <script src="scripts/controllers/cotizador/canalVenta/consultaCanalVentaController.js"></script>
-    <script src="scripts/controllers/cotizador/canalVenta/canalVentaController.js"></script>
+    <script src="scripts/controllers/cotizador/comisiones/consultaComisionesController.js"></script>
     <script src="scripts/controllers/cotizador/canalVenta/oficinaCanalVentaController.js"></script>
     <script src="scripts/controllers/cotizador/canalVenta/asignacionOficinaController.js"></script>
     
@@ -423,6 +423,20 @@
     <script src="scripts/controllers/ppp/seguimientoNominaController.js"></script>
     
     <script src="scripts/controllers/reportes/reportesController.js"></script>
+     <!--finanzas controller  -->
+      <script src="scripts/controllers/finanzas/conciliacionController.js"></script>
+       <script src="scripts/controllers/finanzas/ordenesController.js"></script>
+       <script src="scripts/controllers/finanzas/consolidadoController.js"></script>
+       <script src="scripts/controllers/finanzas/consolidadoDetalleController.js"></script>
+       <script src="scripts/controllers/finanzas/conciliacionController2.js"></script>
+       <script src="scripts/controllers/finanzas/saldoController.js"></script>
+     <script src="scripts/controllers/finanzas/saldoControllerProvision.js"></script>
+      <script src="scripts/controllers/finanzas/saldoControllerCargaSocial.js"></script>
+      <script src="scripts/controllers/finanzas/saldoControllerImpuestosFederales.js"></script>
+     <script src="scripts/controllers/finanzas/saldoControllerComisiones.js"></script>
+     <script src="scripts/controllers/finanzas/saldoControllerSocios.js"></script>
+     <script src="scripts/controllers/finanzas/resumenSaldosController.js"></script>
+        <script src="scripts/controllers/ppp/multifacturaController.js"></script>
     
     <!--Admin controller  -->
     <script src="scripts/controllers/admin/pantallaController.js"></script>
@@ -431,6 +445,7 @@
     <script src="scripts/controllers/admin/rolModulosPantallasController.js"></script>
     <script src="scripts/controllers/admin/usuarioController.js"></script>
     <script src="scripts/controllers/admin/celulaController.js"></script>
+     <script src="scripts/controllers/codificador/codificadorController.js"></script>
     
     
     <!-- services -->
@@ -448,6 +463,9 @@
    <script src="scripts/services/ppp/finanzasService.js"></script>
    <script src="scripts/services/ppp/seguimientoNominasService.js"></script>
    <script src="scripts/services/reportes/reportesService.js"></script>
+    <script src="scripts/services/ppp/multifacturaService.js"></script>
+   <!--  codificador -->
+     <script src="scripts/controllers/codificador/codificadorController.js"></script>
     								  
 
      <!-- endbuild -->

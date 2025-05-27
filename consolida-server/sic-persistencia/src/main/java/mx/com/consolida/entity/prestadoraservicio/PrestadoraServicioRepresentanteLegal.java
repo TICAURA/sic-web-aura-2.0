@@ -34,48 +34,48 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class PrestadoraServicioRepresentanteLegal implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_prestadora_servicio_representante_legal")
 	private Long idPrestadoraServicioRepresentanteLegal;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestadora_servicio", nullable = false)
 	private PrestadoraServicio prestadoraServicio;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_persona", nullable = false)
 	private Persona persona;
-
+	
 	@Column(name = "contrasena_certificado", length = 45)
 	private String contrasenaCertificado;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+		
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
 
 	public PrestadoraServicioRepresentanteLegal() {
 	}
-
+	
 	public PrestadoraServicioRepresentanteLegal(Long idPrestadoraServicioRepresentanteLegal) {
 		this.idPrestadoraServicioRepresentanteLegal = idPrestadoraServicioRepresentanteLegal;
 	}
@@ -88,7 +88,7 @@ public class PrestadoraServicioRepresentanteLegal implements java.io.Serializabl
 		this.idPrestadoraServicioRepresentanteLegal = idPrestadoraServicioRepresentanteLegal;
 	}
 
-
+	
 	public Persona getPersona() {
 		return this.persona;
 	}
@@ -97,7 +97,7 @@ public class PrestadoraServicioRepresentanteLegal implements java.io.Serializabl
 		this.persona = persona;
 	}
 
-
+	
 	public PrestadoraServicio getPrestadoraServicio() {
 		return this.prestadoraServicio;
 	}
@@ -122,7 +122,7 @@ public class PrestadoraServicioRepresentanteLegal implements java.io.Serializabl
 		this.usuarioModificacion = usuarioModificacion;
 	}
 
-
+	
 	public String getContrasenaCertificado() {
 		return this.contrasenaCertificado;
 	}
@@ -131,7 +131,7 @@ public class PrestadoraServicioRepresentanteLegal implements java.io.Serializabl
 		this.contrasenaCertificado = contrasenaCertificado;
 	}
 
-
+	
 	public Date getFechaAlta() {
 		return this.fechaAlta;
 	}
@@ -140,7 +140,7 @@ public class PrestadoraServicioRepresentanteLegal implements java.io.Serializabl
 		this.fechaAlta = fechaAlta;
 	}
 
-
+	
 	public Date getFechaModificacion() {
 		return this.fechaModificacion;
 	}
@@ -149,7 +149,7 @@ public class PrestadoraServicioRepresentanteLegal implements java.io.Serializabl
 		this.fechaModificacion = fechaModificacion;
 	}
 
-
+	
 	public Long getIndEstatus() {
 		return this.indEstatus;
 	}

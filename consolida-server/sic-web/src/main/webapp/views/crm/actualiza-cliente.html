@@ -36,7 +36,9 @@ $(document).ready(function(){
 					<li ng-class="{active : tabSeleccionado=='domicilio'}"><a
 						data-toggle="tab" ng-click="seleccionarTab('domicilio')">Domicilio
 							y medio de contacto</a></li>
-
+					<li ng-class="{active : tabSeleccionado=='prodGral'}"><a
+						data-toggle="tab" ng-click="seleccionarTab('prodGral')">Productos</a>
+					</li>
 					<li ng-class="{active : tabSeleccionado=='celula'}"><a
 						data-toggle="tab" ng-click="seleccionarTab('celula')">Fondo</a>
 					</li>
@@ -87,6 +89,12 @@ $(document).ready(function(){
 					<div id="domicilio" class="tab-pane fade" ng-class="{'in active' : tabSeleccionado === 'domicilio'}">
 					
 						<div ng-include src="'views/crm/cliente/clienteDomicilio.html'"></div>
+
+					</div>
+					
+					<div id="prodGral" class="tab-pane fade" ng-class="{'in active' : tabSeleccionado === 'prodGral'}">
+					
+						<div ng-include src="'views/crm/cliente/clienteProducGral.html'"></div>
 
 					</div>
 

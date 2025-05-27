@@ -32,52 +32,52 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class PrestadoraServicioRepresentanteLegalDocumento implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_prestadora_servicio_representante_legal_documento")
 	private Long idPrestadoraServicioRepresentanteLegalDocumento;
 
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestadora_servicio_representante_legal", nullable = false)
 	private PrestadoraServicioRepresentanteLegal prestadoraServicioRepresentanteLegal;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_definicion_documento", nullable = false)
 	private DefinicionDocumento definicionDocumento;
-
+	
 	@Column(name="id_CMS")
 	private Long idCMS;
-
+	
 	@Column(name = "nombre_archivo", length = 250)
 	private String nombreArchivo;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private String indEstatus;
 
 	public PrestadoraServicioRepresentanteLegalDocumento() {
 	}
-
+	
 	public PrestadoraServicioRepresentanteLegalDocumento(Long idPrestadoraServicioRepresentanteLegalDocumento) {
 		this.idPrestadoraServicioRepresentanteLegalDocumento = idPrestadoraServicioRepresentanteLegalDocumento;
 	}
@@ -162,5 +162,5 @@ public class PrestadoraServicioRepresentanteLegalDocumento implements java.io.Se
 	public void setIndEstatus(String indEstatus) {
 		this.indEstatus = indEstatus;
 	}
-
+	
 }

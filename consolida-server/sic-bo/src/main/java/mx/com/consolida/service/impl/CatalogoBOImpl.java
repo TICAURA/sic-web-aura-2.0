@@ -50,6 +50,11 @@ public class CatalogoBOImpl implements CatalogoBO {
 	}
 	
 	@Transactional
+	public List<CatGeneralDto> obtenerCatGeneralListaProductos(){
+		return catDao.obtenerListaProductos();
+	}
+	
+	@Transactional
 	public List<CatGrupoDto> obtenerCatalogoGrupo() {
 		List<CatGrupo> listCatGrupo =catGrupoDao.findAll();
 		List<CatGrupoDto> listCatGrupoDto =  new ArrayList<CatGrupoDto>();

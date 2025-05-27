@@ -166,8 +166,7 @@
 					<br />
 					<div class="row">
 						<div class="col-xs-3"
-							ng-show="clienteDto.catTipoPersona.idCatGeneral === '22' || clienteDto.catTipoPersona.idCatGeneral ===22 || 
-									 clienteDto.catTipoPersona.idCatGeneral ==='21' || clienteDto.catTipoPersona.idCatGeneral ===21">
+							ng-show="clienteDto.catTipoPersona.idCatGeneral === '22' || clienteDto.catTipoPersona.idCatGeneral ===22" >
 							<label class="control-label">Fecha constituci&oacute;n
 								de la empresa*: </label> <input type="date" ng-disabled="inHabilitaEscritura"
 								name="fechaConstitucionEmpresa_field" ng-required="true"
@@ -180,10 +179,23 @@
 									campo es obligatorio.</span>
 							</span>
 						</div>
+						
+							<div class="col-xs-3"
+							ng-show="clienteDto.catTipoPersona.idCatGeneral ==='21' || clienteDto.catTipoPersona.idCatGeneral ===21">
+							<label class="control-label">Fecha de Nacimiento*: </label> <input type="date" ng-disabled="inHabilitaEscritura"
+								name="fechaConstitucionEmpresa_field" ng-required="true"
+								id="exampleInput" class="form-control" name="input"
+								ng-model="clienteDto.fechaConstitucionEmpresa"
+								placeholder="dd/MM/yyyy" /></br> <span class="messages"
+								ng-show="datosGeneralesForm.fechaConstitucionEmpresa_field.$submitted || datosGeneralesForm.fechaConstitucionEmpresa_field.$touched">
+								<span
+								ng-show="datosGeneralesForm.fechaConstitucionEmpresa_field.$error.required">El
+									campo es obligatorio.</span>
+							</span>
+						</div>
 
 						<div class="col-xs-3"
-							ng-show="clienteDto.catTipoPersona.idCatGeneral === '22' || clienteDto.catTipoPersona.idCatGeneral ===22 || 
-									 clienteDto.catTipoPersona.idCatGeneral ==='21' || clienteDto.catTipoPersona.idCatGeneral ===21">
+							ng-show="clienteDto.catTipoPersona.idCatGeneral === '22' || clienteDto.catTipoPersona.idCatGeneral ===22">
 							<label class="control-label">Clave registro patronal*:
 							</label> <input name="cveRegistroPatronal_field" type="text" ng-disabled="inHabilitaEscritura"
 								class="form-control" placeholder="Clave registro patronal"

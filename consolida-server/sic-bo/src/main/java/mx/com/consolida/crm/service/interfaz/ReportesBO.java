@@ -17,4 +17,18 @@ public interface ReportesBO {
 	
 	public List<ReporteDTO> reporteFacturacionMensual(String listaCentro,String mes);
 	
+	public List<ReporteDTO> reporteFacturacion(Date fechaInicioPeriodo, Date fechaFinPeriodo, String  listaCentro);
+	
+	public List<ReporteDTO> reporteDispersion(Date fechaInicioPeriodo, Date fechaFinPeriodo, String  listaCentro);
+	
+	public List<ReporteDTO> reporteColaboradores(String  listaCentro);
+	
+	public List<ReporteDTO> reporteClientes(String  listaCentro);
+	
+	public List<ReporteDTO> reporteConsar(Date fechaInicioPeriodo, Date fechaFinPeriodo, String  listaCentro);
+	
+	public List<ReporteDTO> reporteProductos(String idProducto, String  listaCentro);
+	
+	public List<ReporteDTO> reporteTesoOpera(Date fechaInicioPeriodo, Date fechaFinPeriodo, String  listaCentro);
+	
 }

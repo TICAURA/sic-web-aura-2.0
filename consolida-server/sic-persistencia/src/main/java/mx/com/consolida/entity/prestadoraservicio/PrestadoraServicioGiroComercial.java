@@ -24,49 +24,49 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "prestadora_servicio_giro_comercial")
 @NamedQueries({ @NamedQuery(name = "PrestadoraServicioGiroComercial.findAll", query = "SELECT c FROM PrestadoraServicioGiroComercial c") })
 public class PrestadoraServicioGiroComercial implements java.io.Serializable{
-
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_prestadora_servicio_giro_comercial")
 	private Long idPrestadoraServicioGiroComercial;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_giro_comercial", nullable = false)
 	private CatGeneral catGiroComercial;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_sub_giro_comercial", nullable = false)
     private CatSubGiroComercial catSubGiroComercial;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_prestadora_servicio", nullable = false)
 	private PrestadoraServicio prestadoraServicio;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
-
+	
 	public PrestadoraServicioGiroComercial() {
-
+		
 	}
-
+	
 	public PrestadoraServicioGiroComercial(Long idPrestadoraServicioGiroComercial) {
 		this.idPrestadoraServicioGiroComercial = idPrestadoraServicioGiroComercial;
 	}
@@ -142,7 +142,7 @@ public class PrestadoraServicioGiroComercial implements java.io.Serializable{
 	public void setIndEstatus(Long indEstatus) {
 		this.indEstatus = indEstatus;
 	}
-
-
+	
+	
 
 }

@@ -31,58 +31,58 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class Domicilio implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_domicilio")
 	private Long idDomicilio;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_entidad_federativa", nullable = false)
 	private CatEntidadFederativa catEntidadFederativa;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_tipo_domicilio")
 	private CatGeneral catTipoDomicilio;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_municipio", nullable = false)
 	private CatMunicipios catMunicipios;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioByUsuarioModificacion;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usaurio_alta", nullable = false)
 	private Usuario usuarioByUsaurioAlta;
-
+	
 	@Column(name = "calle", length = 100)
 	private String calle;
-
+	
 	@Column(name = "numero_exterior", length = 10)
 	private String numeroExterior;
-
+	
 	@Column(name = "numero_interior", length = 10)
 	private String numeroInterior;
-
+	
 	@Column(name = "colonia", length = 100)
 	private String colonia;
-
+	
 	@Column(name = "codigo_postal", nullable = false, length = 20)
 	private String codigoPostal;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
 //	private Set clienteMedioContactoDomicilios = new HashSet(0);
@@ -93,7 +93,7 @@ public class Domicilio implements java.io.Serializable {
 
 	public Domicilio() {
 	}
-
+	
 	public Domicilio(Long idDomicilio) {
 		this.idDomicilio = idDomicilio;
 	}
@@ -149,7 +149,7 @@ public class Domicilio implements java.io.Serializable {
 		this.usuarioByUsaurioAlta = usuarioByUsaurioAlta;
 	}
 
-
+	
 	public String getCalle() {
 		return this.calle;
 	}
@@ -158,7 +158,7 @@ public class Domicilio implements java.io.Serializable {
 		this.calle = calle;
 	}
 
-
+	
 	public String getNumeroExterior() {
 		return this.numeroExterior;
 	}
@@ -167,7 +167,7 @@ public class Domicilio implements java.io.Serializable {
 		this.numeroExterior = numeroExterior;
 	}
 
-
+	
 	public String getNumeroInterior() {
 		return this.numeroInterior;
 	}
@@ -176,7 +176,7 @@ public class Domicilio implements java.io.Serializable {
 		this.numeroInterior = numeroInterior;
 	}
 
-
+	
 	public String getColonia() {
 		return this.colonia;
 	}
@@ -185,7 +185,7 @@ public class Domicilio implements java.io.Serializable {
 		this.colonia = colonia;
 	}
 
-
+	
 	public String getCodigoPostal() {
 		return this.codigoPostal;
 	}
@@ -212,7 +212,7 @@ public class Domicilio implements java.io.Serializable {
 		this.fechaModificacion = fechaModificacion;
 	}
 
-
+	
 	public Long getIndEstatus() {
 		return this.indEstatus;
 	}

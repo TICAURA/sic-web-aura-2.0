@@ -32,93 +32,93 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class PrestadoraServicio implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_prestadora_servicio")
 	private Long idPrestadoraServicio;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+	
 	@Column(name = "rfc", nullable = false, length = 15)
 	private String rfc;
-
+	
 	@Column(name = "nombre_corto", nullable = false, length = 45)
 	private String nombreCorto;
-
+	
 	@Column(name = "razon_social", nullable = false, length = 100)
 	private String razonSocial;
-
+	
 	@Column(name = "id_consar", length = 50)
 	private String id_consar;
-
+	
 //	@Column(name = "clave", length = 45)
 //	private String clave;
-
+	
 	@Column(name = "es_fondo", nullable = false)
 	private int esFondo;
-
+	
 	@Column(name = "logo")
 	private  byte[] logo;
-
+	
 	@Column(name = "password_fiel")
 	private String passwordFiel;
-
+	
 	@Column(name = "password_csd")
 	private String passwordCsd;
-
+	
 	@Column(name = "nombre_archivo_logotipo")
 	private  String nombreArchivoLogotipo;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
-
+	
 	// bi-directional one-to-one association to ClienteTempBitacoraSolicitudes
     @OneToOne(mappedBy = "prestadoraServicio")
     private PrestadoraServicioDomicilio prestadoraServicioDomicilio;
-
+    
  // bi-directional one-to-one association to ClienteTempBitacoraSolicitudes
     @OneToOne(mappedBy = "prestadoraServicio")
     private CelulaPrestadoraServicio celulaPrestadoraServicio;
-
+    
  // bi-directional one-to-one association to ClienteTempBitacoraSolicitudes
     @OneToMany(mappedBy = "prestadoraServicio")
     private List<PrestadoraServicioCuentaBancaria> prestadoraServicioCuentaBancaria;
-
+    
  // bi-directional one-to-one association to ClienteTempBitacoraSolicitudes
     @OneToOne(mappedBy = "prestadoraServicio")
     private PrestadoraServicioDocumento prestadoraServicioDocumento;
-
+    
     @OneToMany(mappedBy = "prestadoraServicio")
     private List<PrestadoraServicioProducto> prestadoraServicioProducto;
-
+    
 	@OneToMany(mappedBy = "prestadoraServicio")
 	 private List<PrestadoraServicioGiroComercial> prestadoraGiroComercial;
-
+	
 	@OneToMany(mappedBy = "prestadoraServicio")
 	 private List<PrestadoraServicioStp> prestadoraServicioStp;
-
+    
 
 	public PrestadoraServicio() {
 	}
-
+	
 	public PrestadoraServicio(Long idPrestadoraServicio) {
 		this.idPrestadoraServicio = idPrestadoraServicio;
 	}
@@ -170,7 +170,7 @@ public class PrestadoraServicio implements java.io.Serializable {
 		this.usuarioModificacion = usuarioModificacion;
 	}
 
-
+	
 	public String getRfc() {
 		return this.rfc;
 	}
@@ -179,7 +179,7 @@ public class PrestadoraServicio implements java.io.Serializable {
 		this.rfc = rfc;
 	}
 
-
+	
 	public String getNombreCorto() {
 		return this.nombreCorto;
 	}
@@ -188,7 +188,7 @@ public class PrestadoraServicio implements java.io.Serializable {
 		this.nombreCorto = nombreCorto;
 	}
 
-
+	
 	public String getRazonSocial() {
 		return this.razonSocial;
 	}
@@ -197,7 +197,7 @@ public class PrestadoraServicio implements java.io.Serializable {
 		this.razonSocial = razonSocial;
 	}
 
-
+	
 	public int getEsFondo() {
 		return this.esFondo;
 	}
@@ -224,7 +224,7 @@ public class PrestadoraServicio implements java.io.Serializable {
 		this.fechaModificacion = fechaModificacion;
 	}
 
-
+	
 	public Long getIndEstatus() {
 		return this.indEstatus;
 	}
@@ -337,7 +337,7 @@ public class PrestadoraServicio implements java.io.Serializable {
 	public void setPrestadoraServicioStp(List<PrestadoraServicioStp> prestadoraServicioStp) {
 		this.prestadoraServicioStp = prestadoraServicioStp;
 	}
-
+	
 //	@OneToMany(fetch = FetchType.LAZY, mappedBy = "prestadoraServicio")
 //	public Set getPrestadoraServicioCuentaBancarias() {
 //		return this.prestadoraServicioCuentaBancarias;

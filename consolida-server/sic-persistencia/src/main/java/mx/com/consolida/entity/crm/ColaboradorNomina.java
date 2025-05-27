@@ -20,7 +20,7 @@ public class ColaboradorNomina implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_colaborador_nomina")
     private Long idColaboradorNomina;
     @Column(name = "monto_ppp")
@@ -98,7 +98,7 @@ public class ColaboradorNomina implements Serializable {
     public void setIdNomina(NominaCliente idNomina) {
         this.idNomina = idNomina;
     }
-
+    
 
     public Long getIndEstatus() {
 		return indEstatus;
@@ -132,5 +132,5 @@ public class ColaboradorNomina implements Serializable {
     public String toString() {
         return "mx.com.consolida.entity.ColaboradorNomina[ idColaboradorNomina=" + idColaboradorNomina + " ]";
     }
-
+    
 }

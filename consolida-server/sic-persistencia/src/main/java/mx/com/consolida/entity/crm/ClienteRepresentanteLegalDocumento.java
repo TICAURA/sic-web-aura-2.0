@@ -23,29 +23,29 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "cliente_representante_legal_documento")
 @NamedQueries({ @NamedQuery(name = "ClienteRepresentanteLegalDocumento.findAll", query = "SELECT c FROM ClienteRepresentanteLegalDocumento c") })
 public class ClienteRepresentanteLegalDocumento implements java.io.Serializable {
-
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cliente_representante_legal_documento")
 	private Long idClienteRepresentanteLegalDocumento;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cliente_representante_legal", nullable = false)
 	private ClienteRepresentanteLegal clienteRepresentanteLegal;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_definicion_documento", nullable = false)
 	private DefinicionDocumento definicionDocumento;
-
+	
 	@Column(name="id_CMS")
 	private Long idCMS;
-
+	
 	@Column(name = "nombre_archivo", length = 250)
 	private String nombreArchivo;
-
-
+	
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
@@ -61,17 +61,17 @@ public class ClienteRepresentanteLegalDocumento implements java.io.Serializable 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private String indEstatus;
-
+	
 	public ClienteRepresentanteLegalDocumento() {
-
+		
 	}
-
+	
 	public ClienteRepresentanteLegalDocumento(Long idClienteRepresentanteLegalDocumento) {
 		this.idClienteRepresentanteLegalDocumento = idClienteRepresentanteLegalDocumento;
-
+		
 	}
 
 	public Long getIdClienteRepresentanteLegalDocumento() {
@@ -154,7 +154,7 @@ public class ClienteRepresentanteLegalDocumento implements java.io.Serializable 
 	public void setIndEstatus(String indEstatus) {
 		this.indEstatus = indEstatus;
 	}
-
-
+	
+	
 
 }

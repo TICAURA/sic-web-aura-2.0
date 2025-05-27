@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Month;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -65,6 +66,64 @@ public class Utilerias {
         }
         return dtFecha;
     }
+    
+    public static String convierteDate(Date psFecha) {
+    	String fecha=null;
+    	
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy") ;
+    	String formatted = dateFormat.format(psFecha);
+    	fecha=formatted.substring(0,3) + getMes(formatted.substring(3,5)) + formatted.substring(5,10);
+        return fecha;
+    }
+    
+    
+    public static String getMes(String mes){
+
+        switch (mes) {
+          case "01":
+            return "ENE.";
+          case "02":
+            return "FEB.";
+          case "03":
+            return "MAR.";
+          case "04":
+            return "ABR.";
+          case "05":
+            return "MAY.";
+          case "06":
+            return "JUN.";
+          case "7":
+            return "JUL.";
+          case "08":
+            return "AGOS.";
+          case "09":
+            return "SEP.";
+          case "10":
+            return "OCT.";
+          case "11":
+            return "NOV.";
+          case "12":
+            return "DIC.";
+          default:
+            break;
+        }
+        return mes;
+      }
+    
+    /**
+     * 
+     * @param pdFecha
+     * @param formato
+     * @return
+     * @throws ParseException
+     */
+   
+    public static String convirteStringToString(String pdFecha, String formato) throws ParseException {
+    SimpleDateFormat forma = new SimpleDateFormat("dd/MM/yyyy"); 
+		Date fecha = forma.parse(pdFecha);
+    SimpleDateFormat sdfFormatoFecha = new SimpleDateFormat(formato);
+    return (fecha != null) ? sdfFormatoFecha.format(fecha) : "";
+}
     /**
      * Aumenta o disminuye años a una fecha
      * @param fecha fecha a la que se le aumentaran años

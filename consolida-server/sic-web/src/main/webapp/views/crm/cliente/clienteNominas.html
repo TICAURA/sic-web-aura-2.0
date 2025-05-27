@@ -149,7 +149,7 @@
 													</span>
 												</div>
 												
-												<div class="col-xs-3 form-group" ng-show="nominaClienteDto.catProductoNomina.idCatGeneral == 304">
+												<div class="col-xs-3 form-group" ng-show="nominaClienteDto.catProductoNomina.idCatGeneral == 304 || nominaClienteDto.catProductoNomina.idCatGeneral == 9958">
 													<label class="control-label">Prestadora de servicio (fondo): </label> <select
 														class="form-control" name="prestadoraServicio" id="prestadoraServicio"
 														ng-model="nominaClienteDto.prestadoraServicioFondo"
@@ -177,12 +177,21 @@
 												</div>
 												<div class="col-xs-3 form-group" ng-show="nominaClienteDto.catProductoNomina.idCatGeneral !== 306 
 																						  && nominaClienteDto.catProductoNomina.idCatGeneral !== 9949
-																						  && nominaClienteDto.catProductoNomina.idCatGeneral !== 9950">
-													<div class="col-xs-12"><label class="control-label">&#191;Generar factura PPP?</label></div>
+																						  && nominaClienteDto.catProductoNomina.idCatGeneral !== 9950
+																						 ">
+													<div class="col-xs-12"><label class="control-label">&#191;Generar factura?</label></div>
 													<div class="col-xs-3"><input type="radio" ng-model="nominaClienteDto.requiereFactura" value="1" ng-change="selectPPP(true)" ng-disabled="inHabilitaEscritura"/> <label >Si</label></div>
 													<div class="col-xs-3"><input type="radio" ng-model="nominaClienteDto.requiereFactura" value="0" ng-change="selectPPP(false)" ng-disabled="inHabilitaEscritura"/> <label >No</label></div>
 												</div>
 												
+													<div class="col-xs-3 form-group" ng-show="nominaClienteDto.catProductoNomina.idCatGeneral !== 306 
+																						  && nominaClienteDto.catProductoNomina.idCatGeneral !== 9949
+																						  && nominaClienteDto.catProductoNomina.idCatGeneral !== 9950
+																						  && nominaClienteDto.catProductoNomina.idCatGeneral == 9958">
+													<div class="col-xs-12"><label class="control-label">&#191;Generar timbre?</label></div>
+													<div class="col-xs-3"><input type="radio" ng-model="nominaClienteDto.requiereTimbre" value="1" ng-change="selectTimbre(true)" ng-disabled="inHabilitaEscritura"/> <label >Si</label></div>
+													<div class="col-xs-3"><input type="radio" ng-model="nominaClienteDto.requiereTimbre" value="0" ng-change="selectTimbre(false)" ng-disabled="inHabilitaEscritura"/> <label >No</label></div>
+												</div>
 
 												<!-- <div class="col-xs-3">
 													<label class="control-label">Prestadora de servicio
@@ -262,17 +271,17 @@
 													<td>a7</td>
 													<td>Total, impuesto sobre nomina</td>
 													<td>a8</td>
-													<td>Total, PPP bruto</td>
+													<td>Total, bruto</td>
 												</tr>
 												<tr>
 													<td>a9</td>
-													<td>Total, deducciones PPP</td>
+													<td>Total, deducciones</td>
 													<td>a10</td>
 													<td>Comisi&oacute;n SyS</td>
 												</tr>
 												<tr>
 													<td>a11</td>
-													<td>Comisi&oacute;n PPP</td>
+													<td>Comisi&oacute;n </td>
 													<td>a12</td>
 													<td>IVA (16%)</td>
 												</tr>
@@ -302,30 +311,30 @@
 													<td>b1</td>
 													<td>Base dispersado SyS</td>
 													<td>b2</td>
-													<td>Base dispersado PPP</td>
+													<td>Base dispersado</td>
 												</tr>
 												<tr>
 													<td>b3</td>
 													<td>Base facturado SyS</td>
 													<td>b4</td>
-													<td>Base facturado PPP</td>
+													<td>Base facturado</td>
 												</tr>
 
 												<tr>
 													<td>b5</td>
 													<td>Base utilidad SyS</td>
 													<td>b6</td>
-													<td>Base utilidad PPP</td>
+													<td>Base utilidad</td>
 												</tr>
 												<tr>
 													<td>b7</td>
 													<td>% Comisi&oacute;n SyS</td>
 													<td>b8</td>
-													<td>% Comisi&oacute;n PPP</td>
+													<td>% Comisi&oacute;n </td>
 												</tr>
 												<tr>
 													<td>b9</td>
-													<td>Pricing PPP</td>
+													<td>Pricing </td>
 													<td>b10</td>
 													<td>Factura de solo honorario = f6+ f7</td>
 												</tr>
@@ -387,7 +396,7 @@
 
 									<div class="row">
 										<h4>
-											<strong> F2. SUB TOTAL COMISIONES PPP</strong>
+											<strong> F2. SUB TOTAL COMISIONES</strong>
 										</h4>
 										<div>
 											<div>
@@ -546,7 +555,7 @@
 											</select>
 										</div>
 										<div class="col-xs-3">
-											<label class="control-label">Comision PPP*: </label> <input
+											<label class="control-label">Comision *: </label> <input
 												type="text" class="form-control"
 												placeholder="porcentaje o monto" required="required"
 												ng-model="colaborador.nombre">
@@ -572,7 +581,7 @@
 										<div class="col-xs-3">
 											<label class="control-label">Fondo*: </label> <input
 												type="text" class="form-control"
-												placeholder="Fondo PPP de la celula" required="required"
+												placeholder="Fondo de la celula" required="required"
 												ng-model="colaborador.nombre">
 										</div>
 										<div class="col-xs-3">

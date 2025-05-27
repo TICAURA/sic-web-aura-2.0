@@ -34,45 +34,45 @@ public class CatValorDefault implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_cat_valor_default")
     private Long idCatValorDefault;
-
+    
     @JoinColumn(name = "id_tipo_default", referencedColumnName = "id_cat_general")
     @ManyToOne
     private CatGeneral idTipoDefault;
-
+    
     @Column(name = "valor")
     private BigDecimal valor;
-
+    
     @Column(name = "fecha_alta")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaAlta;
-
+    
     @Column(name = "fecha_modificacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificaicon;
-
+    
     @JoinColumn(name = "usuario_alta", referencedColumnName = "id_usuario")
     @ManyToOne
     private Usuario usuarioAlta;
-
+    
     @JoinColumn(name = "usuario_modificacion", referencedColumnName = "id_usuario")
     @ManyToOne
     private Usuario usuarioModificacion;
-
+    
     @Column(name = "ind_estatus")
     private Long indEstatus;
-
+    
     @Column(name = "predeterminado")
     private Long predeterminado;
-
+    
 
     public CatValorDefault(Long idCatValorDefault) {
 		super();
 		this.idCatValorDefault = idCatValorDefault;
 	}
-
+     
 
 
 	public CatValorDefault(CatValorDefaultDto dto) {
@@ -183,5 +183,5 @@ public class CatValorDefault implements Serializable {
     public String toString() {
         return "mx.com.consolida.entity.CatValorDefault[ idCatValorDefault=" + idCatValorDefault + " ]";
     }
-
+    
 }

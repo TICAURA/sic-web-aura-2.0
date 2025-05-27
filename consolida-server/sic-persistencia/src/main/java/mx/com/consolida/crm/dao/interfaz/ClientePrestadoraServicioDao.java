@@ -12,4 +12,6 @@ public interface ClientePrestadoraServicioDao extends DAO<ClientePrestadoraServi
 
 	Long getidFondoByIdCliente(Long idCliente);
 	
+	Long getidFondoPrestadoraByIdCliente(Long idCliente) ;
+	
 }

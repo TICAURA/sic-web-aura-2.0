@@ -7,10 +7,10 @@ import java.util.Date;
 import mx.com.consolida.catalogos.DocumentoDTO;
 import mx.com.consolida.usuario.UsuarioDTO;
 
-public class NominaComplementoDto implements Serializable{
+public class NominaComplementoDto implements Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -39,6 +39,8 @@ public class NominaComplementoDto implements Serializable{
 	private UsuarioDTO usuarioAlta;
 
 	private UsuarioDTO usuarioModificacion;
+
+	private Boolean traeComplemento;
 
 	// documento
 	private Long idCMS;
@@ -218,10 +220,14 @@ public class NominaComplementoDto implements Serializable{
 		this.validaComprobante = validaComprobante;
 	}
 
+	public Boolean getTraeComplemento() {
+		return traeComplemento;
+	}
 
-
-
-
-
+	public void setTraeComplemento(Boolean traeComplemento) {
+		this.traeComplemento = traeComplemento;
+	}
+	
+	
 
 }

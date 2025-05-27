@@ -30,19 +30,19 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class ClienteDomicilio implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cliente_domicilio")
 	private Long idClienteDomicilio;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_domicilio", nullable = false)
 	private Domicilio domicilio;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cliente", nullable = false)
 	private Cliente cliente;
@@ -149,7 +149,7 @@ public class ClienteDomicilio implements java.io.Serializable {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-
-
+	
+	
 
 }

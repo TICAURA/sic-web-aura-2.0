@@ -53,9 +53,9 @@
 					<thead>
 						<tr>
 							<th>N&oacute;mina</th>
-							<th>% Honorario PPP</th>
+							<th>% Honorario</th>
 							<th>% IVA comercial</th>
-							<th>Formula PPP</th>
+							<th>Formula</th>
 							<th>Formula Factura</th>
 							<th>Formula IVA</th>
 							<th>Formula Sueldos y salarios</th>
@@ -100,7 +100,7 @@
 			</panel>
 
 
-			<panel panel-class="panel-sky" heading="Agregar honorario PPP"
+			<panel panel-class="panel-sky" heading="Agregar honorario"
 				ng-show="mostrarPanelAgregarHonorarios"> <panel-controls>
 			<panel-control-collapse></panel-control-collapse> </panel-controls>
 			<form id="honorarioForm" name="honorarioForm">
@@ -123,8 +123,8 @@
 						</span>
 					</div>
 					<div class="col-xs-2">
-						<label class="control-label">% Honorario PPP*: </label> <input
-							type="text" class="form-control" placeholder="Honorario PPP"
+						<label class="control-label">% Honorario *: </label> <input
+							type="text" class="form-control" placeholder="Honorario "
 							name="honorarioPPP" id="honorarioPPP"
 							ng-model="honorario.honorarioPPP"  maxlength="3"
 							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
@@ -136,7 +136,7 @@
 					</div>
 					<div class="col-xs-2">
 						<label class="control-label">% IVA comercial*: </label> <input
-							type="text" class="form-control" placeholder="Honorario PPP"
+							type="text" class="form-control" placeholder="Honorario "
 							name="ivaComercial" id="ivaComercial"
 							ng-model="honorario.ivaComercial" required maxlength="3"
 							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
@@ -150,7 +150,7 @@
 				<br />
 				<div class="row">
 					<div class="col-xs-4">
-						<label class="control-label">Formula Honorario PPP*: </label> <select
+						<label class="control-label">Formula Honorario *: </label> <select
 							class="form-control" name="formulaPPP" id="formulaPPP"
 							ng-model="honorario.formulaPPP"
 							ng-options="(item.descripcion) for item in catFormulaHonorario | orderBy:'item.descripcion' track by item.idCatGeneral">
@@ -258,7 +258,7 @@
 				<h4>EJEMPLO DE CALCULO DE FACTURA</h4>
 				<div class="row">
 					<div class="col-xs-3">
-						<label class="control-label">Monto de PPP *: </label> <input
+						<label class="control-label">Monto *: </label> <input
 							type="number" class="form-control"
 							placeholder="Nombre de n&oacute;mina" name="montoPPP"
 							id="montoPPP" ng-model="ejemploPPP.montoPPP" required="required" />
@@ -325,7 +325,7 @@
 
 					<div class="col-xs-2">
 						<label class="control-label">% Sueldos y salarios*: </label> <input
-							type="text" class="form-control" placeholder="Honorario PPP"
+							type="text" class="form-control" placeholder="Honorario"
 							name="honorarioPPPSs" id="honorarioPPPSs"
 							ng-model="honorario.honorarioPPPSs" required maxlength="3"
 							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />

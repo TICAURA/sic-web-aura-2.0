@@ -18,12 +18,12 @@ import javax.persistence.TemporalType;
 @NamedQuery(name="PersonaContactoTemp.findAll", query="SELECT c FROM PersonaContactoTemp c")
 public class PersonaContactoTemp implements Serializable{
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_persona_contacto_temp")
 	private Long idPersonaContactoTemp;
 	@Column(name="nombre_persona")
@@ -48,8 +48,8 @@ public class PersonaContactoTemp implements Serializable{
 	private Long usuarioModificacion;
 	@Column(name="ind_estatus")
 	private Long indEstatus;
-
-
+	
+	
 	public Long getIdPersonaContactoTemp() {
 		return idPersonaContactoTemp;
 	}
@@ -62,7 +62,7 @@ public class PersonaContactoTemp implements Serializable{
 	public void setNombrePersona(String nombrePersona) {
 		this.nombrePersona = nombrePersona;
 	}
-
+	
 	public String getApellidoPaterno() {
 		return apellidoPaterno;
 	}

@@ -1,20 +1,13 @@
 package mx.com.consolida.usuario;
 
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.google.gson.Gson;
+import mx.com.consolida.usuario.UsuarioRolDto;
 
 @SuppressWarnings("serial")
 public class UserDetailNomina implements UserDetails {
@@ -81,41 +74,42 @@ public class UserDetailNomina implements UserDetails {
 	}
 
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return authorities!=null?authorities:new ArrayList<>();
+		
+		return authorities;
 	}
 
 	public String getPassword() {
-
+		
 		return password;
 	}
 
 	public String getUsername() {
-
+		
 		return username;
 	}
 
 	public boolean isAccountNonExpired() {
-
+		
 		return accountNonExpired;
 	}
 
 	public boolean isAccountNonLocked() {
-
+		
 		return accountNonLocked;
 	}
 
 	public boolean isCredentialsNonExpired() {
-
+		
 		return credentialsNonExpired;
 	}
 
 	public boolean isEnabled() {
-
+		
 		return enabled;
 	}
 
-
-
+	
+	
 	public String getNombre() {
 		return nombre;
 	}
@@ -155,33 +149,9 @@ public class UserDetailNomina implements UserDetails {
 	public void setRolSeleccionado(UsuarioRolDto rolSeleccionado) {
 		this.rolSeleccionado = rolSeleccionado;
 	}
-
-	public String toJson() {
-		try(StringWriter writer = new StringWriter()){
-			String pass = this.password;
-			Gson gson = new Gson();
-			this.password="";
-			gson.toJson(this, writer);
-			this.password = pass;
-			String json = writer.toString();
-			return URLEncoder.encode(json,StandardCharsets.UTF_8.toString());
-		}catch(IOException exp) {
-			throw new RuntimeException(exp);
-		}
-	}
-
-	public static UserDetailNomina fromJson(String json) {
-		Gson gson = new Gson();
-		String decoded;
-		try {
-			decoded = URLDecoder.decode(json,StandardCharsets.UTF_8.toString());
-			UserDetailNomina details = gson.fromJson(decoded, UserDetailNomina.class);
-			return details;
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
-		}
-
-	}
-
-
+	
+	
+	
+	
+	
 }

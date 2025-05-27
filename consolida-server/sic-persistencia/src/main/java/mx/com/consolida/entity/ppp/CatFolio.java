@@ -23,24 +23,24 @@ import mx.com.consolida.entity.seguridad.Usuario;
 @Table(name = "cat_folio")
 @NamedQueries({ @NamedQuery(name = "CatFolio.findAll", query = "SELECT c FROM CatFolio c") })
 public class CatFolio implements Serializable{
-
+	
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cat_folio")
 	private Long idCatFolio;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cat_serie", nullable = false)
 	private CatSerie catSerie;
-
+	
 	@Column(name = "numero_folio")
 	private String numeroFolio;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
@@ -48,11 +48,11 @@ public class CatFolio implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
@@ -123,5 +123,5 @@ public class CatFolio implements Serializable{
 	public void setIndEstatus(Long indEstatus) {
 		this.indEstatus = indEstatus;
 	}
-
+	
 }

@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.consolida.catalogos.CatGeneralDto;
@@ -22,6 +23,7 @@ import mx.com.consolida.catalogos.DocumentoCSMDto;
 import mx.com.consolida.comunes.dto.AccionistaDto;
 import mx.com.consolida.comunes.dto.ApoderadoLegalDto;
 import mx.com.consolida.comunes.dto.RepresentanteLegalDto;
+import mx.com.consolida.crm.dao.interfaz.CatGeneralDao;
 import mx.com.consolida.crm.dao.interfaz.CelulaPrestadoraServicioDao;
 import mx.com.consolida.crm.dao.interfaz.ClienteDao;
 import mx.com.consolida.crm.dao.interfaz.ClienteDomicilioDao;
@@ -65,6 +67,7 @@ import mx.com.consolida.crm.service.interfaz.CelulaBO;
 import mx.com.consolida.crm.service.interfaz.PrestadoraServicioBO;
 import mx.com.consolida.dao.interfaz.CatEstatusDao;
 import mx.com.consolida.dao.usuario.PersonaDAO;
+import mx.com.consolida.dao.usuario.UsuarioDAO;
 import mx.com.consolida.dto.CatSubGiroComercialDto;
 import mx.com.consolida.entity.CatEstatus;
 import mx.com.consolida.entity.CatGeneral;
@@ -101,6 +104,7 @@ import mx.com.consolida.entity.seguridad.Persona;
 import mx.com.consolida.entity.seguridad.Usuario;
 import mx.com.consolida.generico.BusinessException;
 import mx.com.consolida.generico.CatEstatusEnum;
+import mx.com.consolida.generico.CatGeneralEnum;
 import mx.com.consolida.generico.CatMaestroEnum;
 import mx.com.consolida.generico.IndEstatusEnum;
 import mx.com.consolida.generico.MensajeDTO;
@@ -197,6 +201,12 @@ public class PrestadoraServicioBOImpl implements PrestadoraServicioBO{
 	
 	@Autowired
 	private PrestadoraServicioStpDao prestadoraServicioStpDao;
+	
+	@Autowired
+	private CatGeneralDao catGeneralDao;
+	
+	@Autowired
+	private UsuarioDAO usuarioDao;
 
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PrestadoraServicioBOImpl.class);
@@ -2335,34 +2345,37 @@ public class PrestadoraServicioBOImpl implements PrestadoraServicioBO{
 	
 	@Override
 	@Transactional(readOnly = true)
-	public PrestadoraServicioDto obtenerPrestadoraServicioByStp(PrestadoraServicioDto prestadoraServicioDto,
-			Long idPrestadoraServicio) {
+	public PrestadoraServicioDto obtenerPrestadoraServicioByStp(Long idPrestadoraServicio) {
 		PrestadoraServicio entity = new PrestadoraServicio();
-		List<PrestadoraServicioStp> prestadoraServicioStp = new ArrayList<PrestadoraServicioStp>();
+		PrestadoraServicioDto prestadoraServicioDto  = new PrestadoraServicioDto();
 		List<PrestadoraServicioStpDto> prestadoraServicioStpDto = new ArrayList<PrestadoraServicioStpDto>();
-		
+
+		List<PrestadoraServicioDto> listPrestServDto = new ArrayList<>();
+
 		entity = prestadoraServicioDao.read(idPrestadoraServicio);
-		
+
 		prestadoraServicioDto.setRfc(entity.getRfc());
 		prestadoraServicioDto.setNombreCorto(entity.getNombreCorto());
 		prestadoraServicioDto.setRazonSocial(entity.getRazonSocial());
-		if(entity.getEsFondo() == 1) {
-		prestadoraServicioDto.setEsFondo(Boolean.TRUE);
-		}else {
-		prestadoraServicioDto.setEsFondo(Boolean.FALSE);
+		if (entity.getEsFondo() == 1) {
+			prestadoraServicioDto.setEsFondo(Boolean.TRUE);
+		} else {
+			prestadoraServicioDto.setEsFondo(Boolean.FALSE);
 		}
 		prestadoraServicioDto.setFechaAlta(entity.getFechaAlta());
 		prestadoraServicioDto.setUsuarioAlta(new UsuarioDTO());
 		prestadoraServicioDto.getUsuarioAlta().setIdUsuario(entity.getUsuarioAlta().getIdUsuario());
-		prestadoraServicioDto.setIdPrestadoraServicio(entity.getIdPrestadoraServicio());
 		prestadoraServicioDto.setIndEstatus(entity.getIndEstatus());
-		
-		if(entity.getPrestadoraServicioStp() != null) {
-			prestadoraServicioStpDto = prestadoraServicioStpDao.convertirPrestadoraServicioStpADto(entity.getPrestadoraServicioStp());
+		List<CatGeneralDto> catTipoDispersor = catBo.obtenerCatGeneralByClvMaestro(CatMaestroEnum.TIPO_DISPERSOR.getCve());
+		prestadoraServicioDto.setCatTipoDispersor(catTipoDispersor);
+
+		if (entity.getPrestadoraServicioStp() != null) {
+			prestadoraServicioStpDto = prestadoraServicioStpDao
+					.convertirPrestadoraServicioStpADto(entity.getPrestadoraServicioStp());
 			prestadoraServicioDto.setListprestadoraServicioStpDto(prestadoraServicioStpDto);
 		}
 		
-		
+
 		return prestadoraServicioDto;
 	}
 
@@ -2371,27 +2384,48 @@ public class PrestadoraServicioBOImpl implements PrestadoraServicioBO{
 	public void guardarDatosStp(PrestadoraServicioStpDto prestadoraServicioStp, Long idPrestadoraServicio, Long idUsuario) {
 		PrestadoraServicio entity = new PrestadoraServicio();
 		PrestadoraServicioStp prestadoraServicioEntity = new PrestadoraServicioStp();
+		CatGeneral tipoDispersor = new CatGeneral();
 		entity = prestadoraServicioDao.read(idPrestadoraServicio);
+		tipoDispersor =catGeneralDao.read(prestadoraServicioStp.getIdTipoDispersor());
+		Usuario usuario =new Usuario();
+		usuario = usuarioDao.read(idUsuario);
 		
+				
 		if(prestadoraServicioStp.getIdPrestadoraServicioStp() != null) {
 			prestadoraServicioEntity = prestadoraServicioStpDao.read(prestadoraServicioStp.getIdPrestadoraServicioStp());
-			prestadoraServicioEntity.setClabeCuentaOrdenante(prestadoraServicioStp.getClabeCuentaOrdenante());
-			prestadoraServicioEntity.setNombreCentroCostos(prestadoraServicioStp.getNombreCentroCostos());
 			prestadoraServicioEntity.setFechaModificacion(new Date());
-			prestadoraServicioEntity.setUsuarioModificacion(new Usuario());
-			prestadoraServicioEntity.getUsuarioModificacion().setIdUsuario(idUsuario);
-			prestadoraServicioEntity.setIndEstatus(CatEstatusEnum.ACTIVO.getIdEstatus());
+			prestadoraServicioEntity.setUsuarioModificacion(usuario);
 		}else {
 			prestadoraServicioEntity.setPrestadoraServicio(entity);
-			prestadoraServicioEntity.setClabeCuentaOrdenante(prestadoraServicioStp.getClabeCuentaOrdenante());
-			prestadoraServicioEntity.setNombreCentroCostos(prestadoraServicioStp.getNombreCentroCostos());
-			prestadoraServicioEntity.setFechaAlta(new Date());
-			prestadoraServicioEntity.setUsuarioAlta(new Usuario());
+		    prestadoraServicioEntity.setFechaAlta(new Date());
+			prestadoraServicioEntity.setUsuarioAlta(usuario);
 			prestadoraServicioEntity.getUsuarioAlta().setIdUsuario(idUsuario);
+		}
+				
+		prestadoraServicioEntity.setClabeCuentaOrdenante(prestadoraServicioStp.getClabeCuentaOrdenante());
+		prestadoraServicioEntity.setNombreCentroCostos(prestadoraServicioStp.getNombreCentroCostos());
+		prestadoraServicioEntity.setIdTipoDispersor(tipoDispersor);
+		
+		if(prestadoraServicioStp.getIdTipoDispersor().equals(3101l)) {
+			prestadoraServicioEntity.setApiKey(prestadoraServicioStp.getApiKey());
+			prestadoraServicioEntity.setClientSecret(prestadoraServicioStp.getClientSecret());
+			prestadoraServicioEntity.setClientId(prestadoraServicioStp.getClientId());
+			prestadoraServicioEntity.setIdCliente(prestadoraServicioStp.getIdCliente());
+			prestadoraServicioEntity.setIdCuentaAhorro(prestadoraServicioStp.getIdCuentaAhorro());
+			prestadoraServicioEntity.setPassword(prestadoraServicioStp.getPassword());
+			prestadoraServicioEntity.setUserName(prestadoraServicioStp.getUserName());
+		}	
+		if (prestadoraServicioStp.getActivo()) {
 			prestadoraServicioEntity.setIndEstatus(CatEstatusEnum.ACTIVO.getIdEstatus());
+			prestadoraServicioStpDao.actualizarPrestadora(idPrestadoraServicio);
+		}else {
+			prestadoraServicioEntity.setIndEstatus(CatEstatusEnum.INACTIVO.getIdEstatus());
 		}
 		prestadoraServicioStpDao.createOrUpdate(prestadoraServicioEntity);
 		
 		
 	}
+
+	
+	
 }

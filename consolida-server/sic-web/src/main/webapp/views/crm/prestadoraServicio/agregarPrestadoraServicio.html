@@ -70,7 +70,7 @@
 						ng-if="prestadoraServicioDto.idPrestadoraServicio != null">Cuentas</a></li>
 					<li ng-class="{active : tabSeleccionado=='stpPrestServ'}"><a
 						data-toggle="tab" ng-click="seleccionarTab('stpPrestServ')"
-						ng-if="prestadoraServicioDto.idPrestadoraServicio != null">Datos STP</a></li>
+						ng-if="prestadoraServicioDto.idPrestadoraServicio != null">Dispersores</a></li>
 					<li ng-class="{active : tabSeleccionado=='fiel'}"><a
 						data-toggle="tab" ng-click="seleccionarTab('fiel')"
 						ng-if="prestadoraServicioDto.idPrestadoraServicio != null">FIEL
@@ -978,50 +978,20 @@
 
 					<div id="documentosPrestServ" class="tab-pane fade "
 						ng-class="{'in active' : tabSeleccionado === 'documentosPrestServ'}">
-						
-						<div ng-include src="'views/crm/prestadoraServicio/prestadoraServicioDocumentos.html'"></div>
-						
+							<div ng-include src="'views/crm/prestadoraServicio/prestadoraServicioDocumentos.html'"></div>
 					</div>
 					
-					<div class="tab-content">
 					<div id="stpPrestServ" class="tab-pane fade "
 						ng-class="{'in active' : tabSeleccionado === 'stpPrestServ'}">
-						<div class="col-md-12">
-							<panel panel-class="panel-sky"
-								heading="Datos STP">
-							<form id="stpForm" name="stpForm" novalidate>
-							<div class="col-md-12">
-					<div class="col-xs-5">
-											<label class="control-label">Nombre de centro de costos*: </label> <input
-											type="text" class="form-control" name="centroCostos" ng-disabled="inHabilitaEscritura"
-											placeholder="Nombre de centro de costos" ng-model="prestadoraServicioDto.listprestadoraServicioStpDto[0].nombreCentroCostos"
-											maxlength="75" minlength="1"> <span class="messages"
-											ng-show="stpForm.centroCostos.$submitted || stpForm.centroCostos.$touched">
-											<span ng-show="stpForm.centroCostos.$error.required">El
-												campo es obligatorio.</span>
-										</span>
-										</div>
-					<div class="col-xs-4">
-											<label class="control-label">Clabe de cuenta ordenante*:</label> <input
-												placeholder="Clabe de cuenta ordenante" name="clabeOrdenante" ng-disabled="inHabilitaEscritura"
-												ng-model="prestadoraServicioDto.listprestadoraServicioStpDto[0].clabeCuentaOrdenante" maxlength="18" minlength="16"
-												class="form-control" type="text" required="required">
-											<span class="messages"
-											ng-show="stpForm.clabeOrdenante.$submitted || stpForm.clabeOrdenante.$touched">
-											<span ng-show="stpForm.clabeOrdenante.$error.required">El
-												campo es obligatorio.</span>
-										</span>
-										</div>
-					<div class="col-xs-3" align="right" style="padding-top: 30px">
-						<button type="button" class="btn btn-orange" data-dismiss="modal" ng-disabled="stpForm.$invalid" ng-if="!inHabilitaEscritura"
-						 ng-click="guardarCuentaOrdenante(prestadoraServicioDto.listprestadoraServicioStpDto[0]);">
-							<span class="fa fa-save"></span>Guardar</button>
-										</div>
-										</div>
-							</form>
-							</panel>
+							 <div ng-include src="'views/crm/prestadoraServicio/prestadoraServicioDispersores.html'"></div>
+						
+								
+									
 							</div>
-							</div>
+					
+					<div class="tab-content">
+				
+							
 							</div>
 
 

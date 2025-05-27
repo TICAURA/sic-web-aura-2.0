@@ -28,42 +28,42 @@ import mx.com.consolida.entity.seguridad.Usuario;
 public class ClienteMedioContacto implements java.io.Serializable {
 
 	/**
-	 *
+	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cliente_medio_contacto")
 	private Long idClienteMedioContacto;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cliente", nullable = false)
 	private Cliente cliente;
-
+	
 	@Column(name = "nombre", nullable = false, length = 45)
 	private String nombre;
-
+	
 	@Column(name = "apellido_paterno", nullable = false, length = 45)
 	private String apellidoPaterno;
-
+	
 	@Column(name = "apellido_materno", length = 45)
 	private String apellidoMaterno;
-
+	
 	@Column(name = "correo", nullable = false, length = 45)
 	private String correo;
-
+	
 	@Column(name = "telefono", nullable = false, length = 45)
 	private String telefono;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_alta", nullable = false, length = 19)
 	private Date fechaAlta;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_modificacion", length = 19)
 	private Date fechaModificacion;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_alta", nullable = false)
 	private Usuario usuarioAlta;
@@ -71,14 +71,14 @@ public class ClienteMedioContacto implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_modificacion")
 	private Usuario usuarioModificacion;
-
+	
 	@Column(name = "ind_estatus", nullable = false)
 	private Long indEstatus;
-
+	
 	@Column(name = "es_ceo")
 	private Integer esCeo;
-
-
+	
+	
 	@Column(name = "fecha_nacimiento")
 	private Date fechaNacimiento;
 
@@ -121,7 +121,7 @@ public class ClienteMedioContacto implements java.io.Serializable {
 		this.idClienteMedioContacto = idClienteMedioContacto;
 	}
 
-
+	
 	public Cliente getCliente() {
 		return this.cliente;
 	}
@@ -130,7 +130,7 @@ public class ClienteMedioContacto implements java.io.Serializable {
 		this.cliente = cliente;
 	}
 
-
+	
 	public String getNombre() {
 		return this.nombre;
 	}
@@ -139,7 +139,7 @@ public class ClienteMedioContacto implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-
+	
 	public String getApellidoPaterno() {
 		return this.apellidoPaterno;
 	}
@@ -148,7 +148,7 @@ public class ClienteMedioContacto implements java.io.Serializable {
 		this.apellidoPaterno = apellidoPaterno;
 	}
 
-
+	
 	public String getApellidoMaterno() {
 		return this.apellidoMaterno;
 	}
@@ -157,7 +157,7 @@ public class ClienteMedioContacto implements java.io.Serializable {
 		this.apellidoMaterno = apellidoMaterno;
 	}
 
-
+	
 	public String getCorreo() {
 		return this.correo;
 	}
@@ -166,7 +166,7 @@ public class ClienteMedioContacto implements java.io.Serializable {
 		this.correo = correo;
 	}
 
-
+	
 	public String getTelefono() {
 		return this.telefono;
 	}
@@ -175,7 +175,7 @@ public class ClienteMedioContacto implements java.io.Serializable {
 		this.telefono = telefono;
 	}
 
-
+	
 	public Date getFechaAlta() {
 		return this.fechaAlta;
 	}
@@ -184,7 +184,7 @@ public class ClienteMedioContacto implements java.io.Serializable {
 		this.fechaAlta = fechaAlta;
 	}
 
-
+	
 	public Date getFechaModificacion() {
 		return this.fechaModificacion;
 	}
@@ -209,7 +209,7 @@ public class ClienteMedioContacto implements java.io.Serializable {
 		this.usuarioModificacion = usuarioModificacion;
 	}
 
-
+	
 	public Long getIndEstatus() {
 		return this.indEstatus;
 	}

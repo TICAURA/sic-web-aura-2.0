@@ -4,15 +4,15 @@
 
 
 			<panel panel-class="panel-sky"
-				heading="Datos STP"> <panel-controls>
+				heading="Prefijo dispersi&oacute;n"> <panel-controls>
 			<panel-control-collapse></panel-control-collapse> </panel-controls>
 				<form id="datosStpForm" name="datosStpForm" novalidate>
 					<div class="row">
 						<div class="col-xs-5">
-							<label class="control-label">Prefijo STP cliente (clave interna)*: </label> 
+							<label class="control-label">Prefijo clave rastreo cliente (clave interna)*: </label> 
 							<input  name="prefijo" type="text" class="form-control"
-								ng-required="true" placeholder="Prefijo STP "
-								ng-model="clienteDto.prefijoSTP" minlength="2" maxlength="6"
+								ng-required="true" placeholder="Prefijo clave rastreo "
+								ng-model="clienteDto.prefijoSTP" minlength="2" maxlength="5"
 								ng-pattern="/^[a-zA-Z0-9]*$/"
 								tooltip = "Prefijo asociado a las dispersiones de los colaboradores del cliente" ng-disabled="inHabilitaEscritura" >
 							<span class="messages" ng-show="datosStpForm.prefijo.$submitted || datosStpForm.prefijo.$touched">

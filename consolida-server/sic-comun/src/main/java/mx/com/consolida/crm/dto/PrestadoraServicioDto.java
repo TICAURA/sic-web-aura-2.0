@@ -38,6 +38,7 @@ public class PrestadoraServicioDto  implements Serializable {
 	private List<CelulaDto> catCelula;
 	private List<CatGeneralDto> catBanco;
 	private List<CatGeneralDto> catTipoCuenta;
+	private List<CatGeneralDto> catTipoDispersor;
 	 private List<PrestadoraServicioCuentaBancariaDto> prestadoraServicioCuentaBancaria;
 	private PrestadoraServicioDocumentoDto prestadoraServicioDocumento;
 	private List<PrestadoraServicioProductoDto> prestadoraServicioProducto;
@@ -52,6 +53,8 @@ public class PrestadoraServicioDto  implements Serializable {
 	
 	private String passwordFiel;
 	private String passwordCsd;
+	
+	private String dispersor;
 	
 	public PrestadoraServicioDto () {
 	}
@@ -331,6 +334,24 @@ public class PrestadoraServicioDto  implements Serializable {
 	public void setPrestadoraServicioStpDto(PrestadoraServicioStpDto prestadoraServicioStpDto) {
 		this.prestadoraServicioStpDto = prestadoraServicioStpDto;
 	}
+
+	public List<CatGeneralDto> getCatTipoDispersor() {
+		return catTipoDispersor;
+	}
+
+	public void setCatTipoDispersor(List<CatGeneralDto> catTipoDispersor) {
+		this.catTipoDispersor = catTipoDispersor;
+	}
+
+	public String getDispersor() {
+		return dispersor;
+	}
+
+	public void setDispersor(String dispersor) {
+		this.dispersor = dispersor;
+	}
+	
+	
 	
 	
 
