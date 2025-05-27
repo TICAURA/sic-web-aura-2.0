@@ -1994,7 +1994,9 @@
 									</a> <span class="fa fa-envelope" style="color: #05a7cf;"
 										tooltip="Correo enviado"
 										ng-show="data.idEstatus == 3 && data.idCmsPdf > 0  && data.idCmsExcel > 0 && data.correoElectronico.length>0"></span>
-
+									<a ng-show="data.idEstatus == 3 && data.idCmsPdf > 0  && data.idCmsExcel > 0 && data.correoElectronico.length>0" class="btn-info btn" tooltip="Reenviar correo" ng-click="reenviarCorreo(data)" >
+										<span class="fa fa-paper-plane"  style="color: #05a7cf;"></span>
+										</a>
 									</td>
 								</tr>
 							</tbody>

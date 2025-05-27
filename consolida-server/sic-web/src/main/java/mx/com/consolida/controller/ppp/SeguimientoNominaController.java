@@ -194,7 +194,7 @@ public class SeguimientoNominaController extends BaseController{
 		cuerpoCorreo = cuerpoCorreo.replaceAll("<MENSAJE>",
 				"Le adjuntamos el Comprobante Fiscal Digital a traves de internet (CFDI) con folio fiscal " 
 		+ colaborador.getUuid()
-		+ " por el concepto de aportaci&oacute;n al Plan Privado de Pensiones correspondiente al periodo "
+		+ " correspondiente al periodo "
 		+ nomina.getNominaPPP().getFechaInicioNominaFormato() + " al " +
 		 nomina.getNominaPPP().getFechaInicioNominaFormato());
 		 			
