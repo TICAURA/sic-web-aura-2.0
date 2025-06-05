@@ -112,12 +112,16 @@
 		</dependency>
 		
 		<!--Dependencias Jasper -->
- 		<dependency>
-	         <groupId>net.sf.jasperreports</groupId>
-	         <artifactId>jasperreports</artifactId>
-	         <version>5.6.0</version>
-		 </dependency>
-		 
+<!-- 		<dependency>-->
+<!--	         <groupId>net.sf.jasperreports</groupId>-->
+<!--	         <artifactId>| uppercase </artifactId>-->
+<!--	         <version>5.6.0</version>-->
+<!--		 </dependency>-->
+		 <dependency>
+    		<groupId>net.sf.jasperreports</groupId>
+   		 	<artifactId>jasperreports</artifactId>
+    		<version>6.12.2</version>
+  		 </dependency>
 		  <dependency>
 		    <groupId>org.apache.poi</groupId>
 		    <artifactId>poi-ooxml</artifactId>
