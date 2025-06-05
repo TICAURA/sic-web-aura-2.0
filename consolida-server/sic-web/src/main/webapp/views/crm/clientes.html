@@ -79,6 +79,7 @@
 					<table ng-table="tableParams"  class="table table-striped" show-filter="true">
 						<tbody>
 				          <tr ng-repeat="row in $data">
+				          	<td data-title="'Fondo'" sortable="'celula.nombre'">{{ row.celula.nombre}}</td>
 				            <td data-title="'Grupo o nombre comercial'" filter="{descripcionRazonSocial: 'text'}" sortable="'catGrupo.descripcionRazonSocial'">{{ row.descripcionRazonSocial | uppercase }}</td>
 				            <td data-title="'Nombre o raz&oacute;n social'" filter="{nombreRazonSocial: 'text'}" sortable="'nombreRazonSocial'">{{row.nombreRazonSocial}}</td>
 				            <td data-title="'Tipo'" filter="{descripcionTipoPersona: 'text'}" sortable="'descripcionTipoPersona'">{{ row.descripcionTipoPersona }}</td>

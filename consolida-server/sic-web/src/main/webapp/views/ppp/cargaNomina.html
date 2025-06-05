@@ -1930,6 +1930,7 @@
 									<th>Monto</th>
 									<th>Clabe interbancaria ó número de tarjeta</th>
 									<th>CURP</th>
+									<th>Correo electr&oacute;nico</th>
 									<th>CP</th>
 									<th>Estatus</th>
 									<th>Bitacora de estatus</th>
@@ -1949,6 +1950,7 @@
 									<td align="right"
 										ng-if="data.numeroCuenta != null || data.numeroCuenta != undefined">{{data.numeroCuenta}}</td>
 									<td>{{data.curp}}</td>
+									<td align="right">{{data.correoElectronico}}</td>
 									<td align="right">{{data.codigoPostal}}</td>
 									<td align="center" ng-if="data.idEstatus === 3"><span
 										class="fa fa-check" style="color: green;"
@@ -1995,7 +1997,7 @@
 										tooltip="Correo enviado"
 										ng-show="data.idEstatus == 3 && data.idCmsPdf > 0  && data.idCmsExcel > 0 && data.correoElectronico.length>0"></span>
 									<a ng-show="data.idEstatus == 3 && data.idCmsPdf > 0  && data.idCmsExcel > 0 && data.correoElectronico.length>0" class="btn-info btn" tooltip="Reenviar correo" ng-click="reenviarCorreo(data)" >
-										<span class="fa fa-paper-plane"  style="color: #05a7cf;"></span>
+										<span class="fa fa-paper-plane"  style="color: rgb(255, 255, 255);"></span>
 										</a>
 									</td>
 								</tr>

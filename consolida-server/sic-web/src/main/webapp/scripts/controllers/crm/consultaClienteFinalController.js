@@ -59,6 +59,7 @@ angular.module('theme.core.templates').controller('consultaClienteFinalControlle
 		                    if (
 //		                    	item.rfc.toLowerCase().indexOf($scope.searchText.toLowerCase()) != -1 ||
 //		                    	item.rfc.toLowerCase().indexOf($scope.searchText.toLowerCase()) != -1 ||
+								item.razonSocial.toLowerCase().indexOf($scope.searchText.toLowerCase()) != -1 ||
 		                        item.catGrupo.descripcionRazonSocial.toLowerCase().indexOf($scope.searchText.toLowerCase()) != -1 ||
 		                        item.nombre.toLowerCase().indexOf($scope.searchText.toLowerCase()) != -1 ||
 		                        item.apellidoPaterno.toLowerCase().indexOf($scope.searchText.toLowerCase()) != -1 ||
