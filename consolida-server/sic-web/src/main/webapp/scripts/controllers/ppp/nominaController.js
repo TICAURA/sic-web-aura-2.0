@@ -392,6 +392,34 @@ angular.module('theme.core.templates')
 				});
 
 	      }
+		  
+		  $scope.reenviarCorreo = function(colaborador){
+		  	
+		  	var nomina ={}
+		  	
+		  	nomina.colaboradores=[colaborador];
+		  	nomina.nominaPPP = $scope.nominaProcesoSeleccionada;
+		  	nomina.nominaComplemento = angular.copy($scope.nominaComplementoDto);
+		  	nomina.idPPPNominaFactura = angular.copy($scope.factura.idPPPNominaFactura);
+		  	  
+		  	$http.post(CONFIG.APIURL + "/ppp/seguimientoNomina/enviarCorreoColaborador.json", nomina).then(function(response) {
+		  		  
+		  		pinesNotifications.notify({
+		  	        title: 'Env&iacute;o de correo',
+		  	        text: 'El correo se env&iacute;o correctamente',
+		  	        type: 'success'
+		  	      });
+		    	
+		    		 	  	  		
+		  		}, function(data) {
+		  			console.log("error al enviar correo al colaborador --> " + data);
+		  			pinesNotifications.notify({
+		  		        title: 'Error',
+		  		        text: 'Ocurri&oacute; un error al enviar el correo, favor de intentarlo nuevamente.',
+		  		        type: 'error'
+		  		      });
+		  		});
+		  	} 
 	    
 	    // carga documento de sustento en  en memoria
 	    $scope.fileChangedDoc = function (documento) {
