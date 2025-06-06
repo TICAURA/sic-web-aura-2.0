@@ -107,7 +107,7 @@
 				<footer role="contentinfo" ng-show="!layoutLoading" ng-cloak>
 					<div class="clearfix">
 						<ul class="list-unstyled list-inline pull-left">
-							<li>Sistema Integral Consolida 2020</li>
+							<li>Sistema Integral Consolida 2025 V.1.1</li>
 						</ul>
 						<button class="pull-right btn btn-default btn-sm hidden-print" back-to-top style="padding: 1px 10px;"><i class="fa fa-angle-up"></i></button>
 					</div>
@@ -121,7 +121,7 @@
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title">Recupera Password</h5>
+	        <h5 class="modal-title">Recupera Contraseña</h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
@@ -130,11 +130,12 @@
 						<div class="modal-body">
 							<div class="row">
 								<div class="col-md-12">
-									Usuario: 
-									<input class="form-control" name="usuarioRec" type="email" placeholder="email" ng-model="recuperar.usuarioRecuperaContrasenia" required="required"/>
-									<span class="messages bold" ng-show="idRecPass.usuarioRec.$error.email">
-										Formato de correo incorrecto.
-									</span>
+									No es posible recuperar la contraseña automáticamente.<br/>
+										Contacta al administrador del sistema para obtener asistencia.
+<!-- 									<input class="form-control" name="usuarioRec" type="email" placeholder="email" ng-model="recuperar.usuarioRecuperaContrasenia" required="required"/> -->
+<!-- 									<span class="messages bold" ng-show="idRecPass.usuarioRec.$error.email"> -->
+<!-- 										Formato de correo incorrecto. -->
+<!-- 									</span> -->
 								</div>
 								<br/><br/><br/>
 <!-- 								<div class="col-md-12"> -->
@@ -151,11 +152,10 @@
 							</div>
 						</div>
 						<br />
-						<div class="modal-footer">
-						ng-disabled="idRecPass.$invalid"
-							<button type="button" class="btn-brown btn" data-dismiss="modal">CANCELAR</button>
-							<button type="submit" class="btn-primary btn" data-dismiss="modal" 
-							 ng-click="recuperarPassword()">RECUPERAR</button>
+						<div class="modal-footer">		
+							<button type="button" class="btn-brown btn" data-dismiss="modal">CERRAR</button>
+<!-- 							<button type="submit" class="btn-primary btn" data-dismiss="modal"  -->
+<!-- 							 ng-click="recuperarPassword()">RECUPERAR</button> -->
 						</div>
 					</form>
 	    </div>
